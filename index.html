@@ -5,23 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
-    body { background:#000; color:#fff; }
-  .top-bar { position:fixed; top:0; width:100%; background:#111; padding:12px; z-index:100; display:flex; }
-  .page { display:none; padding:70px 15px 80px 15px; }
-  .page.active { display:block; }
-  .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:8px 0; }
-  .nav-btn { background:none; border:none; color:#aaa; font-size:22px; text-align:center; }
-  .nav-btn.active { color:#ff0050; }
-  .video-card { padding:10px; border-bottom:1px solid #222; }
-  .thumb video { width:100%; height:220px; object-fit:cover; border-radius:12px; background:#222; }
-  .price-btn { float:right; background:#ff0050; border:none; color:#fff; padding:8px 12px; border-radius:8px; }
-  .upload-box { border:2px dashed #444; padding:30px; text-align:center; border-radius:12px; margin:15px 0; }
-  .form-input { width:100%; padding:12px; margin:8px 0; background:#222; border:1px solid #333; border-radius:8px; color:#fff; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
+    body { background:#000; color:#fff; font-size:14px; }
+    
+    /* TOP BAR WITH LOGIN */
+   .top-bar { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; z-index:100; display:flex; justify-content:space-between; align-items:center; }
+   .top-bar h3 { font-size:18px; }
+   .login-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; }
+    
+   .page { display:none; padding:60px 15px 80px 15px; }
+   .page.active { display:block; }
+    
+    /* BOTTOM NAV - SMALLER ICONS */
+   .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:6px 0; border-top:1px solid #222; }
+   .nav-btn { background:none; border:none; color:#888; font-size:12px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:3px; }
+   .nav-btn.active { color:#ff0050; }
+   .nav-icon { font-size:20px; line-height:1; } /* Made icons smaller */
+   .nav-label { font-size:10px; }
+    
+   .video-card { padding:10px; border-bottom:1px solid #222; }
+   .thumb video { width:100%; height:220px; object-fit:cover; border-radius:12px; background:#222; }
+   .video-row { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+   .price-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; }
+    
+   .upload-box { border:2px dashed #444; padding:20px; text-align:center; border-radius:12px; margin:15px 0; }
+   .form-input { width:100%; padding:10px; margin:8px 0; background:#222; border:1px solid #333; border-radius:8px; color:#fff; font-size:14px; }
   </style>
 </head>
 <body>
-  <div class="top-bar"><h3>Video City</h3></div>
+  <!-- TOP BAR WITH LOGIN -->
+  <div class="top-bar">
+    <h3>Video City</h3>
+    <button class="login-btn" onclick="login()">Login</button>
+  </div>
   
   <!-- HOME -->
   <div class="page active" id="home"><div id="feed"></div></div>
@@ -31,25 +47,30 @@
     <h2>➕ Upload Video</h2>
     <div class="upload-box">
       <input type="file" id="videoFile" accept="video/*" onchange="previewVideo(event)">
-      <p id="fileName" style="margin-top:10px; color:#aaa;">Pick video from Gallery</p>
-      <video id="preview" width="100%" style="display:none; margin-top:10px;" controls></video>
+      <p id="fileName" style="margin-top:10px; color:#aaa; font-size:12px;">Pick video from Gallery</p>
+      <video id="preview" width="100%" style="display:none; margin-top:10px; border-radius:10px;" controls></video>
     </div>
     <input id="videoTitle" class="form-input" placeholder="Video Title">
     <input id="videoPrice" class="form-input" type="number" step="0.1" placeholder="Set Price in Pi. Ex: 2">
-    <button onclick="publishVideo()" style="width:100%; padding:15px; background:#ff0050; border:none; color:#fff; border-radius:8px;">Publish</button>
+    <button onclick="publishVideo()" style="width:100%; padding:12px; background:#ff0050; border:none; color:#fff; border-radius:8px;">Publish</button>
   </div>
   
-  <!-- STUDIO + EARNINGS + PROFILE pages same as before -->
+  <!-- STUDIO -->
   <div class="page" id="studio"><h2>🛠️ Studio</h2><div id="myVideos"></div></div>
-  <div class="page" id="earnings"><h2>💰 Earnings</h2><p>Total: <b id="totalEarned">0 π</b></p></div>
+  
+  <!-- EARNINGS -->
+  <div class="page" id="earnings"><h2>💰 Earnings</h2><p>Total: <b id="totalEarned" style="color:#ff0050;">0 π</b></p></div>
+  
+  <!-- PROFILE -->
   <div class="page" id="profile"><h2>👤 Profile</h2><p id="profile-user">Not logged in</p></div>
 
+  <!-- BOTTOM NAV - FIXED ICONS -->
   <div class="bottom-nav">
-    <button class="nav-btn active" onclick="showPage('home')">🏠<br>Home</button>
-    <button class="nav-btn" onclick="showPage('upload')">⬆️<br>Upload</button>
-    <button class="nav-btn" onclick="showPage('studio')">🛠️<br>Studio</button>
-    <button class="nav-btn" onclick="showPage('earnings')">💰<br>Earnings</button>
-    <button class="nav-btn" onclick="showPage('profile')">👤<br>Profile</button>
+    <button class="nav-btn active" onclick="showPage('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-btn" onclick="showPage('upload')"><span class="nav-icon">⬆️</span><span class="nav-label">Upload</span></button>
+    <button class="nav-btn" onclick="showPage('studio')"><span class="nav-icon">🛠️</span><span class="nav-label">Studio</span></button>
+    <button class="nav-btn" onclick="showPage('earnings')"><span class="nav-icon">💰</span><span class="nav-label">Earnings</span></button>
+    <button class="nav-btn" onclick="showPage('profile')"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
   </div>
 
   <script>
@@ -72,18 +93,20 @@
       let html = '';
       videos.forEach(v => {
         html += `<div class="video-card">
-          <video src="${v.src}" controls></video>
-          <h4>${v.title}</h4>
-          <p>${v.creator} <button class="price-btn" onclick="payVideo(${v.id}, ${v.price})">${v.price} π</button></p>
+          <video src="${v.src}" controls playsinline></video>
+          <h4 style="margin-top:8px;">${v.title}</h4>
+          <div class="video-row">
+            <p>${v.creator}</p>
+            <button class="price-btn" onclick="payVideo(${v.id}, ${v.price})">${v.price} π</button>
+          </div>
         </div>`;
       });
       document.getElementById('feed').innerHTML = html;
     }
     
-    // THIS IS THE GALLERY UPLOAD PART
     function previewVideo(event) {
       const file = event.target.files[0];
-      uploadedFileURL = URL.createObjectURL(file); // This makes it play
+      uploadedFileURL = URL.createObjectURL(file);
       document.getElementById('fileName').innerText = file.name;
       const preview = document.getElementById('preview');
       preview.src = uploadedFileURL;
@@ -97,6 +120,8 @@
       
       videos.unshift({id:Date.now(), title:title, creator:"@you", price:price, src:uploadedFileURL});
       alert("Published! " + title + " for " + price + " π");
+      document.getElementById('videoTitle').value = '';
+      document.getElementById('videoPrice').value = '';
       showPage('home');
     }
     
@@ -104,11 +129,11 @@
       let html = '';
       videos.filter(v => v.creator === "@you").forEach(v => {
         html += `<div style="background:#222; padding:15px; margin-top:10px; border-radius:10px;">
-          <p>${v.title}</p>
-          <p>Price: <input type="number" value="${v.price}" id="p${v.id}"> π <button onclick="updatePrice(${v.id})">Save</button></p>
+          <p><b>${v.title}</b></p>
+          <p>Price: <input type="number" value="${v.price}" id="p${v.id}" style="width:60px;"> π <button onclick="updatePrice(${v.id})" style="background:#ff0050; border:none; color:#fff; padding:5px 10px;">Save</button></p>
         </div>`;
       });
-      document.getElementById('myVideos').innerHTML = html || "Upload a video first";
+      document.getElementById('myVideos').innerHTML = html || "<p>Upload a video first</p>";
     }
     
     function updatePrice(id) {
@@ -117,13 +142,17 @@
     }
     
     async function login() {
-      const auth = await Pi.authenticate(['username', 'payments']);
-      document.getElementById("profile-user").innerText = "@" + auth.user.username;
+      try {
+        const auth = await Pi.authenticate(['username', 'payments']);
+        document.getElementById("profile-user").innerText = "@" + auth.user.username;
+        alert("Logged in: " + auth.user.username);
+      } catch(e) { alert("Login cancelled") }
     }
     
     function payVideo(id, price) {
       Pi.createPayment({amount: price, memo: "Video " + id}, {
-        onReadyForServerCompletion: function(paymentId, txid) { alert("Paid " + price + " π!") }
+        onReadyForServerCompletion: function(paymentId, txid) { alert("Paid " + price + " π! TX: " + txid) },
+        onError: function(err) { alert("Error: " + err) }
       });
     }
     
