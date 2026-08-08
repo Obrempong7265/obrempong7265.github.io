@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Video City Pay</title>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+</head>
+<body style="text-align:center; padding:50px; font-family:sans-serif">
+  <h1>Video City Pay</h1>
+  <p>Video platform where creators earn Pi</p>
+  <button onclick="login()">Login with Pi</button>
+  <button onclick="pay()">Pay 0.01 Pi</button>
+
+  <script>
+    Pi.init({ version: "2.0", sandbox: true });
+    
+    function login() {
+      Pi.authenticate(['username', 'payments']).then(auth => {
+        alert("Logged in: " + auth.user.username);
+      });
+    }
+    
+    function pay() {
+      const payment = { amount: 0.01, memo: "Test Video City Pay", metadata: {type: "test"} };
+      Pi.createPayment(payment, {
+        onReadyForServerApproval: (paymentId) => {console.log(paymentId)},
+        onReadyForServerCompletion: (paymentId, txid) => {alert("Paid!")},
+        onCancel: () => alert("Cancelled"),
+        onError: (error) => alert(error)
+      });
+    }
+  </script>
+</body>
+</html>
