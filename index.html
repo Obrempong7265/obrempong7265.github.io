@@ -9,23 +9,42 @@
   <p>Video platform where creators earn Pi</p>
   <button onclick="login()">Login with Pi</button>
   <button onclick="pay()">Pay 0.01 Pi</button>
+  <p id="status"></p>
 
   <script>
     Pi.init({ version: "2.0", sandbox: true });
     
     function login() {
       Pi.authenticate(['username', 'payments']).then(auth => {
-        alert("Logged in: " + auth.user.username);
-      });
+        document.getElementById("status").innerText = "Logged in: " + auth.user.username;
+      }).catch(err => {alert("Login error: " + err)});
     }
     
     function pay() {
-      const payment = { amount: 0.01, memo: "Test Video City Pay", metadata: {type: "test"} };
-      Pi.createPayment(payment, {
-        onReadyForServerApproval: (paymentId) => {console.log(paymentId)},
-        onReadyForServerCompletion: (paymentId, txid) => {alert("Paid!")},
-        onCancel: () => alert("Cancelled"),
-        onError: (error) => alert(error)
+      document.getElementById("status").innerText = "Preparing payment...";
+      const paymentData = { 
+        amount: 0.01, 
+        memo: "Test Video City Pay", 
+        metadata: {type: "test"} 
+      };
+      
+      Pi.createPayment(paymentData, {
+        onReadyForServerApproval: (paymentId) => {
+          document.getElementById("status").innerText = "Approved! Completing...";
+          // For sandbox, we just auto-complete
+          onReadyForServerCompletion(paymentId);
+        },
+        onReadyForServerCompletion: (paymentId, txid) => {
+          document.getElementById("status").innerText = "Payment Complete! TX: " + txid;
+          alert("Paid! TXID: " + txid);
+        },
+        onCancel: () => {
+          document.getElementById("status").innerText = "Cancelled";
+        },
+        onError: (error) => {
+          document.getElementById("status").innerText = "Error: " + error;
+          alert("Error: " + error);
+        }
       });
     }
   </script>
