@@ -4,55 +4,42 @@
 <head>
   <title>Video City</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script> <!-- SDK back -->
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
     body { background:#000; color:#fff; }
-    .top-bar { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; }
+    .top-bar { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:100; }
     .login-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; }
+    .notif-btn { background:none; border:none; color:#fff; font-size:22px; }
     .page { display:none; padding:70px 15px 80px 15px; }
     .page.active { display:block; }
-    .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:10px 0; }
+    .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:10px 0; z-index:100; }
     .nav-btn { background:none; border:none; color:#888; font-size:12px; text-align:center; }
     .nav-btn.active { color:#ff0050; }
     .card { background:#222; padding:15px; margin:10px 0; border-radius:10px; }
+    .video-box { background:#222; padding:0; margin:10px 0; border-radius:10px; overflow:hidden; }
+    .video-box video { width:100%; display:block; }
   </style>
 </head>
 <body>
   <div class="top-bar">
     <h3>Video City</h3>
-    <button class="login-btn" onclick="alert('Login clicked')">Login</button>
+    <div>
+      <button class="notif-btn" onclick="show('notifications')">🔔</button>
+      <button class="login-btn" onclick="login()">Login</button>
+    </div>
   </div>
   
   <div class="page active" id="home">
     <h2>Home</h2>
-    <div class="card">Demo Video 1</div>
-    <div class="card">Demo Video 2</div>
+    <div id="feed"></div>
   </div>
   
-  <div class="page" id="upload">
-    <h2>Upload</h2>
-    <div class="card">Upload form goes here</div>
-  </div>
-  
-  <div class="page" id="studio">
-    <h2>Studio</h2>
-    <div class="card">Your videos go here</div>
-  </div>
-  
-  <div class="page" id="earnings">
-    <h2>Earnings</h2>
-    <div class="card">Total: 0 π</div>
-  </div>
-  
-  <div class="page" id="profile">
-    <h2>Profile</h2>
-    <div class="card">Not logged in</div>
-  </div>
-  
-  <div class="page" id="notifications">
-    <h2>Notifications</h2>
-    <div class="card">No notifications</div>
-  </div>
+  <div class="page" id="upload"><h2>Upload</h2><div class="card">Upload coming</div></div>
+  <div class="page" id="studio"><h2>Studio</h2><div class="card">Studio coming</div></div>
+  <div class="page" id="earnings"><h2>Earnings</h2><div class="card">Earnings: 0 π</div></div>
+  <div class="page" id="profile"><h2>Profile</h2><div class="card" id="profile-user">Not logged in</div></div>
+  <div class="page" id="notifications"><h2>Notifications</h2><div class="card">No notifications yet</div></div>
 
   <div class="bottom-nav">
     <button class="nav-btn active" onclick="show('home')">🏠<br>Home</button>
@@ -63,12 +50,42 @@
   </div>
 
   <script>
+    // SAFE INIT - Don't crash if Pi fails
+    try { Pi.init({ version: "2.0", sandbox: "true" }); } catch(e){ console.log("Pi not loaded") }
+    
+    let videos = [
+      {id:1, title:"Baby Dancing", src:"https://www.w3schools.com/html/mov_bbb.mp4"},
+      {id:2, title:"Demo 2", src:"https://www.w3schools.com/html/movie.mp4"}
+    ];
+    
     function show(id) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       event.target.closest('.nav-btn').classList.add('active');
+      if(id === 'home') renderFeed();
     }
+    
+    function renderFeed() {
+      let html = '';
+      videos.forEach(v => {
+        html += `<div class="video-box">
+          <video src="${v.src}" controls></video>
+          <div style="padding:10px;"><b>${v.title}</b></div>
+        </div>`;
+      });
+      document.getElementById('feed').innerHTML = html;
+    }
+    
+    async function login() {
+      try {
+        const auth = await Pi.authenticate(['username', 'payments']);
+        document.getElementById("profile-user").innerText = "@" + auth.user.username;
+        alert("Logged in as @" + auth.user.username);
+      } catch(e) { alert("Login failed: " + e) }
+    }
+    
+    renderFeed();
   </script>
 </body>
 </html>
