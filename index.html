@@ -8,32 +8,37 @@
     * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
     body { background:#000; color:#fff; font-size:14px; }
     
-    /* TOP BAR WITH LOGIN */
    .top-bar { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; z-index:100; display:flex; justify-content:space-between; align-items:center; }
-   .top-bar h3 { font-size:18px; }
    .login-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; }
     
-   .page { display:none; padding:60px 15px 80px 15px; }
+   .page { display:none; padding:60px 0 80px 0; }
    .page.active { display:block; }
     
-    /* BOTTOM NAV - SMALLER ICONS */
+   .video-wrapper { position:relative; height:calc(100vh - 140px); }
+   .video-wrapper video { width:100%; height:100%; object-fit:cover; }
+    
+    /* SIDE BUTTONS: LIKE, COMMENT, TIP */
+   .side-actions { position:absolute; right:10px; bottom:100px; display:flex; flex-direction:column; gap:20px; text-align:center; }
+   .action-btn { background:none; border:none; color:#fff; font-size:28px; }
+   .action-count { font-size:11px; font-weight:bold; margin-top:2px; }
+    
+   .video-info { position:absolute; bottom:90px; left:15px; right:80px; }
+   .video-info h4 { font-size:16px; margin-bottom:4px; }
+   .price-btn { background:#ff0050; border:none; color:#fff; padding:8px 14px; border-radius:20px; font-size:12px; font-weight:bold; }
+    
    .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:6px 0; border-top:1px solid #222; }
    .nav-btn { background:none; border:none; color:#888; font-size:12px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:3px; }
    .nav-btn.active { color:#ff0050; }
-   .nav-icon { font-size:20px; line-height:1; } /* Made icons smaller */
-   .nav-label { font-size:10px; }
+   .nav-icon { font-size:20px; }
     
-   .video-card { padding:10px; border-bottom:1px solid #222; }
-   .thumb video { width:100%; height:220px; object-fit:cover; border-radius:12px; background:#222; }
-   .video-row { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
-   .price-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:bold; }
-    
-   .upload-box { border:2px dashed #444; padding:20px; text-align:center; border-radius:12px; margin:15px 0; }
-   .form-input { width:100%; padding:10px; margin:8px 0; background:#222; border:1px solid #333; border-radius:8px; color:#fff; font-size:14px; }
+    /* COMMENT POPUP */
+   .comments { position:fixed; bottom:70px; left:0; width:100%; height:50%; background:#222; border-radius:20px 20px 0 0; padding:15px; display:none; z-index:200; }
+   .comments.active { display:block; }
+   .comment-input { width:100%; padding:10px; background:#333; border:none; border-radius:20px; color:#fff; margin-top:10px; }
+   .comment { margin:10px 0; font-size:13px; }
   </style>
 </head>
 <body>
-  <!-- TOP BAR WITH LOGIN -->
   <div class="top-bar">
     <h3>Video City</h3>
     <button class="login-btn" onclick="login()">Login</button>
@@ -42,42 +47,46 @@
   <!-- HOME -->
   <div class="page active" id="home"><div id="feed"></div></div>
   
-  <!-- UPLOAD -->
+  <!-- OTHER PAGES -->
   <div class="page" id="upload">
-    <h2>➕ Upload Video</h2>
-    <div class="upload-box">
+    <h2 style="padding:15px;">➕ Upload Video</h2>
+    <div style="padding:15px;">
       <input type="file" id="videoFile" accept="video/*" onchange="previewVideo(event)">
-      <p id="fileName" style="margin-top:10px; color:#aaa; font-size:12px;">Pick video from Gallery</p>
-      <video id="preview" width="100%" style="display:none; margin-top:10px; border-radius:10px;" controls></video>
+      <p id="fileName" style="margin:10px 0; color:#aaa;">Pick video from Gallery</p>
+      <video id="preview" width="100%" style="display:none; border-radius:10px;" controls></video>
+      <input id="videoTitle" class="form-input" placeholder="Video Title" style="width:100%; padding:10px; margin:8px 0; background:#222; border:1px solid #333; border-radius:8px; color:#fff;">
+      <input id="videoPrice" type="number" step="0.1" placeholder="Set Price in Pi" style="width:100%; padding:10px; margin:8px 0; background:#222; border:1px solid #333; border-radius:8px; color:#fff;">
+      <button onclick="publishVideo()" style="width:100%; padding:12px; background:#ff0050; border:none; color:#fff; border-radius:8px;">Publish</button>
     </div>
-    <input id="videoTitle" class="form-input" placeholder="Video Title">
-    <input id="videoPrice" class="form-input" type="number" step="0.1" placeholder="Set Price in Pi. Ex: 2">
-    <button onclick="publishVideo()" style="width:100%; padding:12px; background:#ff0050; border:none; color:#fff; border-radius:8px;">Publish</button>
   </div>
   
-  <!-- STUDIO -->
-  <div class="page" id="studio"><h2>🛠️ Studio</h2><div id="myVideos"></div></div>
-  
-  <!-- EARNINGS -->
-  <div class="page" id="earnings"><h2>💰 Earnings</h2><p>Total: <b id="totalEarned" style="color:#ff0050;">0 π</b></p></div>
-  
-  <!-- PROFILE -->
-  <div class="page" id="profile"><h2>👤 Profile</h2><p id="profile-user">Not logged in</p></div>
+  <div class="page" id="studio"><h2 style="padding:15px;">🛠️ Studio</h2><div id="myVideos" style="padding:15px;"></div></div>
+  <div class="page" id="earnings"><h2 style="padding:15px;">💰 Earnings</h2><p style="padding:15px;">Total: <b style="color:#ff0050;">0 π</b></p></div>
+  <div class="page" id="profile"><h2 style="padding:15px;">👤 Profile</h2><p style="padding:15px;" id="profile-user">Not logged in</p></div>
 
-  <!-- BOTTOM NAV - FIXED ICONS -->
+  <!-- COMMENTS POPUP -->
+  <div class="comments" id="commentsBox">
+    <h3>Comments</h3>
+    <div id="commentsList"></div>
+    <input class="comment-input" id="commentInput" placeholder="Add comment..." onkeypress="if(event.key==='Enter') addComment()">
+  </div>
+
+  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
-    <button class="nav-btn active" onclick="showPage('home')"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
-    <button class="nav-btn" onclick="showPage('upload')"><span class="nav-icon">⬆️</span><span class="nav-label">Upload</span></button>
-    <button class="nav-btn" onclick="showPage('studio')"><span class="nav-icon">🛠️</span><span class="nav-label">Studio</span></button>
-    <button class="nav-btn" onclick="showPage('earnings')"><span class="nav-icon">💰</span><span class="nav-label">Earnings</span></button>
-    <button class="nav-btn" onclick="showPage('profile')"><span class="nav-icon">👤</span><span class="nav-label">Profile</span></button>
+    <button class="nav-btn active" onclick="showPage('home')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-btn" onclick="showPage('upload')"><span class="nav-icon">⬆️</span><span>Upload</span></button>
+    <button class="nav-btn" onclick="showPage('studio')"><span class="nav-icon">🛠️</span><span>Studio</span></button>
+    <button class="nav-btn" onclick="showPage('earnings')"><span class="nav-icon">💰</span><span>Earnings</span></button>
+    <button class="nav-btn" onclick="showPage('profile')"><span class="nav-icon">👤</span><span>Profile</span></button>
   </div>
 
   <script>
     Pi.init({ version: "2.0", sandbox: "true" });
     let videos = [
-      {id:1, title:"Demo Video 1", creator:"@creator1", price:1, src:"https://www.w3schools.com/html/mov_bbb.mp4"}
+      {id:1, title:"Cute baby dancing", creator:"@you", price:1, likes:24, comments:["Nice!", "Love this"], src:"https://www.w3schools.com/html/mov_bbb.mp4"},
+      {id:2, title:"Demo Video 2", creator:"@creator1", price:2.5, likes:5, comments:[], src:"https://www.w3schools.com/html/movie.mp4"}
     ];
+    let currentVideoId = 1;
     let uploadedFileURL = "";
     
     function showPage(id) {
@@ -92,36 +101,70 @@
     function renderFeed() {
       let html = '';
       videos.forEach(v => {
-        html += `<div class="video-card">
-          <video src="${v.src}" controls playsinline></video>
-          <h4 style="margin-top:8px;">${v.title}</h4>
-          <div class="video-row">
+        html += `<div class="video-wrapper">
+          <video src="${v.src}" autoplay loop muted playsinline></video>
+          
+          <div class="side-actions">
+            <button class="action-btn" onclick="like(${v.id})">❤️</button>
+            <div class="action-count">${v.likes}</div>
+            
+            <button class="action-btn" onclick="openComments(${v.id})">💬</button>
+            <div class="action-count">${v.comments.length}</div>
+            
+            <button class="action-btn" onclick="payVideo(${v.id}, ${v.price})">💰</button>
+            <div class="action-count">${v.price}π</div>
+          </div>
+          
+          <div class="video-info">
+            <h4>${v.title}</h4>
             <p>${v.creator}</p>
-            <button class="price-btn" onclick="payVideo(${v.id}, ${v.price})">${v.price} π</button>
           </div>
         </div>`;
       });
       document.getElementById('feed').innerHTML = html;
     }
     
+    // LIKE FUNCTION
+    function like(id) {
+      let v = videos.find(v => v.id === id);
+      v.likes++;
+      renderFeed();
+    }
+    
+    // COMMENTS FUNCTION
+    function openComments(id) {
+      currentVideoId = id;
+      let v = videos.find(v => v.id === id);
+      document.getElementById('commentsList').innerHTML = v.comments.map(c => `<div class="comment">👤 ${c}</div>`).join('');
+      document.getElementById('commentsBox').classList.add('active');
+    }
+    
+    function addComment() {
+      let text = document.getElementById('commentInput').value;
+      if(!text) return;
+      videos.find(v => v.id === currentVideoId).comments.push(text);
+      document.getElementById('commentInput').value = '';
+      openComments(currentVideoId);
+    }
+    
+    // Tap to close comments
+    document.getElementById('commentsBox').onclick = function(e){ if(e.target.id==='commentsBox') this.classList.remove('active') }
+    
     function previewVideo(event) {
       const file = event.target.files[0];
       uploadedFileURL = URL.createObjectURL(file);
       document.getElementById('fileName').innerText = file.name;
-      const preview = document.getElementById('preview');
-      preview.src = uploadedFileURL;
-      preview.style.display = 'block';
+      document.getElementById('preview').src = uploadedFileURL;
+      document.getElementById('preview').style.display = 'block';
     }
     
     function publishVideo() {
       const title = document.getElementById('videoTitle').value;
       const price = parseFloat(document.getElementById('videoPrice').value);
-      if(!uploadedFileURL ||!title ||!price) return alert("Pick video, title and price");
+      if(!uploadedFileURL ||!title ||!price) return alert("Fill all");
       
-      videos.unshift({id:Date.now(), title:title, creator:"@you", price:price, src:uploadedFileURL});
-      alert("Published! " + title + " for " + price + " π");
-      document.getElementById('videoTitle').value = '';
-      document.getElementById('videoPrice').value = '';
+      videos.unshift({id:Date.now(), title:title, creator:"@you", price:price, likes:0, comments:[], src:uploadedFileURL});
+      alert("Published!");
       showPage('home');
     }
     
@@ -130,29 +173,20 @@
       videos.filter(v => v.creator === "@you").forEach(v => {
         html += `<div style="background:#222; padding:15px; margin-top:10px; border-radius:10px;">
           <p><b>${v.title}</b></p>
-          <p>Price: <input type="number" value="${v.price}" id="p${v.id}" style="width:60px;"> π <button onclick="updatePrice(${v.id})" style="background:#ff0050; border:none; color:#fff; padding:5px 10px;">Save</button></p>
+          <p>Likes: ${v.likes} | Comments: ${v.comments.length}</p>
         </div>`;
       });
-      document.getElementById('myVideos').innerHTML = html || "<p>Upload a video first</p>";
-    }
-    
-    function updatePrice(id) {
-      videos.find(v => v.id === id).price = parseFloat(document.getElementById('p'+id).value);
-      alert("Price Updated");
+      document.getElementById('myVideos').innerHTML = html || "Upload a video first";
     }
     
     async function login() {
-      try {
-        const auth = await Pi.authenticate(['username', 'payments']);
-        document.getElementById("profile-user").innerText = "@" + auth.user.username;
-        alert("Logged in: " + auth.user.username);
-      } catch(e) { alert("Login cancelled") }
+      const auth = await Pi.authenticate(['username', 'payments']);
+      document.getElementById("profile-user").innerText = "@" + auth.user.username;
     }
     
     function payVideo(id, price) {
       Pi.createPayment({amount: price, memo: "Video " + id}, {
-        onReadyForServerCompletion: function(paymentId, txid) { alert("Paid " + price + " π! TX: " + txid) },
-        onError: function(err) { alert("Error: " + err) }
+        onReadyForServerCompletion: function(paymentId, txid) { alert("Paid " + price + " π!") }
       });
     }
     
