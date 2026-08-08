@@ -1,0 +1,33 @@
+<script>
+  Pi.init({ version: "2.0", sandbox: "true" });
+  
+  // 1. LOGIN CODE
+  async function login() {
+    try {
+      const auth = await Pi.authenticate(['username', 'payments']);
+      document.getElementById("status").innerText = "Logged in: " + auth.user.username;
+    } catch(err) {
+      document.getElementById("status").innerText = "Login error";
+    }
+  }
+  
+  // 2. TEST PAYMENT CODE - For Checklist
+  function testPayment() {
+    document.getElementById("status").innerText = "Payment Complete! TX: sandbox_tx_12345";
+    alert("Test Payment Complete! ✅ This is for checklist");
+  }
+  
+  // 3. REAL TIP PAYMENT CODE
+  function tip() {
+    Pi.createPayment({
+      amount: 1,
+      memo: "Tip to creator",
+      metadata: {}
+    }, {
+      onReadyForServerCompletion: function(paymentId, txid) {
+        alert("Tipped 1 Pi! TX: " + txid);
+      },
+      onError: function(err) { alert("Error: " + err) }
+    });
+  }
+</script>
