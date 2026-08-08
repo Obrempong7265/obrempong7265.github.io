@@ -10,54 +10,46 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
     body { background:#000; color:#fff; }
-   .top-bar { position:fixed; top:0; width:100%; background:rgba(0,0,0,0.4); padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:100; }
-   .login-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-weight:bold; }
-   .notif-btn { position:relative; background:none; border:none; color:#fff; font-size:24px; }
+  .top-bar { position:fixed; top:0; width:100%; background:rgba(0,0,0,0.4); padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:100; }
+  .login-btn { background:#ff0050; border:none; color:#fff; padding:6px 12px; border-radius:8px; font-weight:bold; }
     
-   .page { display:none; padding-top:60px; padding-bottom:70px; }
-   .page.active { display:block; }
+  .page { display:none; padding-top:60px; padding-bottom:70px; }
+  .page.active { display:block; }
     
-    /* FULLSCREEN VIDEO */
-   .video-wrapper { position:relative; height:calc(100vh - 130px); background:#000; }
-   .video-wrapper video { width:100%; height:100%; object-fit:cover; }
+  .video-wrapper { position:relative; height:calc(100vh - 130px); background:#000; }
+  .video-wrapper video { width:100%; height:100%; object-fit:cover; }
     
-    /* SIDE BUTTONS */
-   .side-actions { position:absolute; right:10px; bottom:90px; display:flex; flex-direction:column; gap:18px; text-align:center; z-index:99; }
-   .action-btn { background:none; border:none; color:#fff; font-size:32px; cursor:pointer; }
-   .action-btn.liked { color:#ff0050; }
-   .action-count { font-size:12px; font-weight:bold; margin-top:-5px; }
+  .side-actions { position:absolute; right:10px; bottom:90px; display:flex; flex-direction:column; gap:18px; text-align:center; z-index:99; }
+  .action-btn { background:none; border:none; color:#fff; font-size:32px; cursor:pointer; }
+  .action-btn.liked { color:#ff0050; }
+  .action-count { font-size:12px; font-weight:bold; margin-top:-5px; }
     
-    /* VIDEO INFO BOTTOM */
-   .video-info { position:absolute; bottom:80px; left:15px; right:80px; }
-   .video-info h4 { font-size:16px; font-weight:bold; }
-   .video-info p { font-size:13px; color:#ccc; }
+  .video-info { position:absolute; bottom:80px; left:15px; right:80px; }
+  .video-info h4 { font-size:16px; font-weight:bold; }
+  .video-info p { font-size:13px; color:#ccc; }
     
-   .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:8px 0; border-top:1px solid #222; }
-   .nav-btn { background:none; border:none; color:#888; font-size:11px; text-align:center; }
-   .nav-btn.active { color:#ff0050; }
-   .nav-icon { font-size:22px; display:block; }
+  .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:8px 0; border-top:1px solid #222; }
+  .nav-btn { background:none; border:none; color:#888; font-size:11px; text-align:center; }
+  .nav-btn.active { color:#ff0050; }
+  .nav-icon { font-size:22px; display:block; }
     
-   .card { background:#222; padding:15px; margin:10px; border-radius:10px; }
-   .form-input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:8px; color:#fff; }
-   .btn { width:100%; padding:12px; background:#ff0050; border:none; color:#fff; border-radius:8px; font-weight:bold; }
-   .grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; padding:2px; }
-   .grid-item { aspect-ratio:9/16; }
-   .grid-item video { width:100%; height:100%; object-fit:cover; }
+  .card { background:#222; padding:15px; margin:10px; border-radius:10px; }
+  .form-input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:8px; color:#fff; }
+  .btn { width:100%; padding:12px; background:#ff0050; border:none; color:#fff; border-radius:8px; font-weight:bold; cursor:pointer; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; padding:2px; }
+  .grid-item { aspect-ratio:9/16; }
+  .grid-item video { width:100%; height:100%; object-fit:cover; }
     
-    /* COMMENTS POPUP */
-   .comments { position:fixed; bottom:70px; left:0; width:100%; height:50%; background:#222; border-radius:20px 20px 0 0; padding:15px; display:none; z-index:200; overflow-y:scroll; }
-   .comments.active { display:block; }
-   .close-x { float:right; font-size:24px; cursor:pointer; }
-   .comment { background:#333; padding:8px; margin:5px 0; border-radius:8px; font-size:13px; }
+  .comments { position:fixed; bottom:70px; left:0; width:100%; height:50%; background:#222; border-radius:20px 20px 0 0; padding:15px; display:none; z-index:200; overflow-y:scroll; }
+  .comments.active { display:block; }
+  .close-x { float:right; font-size:24px; cursor:pointer; }
+  .comment { background:#333; padding:8px; margin:5px 0; border-radius:8px; font-size:13px; }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <h3>Video City</h3>
-    <div>
-      <button class="notif-btn" onclick="show('notifications')">🔔</button>
-      <button class="login-btn" onclick="login()">Login</button>
-    </div>
+    <h3>Video City v23</h3>
+    <button class="login-btn" onclick="login()">Login</button>
   </div>
   
   <div class="page active" id="home"><div id="feed"></div></div>
@@ -77,9 +69,7 @@
   <div class="page" id="studio"><h2 style="padding:15px;">Studio</h2><div id="myVideos"></div></div>
   <div class="page" id="earnings"><h2 style="padding:15px;">Earnings</h2><div class="card">Total: 0 π</div></div>
   <div class="page" id="profile"><h2 style="padding:15px;">Profile</h2><div class="card" id="profile-user">Not logged in</div><div id="myProfileVideos" class="grid"></div></div>
-  <div class="page" id="notifications"><h2 style="padding:15px;">Notifications</h2><div class="card">No notifications</div></div>
 
-  <!-- COMMENTS POPUP -->
   <div class="comments" id="commentsBox">
     <h3>Comments <span class="close-x" onclick="closeComments()">×</span></h3>
     <div id="commentsList"></div>
@@ -116,6 +106,10 @@
     }
     
     function renderFeed() {
+      if(videos.length === 0) {
+        document.getElementById('feed').innerHTML = "<p style='padding:20px; text-align:center;'>No videos yet. Upload one!</p>";
+        return;
+      }
       let html = '';
       videos.forEach(v => {
         let liked = v.likedBy.includes(currentUser);
@@ -170,14 +164,53 @@
       });
     }
     
-    function previewVideo(event) { /* same */ }
-    function publishVideo() { /* same */ }
-    function renderStudio() { /* same */ }
-    function renderProfile() { /* same */ }
-    async function login() { const auth = await Pi.authenticate(['username']); currentUser = auth.user.username; document.getElementById("profile-user").innerText = "@" + currentUser; }
+    // FIXED: FULL FUNCTION NOW
+    function previewVideo(event) {
+      const file = event.target.files[0];
+      if(!file) return;
+      uploadedFileURL = URL.createObjectURL(file);
+      document.getElementById('fileName').innerText = file.name;
+      document.getElementById('preview').src = uploadedFileURL;
+      document.getElementById('preview').style.display = 'block';
+    }
+    
+    // FIXED: FULL FUNCTION NOW
+    function publishVideo() {
+      const title = document.getElementById('videoTitle').value;
+      const price = parseFloat(document.getElementById('videoPrice').value);
+      if(!uploadedFileURL) return alert("Please choose a video file");
+      if(!title) return alert("Please enter a title");
+      if(!price) return alert("Please enter a price");
+      
+      videos.unshift({id:Date.now(), title:title, creator:"@"+currentUser, price:price, likes:0, likedBy:[], views:0, comments:[], src:uploadedFileURL});
+      saveVideos(); 
+      alert("Published Successfully!"); 
+      document.getElementById('videoTitle').value = '';
+      document.getElementById('videoPrice').value = '';
+      show('home');
+    }
+    
+    function renderStudio() {
+      let myVids = videos.filter(v => v.creator === "@"+currentUser);
+      let html = '';
+      myVids.forEach(v => { html += `<div class="card"><b>${v.title}</b><br><span style="color:#aaa;">${v.price} π | ${v.likes} likes</span></div>`; });
+      document.getElementById('myVideos').innerHTML = html || "<div class='card'>You haven't uploaded any videos yet</div>";
+    }
+    
+    function renderProfile() {
+      let myVids = videos.filter(v => v.creator === "@"+currentUser);
+      let html = '';
+      myVids.forEach(v => { html += `<div class="grid-item"><video src="${v.src}" muted></video></div>`; });
+      document.getElementById('myProfileVideos').innerHTML = html || "<p style='padding:10px;'>No videos</p>";
+    }
+    
+    async function login() { 
+      const auth = await Pi.authenticate(['username']); 
+      currentUser = auth.user.username; 
+      document.getElementById("profile-user").innerText = "@" + currentUser; 
+    }
     
     renderFeed();
   </script>
 </body>
 </html>
-        
