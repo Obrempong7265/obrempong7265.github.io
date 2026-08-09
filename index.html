@@ -1,161 +1,109 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>Video City</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <!-- REMOVED PI SDK FOR NOW -->
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:system-ui, sans-serif; }
-    body { background:#000; color:#fff; }
-  .top-bar { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:100; }
-  .login-btn { background:#888; border:none; color:#fff; padding:6px 12px; border-radius:8px; }
-    
-  .page { display:none; padding-top:60px; padding-bottom:70px; }
-  .page.active { display:block; }
-    
-  .video-wrapper { position:relative; height:calc(100vh - 130px); background:#000; }
-  .video-wrapper video { width:100%; height:100%; object-fit:cover; }
-    
-  .side-actions { position:absolute; right:10px; bottom:90px; display:flex; flex-direction:column; gap:18px; text-align:center; z-index:99; }
-  .action-btn { background:none; border:none; color:#fff; font-size:32px; cursor:pointer; }
-  .action-btn.liked { color:#ff0050; }
-  .action-count { font-size:12px; font-weight:bold; margin-top:-5px; }
-    
-  .video-info { position:absolute; bottom:80px; left:15px; right:80px; }
-  .video-info h4 { font-size:16px; font-weight:bold; }
-  .video-info p { font-size:13px; color:#ccc; }
-    
-  .bottom-nav { position:fixed; bottom:0; width:100%; display:flex; justify-content:space-around; background:#111; padding:8px 0; border-top:1px solid #222; }
-  .nav-btn { background:none; border:none; color:#888; font-size:11px; text-align:center; }
-  .nav-btn.active { color:#ff0050; }
-  .nav-icon { font-size:22px; display:block; }
-    
-  .card { background:#222; padding:15px; margin:10px; border-radius:10px; }
-  .form-input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:8px; color:#fff; }
-  .btn { width:100%; padding:12px; background:#ff0050; border:none; color:#fff; border-radius:8px; font-weight:bold; cursor:pointer; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; padding:2px; }
-  .grid-item { aspect-ratio:9/16; }
+    body { background:#000; color:#fff; font-family:Arial; margin:0; }
+    .top { background:#111; padding:10px; display:flex; justify-content:space-between; }
+    .page { display:none; padding:60px 10px 70px 10px; }
+    .page.show { display:block; }
+    .nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
+    .nav button { flex:1; background:none; border:none; color:#888; padding:10px; }
+    .nav button.active { color:#ff0050; }
+    .card { background:#222; padding:15px; margin:10px 0; border-radius:8px; }
+    video { width:100%; border-radius:8px; }
+    input, button { width:100%; padding:10px; margin:5px 0; border-radius:5px; border:none; }
+    .btn { background:#ff0050; color:#fff; }
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <h3>Video City v24</h3>
-    <button class="login-btn" onclick="alert('Login disabled for now')">Login</button>
+  <div class="top">
+    <h3>Video City v25</h3>
   </div>
   
-  <div class="page active" id="home"><div id="feed"></div></div>
+  <!-- HOME -->
+  <div class="page show" id="home">
+    <h2>Home</h2>
+    <div id="feed"></div>
+  </div>
   
+  <!-- UPLOAD -->
   <div class="page" id="upload">
-    <h2 style="padding:15px;">Upload Video</h2>
+    <h2>Upload</h2>
     <div class="card">
-      <input type="file" id="videoFile" accept="video/*" onchange="previewVideo(event)">
-      <p id="fileName" style="margin:10px 0; color:#aaa;">No file chosen</p>
-      <video id="preview" width="100%" style="display:none; border-radius:10px;" controls></video>
-      <input id="videoTitle" class="form-input" placeholder="Video Title">
-      <input id="videoPrice" class="form-input" type="number" step="0.1" placeholder="Price in Pi">
-      <button onclick="publishVideo()" class="btn">Publish</button>
+      <input type="file" id="file" accept="video/*">
+      <input id="title" placeholder="Video Title">
+      <input id="price" type="number" placeholder="Price in Pi">
+      <button class="btn" onclick="upload()">Publish</button>
     </div>
   </div>
   
-  <div class="page" id="studio"><h2 style="padding:15px;">Studio</h2><div id="myVideos"></div></div>
-  <div class="page" id="earnings"><h2 style="padding:15px;">Earnings</h2><div class="card">Total: 0 π</div></div>
-  <div class="page" id="profile"><h2 style="padding:15px;">Profile</h2><div class="card">Guest</div><div id="myProfileVideos" class="grid"></div></div>
-
-  <div class="bottom-nav">
-    <button class="nav-btn active" onclick="show('home')"><span class="nav-icon">🏠</span>Home</button>
-    <button class="nav-btn" onclick="show('upload')"><span class="nav-icon">⬆️</span>Upload</button>
-    <button class="nav-btn" onclick="show('studio')"><span class="nav-icon">🛠️</span>Studio</button>
-    <button class="nav-btn" onclick="show('earnings')"><span class="nav-icon">💰</span>Earnings</button>
-    <button class="nav-btn" onclick="show('profile')"><span class="nav-icon">👤</span>Profile</button>
+  <!-- STUDIO -->
+  <div class="page" id="studio">
+    <h2>Studio</h2>
+    <div id="studioList"></div>
+  </div>
+  
+  <!-- PROFILE -->
+  <div class="page" id="profile">
+    <h2>Profile</h2>
+    <div class="card">Guest</div>
   </div>
 
-  <script>
-    let currentUser = "Guest";
-    let videos = JSON.parse(localStorage.getItem('videos')) || [
-      {id:1, title:"Couple", creator:"@OBREMPONG7", price:2, likes:0, likedBy:[], views:0, comments:[], src:"https://www.w3schools.com/html/mov_bbb.mp4"}
-    ];
-    
-    function saveVideos() { localStorage.setItem('videos', JSON.stringify(videos)); }
-    
-    function show(id) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      event.target.closest('.nav-btn').classList.add('active');
-      if(id === 'home') renderFeed();
-      if(id === 'studio') renderStudio();
-      if(id === 'profile') renderProfile();
-    }
-    
-    function renderFeed() {
-      if(videos.length === 0) {
-        document.getElementById('feed').innerHTML = "<p style='padding:20px; text-align:center;'>No videos yet. Upload one!</p>";
-        return;
-      }
-      let html = '';
-      videos.forEach(v => {
-        html += `<div class="video-wrapper">
-          <video src="${v.src}" autoplay loop muted playsinline controls></video>
-          <div class="side-actions">
-            <div><button class="action-btn" onclick="like(${v.id})">❤️</button><div class="action-count">${v.likes}</div></div>
-            <div><button class="action-btn">💬</button><div class="action-count">${v.comments.length}</div></div>
-            <div><button class="action-btn" onclick="alert('Payment disabled')">💰</button><div class="action-count">${v.price}π</div></div>
-          </div>
-          <div class="video-info">
-            <h4>${v.title}</h4>
-            <p>${v.creator} • ${v.price} π</p>
-          </div>
-        </div>`;
-      });
-      document.getElementById('feed').innerHTML = html;
-    }
-    
-    function like(id) {
-      let v = videos.find(v=>v.id===id);
-      v.likes++; 
-      saveVideos(); renderFeed();
-    }
-    
-    function previewVideo(event) {
-      const file = event.target.files[0];
-      if(!file) return;
-      let url = URL.createObjectURL(file);
-      document.getElementById('fileName').innerText = file.name;
-      document.getElementById('preview').src = url;
-      document.getElementById('preview').style.display = 'block';
-    }
-    
-    function publishVideo() {
-      const title = document.getElementById('videoTitle').value;
-      const price = parseFloat(document.getElementById('videoPrice').value);
-      const file = document.getElementById('videoFile').files[0];
-      if(!file) return alert("Please choose a video file");
-      if(!title) return alert("Please enter a title");
-      if(!price) return alert("Please enter a price");
-      
-      let url = URL.createObjectURL(file);
-      videos.unshift({id:Date.now(), title:title, creator:"@"+currentUser, price:price, likes:0, likedBy:[], views:0, comments:[], src:url});
-      saveVideos(); 
-      alert("Published Successfully!"); 
-      show('home');
-    }
-    
-    function renderStudio() {
-      let myVids = videos.filter(v => v.creator === "@"+currentUser);
-      let html = '';
-      myVids.forEach(v => { html += `<div class="card"><b>${v.title}</b><br><span style="color:#aaa;">${v.price} π | ${v.likes} likes</span></div>`; });
-      document.getElementById('myVideos').innerHTML = html || "<div class='card'>You haven't uploaded any videos yet</div>";
-    }
-    
-    function renderProfile() {
-      let myVids = videos.filter(v => v.creator === "@"+currentUser);
-      let html = '';
-      myVids.forEach(v => { html += `<div class="grid-item"><video src="${v.src}" muted></video></div>`; });
-      document.getElementById('myProfileVideos').innerHTML = html || "<p style='padding:10px;'>No videos</p>";
-    }
-    
-    renderFeed();
-  </script>
+  <!-- BOTTOM NAV -->
+  <div class="nav">
+    <button class="active" onclick="go('home')">Home</button>
+    <button onclick="go('upload')">Upload</button>
+    <button onclick="go('studio')">Studio</button>
+    <button onclick="go('profile')">Profile</button>
+  </div>
+
+<script>
+let videos = [
+  {title:"Demo Video", price:1, src:"https://www.w3schools.com/html/mov_bbb.mp4"}
+];
+
+function go(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(page).classList.add('show');
+  event.target.classList.add('active');
+  if(page=='home') loadFeed();
+  if(page=='studio') loadStudio();
+}
+
+function loadFeed(){
+  let html = '';
+  videos.forEach(v=>{
+    html += `<div class="card">
+      <video src="${v.src}" controls></video>
+      <b>${v.title}</b><br>
+      Price: ${v.price} π
+    </div>`;
+  });
+  document.getElementById('feed').innerHTML = html;
+}
+
+function upload(){
+  let t = document.getElementById('title').value;
+  let p = document.getElementById('price').value;
+  if(!t || !p) return alert('Fill title and price');
+  videos.push({title:t, price:p, src:"https://www.w3schools.com/html/mov_bbb.mp4"});
+  alert('Published!');
+  go('home');
+}
+
+function loadStudio(){
+  let html = '';
+  videos.forEach(v=>{
+    html += `<div class="card"><b>${v.title}</b> - ${v.price} π</div>`;
+  });
+  document.getElementById('studioList').innerHTML = html;
+}
+
+loadFeed();
+</script>
 </body>
 </html>
