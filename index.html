@@ -7,34 +7,37 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:#000; color:#fff; font-family:Arial; }
- .top { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:99; }
- .login { background:#ff0050; color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; }
- .page { display:none; padding-top:60px; padding-bottom:70px; }
- .page.active { display:block; }
-   .video-box { background:#111; margin:10px; border-radius:12px; overflow:hidden; }
- .cover { position:relative; background:#000; }
- .cover video { width:100%; display:block; }
- .pay-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; flex-direction:column; justify-content:center; align-items:center; }
- .pay-overlay button { background:#ff0050; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:16px; font-weight:bold; margin-top:10px; }
-   .info { padding:10px; }
- .actions { display:flex; gap:25px; padding:0 10px 10px; }
- .actions button { background:none; border:none; color:#fff; font-size:22px; display:flex; align-items:center; gap:5px; }
- .actions button.liked { color:#ff0050; }
-   .nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
-   .nav button { flex:1; padding:12px; background:none; border:none; color:#888; }
-   .nav button.active { color:#ff0050; }
-   .card { background:#222; margin:10px; padding:15px; border-radius:10px; }
+.top { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:99; }
+.login { background:#ff0050; color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; }
+.page { display:none; padding-top:60px; padding-bottom:70px; }
+.page.active { display:block; }
+ .video-box { background:#111; margin:10px; border-radius:12px; overflow:hidden; }
+.cover { position:relative; background:#000; width:100%; aspect-ratio:9/16; }
+.cover video,.cover.thumb { width:100%; height:100%; object-fit:cover; }
+.pay-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:5; }
+.pay-overlay button { background:#ff0050; color:#fff; border:none; padding:14px 28px; border-radius:10px; font-size:16px; font-weight:bold; margin-top:10px; }
+ .info { padding:10px; }
+.actions { display:flex; gap:25px; padding:0 10px 10px; }
+.actions button { background:none; border:none; color:#fff; font-size:22px; display:flex; align-items:center; gap:5px; }
+.actions button.liked { color:#ff0050; }
+ .nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
+ .nav button { flex:1; padding:12px; background:none; border:none; color:#888; }
+ .nav button.active { color:#ff0050; }
+ .card { background:#222; margin:10px; padding:15px; border-radius:10px; }
     input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:5px; color:#fff; }
-   .btn { width:100%; padding:12px; background:#ff0050; color:#fff; border:none; border-radius:8px; }
-   /* COMMENT MODAL */
- .modal { display:none; position:fixed; bottom:0; left:0; width:100%; height:70%; background:#181818; border-radius:20px 20px 0 0; z-index:100; padding:15px; }
- .modal.active { display:block; }
- .modal-header { display:flex; justify-content:space-between; margin-bottom:10px; }
- .comments-list { height:75%; overflow-y:auto; }
- .comment { background:#333; padding:8px; border-radius:8px; margin:5px 0; }
- .comment-input { display:flex; gap:5px; }
- .comment-input input { flex:1; }
- .comment-input button { background:#ff0050; border:none; color:#fff; padding:10px 15px; border-radius:8px; }
+ .btn { width:100%; padding:12px; background:#ff0050; color:#fff; border:none; border-radius:8px; }
+   /* COMMENT MODAL TIKTOK STYLE */
+.modal { display:none; position:fixed; bottom:0; left:0; width:100%; height:75%; background:#121212; border-radius:20px 20px 0 0; z-index:100; flex-direction:column; }
+.modal.active { display:flex; }
+.modal-header { padding:15px; display:flex; justify-content:space-between; border-bottom:1px solid #333; }
+.comments-list { flex:1; overflow-y:auto; padding:10px; }
+.comment { margin-bottom:15px; }
+.comment-user { font-weight:bold; font-size:13px; }
+.comment-text { font-size:14px; margin:3px 0; }
+.reply-btn { font-size:12px; color:#aaa; background:none; border:none; }
+.comment-input { display:flex; gap:8px; padding:10px; border-top:1px solid #333; }
+.comment-input input { flex:1; background:#333; border:none; color:#fff; padding:10px; border-radius:20px; }
+.comment-input button { background:#ff0050; border:none; color:#fff; padding:10px 18px; border-radius:20px; font-weight:bold; }
   </style>
 </head>
 <body>
@@ -72,11 +75,12 @@
 try{ Pi.init({version:"2.0", sandbox:true}) }catch(e){}
 let user = "Guest";
 let likedVideos = JSON.parse(localStorage.getItem('liked')) || [];
-let paidVideos = JSON.parse(localStorage.getItem('paid')) || []; // videos user paid for
+let paidVideos = JSON.parse(localStorage.getItem('paid')) || [];
 let vids = JSON.parse(localStorage.getItem('vids')) || [
-  {title:"Demo", creator:"@system", price:0, likes:0, comments:[], src:"https://www.w3schools.com/html/mov_bbb.mp4"}
+  {title:"Demo", creator:"@system", price:0, likes:0, comments:[{user:"@system", text:"First!", replies:[]}], src:"https://www.w3schools.com/html/mov_bbb.mp4"}
 ];
 let activeCommentVideo = null;
+let replyingTo = null;
 
 function save(){ 
   localStorage.setItem('vids', JSON.stringify(vids));
@@ -97,13 +101,14 @@ function loadFeed(){
   let html = '';
   vids.forEach((v,i)=>{
     let isLiked = likedVideos.includes(i);
-    let isPaid = v.price == 0 || v.creator == "@"+user || paidVideos.includes(i); // free, own video, or paid
+    let isPaid = v.price == 0 || v.creator == "@"+user || paidVideos.includes(i);
+    let commentCount = v.comments.length + v.comments.reduce((a,c)=>a+c.replies.length,0);
     
     html += `<div class="video-box">
       <div class="cover">
         ${isPaid? 
           `<video src="${v.src}" controls playsinline></video>` :
-          `<video src="${v.src}" muted playsinline style="filter:blur(8px);"></video>
+          `<div class="thumb"></div>
            <div class="pay-overlay">
              <h3>🔒 ${v.price} π</h3>
              <p>Pay to watch</p>
@@ -114,7 +119,7 @@ function loadFeed(){
       <div class="info"><b>${v.title}</b><br>${v.creator} • ${v.price} π</div>
       <div class="actions">
         <button class="${isLiked? 'liked' : ''}" onclick="toggleLike(${i})">❤️ ${v.likes}</button>
-        <button onclick="openComments(${i})">💬 ${v.comments.length}</button>
+        <button onclick="openComments(${i})">💬 ${commentCount}</button>
       </div>
     </div>`;
   });
@@ -122,21 +127,23 @@ function loadFeed(){
 }
 
 function buyVideo(i){
-  alert("This will call Pi payment. For now it's free unlock.");
-  paidVideos.push(i);
+  alert("Pi Payment coming next. For now unlocked.");
+  if(!paidVideos.includes(i)) paidVideos.push(i);
   save();
   loadFeed();
 }
 
 function toggleLike(i){
   let idx = likedVideos.indexOf(i);
-  if(idx > -1){ likedVideos.splice(idx,1); vids[i].likes--; } 
+  if(idx > -1){ likedVideos.splice(idx,1); if(vids[i].likes > 0) vids[i].likes--; } 
   else { likedVideos.push(i); vids[i].likes++; }
   save(); loadFeed();
 }
 
 function openComments(i){
   activeCommentVideo = i;
+  replyingTo = null;
+  document.getElementById('modalCommentInput').placeholder = "Add comment";
   document.getElementById('commentModal').classList.add('active');
   renderModalComments();
 }
@@ -145,16 +152,43 @@ function closeComments(){
   document.getElementById('commentModal').classList.remove('active');
 }
 
+function replyTo(commentIndex){
+  replyingTo = commentIndex;
+  document.getElementById('modalCommentInput').placeholder = "Reply to @" + vids[activeCommentVideo].comments[commentIndex].user.replace('@','');
+  document.getElementById('modalCommentInput').focus();
+}
+
 function renderModalComments(){
   let v = vids[activeCommentVideo];
-  document.getElementById('modalComments').innerHTML = v.comments.map(c=>`<div class="comment">${c}</div>`).join('') || "<p>No comments yet</p>";
+  let html = '';
+  v.comments.forEach((c,ci)=>{
+    html += `<div class="comment">
+      <div class="comment-user">${c.user}</div>
+      <div class="comment-text">${c.text}</div>
+      <button class="reply-btn" onclick="replyTo(${ci})">Reply</button>`;
+    c.replies.forEach(r=>{
+      html += `<div style="margin-left:20px;margin-top:5px;">
+        <div class="comment-user">${r.user}</div>
+        <div class="comment-text">${r.text}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  document.getElementById('modalComments').innerHTML = html || "<p style='text-align:center;color:#888;'>No comments yet</p>";
 }
 
 function postModalComment(){
   let txt = document.getElementById('modalCommentInput').value;
   if(!txt) return;
-  vids[activeCommentVideo].comments.push("@" + user + ": " + txt);
+  let v = vids[activeCommentVideo];
+  if(replyingTo!== null){
+    v.comments[replyingTo].replies.push({user:"@"+user, text:txt});
+    replyingTo = null;
+  } else {
+    v.comments.push({user:"@"+user, text:txt, replies:[]});
+  }
   document.getElementById('modalCommentInput').value = '';
+  document.getElementById('modalCommentInput').placeholder = "Add comment";
   save(); renderModalComments(); loadFeed();
 }
 
