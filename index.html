@@ -11,22 +11,22 @@
 .login { background:#ff0050; color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; }
 .page { display:none; padding-top:60px; padding-bottom:70px; }
 .page.active { display:block; }
- .video-box { background:#111; margin:10px; border-radius:12px; overflow:hidden; }
+.video-box { background:#111; margin:10px; border-radius:12px; overflow:hidden; }
 .cover { position:relative; background:#000; width:100%; aspect-ratio:9/16; }
 .cover video,.cover.thumb { width:100%; height:100%; object-fit:cover; }
 .pay-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:5; }
 .pay-overlay button { background:#ff0050; color:#fff; border:none; padding:14px 28px; border-radius:10px; font-size:16px; font-weight:bold; margin-top:10px; }
- .info { padding:10px; }
+.info { padding:10px; }
 .actions { display:flex; gap:25px; padding:0 10px 10px; }
 .actions button { background:none; border:none; color:#fff; font-size:22px; display:flex; align-items:center; gap:5px; }
 .actions button.liked { color:#ff0050; }
- .nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
- .nav button { flex:1; padding:12px; background:none; border:none; color:#888; }
- .nav button.active { color:#ff0050; }
- .card { background:#222; margin:10px; padding:15px; border-radius:10px; }
-    input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:5px; color:#fff; }
- .btn { width:100%; padding:12px; background:#ff0050; color:#fff; border:none; border-radius:8px; }
-   /* COMMENT MODAL TIKTOK STYLE */
+.nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
+.nav button { flex:1; padding:12px; background:none; border:none; color:#888; }
+.nav button.active { color:#ff0050; }
+.card { background:#222; margin:10px; padding:15px; border-radius:10px; text-align:center; color:#888; }
+input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:5px; color:#fff; }
+.btn { width:100%; padding:12px; background:#ff0050; color:#fff; border:none; border-radius:8px; }
+/* COMMENT MODAL TIKTOK STYLE */
 .modal { display:none; position:fixed; bottom:0; left:0; width:100%; height:75%; background:#121212; border-radius:20px 20px 0 0; z-index:100; flex-direction:column; }
 .modal.active { display:flex; }
 .modal-header { padding:15px; display:flex; justify-content:space-between; border-bottom:1px solid #333; }
@@ -74,11 +74,18 @@
 <script>
 try{ Pi.init({version:"2.0", sandbox:true}) }catch(e){}
 let user = "Guest";
+
+// FIX 1: CLEAR CORRUPTED DATA ONCE
+if(!localStorage.getItem('v34_fix')){
+  localStorage.removeItem('vids');
+  localStorage.removeItem('liked');
+  localStorage.removeItem('paid');
+  localStorage.setItem('v34_fix','done');
+}
+
 let likedVideos = JSON.parse(localStorage.getItem('liked')) || [];
 let paidVideos = JSON.parse(localStorage.getItem('paid')) || [];
-let vids = JSON.parse(localStorage.getItem('vids')) || [
-  {title:"Demo", creator:"@system", price:0, likes:0, comments:[{user:"@system", text:"First!", replies:[]}], src:"https://www.w3schools.com/html/mov_bbb.mp4"}
-];
+let vids = JSON.parse(localStorage.getItem('vids')) || []; // start empty
 let activeCommentVideo = null;
 let replyingTo = null;
 
@@ -98,11 +105,15 @@ function show(p){
 }
 
 function loadFeed(){
+  if(vids.length === 0){
+    document.getElementById('feed').innerHTML = `<div class="card">No videos yet. Be the first to upload!</div>`;
+    return;
+  }
   let html = '';
   vids.forEach((v,i)=>{
     let isLiked = likedVideos.includes(i);
     let isPaid = v.price == 0 || v.creator == "@"+user || paidVideos.includes(i);
-    let commentCount = v.comments.length + v.comments.reduce((a,c)=>a+c.replies.length,0);
+    let commentCount = v.comments.length + v.comments.reduce((a,c)=>a+(c.replies?c.replies.length:0),0);
     
     html += `<div class="video-box">
       <div class="cover">
@@ -166,7 +177,7 @@ function renderModalComments(){
       <div class="comment-user">${c.user}</div>
       <div class="comment-text">${c.text}</div>
       <button class="reply-btn" onclick="replyTo(${ci})">Reply</button>`;
-    c.replies.forEach(r=>{
+    if(c.replies) c.replies.forEach(r=>{
       html += `<div style="margin-left:20px;margin-top:5px;">
         <div class="comment-user">${r.user}</div>
         <div class="comment-text">${r.text}</div>
@@ -181,6 +192,7 @@ function postModalComment(){
   let txt = document.getElementById('modalCommentInput').value;
   if(!txt) return;
   let v = vids[activeCommentVideo];
+  if(!v.comments[replyingTo].replies) v.comments[replyingTo].replies = [];
   if(replyingTo!== null){
     v.comments[replyingTo].replies.push({user:"@"+user, text:txt});
     replyingTo = null;
@@ -200,17 +212,23 @@ function publish(){
   if(!window.fileURL) return alert('Pick video');
   if(!t ||!p) return alert('Fill all');
   vids.unshift({title:t, creator:"@"+user, price:parseFloat(p), likes:0, comments:[], src:window.fileURL});
-  save(); alert('Published!'); show('home');
+  save(); 
+  alert('Published!'); 
+  document.getElementById('title').value = '';
+  document.getElementById('price').value = '';
+  document.getElementById('file').value = '';
+  loadFeed(); // FIX 2: REFRESH FEED
+  show('home');
 }
 
 function loadProfile(){
   document.getElementById('uname').innerText = "@" + user;
   let mine = vids.filter(v=>v.creator=="@"+user);
-  document.getElementById('myvids').innerHTML = mine.map(v=>`<div class="card"><video src="${v.src}" controls style="height:200px;width:100%;"></video><b>${v.title}</b> - ${v.price} π - ❤️ ${v.likes}</div>`).join('') || "<div class='card'>No videos yet</div>";
+  document.getElementById('myvids').innerHTML = mine.map(v=>`<div class="card" style="text-align:left;"><video src="${v.src}" controls style="height:200px;width:100%;"></video><b>${v.title}</b> - ${v.price} π - ❤️ ${v.likes}</div>`).join('') || "<div class='card'>No videos yet</div>";
 }
 
 async function login(){
-  try{ let auth = await Pi.authenticate(['username']); user = auth.user.username; document.getElementById('uname').innerText = "@" + user; alert("Welcome @" + user); loadProfile(); }
+  try{ let auth = await Pi.authenticate(['username']); user = auth.user.username; document.getElementById('uname').innerText = "@" + user; alert("Welcome @" + user); loadProfile(); loadFeed(); }
   catch(e){ alert("Login failed. Add domain in Pi Dev Portal"); }
 }
 
