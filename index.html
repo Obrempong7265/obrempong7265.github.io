@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,27 +7,34 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:#000; color:#fff; font-family:Arial; }
-  .top { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:99; }
-  .login { background:#ff0050; color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; width:auto; }
-  .page { display:none; padding-top:60px; padding-bottom:70px; }
-  .page.active { display:block; }
-    video { width:100%; border-radius:10px; }
-  .video-box { position:relative; margin-bottom:15px; background:#111; padding:10px; border-radius:10px; }
-  .info { margin:8px 0; }
-  .actions { display:flex; gap:20px; margin-top:5px; }
-  .actions button { background:none; border:none; color:#fff; font-size:22px; }
-  .actions button.liked { color:#ff0050; } /* Red when liked */
-  .nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
-  .nav button { flex:1; padding:12px; background:none; border:none; color:#888; }
-  .nav button.active { color:#ff0050; }
-  .card { background:#222; margin:10px; padding:15px; border-radius:10px; }
+ .top { position:fixed; top:0; width:100%; background:#111; padding:10px 15px; display:flex; justify-content:space-between; align-items:center; z-index:99; }
+ .login { background:#ff0050; color:#fff; border:none; padding:8px 16px; border-radius:8px; font-weight:bold; }
+ .page { display:none; padding-top:60px; padding-bottom:70px; }
+ .page.active { display:block; }
+   .video-box { background:#111; margin:10px; border-radius:12px; overflow:hidden; }
+ .cover { position:relative; background:#000; }
+ .cover video { width:100%; display:block; }
+ .pay-overlay { position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; flex-direction:column; justify-content:center; align-items:center; }
+ .pay-overlay button { background:#ff0050; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-size:16px; font-weight:bold; margin-top:10px; }
+   .info { padding:10px; }
+ .actions { display:flex; gap:25px; padding:0 10px 10px; }
+ .actions button { background:none; border:none; color:#fff; font-size:22px; display:flex; align-items:center; gap:5px; }
+ .actions button.liked { color:#ff0050; }
+   .nav { position:fixed; bottom:0; width:100%; display:flex; background:#111; }
+   .nav button { flex:1; padding:12px; background:none; border:none; color:#888; }
+   .nav button.active { color:#ff0050; }
+   .card { background:#222; margin:10px; padding:15px; border-radius:10px; }
     input { width:100%; padding:10px; margin:8px 0; background:#333; border:none; border-radius:5px; color:#fff; }
-  .btn { width:100%; padding:12px; background:#ff0050; color:#fff; border:none; border-radius:8px; }
-  .comment-box { margin-top:10px; }
-  .comment-box input { width:75%; display:inline-block; }
-  .comment-box button { width:23%; background:#ff0050; border:none; color:#fff; padding:10px; border-radius:5px; }
-  .comments { font-size:13px; margin-top:5px; }
-  .comment { background:#333; padding:5px 8px; border-radius:5px; margin:3px 0; }
+   .btn { width:100%; padding:12px; background:#ff0050; color:#fff; border:none; border-radius:8px; }
+   /* COMMENT MODAL */
+ .modal { display:none; position:fixed; bottom:0; left:0; width:100%; height:70%; background:#181818; border-radius:20px 20px 0 0; z-index:100; padding:15px; }
+ .modal.active { display:block; }
+ .modal-header { display:flex; justify-content:space-between; margin-bottom:10px; }
+ .comments-list { height:75%; overflow-y:auto; }
+ .comment { background:#333; padding:8px; border-radius:8px; margin:5px 0; }
+ .comment-input { display:flex; gap:5px; }
+ .comment-input input { flex:1; }
+ .comment-input button { background:#ff0050; border:none; color:#fff; padding:10px 15px; border-radius:8px; }
   </style>
 </head>
 <body>
@@ -39,17 +44,7 @@
   </div>
 
   <div id="home" class="page active"><div id="feed"></div></div>
-
-  <div id="upload" class="page">
-    <div class="card">
-      <h2>Upload</h2>
-      <input type="file" id="file" accept="video/*">
-      <input id="title" placeholder="Title">
-      <input id="price" type="number" step="0.1" placeholder="Price in Pi">
-      <button class="btn" onclick="publish()">Publish</button>
-    </div>
-  </div>
-
+  <div id="upload" class="page"><div class="card"><h2>Upload</h2><input type="file" id="file" accept="video/*"><input id="title" placeholder="Title"><input id="price" type="number" step="0.1" placeholder="Price in Pi"><button class="btn" onclick="publish()">Publish</button></div></div>
   <div id="studio" class="page"><div class="card"><h2>Studio</h2><p>Analytics coming after payment</p></div></div>
   <div id="profile" class="page"><div class="card"><h2>Profile</h2><p id="uname">Not logged in</p></div><div id="myvids"></div></div>
 
@@ -60,17 +55,33 @@
     <button onclick="show('profile')">Profile</button>
   </div>
 
+  <!-- COMMENT MODAL -->
+  <div id="commentModal" class="modal">
+    <div class="modal-header">
+      <h3>Comments</h3>
+      <button onclick="closeComments()" style="background:none;border:none;color:#fff;font-size:24px;">X</button>
+    </div>
+    <div class="comments-list" id="modalComments"></div>
+    <div class="comment-input">
+      <input id="modalCommentInput" placeholder="Add comment">
+      <button onclick="postModalComment()">Post</button>
+    </div>
+  </div>
+
 <script>
 try{ Pi.init({version:"2.0", sandbox:true}) }catch(e){}
 let user = "Guest";
 let likedVideos = JSON.parse(localStorage.getItem('liked')) || [];
+let paidVideos = JSON.parse(localStorage.getItem('paid')) || []; // videos user paid for
 let vids = JSON.parse(localStorage.getItem('vids')) || [
-  {title:"Demo", creator:"@system", price:1, likes:0, comments:[], src:"https://www.w3schools.com/html/mov_bbb.mp4"}
+  {title:"Demo", creator:"@system", price:0, likes:0, comments:[], src:"https://www.w3schools.com/html/mov_bbb.mp4"}
 ];
+let activeCommentVideo = null;
 
 function save(){ 
   localStorage.setItem('vids', JSON.stringify(vids));
   localStorage.setItem('liked', JSON.stringify(likedVideos));
+  localStorage.setItem('paid', JSON.stringify(paidVideos));
 }
 
 function show(p){
@@ -86,89 +97,87 @@ function loadFeed(){
   let html = '';
   vids.forEach((v,i)=>{
     let isLiked = likedVideos.includes(i);
+    let isPaid = v.price == 0 || v.creator == "@"+user || paidVideos.includes(i); // free, own video, or paid
+    
     html += `<div class="video-box">
-      <video src="${v.src}" controls playsinline></video>
+      <div class="cover">
+        ${isPaid? 
+          `<video src="${v.src}" controls playsinline></video>` :
+          `<video src="${v.src}" muted playsinline style="filter:blur(8px);"></video>
+           <div class="pay-overlay">
+             <h3>🔒 ${v.price} π</h3>
+             <p>Pay to watch</p>
+             <button onclick="buyVideo(${i})">Unlock Now</button>
+           </div>`
+        }
+      </div>
       <div class="info"><b>${v.title}</b><br>${v.creator} • ${v.price} π</div>
       <div class="actions">
         <button class="${isLiked? 'liked' : ''}" onclick="toggleLike(${i})">❤️ ${v.likes}</button>
-        <button onclick="focusComment(${i})">💬 ${v.comments.length}</button>
-      </div>
-      <div class="comment-box">
-        <input id="comment${i}" placeholder="Add comment">
-        <button onclick="addComment(${i})">Post</button>
-      </div>
-      <div class="comments" id="comments${i}">
-        ${v.comments.map(c=>`<div class="comment">${c}</div>`).join('')}
+        <button onclick="openComments(${i})">💬 ${v.comments.length}</button>
       </div>
     </div>`;
   });
   document.getElementById('feed').innerHTML = html;
 }
 
+function buyVideo(i){
+  alert("This will call Pi payment. For now it's free unlock.");
+  paidVideos.push(i);
+  save();
+  loadFeed();
+}
+
 function toggleLike(i){
   let idx = likedVideos.indexOf(i);
-  if(idx > -1){ // already liked, so unlike
-    likedVideos.splice(idx,1);
-    vids[i].likes--;
-  } else { // not liked, so like
-    likedVideos.push(i);
-    vids[i].likes++;
-  }
-  save();
-  loadFeed();
+  if(idx > -1){ likedVideos.splice(idx,1); vids[i].likes--; } 
+  else { likedVideos.push(i); vids[i].likes++; }
+  save(); loadFeed();
 }
 
-function addComment(i){
-  let txt = document.getElementById('comment'+i).value;
+function openComments(i){
+  activeCommentVideo = i;
+  document.getElementById('commentModal').classList.add('active');
+  renderModalComments();
+}
+
+function closeComments(){
+  document.getElementById('commentModal').classList.remove('active');
+}
+
+function renderModalComments(){
+  let v = vids[activeCommentVideo];
+  document.getElementById('modalComments').innerHTML = v.comments.map(c=>`<div class="comment">${c}</div>`).join('') || "<p>No comments yet</p>";
+}
+
+function postModalComment(){
+  let txt = document.getElementById('modalCommentInput').value;
   if(!txt) return;
-  vids[i].comments.push("@" + user + ": " + txt);
-  document.getElementById('comment'+i).value = '';
-  save();
-  loadFeed();
+  vids[activeCommentVideo].comments.push("@" + user + ": " + txt);
+  document.getElementById('modalCommentInput').value = '';
+  save(); renderModalComments(); loadFeed();
 }
 
-function focusComment(i){
-  document.getElementById('comment'+i).focus();
-}
-
-document.getElementById('file').onchange = e => {
-  window.fileURL = URL.createObjectURL(e.target.files[0]);
-}
+document.getElementById('file').onchange = e => { window.fileURL = URL.createObjectURL(e.target.files[0]); }
 
 function publish(){
   let t = document.getElementById('title').value;
   let p = document.getElementById('price').value;
   if(!window.fileURL) return alert('Pick video');
   if(!t ||!p) return alert('Fill all');
-  vids.unshift({title:t, creator:"@"+user, price:p, likes:0, comments:[], src:window.fileURL});
-  save();
-  alert('Published!');
-  show('home');
+  vids.unshift({title:t, creator:"@"+user, price:parseFloat(p), likes:0, comments:[], src:window.fileURL});
+  save(); alert('Published!'); show('home');
 }
 
 function loadProfile(){
   document.getElementById('uname').innerText = "@" + user;
   let mine = vids.filter(v=>v.creator=="@"+user);
-  let html = '';
-  mine.forEach(v=>{ 
-    html += `<div class="card">
-      <video src="${v.src}" controls style="height:200px;"></video>
-      <b>${v.title}</b> - ${v.price} π - ❤️ ${v.likes}
-    </div>`; 
-  });
-  document.getElementById('myvids').innerHTML = html || "<div class='card'>No videos yet. Upload one!</div>";
+  document.getElementById('myvids').innerHTML = mine.map(v=>`<div class="card"><video src="${v.src}" controls style="height:200px;width:100%;"></video><b>${v.title}</b> - ${v.price} π - ❤️ ${v.likes}</div>`).join('') || "<div class='card'>No videos yet</div>";
 }
 
 async function login(){
-  try{
-    let auth = await Pi.authenticate(['username']);
-    user = auth.user.username;
-    document.getElementById('uname').innerText = "@" + user;
-    alert("Welcome @" + user);
-    loadProfile();
-  }catch(e){
-    alert("Login failed. Add domain in Pi Dev Portal");
-  }
+  try{ let auth = await Pi.authenticate(['username']); user = auth.user.username; document.getElementById('uname').innerText = "@" + user; alert("Welcome @" + user); loadProfile(); }
+  catch(e){ alert("Login failed. Add domain in Pi Dev Portal"); }
 }
 
 loadFeed();
