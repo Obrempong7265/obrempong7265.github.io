@@ -1,5 +1,5 @@
 // ==========================================
-// VIDEO CITY - HOME
+// VIDEO CITY - HOME FEED
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -13,6 +13,14 @@ if (!feed) {
 
 
 // ------------------------------------------
+// YOUR UPLOADED VIDEO
+// ------------------------------------------
+
+const videoURL =
+    "./7ba2eb8d7397b5b5eef95244c6559301.mp4";
+
+
+// ------------------------------------------
 // VIDEO DATA
 // ------------------------------------------
 
@@ -20,29 +28,29 @@ const videos = [
 
     {
         title: "Welcome to Video City",
+
         creator: "@VideoCity",
+
         description:
-            "Welcome to Video City — a Pi-powered platform for creators and viewers.",
-        thumbnail:
-            "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=900&q=80"
+            "Welcome to Video City — a Pi-powered platform for creators and viewers."
     },
 
     {
         title: "Creator Spotlight",
+
         creator: "@VideoCity",
+
         description:
-            "Discover creators, watch their content and support them through the Pi ecosystem.",
-        thumbnail:
-            "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
+            "Discover creators, watch their content and support them through the Pi ecosystem."
     },
 
     {
         title: "The Future of Creator Economy",
+
         creator: "@VideoCity",
+
         description:
-            "A new way for creators to connect with audiences and earn from their content.",
-        thumbnail:
-            "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80"
+            "A new way for creators to connect with audiences and earn from their content."
     }
 
 ];
@@ -65,15 +73,20 @@ function createVideo(video) {
 
         <div class="video-wrap">
 
-            <img
-                src="${video.thumbnail}"
-                alt="${video.title}"
-                style="
-                    width:100%;
-                    height:100%;
-                    object-fit:cover;
-                "
-            >
+            <video
+                class="video"
+                controls
+                playsinline
+                preload="metadata">
+
+                <source
+                    src="${videoURL}"
+                    type="video/mp4">
+
+                Your browser does not support
+                HTML5 video.
+
+            </video>
 
         </div>
 
@@ -97,24 +110,38 @@ function createVideo(video) {
 
             <div class="actions">
 
+
+                <!-- LIKE -->
+
                 <button
                     class="likeBtn"
                     type="button">
 
                     ♡
-                    <span>0</span>
+
+                    <span>
+                        0
+                    </span>
 
                 </button>
 
+
+                <!-- COMMENT -->
 
                 <button
                     class="commentBtn"
                     type="button">
 
-                    💬 Comment
+                    💬
+
+                    <span>
+                        Comment
+                    </span>
 
                 </button>
 
+
+                <!-- SUPPORT -->
 
                 <button
                     class="supportBtn"
@@ -123,6 +150,7 @@ function createVideo(video) {
                     💜 Support
 
                 </button>
+
 
             </div>
 
@@ -137,6 +165,7 @@ function createVideo(video) {
 
     const likeButton =
         card.querySelector(".likeBtn");
+
 
     const likeCount =
         likeButton.querySelector("span");
@@ -174,7 +203,7 @@ function createVideo(video) {
 
 
     // --------------------------------------
-    // ADD CARD
+    // ADD VIDEO CARD
     // --------------------------------------
 
     feed.appendChild(card);
@@ -183,7 +212,7 @@ function createVideo(video) {
 
 
 // ------------------------------------------
-// LOAD HOME FEED
+// LOAD HOME
 // ------------------------------------------
 
 feed.innerHTML = "";
@@ -197,7 +226,7 @@ videos.forEach(function (video) {
 
 
 // ------------------------------------------
-// EXPLORE VIDEOS
+// EXPLORE VIDEOS BUTTON
 // ------------------------------------------
 
 const exploreButton =
