@@ -3,40 +3,66 @@ document.addEventListener("DOMContentLoaded", function () {
 const feed = document.getElementById("feed");
 
 if (!feed) {
-    console.error("Feed not found");
+    console.error("Video City: Feed not found.");
     return;
 }
 
+
+// ==========================================
+// VIDEO FILE
+// ==========================================
 
 const videoURL =
     "./7ba2eb8d7397b5b5eef95244c6559301.mp4";
 
 
+// ==========================================
+// SAMPLE VIDEO POSTS
+// ==========================================
+
 const videos = [
 
     {
         title: "Welcome to Video City",
+
         creator: "@VideoCity",
+
         description:
-            "Welcome to Video City — a Pi-powered platform for creators and viewers."
+            "Welcome to Video City — a platform where creators can share videos, promote their products and connect with audiences through the Pi ecosystem.",
+
+        price: ""
     },
+
 
     {
         title: "Creator Spotlight",
+
         creator: "@VideoCity",
+
         description:
-            "Discover creators and support them through Pi."
+            "Discover creators, explore their content and support the people behind the videos you enjoy.",
+
+        price: ""
     },
 
+
     {
-        title: "The Future of Creator Economy",
+        title: "Sample Product Showcase",
+
         creator: "@VideoCity",
+
         description:
-            "A new way for creators to connect with audiences."
+            "This is an example of how a creator can introduce a product or service directly below their video.",
+
+        price: "5 Pi"
     }
 
 ];
 
+
+// ==========================================
+// GET PI USERNAME
+// ==========================================
 
 function getUsername() {
 
@@ -45,22 +71,36 @@ function getUsername() {
             "videoCityUsername"
         );
 
-    return username
-        ? "@" + username
-        : "@Guest";
+
+    if (username) {
+
+        return "@" + username;
+
+    }
+
+
+    return "@Guest";
+
 }
 
+
+// ==========================================
+// CREATE POST
+// ==========================================
 
 function createVideo(video) {
 
     const card =
         document.createElement("article");
 
+
     card.className =
         "video-card";
 
 
     card.innerHTML = `
+
+        <!-- VIDEO -->
 
         <div class="video-wrap">
 
@@ -74,27 +114,59 @@ function createVideo(video) {
                     src="${videoURL}"
                     type="video/mp4">
 
+                Your browser does not support
+                HTML5 video.
+
             </video>
 
         </div>
 
 
+        <!-- POST INFORMATION -->
+
         <div class="video-info">
 
+
             <h3 class="title">
+
                 ${video.title}
+
             </h3>
 
+
             <p class="creator">
+
                 ${video.creator}
+
             </p>
+
 
             <p class="description">
+
                 ${video.description}
+
             </p>
 
 
+            ${
+                video.price
+                ?
+                `
+                <p class="price">
+
+                    💰 ${video.price}
+
+                </p>
+                `
+                :
+                ""
+            }
+
+
+            <!-- ACTIONS -->
+
             <div class="actions">
+
 
                 <button
                     class="likeBtn"
@@ -122,24 +194,28 @@ function createVideo(video) {
 
                 </button>
 
+
             </div>
 
 
+            <!-- COMMENTS -->
+
             <div
                 class="comments"
-                style="display:none; margin-top:15px;">
+                style="display:none;">
 
-                <form class="commentForm">
+
+                <form
+                    class="commentForm">
+
 
                     <input
                         type="text"
                         placeholder="Write a comment..."
                         maxlength="500"
-                        required
-                        style="
-                            width:70%;
-                            padding:10px;
-                        ">
+                        autocomplete="off"
+                        required>
+
 
                     <button
                         type="submit"
@@ -149,18 +225,20 @@ function createVideo(video) {
 
                     </button>
 
+
                 </form>
 
 
                 <div
-                    class="commentList"
-                    style="margin-top:15px;">
-
+                    class="commentList">
                 </div>
+
 
             </div>
 
+
         </div>
+
     `;
 
 
@@ -169,9 +247,13 @@ function createVideo(video) {
     // ======================================
 
     const likeButton =
-        card.querySelector(".likeBtn");
+        card.querySelector(
+            ".likeBtn"
+        );
+
 
     let liked = false;
+
 
     likeButton.addEventListener(
         "click",
@@ -179,23 +261,25 @@ function createVideo(video) {
 
             liked = !liked;
 
+
             likeButton.innerHTML =
                 liked
-                    ? "♥ <span>1</span>"
-                    : "♡ <span>0</span>";
+                ? "♥ <span>1</span>"
+                : "♡ <span>0</span>";
 
         }
     );
 
 
     // ======================================
-    // COMMENT OPEN/CLOSE
+    // COMMENT BUTTON
     // ======================================
 
     const commentButton =
         card.querySelector(
             ".commentBtn"
         );
+
 
     const comments =
         card.querySelector(
@@ -235,10 +319,12 @@ function createVideo(video) {
             ".commentForm"
         );
 
+
     const input =
         form.querySelector(
             "input"
         );
+
 
     const commentList =
         card.querySelector(
@@ -262,183 +348,234 @@ function createVideo(video) {
             }
 
 
-            const comment =
-                document.createElement(
-                    "div"
-                );
-
-
-            comment.className =
-                "comment";
-
-
-            comment.innerHTML = `
-
-                <strong>
-                    ${getUsername()}
-                </strong>
-
-                <p>
-                    ${text}
-                </p>
-
-                <button
-                    class="replyBtn"
-                    type="button">
-
-                    ↩ Reply
-
-                </button>
-
-                <div
-                    class="replyBox"
-                    style="
-                        display:none;
-                        margin-top:10px;
-                        margin-left:20px;
-                    ">
-
-                    <input
-                        type="text"
-                        placeholder="Write a reply..."
-                        maxlength="500"
-                        style="
-                            width:65%;
-                            padding:8px;
-                        ">
-
-                    <button
-                        class="replySubmit btn pink"
-                        type="button">
-
-                        Reply
-
-                    </button>
-
-                    <div
-                        class="replyList"
-                        style="margin-top:8px;">
-                    </div>
-
-                </div>
-
-            `;
-
-
-            commentList.appendChild(
-                comment
+            addComment(
+                text,
+                commentList
             );
 
 
             input.value = "";
 
-
-            // ==================================
-            // REPLY BUTTON
-            // ==================================
-
-            const replyButton =
-                comment.querySelector(
-                    ".replyBtn"
-                );
-
-            const replyBox =
-                comment.querySelector(
-                    ".replyBox"
-                );
-
-
-            replyButton.addEventListener(
-                "click",
-                function () {
-
-                    replyBox.style.display =
-                        replyBox.style.display ===
-                        "none"
-                            ? "block"
-                            : "none";
-
-                }
-            );
-
-
-            // ==================================
-            // POST REPLY
-            // ==================================
-
-            const replyInput =
-                replyBox.querySelector(
-                    "input"
-                );
-
-            const replySubmit =
-                replyBox.querySelector(
-                    ".replySubmit"
-                );
-
-            const replyList =
-                replyBox.querySelector(
-                    ".replyList"
-                );
-
-
-            replySubmit.addEventListener(
-                "click",
-                function () {
-
-                    const replyText =
-                        replyInput.value.trim();
-
-
-                    if (!replyText) {
-                        return;
-                    }
-
-
-                    const reply =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    reply.style.marginBottom =
-                        "8px";
-
-
-                    reply.innerHTML = `
-
-                        <strong>
-                            ${getUsername()}
-                        </strong>
-
-                        <p>
-                            ${replyText}
-                        </p>
-
-                    `;
-
-
-                    replyList.appendChild(
-                        reply
-                    );
-
-
-                    replyInput.value = "";
-
-                }
-            );
-
         }
     );
 
 
-    feed.appendChild(card);
+    // ======================================
+    // ADD COMMENT
+    // ======================================
+
+    function addComment(
+        text,
+        list
+    ) {
+
+        const comment =
+            document.createElement(
+                "div"
+            );
+
+
+        comment.className =
+            "comment";
+
+
+        comment.innerHTML = `
+
+            <strong>
+
+                ${getUsername()}
+
+            </strong>
+
+
+            <p>
+
+                ${escapeHTML(text)}
+
+            </p>
+
+
+            <button
+                class="replyBtn"
+                type="button">
+
+                ↩ Reply
+
+            </button>
+
+
+            <div
+                class="replyBox"
+                style="display:none;">
+
+
+                <input
+                    type="text"
+                    maxlength="500"
+                    placeholder="Write a reply..."
+                    autocomplete="off">
+
+
+                <button
+                    class="replySubmit btn pink"
+                    type="button">
+
+                    Reply
+
+                </button>
+
+
+                <div
+                    class="replyList">
+                </div>
+
+
+            </div>
+
+        `;
+
+
+        list.appendChild(
+            comment
+        );
+
+
+        // ==================================
+        // REPLY BUTTON
+        // ==================================
+
+        const replyButton =
+            comment.querySelector(
+                ".replyBtn"
+            );
+
+
+        const replyBox =
+            comment.querySelector(
+                ".replyBox"
+            );
+
+
+        replyButton.addEventListener(
+            "click",
+            function () {
+
+                replyBox.style.display =
+                    replyBox.style.display ===
+                    "none"
+                    ? "block"
+                    : "none";
+
+            }
+        );
+
+
+        // ==================================
+        // POST REPLY
+        // ==================================
+
+        const replyInput =
+            replyBox.querySelector(
+                "input"
+            );
+
+
+        const replySubmit =
+            replyBox.querySelector(
+                ".replySubmit"
+            );
+
+
+        const replyList =
+            replyBox.querySelector(
+                ".replyList"
+            );
+
+
+        replySubmit.addEventListener(
+            "click",
+            function () {
+
+                const replyText =
+                    replyInput.value.trim();
+
+
+                if (!replyText) {
+                    return;
+                }
+
+
+                const reply =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                reply.innerHTML = `
+
+                    <strong>
+
+                        ${getUsername()}
+
+                    </strong>
+
+
+                    <p>
+
+                        ${escapeHTML(replyText)}
+
+                    </p>
+
+                `;
+
+
+                replyList.appendChild(
+                    reply
+                );
+
+
+                replyInput.value = "";
+
+            }
+        );
+
+    }
+
+
+    // ======================================
+    // ESCAPE USER TEXT
+    // ======================================
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement(
+                "div"
+            );
+
+
+        div.textContent =
+            text;
+
+
+        return div.innerHTML;
+
+    }
+
+
+    // ======================================
+    // ADD POST TO FEED
+    // ======================================
+
+    feed.appendChild(
+        card
+    );
 
 }
 
 
 // ==========================================
-// LOAD VIDEOS
+// LOAD FEED
 // ==========================================
 
 feed.innerHTML = "";
@@ -454,7 +591,7 @@ videos.forEach(
 
 
 console.log(
-    "Video City: Home + Like + Comment + Reply ready."
+    "Video City: Posts loaded successfully."
 );
 
 });
