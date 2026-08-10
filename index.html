@@ -1,3 +1,346 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Video City</title>
+
+
+<!-- ==========================================
+     PI SDK
+=========================================== -->
+
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+
+<!-- ==========================================
+     INITIALIZE PI SDK
+=========================================== -->
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        if (typeof Pi !== "undefined") {
+
+            Pi.init({
+                version: "2.0"
+            });
+
+            console.log("Pi SDK initialized successfully.");
+
+        } else {
+
+            console.error("Pi SDK was not found.");
+
+        }
+
+    });
+
+</script>
+
+
+<!-- ==========================================
+     VIDEO CITY STYLING
+=========================================== -->
+
+<link rel="stylesheet" href="style.css">
+
+</head><body><!-- ==========================================
+     TOP HEADER
+=========================================== -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <span class="logo">▶</span>
+
+        <span>
+            Video City
+        </span>
+
+    </div>
+
+
+    <div class="account">
+
+        <span
+            id="piUser"
+            class="username">
+
+            Not connected
+
+        </span>
+
+
+        <button
+            id="loginBtn"
+            class="btn pink">
+
+            Login with Pi
+
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==========================================
+     MAIN CONTENT
+=========================================== -->
+
+<main>
+
+
+    <!-- ======================================
+         HOME / VIDEO FEED
+    ======================================= -->
+
+    <section
+        id="feed"
+        class="feed">
+
+        <!-- Videos will appear here -->
+
+    </section>
+
+
+
+    <!-- ======================================
+         CREATOR STUDIO
+    ======================================= -->
+
+    <section
+        id="studio"
+        class="panel hidden">
+
+
+        <h2>
+            Creator Studio
+        </h2>
+
+
+        <p class="muted">
+            Subscribe to a creator plan before
+            uploading videos.
+        </p>
+
+
+        <!-- SUBSCRIPTION PLANS -->
+
+        <div
+            id="plans"
+            class="plans">
+
+
+            <div class="plan">
+
+                <h3>
+                    Weekly
+                </h3>
+
+                <p>
+                    Creator access for 7 days
+                </p>
+
+                <button
+                    class="btn pink"
+                    data-plan="weekly">
+
+                    Subscribe
+
+                </button>
+
+            </div>
+
+
+
+            <div class="plan">
+
+                <h3>
+                    Monthly
+                </h3>
+
+                <p>
+                    Creator access for 30 days
+                </p>
+
+                <button
+                    class="btn pink"
+                    data-plan="monthly">
+
+                    Subscribe
+
+                </button>
+
+            </div>
+
+
+
+            <div class="plan">
+
+                <h3>
+                    Yearly
+                </h3>
+
+                <p>
+                    Creator access for 365 days
+                </p>
+
+                <button
+                    class="btn pink"
+                    data-plan="yearly">
+
+                    Subscribe
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- VIDEO UPLOAD -->
+
+        <div class="upload-box">
+
+
+            <h3>
+                Upload Video
+            </h3>
+
+
+            <form id="uploadForm">
+
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Video title"
+                    maxlength="120"
+                    required>
+
+
+                <textarea
+                    name="description"
+                    placeholder="Video description"
+                    maxlength="1000">
+                </textarea>
+
+
+                <input
+                    type="number"
+                    name="price"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Unlock price in Pi"
+                    required>
+
+
+                <input
+                    type="file"
+                    name="video"
+                    accept="video/*"
+                    required>
+
+
+                <button
+                    class="btn pink"
+                    type="submit">
+
+                    Upload Video
+
+                </button>
+
+
+            </form>
+
+
+            <p
+                id="uploadStatus"
+                class="muted">
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================
+         PROFILE
+    ======================================= -->
+
+    <section
+        id="profile"
+        class="panel hidden">
+
+
+        <h2>
+            My Profile
+        </h2>
+
+
+        <div class="profile-card">
+
+
+            <p class="muted">
+                Pi Username
+            </p>
+
+
+            <h3
+                id="profilePiUsername">
+
+                Not connected
+
+            </h3>
+
+
+            <p class="muted">
+                Video City account
+            </p>
+
+
+            <div class="profile-status">
+
+                <p>
+                    Account status:
+                </p>
+
+
+                <strong
+                    id="profileStatus">
+
+                    Not connected
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ==========================================
+     BOTTOM NAVIGATION
+=========================================== -->
+
+<nav class="bottom-nav">
+
+
+    <button
+        data-view="home"
+        class="nav active">
+
         Home
 
     </button>
@@ -44,8 +387,6 @@
     <article class="video-card">
 
 
-        <!-- VIDEO -->
-
         <div class="video-wrap">
 
 
@@ -57,15 +398,11 @@
             </video>
 
 
-
-            <!-- LOCKED VIDEO -->
-
             <div
                 class="lock-overlay hidden">
 
 
                 <div>
-
 
                     <strong>
                         Locked Video
@@ -83,7 +420,6 @@
 
                     </button>
 
-
                 </div>
 
             </div>
@@ -91,8 +427,6 @@
         </div>
 
 
-
-        <!-- VIDEO INFORMATION -->
 
         <div class="video-info">
 
@@ -108,9 +442,6 @@
             <p class="description">
             </p>
 
-
-
-            <!-- ACTIONS -->
 
             <div class="actions">
 
@@ -147,8 +478,6 @@
             </div>
 
 
-
-            <!-- COMMENTS -->
 
             <div class="comments hidden">
 
@@ -197,7 +526,4 @@
 
 <script src="login.js"></script>
 
-
-</body>
-
-</html>
+</body></html>
