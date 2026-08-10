@@ -1,99 +1,145 @@
+
 // ==========================================
-// VIDEO CITY - PI LOGIN
+// VIDEO CITY - MAIN APP / NAVIGATION
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const loginBtn = document.getElementById("loginBtn");
-    const piUser = document.getElementById("piUser");
+const navButtons = document.querySelectorAll(".nav");
 
-    // Check that Pi SDK is available
-    if (typeof Pi === "undefined") {
-        console.error("Pi SDK was not found.");
-        return;
+const feed = document.getElementById("feed");
+const studio = document.getElementById("studio");
+const profile = document.getElementById("profile");
+
+const profileUsername =
+    document.getElementById("profilePiUsername");
+
+const profileStatus =
+    document.getElementById("profileStatus");
+
+
+// ------------------------------------------
+// SHOW PAGE
+// ------------------------------------------
+
+function showPage(page) {
+
+    // Hide all pages
+
+    if (feed) {
+        feed.classList.add("hidden");
     }
 
-    // ------------------------------------------
-    // PI LOGIN
-    // ------------------------------------------
+    if (studio) {
+        studio.classList.add("hidden");
+    }
 
-    loginBtn.addEventListener("click", async function () {
+    if (profile) {
+        profile.classList.add("hidden");
+    }
 
-        loginBtn.disabled = true;
-        loginBtn.textContent = "Connecting...";
 
-        try {
+    // Show selected page
 
-            // We only request the information Video City needs
-            const scopes = ["username"];
+    if (page === "home" && feed) {
+        feed.classList.remove("hidden");
+    }
 
-            // Handle incomplete payments later
-            function onIncompletePaymentFound(payment) {
-                console.log("Incomplete payment found:", payment);
+    if (page === "studio" && studio) {
+        studio.classList.remove("hidden");
+    }
 
-                // Payment handling will be added
-                // when we build the backend.
-            }
+    if (page === "profile" && profile) {
+        profile.classList.remove("hidden");
+        updateProfile();
+    }
 
-            const auth = await Pi.authenticate(
-                scopes,
-                onIncompletePaymentFound
-            );
 
-            console.log("Pi authentication successful:", auth);
+    // Update active navigation button
 
-            // Get username
-            const username = auth.user.username;
+    navButtons.forEach(function (button) {
 
-            // Display Pi username
-            piUser.textContent = "@" + username;
+        button.classList.remove("active");
 
-            // Change login button
-            loginBtn.textContent = "Connected ✓";
-
-            loginBtn.style.background = "#22c55e";
-
-            console.log("Pi Username:", username);
-
-            // Save only for temporary display
-            sessionStorage.setItem(
-                "videoCityUsername",
-                username
-            );
-
-        } catch (error) {
-
-            console.error("Pi Login Error:", error);
-
-            loginBtn.disabled = false;
-            loginBtn.textContent = "Login with Pi";
-
-            alert(
-                "Pi Login could not be completed. " +
-                "Please open Video City inside Pi Browser and try again."
-            );
+        if (button.dataset.view === page) {
+            button.classList.add("active");
         }
 
     });
 
+}
 
-    // ------------------------------------------
-    // RESTORE USERNAME ON PAGE REFRESH
-    // ------------------------------------------
 
-    const savedUsername =
+// ------------------------------------------
+// UPDATE PROFILE
+// ------------------------------------------
+
+function updateProfile() {
+
+    const username =
         sessionStorage.getItem("videoCityUsername");
 
-    if (savedUsername) {
 
-        piUser.textContent =
-            "@" + savedUsername;
+    if (username) {
 
-        loginBtn.textContent =
-            "Connected ✓";
+        if (profileUsername) {
+            profileUsername.textContent =
+                "@" + username;
+        }
 
-        loginBtn.style.background =
-            "#22c55e";
+        if (profileStatus) {
+            profileStatus.textContent =
+                "Connected ✓";
+        }
+
+    } else {
+
+        if (profileUsername) {
+            profileUsername.textContent =
+                "Not connected";
+        }
+
+        if (profileStatus) {
+            profileStatus.textContent =
+                "Not connected";
+        }
+
     }
+
+}
+
+
+// ------------------------------------------
+// NAVIGATION BUTTONS
+// ------------------------------------------
+
+navButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        const page = button.dataset.view;
+
+        showPage(page);
+
+    });
+
+});
+
+
+// ------------------------------------------
+// START ON HOME
+// ------------------------------------------
+
+showPage("home");
+
+
+// ------------------------------------------
+// UPDATE PROFILE WHEN LOGIN CHANGES
+// ------------------------------------------
+
+window.addEventListener(
+    "videoCityLogin",
+    updateProfile
+);
 
 });
