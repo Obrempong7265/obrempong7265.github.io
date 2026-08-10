@@ -7,12 +7,12 @@
 <title>Video City</title>
 
 
-<!-- Pi SDK -->
+<!-- ==========================================
+     PI SDK
+=========================================== -->
 
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-
-<!-- Pi SDK INITIALIZATION -->
 
 <script>
 
@@ -44,7 +44,9 @@
 </script>
 
 
-<!-- VIDEO CITY CSS -->
+<!-- ==========================================
+     VIDEO CITY CSS
+=========================================== -->
 
 <link
     rel="stylesheet"
@@ -88,293 +90,264 @@
 
 </header><!-- ==========================================
      MAIN CONTENT
-=========================================== --><main><!-- ======================================
+=========================================== --><main><!-- ==========================================
      HOME
-======================================= -->
-
-<section
+=========================================== --><section
     id="feed"
-    class="feed">
-
-</section>
-
-
-
-<!-- ======================================
+    class="feed"></section><!-- ==========================================
      UPLOAD
-======================================= -->
-
-<section
+=========================================== --><section
     id="upload"
-    class="panel hidden">
+    class="panel hidden"><h2>
+    Upload Content
+</h2>
 
 
-    <h2>
-        Upload Content
-    </h2>
+<p class="muted">
+
+    Share your video or product with
+    the Video City community.
+
+</p>
 
 
-    <p class="muted">
+<div class="upload-box">
 
-        Share your video or product with
-        the Video City community.
+
+    <form id="uploadForm">
+
+
+        <label>
+            Title
+        </label>
+
+
+        <input
+            type="text"
+            name="title"
+            placeholder="Enter video or product title"
+            maxlength="120"
+            required>
+
+
+        <label>
+            Description
+        </label>
+
+
+        <textarea
+            name="description"
+            placeholder="Describe your video, product or service..."
+            maxlength="1000"
+            required></textarea>
+
+
+        <label>
+            Category
+        </label>
+
+
+        <input
+            type="text"
+            name="category"
+            placeholder="Example: Music, Fashion, Business">
+
+
+        <label>
+            Price in Pi
+        </label>
+
+
+        <input
+            type="number"
+            name="price"
+            min="0"
+            step="0.01"
+            placeholder="0.00">
+
+
+        <label>
+            Select Video or Image
+        </label>
+
+
+        <input
+            type="file"
+            name="video"
+            accept="video/*,image/*"
+            required>
+
+
+        <button
+            class="btn pink"
+            type="submit">
+
+            Publish to Video City
+
+        </button>
+
+
+    </form>
+
+
+    <p
+        id="uploadStatus"
+        class="muted">
 
     </p>
 
 
-    <div class="upload-box">
+</div>
 
-
-        <form id="uploadForm">
-
-
-            <label>
-                Title
-            </label>
-
-            <input
-                type="text"
-                name="title"
-                placeholder="Enter video or product title"
-                maxlength="120"
-                required>
-
-
-            <label>
-                Description
-            </label>
-
-            <textarea
-                name="description"
-                placeholder="Describe your video, product or service..."
-                maxlength="1000"
-                required>
-            </textarea>
-
-
-            <label>
-                Category
-            </label>
-
-            <input
-                type="text"
-                name="category"
-                placeholder="Example: Music, Fashion, Business">
-
-
-            <label>
-                Price in Pi
-            </label>
-
-            <input
-                type="number"
-                name="price"
-                min="0"
-                step="0.01"
-                placeholder="0.00">
-
-
-            <label>
-                Select Video
-            </label>
-
-            <input
-                type="file"
-                name="video"
-                accept="video/*,image/*"
-                required>
-
-
-            <button
-                class="btn pink"
-                type="submit">
-
-                Publish to Video City
-
-            </button>
-
-
-        </form>
-
-
-        <p
-            id="uploadStatus"
-            class="muted">
-
-        </p>
-
-
-    </div>
-
-</section>
-
-
-
-<!-- ======================================
+</section><!-- ==========================================
      CREATOR STUDIO
-======================================= -->
-
-<section
+=========================================== --><section
     id="studio"
-    class="panel hidden">
+    class="panel hidden"><h2>
+    Creator Studio
+</h2>
 
 
-    <h2>
-        Creator Studio
-    </h2>
+<p class="muted">
+
+    Manage your content and monitor
+    your creator activity.
+
+</p>
 
 
-    <p class="muted">
+<!-- CREATOR OVERVIEW -->
 
-        Manage your content and monitor
-        your creator activity.
-
-    </p>
+<div class="plans">
 
 
-    <!-- CREATOR OVERVIEW -->
-
-    <div class="plans">
-
-
-        <div class="plan">
-
-            <h3>
-                Videos
-            </h3>
-
-            <p>
-                Your published content
-            </p>
-
-            <strong>
-                0
-            </strong>
-
-        </div>
-
-
-        <div class="plan">
-
-            <h3>
-                Views
-            </h3>
-
-            <p>
-                Total video views
-            </p>
-
-            <strong>
-                0
-            </strong>
-
-        </div>
-
-
-        <div class="plan">
-
-            <h3>
-                Pi Earned
-            </h3>
-
-            <p>
-                Creator earnings
-            </p>
-
-            <strong>
-                0 Pi
-            </strong>
-
-        </div>
-
-
-    </div>
-
-
-    <!-- CREATOR CONTENT -->
-
-    <div class="upload-box">
-
+    <div class="plan">
 
         <h3>
-            My Content
+            Videos
         </h3>
 
-
-        <p class="muted">
-
-            Your uploaded videos and products
-            will appear here.
-
+        <p>
+            Your published content
         </p>
 
+        <strong>
+            0
+        </strong>
 
     </div>
 
-</section>
+
+    <div class="plan">
+
+        <h3>
+            Views
+        </h3>
+
+        <p>
+            Total video views
+        </p>
+
+        <strong>
+            0
+        </strong>
+
+    </div>
 
 
+    <div class="plan">
 
-<!-- ======================================
+        <h3>
+            Pi Earned
+        </h3>
+
+        <p>
+            Creator earnings
+        </p>
+
+        <strong>
+            0 Pi
+        </strong>
+
+    </div>
+
+
+</div>
+
+
+<!-- CREATOR CONTENT -->
+
+<div class="upload-box">
+
+
+    <h3>
+        My Content
+    </h3>
+
+
+    <p class="muted">
+
+        Your uploaded videos and products
+        will appear here.
+
+    </p>
+
+
+</div>
+
+</section><!-- ==========================================
      PROFILE
-======================================= -->
-
-<section
+=========================================== --><section
     id="profile"
-    class="panel hidden">
+    class="panel hidden"><h2>
+    My Profile
+</h2>
 
 
-    <h2>
-        My Profile
-    </h2>
+<div class="profile-card">
 
 
-    <div class="profile-card">
+    <div class="logo">
+        ▶
+    </div>
 
 
-        <div class="logo">
-            ▶
-        </div>
+    <h3 id="profileUsername">
+
+        Not connected
+
+    </h3>
 
 
-        <h3 id="profileUsername">
+    <p class="muted">
 
-            Not connected
+        Your Video City profile
 
-        </h3>
+    </p>
 
 
-        <p class="muted">
+    <div class="profile-status">
 
-            Your Video City profile
+
+        <p>
+
+            Account status:
+
+            <strong
+                id="profileStatus">
+
+                Not connected
+
+            </strong>
 
         </p>
 
 
-        <div class="profile-status">
-
-
-            <p>
-
-                Account status:
-
-                <strong
-                    id="profileStatus">
-
-                    Not connected
-
-                </strong>
-
-            </p>
-
-
-        </div>
-
     </div>
 
-</section>
+</div>
 
-</main><!-- ==========================================
+</section></main><!-- ==========================================
      BOTTOM NAVIGATION
 =========================================== --><nav class="bottom-nav"><button
     data-view="home"
@@ -450,7 +423,8 @@
 
 
             <button
-                class="likeBtn">
+                class="likeBtn"
+                type="button">
 
                 ♡
                 <span>
@@ -461,7 +435,8 @@
 
 
             <button
-                class="commentBtn">
+                class="commentBtn"
+                type="button">
 
                 💬 Comment
 
@@ -469,7 +444,8 @@
 
 
             <button
-                class="replyBtn">
+                class="replyBtn"
+                type="button">
 
                 ↩ Reply
 
@@ -520,4 +496,4 @@
 
 </template><!-- ==========================================
      JAVASCRIPT
-=========================================== --><script src="./app.js?v=5"></script><script src="./login.js"></script><script src="./navigation.js"></script></body></html>
+=========================================== --><script src="./app.js?v=6"></script><script src="./login.js"></script><script src="./navigation.js"></script></body></html>
