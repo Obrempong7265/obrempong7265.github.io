@@ -7,71 +7,128 @@ document.addEventListener("DOMContentLoaded", function () {
 const navButtons =
     document.querySelectorAll(".nav");
 
+
 const feed =
     document.getElementById("feed");
+
+
+const upload =
+    document.getElementById("upload");
+
 
 const studio =
     document.getElementById("studio");
 
+
 const profile =
     document.getElementById("profile");
 
-// IMPORTANT:
-// This matches the ID used in index.html
+
 const profileUsername =
     document.getElementById("profileUsername");
+
 
 const profileStatus =
     document.getElementById("profileStatus");
 
 
-// ------------------------------------------
+
+// ==========================================
 // SHOW PAGE
-// ------------------------------------------
+// ==========================================
 
 function showPage(page) {
+
+
+    // Hide all pages
 
     if (feed) {
         feed.classList.add("hidden");
     }
 
+
+    if (upload) {
+        upload.classList.add("hidden");
+    }
+
+
     if (studio) {
         studio.classList.add("hidden");
     }
+
 
     if (profile) {
         profile.classList.add("hidden");
     }
 
 
+
+    // ======================================
     // HOME
+    // ======================================
 
     if (page === "home") {
 
         if (feed) {
-            feed.classList.remove("hidden");
+
+            feed.classList.remove(
+                "hidden"
+            );
+
         }
 
     }
 
 
+
+    // ======================================
+    // UPLOAD
+    // ======================================
+
+    if (page === "upload") {
+
+        if (upload) {
+
+            upload.classList.remove(
+                "hidden"
+            );
+
+        }
+
+    }
+
+
+
+    // ======================================
     // STUDIO
+    // ======================================
 
     if (page === "studio") {
 
         if (studio) {
-            studio.classList.remove("hidden");
+
+            studio.classList.remove(
+                "hidden"
+            );
+
         }
 
     }
 
 
+
+    // ======================================
     // PROFILE
+    // ======================================
 
     if (page === "profile") {
 
         if (profile) {
-            profile.classList.remove("hidden");
+
+            profile.classList.remove(
+                "hidden"
+            );
+
         }
 
         updateProfile();
@@ -79,28 +136,42 @@ function showPage(page) {
     }
 
 
-    // ACTIVE BUTTON
 
-    navButtons.forEach(function (button) {
+    // ======================================
+    // ACTIVE NAVIGATION BUTTON
+    // ======================================
 
-        button.classList.remove("active");
+    navButtons.forEach(
+        function (button) {
 
-        if (button.dataset.view === page) {
+            button.classList.remove(
+                "active"
+            );
 
-            button.classList.add("active");
+
+            if (
+                button.dataset.view === page
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 
 
-// ------------------------------------------
+
+// ==========================================
 // UPDATE PROFILE
-// ------------------------------------------
+// ==========================================
 
 function updateProfile() {
+
 
     const username =
         sessionStorage.getItem(
@@ -109,6 +180,7 @@ function updateProfile() {
 
 
     if (username) {
+
 
         if (profileUsername) {
 
@@ -125,7 +197,9 @@ function updateProfile() {
 
         }
 
+
     } else {
+
 
         if (profileUsername) {
 
@@ -147,30 +221,35 @@ function updateProfile() {
 }
 
 
-// ------------------------------------------
+
+// ==========================================
 // NAVIGATION BUTTONS
-// ------------------------------------------
+// ==========================================
 
-navButtons.forEach(function (button) {
+navButtons.forEach(
+    function (button) {
 
-    button.addEventListener(
-        "click",
-        function () {
+        button.addEventListener(
+            "click",
+            function () {
 
-            const page =
-                button.dataset.view;
-
-            showPage(page);
-
-        }
-    );
-
-});
+                const page =
+                    button.dataset.view;
 
 
-// ------------------------------------------
+                showPage(page);
+
+            }
+        );
+
+    }
+);
+
+
+
+// ==========================================
 // START ON HOME
-// ------------------------------------------
+// ==========================================
 
 showPage("home");
 
