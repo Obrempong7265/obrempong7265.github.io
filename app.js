@@ -1,69 +1,182 @@
-
 // ==========================================
-// VIDEO CITY - MAIN APP / NAVIGATION
+// VIDEO CITY - HOME / VIDEO FEED
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", function () {
 
-const navButtons = document.querySelectorAll(".nav");
+const feed =
+    document.getElementById("feed");
 
-const feed = document.getElementById("feed");
-const studio = document.getElementById("studio");
-const profile = document.getElementById("profile");
-
-const profileUsername =
-    document.getElementById("profilePiUsername");
-
-const profileStatus =
-    document.getElementById("profileStatus");
+const videoTemplate =
+    document.getElementById("videoTemplate");
 
 
 // ------------------------------------------
-// SHOW PAGE
+// SAMPLE VIDEOS
+// ------------------------------------------
+// These are temporary videos for testing
+// the Home screen.
+//
+// Later we will replace these with videos
+// uploaded by real creators.
 // ------------------------------------------
 
-function showPage(page) {
+const videos = [
 
-    // Hide all pages
+    {
+        title: "Welcome to Video City",
+        creator: "@VideoCity",
+        description:
+            "Welcome to Video City — a Pi-powered video platform where creators can share content and earn Pi.",
+        price: 0
+    },
 
-    if (feed) {
-        feed.classList.add("hidden");
+    {
+        title: "Creator Spotlight",
+        creator: "@VideoCity",
+        description:
+            "Creators will be able to upload videos and build their audience on Video City.",
+        price: 0
+    },
+
+    {
+        title: "Support Creators with Pi",
+        creator: "@VideoCity",
+        description:
+            "Viewers will eventually be able to support creators and unlock premium videos using Pi.",
+        price: 0
     }
 
-    if (studio) {
-        studio.classList.add("hidden");
-    }
-
-    if (profile) {
-        profile.classList.add("hidden");
-    }
+];
 
 
-    // Show selected page
+// ------------------------------------------
+// CREATE VIDEO CARD
+// ------------------------------------------
 
-    if (page === "home" && feed) {
-        feed.classList.remove("hidden");
-    }
+function createVideoCard(video) {
 
-    if (page === "studio" && studio) {
-        studio.classList.remove("hidden");
-    }
-
-    if (page === "profile" && profile) {
-        profile.classList.remove("hidden");
-        updateProfile();
+    if (!feed || !videoTemplate) {
+        return;
     }
 
 
-    // Update active navigation button
+    const clone =
+        videoTemplate.content.cloneNode(true);
 
-    navButtons.forEach(function (button) {
 
-        button.classList.remove("active");
+    const title =
+        clone.querySelector(".title");
 
-        if (button.dataset.view === page) {
-            button.classList.add("active");
+    const creator =
+        clone.querySelector(".creator");
+
+    const description =
+        clone.querySelector(".description");
+
+    const videoElement =
+        clone.querySelector(".video");
+
+    const lockOverlay =
+        clone.querySelector(".lock-overlay");
+
+    const priceElement =
+        clone.querySelector(".price");
+
+
+    // Video information
+
+    if (title) {
+        title.textContent =
+            video.title;
+    }
+
+
+    if (creator) {
+        creator.textContent =
+            video.creator;
+    }
+
+
+    if (description) {
+        description.textContent =
+            video.description;
+    }
+
+
+    // ------------------------------------------
+    // FREE VIDEO
+    // ------------------------------------------
+
+    if (video.price === 0) {
+
+        if (lockOverlay) {
+            lockOverlay.classList.add("hidden");
         }
+
+    }
+
+
+    // ------------------------------------------
+    // PREMIUM VIDEO
+    // ------------------------------------------
+
+    if (video.price > 0) {
+
+        if (lockOverlay) {
+
+            lockOverlay.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        if (priceElement) {
+
+            priceElement.textContent =
+                video.price + " Pi";
+
+        }
+
+    }
+
+
+    // ------------------------------------------
+    // VIDEO PLACEHOLDER
+    // ------------------------------------------
+
+    if (videoElement) {
+
+        videoElement.removeAttribute(
+            "src"
+        );
+
+    }
+
+
+    feed.appendChild(clone);
+
+}
+
+
+// ------------------------------------------
+// LOAD HOME FEED
+// ------------------------------------------
+
+function loadHomeFeed() {
+
+    if (!feed) {
+        return;
+    }
+
+
+    feed.innerHTML = "";
+
+
+    videos.forEach(function (video) {
+
+        createVideoCard(video);
 
     });
 
@@ -71,75 +184,14 @@ function showPage(page) {
 
 
 // ------------------------------------------
-// UPDATE PROFILE
+// INITIALIZE HOME
 // ------------------------------------------
 
-function updateProfile() {
-
-    const username =
-        sessionStorage.getItem("videoCityUsername");
+loadHomeFeed();
 
 
-    if (username) {
-
-        if (profileUsername) {
-            profileUsername.textContent =
-                "@" + username;
-        }
-
-        if (profileStatus) {
-            profileStatus.textContent =
-                "Connected ✓";
-        }
-
-    } else {
-
-        if (profileUsername) {
-            profileUsername.textContent =
-                "Not connected";
-        }
-
-        if (profileStatus) {
-            profileStatus.textContent =
-                "Not connected";
-        }
-
-    }
-
-}
-
-
-// ------------------------------------------
-// NAVIGATION BUTTONS
-// ------------------------------------------
-
-navButtons.forEach(function (button) {
-
-    button.addEventListener("click", function () {
-
-        const page = button.dataset.view;
-
-        showPage(page);
-
-    });
-
-});
-
-
-// ------------------------------------------
-// START ON HOME
-// ------------------------------------------
-
-showPage("home");
-
-
-// ------------------------------------------
-// UPDATE PROFILE WHEN LOGIN CHANGES
-// ------------------------------------------
-
-window.addEventListener(
-    "videoCityLogin",
-    updateProfile
+console.log(
+    "Video City Home loaded successfully."
 );
 
 });
