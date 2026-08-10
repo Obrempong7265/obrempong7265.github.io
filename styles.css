@@ -1,18 +1,8 @@
-/* ==========================================
-VIDEO CITY - MAIN STYLES
-========================================== */
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   }
-
-html,
-body {
-width: 100%;
-min-height: 100%;
-}
 
 body {
 font-family: Arial, sans-serif;
@@ -35,7 +25,6 @@ padding: 0 18px;
 position: sticky;
 top: 0;
 z-index: 100;
-border-bottom: 1px solid #222;
 }
 
 .brand {
@@ -62,10 +51,6 @@ font-size: 14px;
 color: #ddd;
 }
 
-/* ==========================================
-BUTTONS
-========================================== */
-
 .btn {
 border: none;
 border-radius: 6px;
@@ -80,10 +65,6 @@ color: white;
 font-weight: bold;
 }
 
-.btn.pink:hover {
-opacity: 0.9;
-}
-
 /* ==========================================
 VIDEO FEED
 ========================================== */
@@ -96,6 +77,7 @@ min-height: calc(100vh - 145px);
 min-height: calc(100vh - 145px);
 position: relative;
 background: #000;
+border-bottom: 1px solid #222;
 }
 
 .video-wrap {
@@ -141,9 +123,9 @@ ACTION BUTTONS
 
 .actions {
 display: flex;
-gap: 12px;
-margin-top: 15px;
 flex-wrap: wrap;
+gap: 10px;
+margin-top: 15px;
 }
 
 .actions button {
@@ -157,6 +139,123 @@ cursor: pointer;
 
 .actions button:hover {
 background: #333;
+}
+
+/* ==========================================
+COMMENTS AREA
+========================================== */
+
+.comments {
+margin-top: 15px;
+padding: 14px;
+background: #111;
+border-radius: 10px;
+border: 1px solid #292929;
+}
+
+/* COMMENT FORM */
+
+.commentForm {
+display: flex;
+gap: 8px;
+width: 100%;
+}
+
+.commentForm input {
+flex: 1;
+min-width: 0;
+padding: 11px;
+border-radius: 6px;
+border: none;
+background: #292929;
+color: white;
+outline: none;
+}
+
+.commentForm input::placeholder {
+color: #999;
+}
+
+/* COMMENT LIST */
+
+.commentList {
+margin-top: 14px;
+}
+
+/* INDIVIDUAL COMMENT */
+
+.commentList > .comment {
+background: #1b1b1b;
+padding: 12px;
+border-radius: 9px;
+margin-bottom: 10px;
+border-left: 3px solid #ff0055;
+}
+
+.comment strong {
+color: #ff0055;
+font-size: 14px;
+}
+
+.comment p {
+color: #ddd;
+margin-top: 5px;
+line-height: 1.4;
+word-wrap: break-word;
+}
+
+/* REPLY BUTTON */
+
+.replyBtn {
+background: transparent;
+border: none;
+color: #aaa;
+padding: 5px 0;
+margin-top: 4px;
+cursor: pointer;
+font-size: 13px;
+}
+
+.replyBtn:hover {
+color: white;
+}
+
+/* REPLY BOX */
+
+.replyBox {
+margin-top: 8px;
+margin-left: 18px;
+padding: 10px;
+background: #151515;
+border-radius: 8px;
+}
+
+/* REPLY INPUT */
+
+.replyBox input {
+width: 65%;
+padding: 9px;
+border: none;
+border-radius: 5px;
+background: #292929;
+color: white;
+outline: none;
+}
+
+/* REPLY LIST */
+
+.replyList {
+margin-top: 10px;
+}
+
+/* INDIVIDUAL REPLY */
+
+.replyList > div {
+background: #202020;
+padding: 9px;
+margin-bottom: 7px;
+border-radius: 7px;
+margin-left: 8px;
 }
 
 /* ==========================================
@@ -182,37 +281,6 @@ margin: 10px 0;
 color: #ff0055;
 font-size: 18px;
 font-weight: bold;
-}
-
-/* ==========================================
-COMMENTS
-========================================== */
-
-.comments {
-margin-top: 15px;
-}
-
-.commentForm {
-display: flex;
-gap: 8px;
-}
-
-.commentForm input {
-flex: 1;
-padding: 11px;
-border-radius: 5px;
-border: none;
-}
-
-.commentList {
-margin-top: 15px;
-}
-
-.comment {
-background: #181818;
-padding: 10px;
-border-radius: 8px;
-margin-bottom: 8px;
 }
 
 /* ==========================================
@@ -299,28 +367,14 @@ PROFILE
 ========================================== */
 
 .profile-card {
-margin-top: 25px;
-max-width: 600px;
 background: #171717;
-border: 1px solid #333;
-border-radius: 12px;
-padding: 24px;
-}
-
-.profile-card h3 {
-margin: 8px 0 20px;
-font-size: 24px;
-color: #ff0055;
+padding: 20px;
+border-radius: 10px;
+margin-top: 20px;
 }
 
 .profile-status {
-margin-top: 20px;
-padding-top: 15px;
-border-top: 1px solid #333;
-}
-
-.profile-status strong {
-color: #22c55e;
+margin-top: 15px;
 }
 
 /* ==========================================
@@ -347,7 +401,6 @@ border: none;
 color: #aaa;
 font-size: 15px;
 cursor: pointer;
-padding: 10px 15px;
 }
 
 .nav.active {
@@ -370,34 +423,15 @@ MOBILE
 @media (max-width: 600px) {
 
 .topbar {
-    padding: 0 10px;
+    padding: 0 12px;
 }
 
 .brand {
-    font-size: 18px;
+    font-size: 19px;
 }
-
-.account {
-    gap: 6px;
-}
-
-/*
-   Keep the Pi username visible.
-   It was previously being hidden here.
-*/
 
 .username {
-    display: inline-block;
-    font-size: 12px;
-    max-width: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.btn {
-    padding: 9px 11px;
-    font-size: 13px;
+    display: none;
 }
 
 .plans {
@@ -412,21 +446,25 @@ MOBILE
     padding: 16px;
 }
 
-.profile-card {
-    padding: 20px;
+.commentForm {
+    flex-direction: column;
 }
 
-.profile-card h3 {
-    font-size: 21px;
+.commentForm button {
+    width: 100%;
 }
 
-.bottom-nav {
-    height: 65px;
+.replyBox {
+    margin-left: 10px;
 }
 
-.nav {
-    font-size: 13px;
-    padding: 8px 10px;
+.replyBox input {
+    width: 100%;
+    margin-bottom: 7px;
 }
 
-    }
+.replyBox button {
+    width: 100%;
+}
+
+  }
