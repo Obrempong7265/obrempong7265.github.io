@@ -1,194 +1,65 @@
 // ==========================================
-// VIDEO CITY - HOME / VIDEO FEED
+// VIDEO CITY - HOME TEST
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", function () {
 
-const feed =
-    document.getElementById("feed");
+const feed = document.getElementById("feed");
 
-const videoTemplate =
-    document.getElementById("videoTemplate");
-
-
-// ------------------------------------------
-// SAMPLE VIDEOS
-// ------------------------------------------
-// These are temporary videos for testing
-// the Home screen.
-//
-// Later we will replace these with videos
-// uploaded by real creators.
-// ------------------------------------------
-
-const videos = [
-
-    {
-        title: "Welcome to Video City",
-        creator: "@VideoCity",
-        description:
-            "Welcome to Video City — a Pi-powered video platform where creators can share content and earn Pi.",
-        price: 0
-    },
-
-    {
-        title: "Creator Spotlight",
-        creator: "@VideoCity",
-        description:
-            "Creators will be able to upload videos and build their audience on Video City.",
-        price: 0
-    },
-
-    {
-        title: "Support Creators with Pi",
-        creator: "@VideoCity",
-        description:
-            "Viewers will eventually be able to support creators and unlock premium videos using Pi.",
-        price: 0
-    }
-
-];
-
-
-// ------------------------------------------
-// CREATE VIDEO CARD
-// ------------------------------------------
-
-function createVideoCard(video) {
-
-    if (!feed || !videoTemplate) {
-        return;
-    }
-
-
-    const clone =
-        videoTemplate.content.cloneNode(true);
-
-
-    const title =
-        clone.querySelector(".title");
-
-    const creator =
-        clone.querySelector(".creator");
-
-    const description =
-        clone.querySelector(".description");
-
-    const videoElement =
-        clone.querySelector(".video");
-
-    const lockOverlay =
-        clone.querySelector(".lock-overlay");
-
-    const priceElement =
-        clone.querySelector(".price");
-
-
-    // Video information
-
-    if (title) {
-        title.textContent =
-            video.title;
-    }
-
-
-    if (creator) {
-        creator.textContent =
-            video.creator;
-    }
-
-
-    if (description) {
-        description.textContent =
-            video.description;
-    }
-
-
-    // ------------------------------------------
-    // FREE VIDEO
-    // ------------------------------------------
-
-    if (video.price === 0) {
-
-        if (lockOverlay) {
-            lockOverlay.classList.add("hidden");
-        }
-
-    }
-
-
-    // ------------------------------------------
-    // PREMIUM VIDEO
-    // ------------------------------------------
-
-    if (video.price > 0) {
-
-        if (lockOverlay) {
-
-            lockOverlay.classList.remove(
-                "hidden"
-            );
-
-        }
-
-
-        if (priceElement) {
-
-            priceElement.textContent =
-                video.price + " Pi";
-
-        }
-
-    }
-
-
-    // ------------------------------------------
-    // VIDEO PLACEHOLDER
-    // ------------------------------------------
-
-    if (videoElement) {
-
-        videoElement.removeAttribute(
-            "src"
-        );
-
-    }
-
-
-    feed.appendChild(clone);
-
+if (!feed) {
+    console.error("Video City: Home feed not found.");
+    return;
 }
 
+feed.innerHTML = `
+    <div style="
+        padding: 40px 20px;
+        text-align: center;
+    ">
 
-// ------------------------------------------
-// LOAD HOME FEED
-// ------------------------------------------
+        <h1 style="
+            font-size: 32px;
+            margin-bottom: 15px;
+        ">
+            🎬 Video City
+        </h1>
 
-function loadHomeFeed() {
+        <h2 style="
+            color: #ff0055;
+            margin-bottom: 15px;
+        ">
+            Welcome to Video City
+        </h2>
 
-    if (!feed) {
-        return;
-    }
+        <p style="
+            color: #ccc;
+            line-height: 1.6;
+            max-width: 500px;
+            margin: auto;
+        ">
+            Discover videos, support creators with Pi,
+            and enjoy a new creator economy built on
+            the Pi ecosystem.
+        </p>
 
+        <button
+            id="homeTestButton"
+            style="
+                margin-top: 25px;
+                background: #ff0055;
+                color: white;
+                border: none;
+                padding: 13px 24px;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+            "
+        >
+            Explore Videos
+        </button>
 
-    feed.innerHTML = "";
-
-
-    videos.forEach(function (video) {
-
-        createVideoCard(video);
-
-    });
-
-}
-
-
-// ------------------------------------------
-// INITIALIZE HOME
-// ------------------------------------------
-
-loadHomeFeed();
-
+    </div>
+`;
 
 console.log(
     "Video City Home loaded successfully."
