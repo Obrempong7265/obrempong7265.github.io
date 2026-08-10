@@ -1,29 +1,16 @@
-// ==========================================
-// VIDEO CITY - HOME FEED
-// VIDEO + LIKE + COMMENTS + REPLIES
-// ==========================================
-
 document.addEventListener("DOMContentLoaded", function () {
 
 const feed = document.getElementById("feed");
 
 if (!feed) {
-    console.error("Video City: Feed not found.");
+    console.error("Feed not found");
     return;
 }
 
 
-// ------------------------------------------
-// YOUR UPLOADED VIDEO
-// ------------------------------------------
-
 const videoURL =
     "./7ba2eb8d7397b5b5eef95244c6559301.mp4";
 
-
-// ------------------------------------------
-// VIDEO DATA
-// ------------------------------------------
 
 const videos = [
 
@@ -38,22 +25,18 @@ const videos = [
         title: "Creator Spotlight",
         creator: "@VideoCity",
         description:
-            "Discover creators, watch their content and support them through the Pi ecosystem."
+            "Discover creators and support them through Pi."
     },
 
     {
         title: "The Future of Creator Economy",
         creator: "@VideoCity",
         description:
-            "A new way for creators to connect with audiences and earn from their content."
+            "A new way for creators to connect with audiences."
     }
 
 ];
 
-
-// ------------------------------------------
-// GET CURRENT USERNAME
-// ------------------------------------------
 
 function getUsername() {
 
@@ -62,28 +45,16 @@ function getUsername() {
             "videoCityUsername"
         );
 
-
-    if (username) {
-
-        return "@" + username;
-
-    }
-
-
-    return "@Guest";
-
+    return username
+        ? "@" + username
+        : "@Guest";
 }
 
 
-// ------------------------------------------
-// CREATE VIDEO CARD
-// ------------------------------------------
-
-function createVideo(video, videoIndex) {
+function createVideo(video) {
 
     const card =
         document.createElement("article");
-
 
     card.className =
         "video-card";
@@ -103,9 +74,6 @@ function createVideo(video, videoIndex) {
                     src="${videoURL}"
                     type="video/mp4">
 
-                Your browser does not support
-                HTML5 video.
-
             </video>
 
         </div>
@@ -117,11 +85,9 @@ function createVideo(video, videoIndex) {
                 ${video.title}
             </h3>
 
-
             <p class="creator">
                 ${video.creator}
             </p>
-
 
             <p class="description">
                 ${video.description}
@@ -130,32 +96,23 @@ function createVideo(video, videoIndex) {
 
             <div class="actions">
 
-
-                <!-- LIKE -->
-
                 <button
                     class="likeBtn"
                     type="button">
 
-                    ♡
-                    <span>0</span>
+                    ♡ <span>0</span>
 
                 </button>
 
-
-                <!-- COMMENT -->
 
                 <button
                     class="commentBtn"
                     type="button">
 
-                    💬
-                    <span>Comment</span>
+                    💬 Comment
 
                 </button>
 
-
-                <!-- SUPPORT -->
 
                 <button
                     class="supportBtn"
@@ -165,122 +122,84 @@ function createVideo(video, videoIndex) {
 
                 </button>
 
-
             </div>
 
 
-            <!-- COMMENTS -->
-
             <div
-                class="comments hidden">
+                class="comments"
+                style="display:none; margin-top:15px;">
 
-
-                <form
-                    class="commentForm">
-
+                <form class="commentForm">
 
                     <input
                         type="text"
-                        name="text"
-                        maxlength="500"
                         placeholder="Write a comment..."
-                        autocomplete="off"
-                        required>
-
+                        maxlength="500"
+                        required
+                        style="
+                            width:70%;
+                            padding:10px;
+                        ">
 
                     <button
-                        class="btn pink"
-                        type="submit">
+                        type="submit"
+                        class="btn pink">
 
                         Post
 
                     </button>
 
-
                 </form>
 
 
                 <div
-                    class="commentList">
+                    class="commentList"
+                    style="margin-top:15px;">
 
                 </div>
-
 
             </div>
 
         </div>
-
     `;
 
 
-    // --------------------------------------
+    // ======================================
     // LIKE
-    // --------------------------------------
+    // ======================================
 
     const likeButton =
         card.querySelector(".likeBtn");
 
-
-    const likeCount =
-        likeButton.querySelector("span");
-
-
     let liked = false;
-
 
     likeButton.addEventListener(
         "click",
         function () {
 
-            if (!liked) {
+            liked = !liked;
 
-                liked = true;
-
-                likeCount.textContent = "1";
-
-                likeButton.firstChild.textContent =
-                    "♥ ";
-
-            } else {
-
-                liked = false;
-
-                likeCount.textContent = "0";
-
-                likeButton.firstChild.textContent =
-                    "♡ ";
-
-            }
+            likeButton.innerHTML =
+                liked
+                    ? "♥ <span>1</span>"
+                    : "♡ <span>0</span>";
 
         }
     );
 
 
-    // --------------------------------------
-    // COMMENT BUTTON
-    // --------------------------------------
+    // ======================================
+    // COMMENT OPEN/CLOSE
+    // ======================================
 
     const commentButton =
         card.querySelector(
             ".commentBtn"
         );
 
-
-    const commentsBox =
+    const comments =
         card.querySelector(
             ".comments"
-        );
-
-
-    const commentForm =
-        card.querySelector(
-            ".commentForm"
-        );
-
-
-    const commentList =
-        card.querySelector(
-            ".commentList"
         );
 
 
@@ -288,23 +207,18 @@ function createVideo(video, videoIndex) {
         "click",
         function () {
 
-            commentsBox.classList.toggle(
-                "hidden"
-            );
-
-
             if (
-                !commentsBox.classList.contains(
-                    "hidden"
-                )
+                comments.style.display ===
+                "none"
             ) {
 
-                const input =
-                    commentForm.querySelector(
-                        "input"
-                    );
+                comments.style.display =
+                    "block";
 
-                input.focus();
+            } else {
+
+                comments.style.display =
+                    "none";
 
             }
 
@@ -312,21 +226,31 @@ function createVideo(video, videoIndex) {
     );
 
 
-    // --------------------------------------
+    // ======================================
     // POST COMMENT
-    // --------------------------------------
+    // ======================================
 
-    commentForm.addEventListener(
+    const form =
+        card.querySelector(
+            ".commentForm"
+        );
+
+    const input =
+        form.querySelector(
+            "input"
+        );
+
+    const commentList =
+        card.querySelector(
+            ".commentList"
+        );
+
+
+    form.addEventListener(
         "submit",
         function (event) {
 
             event.preventDefault();
-
-
-            const input =
-                commentForm.querySelector(
-                    "input"
-                );
 
 
             const text =
@@ -338,317 +262,199 @@ function createVideo(video, videoIndex) {
             }
 
 
-            addComment(
-                text,
-                commentList
-            );
-
-
-            input.value = "";
-
-        }
-    );
-
-
-    // --------------------------------------
-    // LOAD CARD
-    // --------------------------------------
-
-    feed.appendChild(card);
-
-}
-
-
-// ------------------------------------------
-// ADD COMMENT
-// ------------------------------------------
-
-function addComment(
-    text,
-    commentList
-) {
-
-    const comment =
-        document.createElement(
-            "div"
-        );
-
-
-    comment.className =
-        "comment";
-
-
-    const username =
-        getUsername();
-
-
-    comment.innerHTML = `
-
-        <div>
-
-            <strong>
-                ${username}
-            </strong>
-
-        </div>
-
-
-        <p class="commentText">
-            ${escapeHTML(text)}
-        </p>
-
-
-        <button
-            class="replyBtn"
-            type="button">
-
-            ↩ Reply
-
-        </button>
-
-
-        <div
-            class="replyArea hidden">
-
-            <form
-                class="replyForm">
-
-
-                <input
-                    type="text"
-                    maxlength="500"
-                    placeholder="Write a reply..."
-                    autocomplete="off"
-                    required>
-
-
-                <button
-                    class="btn pink"
-                    type="submit">
-
-                    Reply
-
-                </button>
-
-
-            </form>
-
-
-            <div
-                class="replyList">
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    commentList.appendChild(
-        comment
-    );
-
-
-    // --------------------------------------
-    // REPLY BUTTON
-    // --------------------------------------
-
-    const replyButton =
-        comment.querySelector(
-            ".replyBtn"
-        );
-
-
-    const replyArea =
-        comment.querySelector(
-            ".replyArea"
-        );
-
-
-    replyButton.addEventListener(
-        "click",
-        function () {
-
-            replyArea.classList.toggle(
-                "hidden"
-            );
-
-
-            if (
-                !replyArea.classList.contains(
-                    "hidden"
-                )
-            ) {
-
-                const replyInput =
-                    replyArea.querySelector(
-                        "input"
-                    );
-
-                replyInput.focus();
-
-            }
-
-        }
-    );
-
-
-    // --------------------------------------
-    // POST REPLY
-    // --------------------------------------
-
-    const replyForm =
-        comment.querySelector(
-            ".replyForm"
-        );
-
-
-    const replyList =
-        comment.querySelector(
-            ".replyList"
-        );
-
-
-    replyForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const input =
-                replyForm.querySelector(
-                    "input"
-                );
-
-
-            const text =
-                input.value.trim();
-
-
-            if (!text) {
-                return;
-            }
-
-
-            const reply =
+            const comment =
                 document.createElement(
                     "div"
                 );
 
 
-            reply.className =
+            comment.className =
                 "comment";
 
 
-            reply.style.marginLeft =
-                "20px";
-
-
-            reply.innerHTML = `
+            comment.innerHTML = `
 
                 <strong>
                     ${getUsername()}
                 </strong>
 
                 <p>
-                    ${escapeHTML(text)}
+                    ${text}
                 </p>
+
+                <button
+                    class="replyBtn"
+                    type="button">
+
+                    ↩ Reply
+
+                </button>
+
+                <div
+                    class="replyBox"
+                    style="
+                        display:none;
+                        margin-top:10px;
+                        margin-left:20px;
+                    ">
+
+                    <input
+                        type="text"
+                        placeholder="Write a reply..."
+                        maxlength="500"
+                        style="
+                            width:65%;
+                            padding:8px;
+                        ">
+
+                    <button
+                        class="replySubmit btn pink"
+                        type="button">
+
+                        Reply
+
+                    </button>
+
+                    <div
+                        class="replyList"
+                        style="margin-top:8px;">
+                    </div>
+
+                </div>
 
             `;
 
 
-            replyList.appendChild(
-                reply
+            commentList.appendChild(
+                comment
             );
 
 
             input.value = "";
 
-        }
-    );
 
-}
+            // ==================================
+            // REPLY BUTTON
+            // ==================================
 
+            const replyButton =
+                comment.querySelector(
+                    ".replyBtn"
+                );
 
-// ------------------------------------------
-// SAFELY DISPLAY TEXT
-// ------------------------------------------
-
-function escapeHTML(text) {
-
-    const div =
-        document.createElement(
-            "div"
-        );
-
-
-    div.textContent =
-        text;
-
-
-    return div.innerHTML;
-
-}
-
-
-// ------------------------------------------
-// EXPLORE VIDEOS
-// ------------------------------------------
-
-const exploreButton =
-    document.getElementById(
-        "homeTestButton"
-    );
-
-
-if (exploreButton) {
-
-    exploreButton.addEventListener(
-        "click",
-        function () {
-
-            const firstVideo =
-                feed.querySelector(
-                    ".video-card"
+            const replyBox =
+                comment.querySelector(
+                    ".replyBox"
                 );
 
 
-            if (firstVideo) {
+            replyButton.addEventListener(
+                "click",
+                function () {
 
-                firstVideo.scrollIntoView({
-                    behavior: "smooth"
-                });
+                    replyBox.style.display =
+                        replyBox.style.display ===
+                        "none"
+                            ? "block"
+                            : "none";
 
-            }
+                }
+            );
+
+
+            // ==================================
+            // POST REPLY
+            // ==================================
+
+            const replyInput =
+                replyBox.querySelector(
+                    "input"
+                );
+
+            const replySubmit =
+                replyBox.querySelector(
+                    ".replySubmit"
+                );
+
+            const replyList =
+                replyBox.querySelector(
+                    ".replyList"
+                );
+
+
+            replySubmit.addEventListener(
+                "click",
+                function () {
+
+                    const replyText =
+                        replyInput.value.trim();
+
+
+                    if (!replyText) {
+                        return;
+                    }
+
+
+                    const reply =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    reply.style.marginBottom =
+                        "8px";
+
+
+                    reply.innerHTML = `
+
+                        <strong>
+                            ${getUsername()}
+                        </strong>
+
+                        <p>
+                            ${replyText}
+                        </p>
+
+                    `;
+
+
+                    replyList.appendChild(
+                        reply
+                    );
+
+
+                    replyInput.value = "";
+
+                }
+            );
 
         }
     );
 
+
+    feed.appendChild(card);
+
 }
 
 
-// ------------------------------------------
+// ==========================================
 // LOAD VIDEOS
-// ------------------------------------------
+// ==========================================
 
 feed.innerHTML = "";
 
 
 videos.forEach(
-    function (video, index) {
+    function (video) {
 
-        createVideo(
-            video,
-            index
-        );
+        createVideo(video);
 
     }
 );
 
 
 console.log(
-    "Video City Home loaded: Video + Like + Comments + Replies"
+    "Video City: Home + Like + Comment + Reply ready."
 );
 
 });
