@@ -1,272 +1,212 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Video City</title><script src="https://sdk.minepi.com/pi-sdk.js"></script><script>
-document.addEventListener("DOMContentLoaded", function () {
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-    if (typeof Pi !== "undefined") {
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-        Pi.init({
-            version: "2.0"
-        });
+<title>Video City</title>
 
-        console.log("Pi SDK initialized.");
 
-    } else {
+<!-- PI SDK -->
 
-        console.error("Pi SDK was not found.");
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-    }
 
-});
-</script><link rel="stylesheet" href="./styles.css"></head><body><header class="topbar"><div class="brand">
+<!-- PI INITIALIZATION -->
 
-    <span class="logo">▶</span>
+<script>
 
-    <span>Video City</span>
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
 
-</div>
+            if (typeof Pi !== "undefined") {
 
-<div class="account">
+                Pi.init({
+                    version: "2.0"
+                });
 
-    <span id="piUser" class="username">
-        Not connected
-    </span>
+                console.log(
+                    "Pi SDK initialized."
+                );
 
-    <button
-        id="loginBtn"
-        class="btn pink">
+            } else {
 
-        Login with Pi
+                console.error(
+                    "Pi SDK was not found."
+                );
 
-    </button>
+            }
 
-</div>
+        }
+    );
 
-</header><main><section
-    id="feed"
-    class="feed">
-</section>
+</script>
 
 
-<section
-    id="studio"
-    class="panel hidden">
+<!-- VIDEO CITY STYLES -->
 
-    <h2>Creator Studio</h2>
+<link
+    rel="stylesheet"
+    href="./styles.css">
 
-    <p class="muted">
-        Subscribe to a creator plan before uploading videos.
-    </p>
+</head><body><!-- ==========================================
+     TOP HEADER
+=========================================== -->
 
-    <div
-        id="plans"
-        class="plans">
+<header class="topbar">
 
-        <div class="plan">
+    <div class="brand">
 
-            <h3>Weekly</h3>
-
-            <p>
-                Creator access for 7 days
-            </p>
-
-            <button
-                class="btn pink"
-                data-plan="weekly">
-
-                Subscribe
-
-            </button>
-
-        </div>
-
-
-        <div class="plan">
-
-            <h3>Monthly</h3>
-
-            <p>
-                Creator access for 30 days
-            </p>
-
-            <button
-                class="btn pink"
-                data-plan="monthly">
-
-                Subscribe
-
-            </button>
-
-        </div>
-
-
-        <div class="plan">
-
-            <h3>Yearly</h3>
-
-            <p>
-                Creator access for 365 days
-            </p>
-
-            <button
-                class="btn pink"
-                data-plan="yearly">
-
-                Subscribe
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div class="upload-box">
-
-        <h3>Upload Video</h3>
-
-        <form id="uploadForm">
-
-            <input
-                type="text"
-                name="title"
-                placeholder="Video title"
-                maxlength="120"
-                required>
-
-            <textarea
-                name="description"
-                placeholder="Video description"
-                maxlength="1000">
-            </textarea>
-
-            <input
-                type="number"
-                name="price"
-                min="0.01"
-                step="0.01"
-                placeholder="Unlock price in Pi"
-                required>
-
-            <input
-                type="file"
-                name="video"
-                accept="video/*"
-                required>
-
-            <button
-                class="btn pink"
-                type="submit">
-
-                Upload Video
-
-            </button>
-
-        </form>
-
-        <p
-            id="uploadStatus"
-            class="muted">
-        </p>
-
-    </div>
-
-</section>
-
-
-<section
-    id="profile"
-    class="panel hidden">
-
-    <h2>My Profile</h2>
-
-    <div class="profile-card">
-
-        <div class="logo">
+        <span class="logo">
             ▶
-        </div>
+        </span>
 
-        <h3 id="profileUsername">
+        <span>
+            Video City
+        </span>
+
+    </div>
+
+
+    <div class="account">
+
+        <span
+            id="piUser"
+            class="username">
+
             Not connected
-        </h3>
+
+        </span>
+
+
+        <button
+            id="loginBtn"
+            class="btn pink">
+
+            Login with Pi
+
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- ==========================================
+     MAIN CONTENT
+=========================================== -->
+
+<main>
+
+
+    <!-- ======================================
+         HOME / VIDEO FEED
+    ======================================= -->
+
+    <section
+        id="feed"
+        class="feed">
+
+    </section>
+
+
+
+    <!-- ======================================
+         CREATOR STUDIO
+    ======================================= -->
+
+    <section
+        id="studio"
+        class="panel hidden">
+
+
+        <h2>
+            Creator Studio
+        </h2>
+
 
         <p class="muted">
-            Your Video City profile
+
+            Subscribe to a creator plan before
+            uploading videos.
+
         </p>
 
-        <div class="profile-status">
 
-            <p>
 
-                Account status:
+        <!-- PLANS -->
 
-                <strong id="profileStatus">
-                    Not connected
-                </strong>
+        <div
+            id="plans"
+            class="plans">
 
-            </p>
 
-        </div>
+            <!-- WEEKLY -->
 
-    </div>
+            <div class="plan">
 
-</section>
+                <h3>
+                    Weekly
+                </h3>
 
-</main><nav class="bottom-nav"><button
-    data-view="home"
-    class="nav active">
-
-    Home
-
-</button>
-
-<button
-    data-view="studio"
-    class="nav">
-
-    Upload
-
-</button>
-
-<button
-    data-view="studio"
-    class="nav">
-
-    Studio
-
-</button>
-
-<button
-    data-view="profile"
-    class="nav">
-
-    Profile
-
-</button>
-
-</nav><template id="videoTemplate"><article class="video-card">
-
-    <div class="video-wrap">
-
-        <video
-            class="video"
-            controls
-            playsinline
-            preload="metadata">
-        </video>
-
-        <div class="lock-overlay hidden">
-
-            <div>
-
-                <strong>
-                    Locked Video
-                </strong>
-
-                <p class="price"></p>
+                <p>
+                    Creator access for 7 days
+                </p>
 
                 <button
-                    class="btn pink unlockBtn">
+                    class="btn pink"
+                    data-plan="weekly">
 
-                    Unlock with Pi
+                    Subscribe
+
+                </button>
+
+            </div>
+
+
+
+            <!-- MONTHLY -->
+
+            <div class="plan">
+
+                <h3>
+                    Monthly
+                </h3>
+
+                <p>
+                    Creator access for 30 days
+                </p>
+
+                <button
+                    class="btn pink"
+                    data-plan="monthly">
+
+                    Subscribe
+
+                </button>
+
+            </div>
+
+
+
+            <!-- YEARLY -->
+
+            <div class="plan">
+
+                <h3>
+                    Yearly
+                </h3>
+
+                <p>
+                    Creator access for 365 days
+                </p>
+
+                <button
+                    class="btn pink"
+                    data-plan="yearly">
+
+                    Subscribe
 
                 </button>
 
@@ -274,68 +214,350 @@ document.addEventListener("DOMContentLoaded", function () {
 
         </div>
 
-    </div>
 
 
-    <div class="video-info">
+        <!-- UPLOAD -->
 
-        <h3 class="title"></h3>
-
-        <p class="creator"></p>
-
-        <p class="description"></p>
-
-        <div class="actions">
-
-            <button class="likeBtn">
-
-                ♡
-                <span>0</span>
-
-            </button>
-
-            <button class="commentBtn">
-
-                💬
-                <span>Comment</span>
-
-            </button>
-
-            <button class="replyBtn">
-
-                ↩ Reply
-
-            </button>
-
-        </div>
+        <div class="upload-box">
 
 
-        <div class="comments hidden">
+            <h3>
+                Upload Video
+            </h3>
 
-            <form class="commentForm">
+
+            <form id="uploadForm">
+
 
                 <input
-                    name="text"
-                    maxlength="500"
-                    placeholder="Write a comment..."
+                    type="text"
+                    name="title"
+                    placeholder="Video title"
+                    maxlength="120"
                     required>
 
+
+                <textarea
+                    name="description"
+                    placeholder="Video description"
+                    maxlength="1000">
+                </textarea>
+
+
+                <input
+                    type="number"
+                    name="price"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Unlock price in Pi"
+                    required>
+
+
+                <input
+                    type="file"
+                    name="video"
+                    accept="video/*"
+                    required>
+
+
                 <button
-                    class="btn"
+                    class="btn pink"
                     type="submit">
 
-                    Post
+                    Upload Video
 
                 </button>
 
+
             </form>
 
-            <div class="commentList"></div>
+
+            <p
+                id="uploadStatus"
+                class="muted">
+
+            </p>
+
 
         </div>
 
-    </div>
+    </section>
 
-</article>
 
-</template><script src="./app.js"></script><script src="./login.js"></script><script src="./navigation.js"></script></body></html>
+
+    <!-- ======================================
+         PROFILE
+    ======================================= -->
+
+    <section
+        id="profile"
+        class="panel hidden">
+
+
+        <h2>
+            My Profile
+        </h2>
+
+
+        <div class="profile-card">
+
+
+            <div class="logo">
+                ▶
+            </div>
+
+
+            <h3 id="profileUsername">
+
+                Not connected
+
+            </h3>
+
+
+            <p class="muted">
+
+                Your Video City profile
+
+            </p>
+
+
+            <div class="profile-status">
+
+
+                <p>
+
+                    Account status:
+
+                    <strong id="profileStatus">
+
+                        Not connected
+
+                    </strong>
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- ==========================================
+     BOTTOM NAVIGATION
+=========================================== -->
+
+<nav class="bottom-nav">
+
+
+    <button
+        data-view="home"
+        class="nav active">
+
+        Home
+
+    </button>
+
+
+    <button
+        data-view="studio"
+        class="nav">
+
+        Upload
+
+    </button>
+
+
+    <button
+        data-view="studio"
+        class="nav">
+
+        Studio
+
+    </button>
+
+
+    <button
+        data-view="profile"
+        class="nav">
+
+        Profile
+
+    </button>
+
+
+</nav>
+
+
+
+<!-- ==========================================
+     VIDEO TEMPLATE
+=========================================== -->
+
+<template id="videoTemplate">
+
+
+    <article class="video-card">
+
+
+        <div class="video-wrap">
+
+
+            <video
+                class="video"
+                controls
+                playsinline
+                preload="metadata">
+
+            </video>
+
+
+            <div
+                class="lock-overlay hidden">
+
+
+                <div>
+
+
+                    <strong>
+                        Locked Video
+                    </strong>
+
+
+                    <p class="price">
+                    </p>
+
+
+                    <button
+                        class="btn pink unlockBtn">
+
+                        Unlock with Pi
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="video-info">
+
+
+            <h3 class="title">
+            </h3>
+
+
+            <p class="creator">
+            </p>
+
+
+            <p class="description">
+            </p>
+
+
+
+            <div class="actions">
+
+
+                <button
+                    class="likeBtn"
+                    type="button">
+
+                    ♡
+
+                    <span>
+                        0
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="commentBtn"
+                    type="button">
+
+                    💬
+
+                    <span>
+                        Comment
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="replyBtn"
+                    type="button">
+
+                    ↩ Reply
+
+                </button>
+
+
+            </div>
+
+
+
+            <div
+                class="comments hidden">
+
+
+                <form
+                    class="commentForm">
+
+
+                    <input
+                        name="text"
+                        maxlength="500"
+                        placeholder="Write a comment..."
+                        required>
+
+
+                    <button
+                        class="btn"
+                        type="submit">
+
+                        Post
+
+                    </button>
+
+
+                </form>
+
+
+                <div
+                    class="commentList">
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </article>
+
+</template>
+
+
+
+<!-- ==========================================
+     JAVASCRIPT
+=========================================== -->
+
+<script src="./app.js?v=5"></script>
+
+<script src="./login.js"></script>
+
+<script src="./navigation.js"></script>
+
+</body></html>
