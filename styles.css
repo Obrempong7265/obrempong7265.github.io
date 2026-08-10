@@ -1,0 +1,318 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: #fff;
+    padding-bottom: 75px;
+}
+
+/* TOP BAR */
+.topbar {
+    height: 70px;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.logo {
+    color: #ff0055;
+    font-size: 25px;
+}
+
+.account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.username {
+    font-size: 14px;
+    color: #ddd;
+}
+
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn.pink {
+    background: #ff0055;
+    color: white;
+    font-weight: bold;
+}
+
+/* VIDEO FEED */
+
+.feed {
+    min-height: calc(100vh - 145px);
+}
+
+.video-card {
+    min-height: calc(100vh - 145px);
+    position: relative;
+    background: #000;
+}
+
+.video-wrap {
+    position: relative;
+    width: 100%;
+    height: 72vh;
+    background: #111;
+}
+
+.video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* VIDEO INFORMATION */
+
+.video-info {
+    padding: 14px 16px;
+}
+
+.video-info h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.creator {
+    color: #ff0055;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #ccc;
+    line-height: 1.4;
+}
+
+/* ACTION BUTTONS */
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.actions button {
+    background: #222;
+    border: none;
+    color: white;
+    padding: 9px 13px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* LOCKED VIDEO */
+
+.lock-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.lock-overlay strong {
+    font-size: 24px;
+}
+
+.price {
+    margin: 10px 0;
+    color: #ff0055;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* COMMENTS */
+
+.comments {
+    margin-top: 15px;
+}
+
+.commentForm {
+    display: flex;
+    gap: 8px;
+}
+
+.commentForm input {
+    flex: 1;
+    padding: 11px;
+    border-radius: 5px;
+    border: none;
+}
+
+.commentList {
+    margin-top: 15px;
+}
+
+.comment {
+    background: #181818;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+/* CREATOR STUDIO */
+
+.panel {
+    padding: 20px;
+    min-height: calc(100vh - 145px);
+    background: #000;
+}
+
+.panel h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.muted {
+    color: #aaa;
+    line-height: 1.5;
+}
+
+/* PLANS */
+
+.plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.plan {
+    background: #171717;
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+.plan h3 {
+    margin-bottom: 10px;
+}
+
+.plan p {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* UPLOAD */
+
+.upload-box {
+    margin-top: 30px;
+    background: #171717;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.upload-box h3 {
+    margin-bottom: 15px;
+}
+
+.upload-box input,
+.upload-box textarea {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #292929;
+    color: white;
+}
+
+.upload-box textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: #111;
+    border-top: 1px solid #333;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 200;
+}
+
+.nav {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.nav.active {
+    color: #ff0055;
+    font-weight: bold;
+}
+
+/* HIDDEN */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    .brand {
+        font-size: 19px;
+    }
+
+    .username {
+        display: none;
+    }
+
+    .plans {
+        grid-template-columns: 1fr;
+    }
+
+    .video-wrap {
+        height: 65vh;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+  }
