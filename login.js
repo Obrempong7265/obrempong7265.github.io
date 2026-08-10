@@ -4,30 +4,46 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-const loginBtn =
-    document.getElementById("loginBtn");
+const loginBtn = document.getElementById("loginBtn");
+const piUser = document.getElementById("piUser");
 
-const piUser =
-    document.getElementById("piUser");
+const profileUsername =
+    document.getElementById("profileUsername");
+
+const profileStatus =
+    document.getElementById("profileStatus");
 
 
-if (!loginBtn || !piUser) {
+// Check Pi SDK
 
-    console.error(
-        "Video City login elements were not found."
-    );
+if (typeof Pi === "undefined") {
+
+    console.error("Pi SDK was not found.");
 
     return;
 }
 
 
-if (typeof Pi === "undefined") {
+// ------------------------------------------
+// UPDATE PROFILE
+// ------------------------------------------
 
-    console.error(
-        "Pi SDK was not found."
-    );
+function updateProfile(username) {
 
-    return;
+    if (profileUsername) {
+
+        profileUsername.textContent =
+            "@" + username;
+
+    }
+
+    if (profileStatus) {
+
+        profileStatus.textContent =
+            "Connected ✓";
+
+    }
+
 }
 
 
@@ -35,132 +51,115 @@ if (typeof Pi === "undefined") {
 // PI LOGIN
 // ------------------------------------------
 
-loginBtn.addEventListener(
-    "click",
-    async function () {
+loginBtn.addEventListener("click", async function () {
 
-        loginBtn.disabled = true;
+    loginBtn.disabled = true;
 
-        loginBtn.textContent =
-            "Connecting...";
+    loginBtn.textContent =
+        "Connecting...";
 
 
-        try {
+    try {
 
-            const scopes = [
-                "username"
-            ];
+        const scopes = ["username"];
 
 
-            function onIncompletePaymentFound(payment) {
-
-                console.log(
-                    "Incomplete payment found:",
-                    payment
-                );
-
-            }
-
-
-            const auth =
-                await Pi.authenticate(
-                    scopes,
-                    onIncompletePaymentFound
-                );
-
+        function onIncompletePaymentFound(payment) {
 
             console.log(
-                "Pi authentication successful:",
-                auth
-            );
-
-
-            if (
-                !auth ||
-                !auth.user ||
-                !auth.user.username
-            ) {
-
-                throw new Error(
-                    "Pi authentication succeeded, but no username was returned."
-                );
-
-            }
-
-
-            const username =
-                auth.user.username;
-
-
-            // Display username in header
-
-            piUser.textContent =
-                "@" + username;
-
-
-            // Update login button
-
-            loginBtn.textContent =
-                "Connected ✓";
-
-            loginBtn.style.background =
-                "#22c55e";
-
-
-            // Save username for this session
-
-            sessionStorage.setItem(
-                "videoCityUsername",
-                username
-            );
-
-
-            console.log(
-                "Pi Username:",
-                username
-            );
-
-
-            // Tell the rest of Video City
-            // that login was successful
-
-            window.dispatchEvent(
-                new Event("videoCityLogin")
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "Pi Login Error:",
-                error
-            );
-
-
-            loginBtn.disabled = false;
-
-            loginBtn.textContent =
-                "Login with Pi";
-
-
-            let message =
-                "Unknown Pi authentication error.";
-
-
-            if (error && error.message) {
-                message = error.message;
-            }
-
-
-            alert(
-                "PI LOGIN ERROR:\n\n" +
-                message
+                "Incomplete payment found:",
+                payment
             );
 
         }
 
+
+        const auth = await Pi.authenticate(
+            scopes,
+            onIncompletePaymentFound
+        );
+
+
+        console.log(
+            "Pi authentication successful:",
+            auth
+        );
+
+
+        const username =
+            auth.user.username;
+
+
+        // Header username
+
+        if (piUser) {
+
+            piUser.textContent =
+                "@" + username;
+
+        }
+
+
+        // Profile username
+
+        updateProfile(username);
+
+
+        // Login button
+
+        loginBtn.textContent =
+            "Connected ✓";
+
+
+        loginBtn.style.background =
+            "#22c55e";
+
+
+        console.log(
+            "Pi Username:",
+            username
+        );
+
+
+        // Save username
+
+        sessionStorage.setItem(
+            "videoCityUsername",
+            username
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Pi Login Error:",
+            error
+        );
+
+
+        loginBtn.disabled = false;
+
+        loginBtn.textContent =
+            "Login with Pi";
+
+
+        if (profileStatus) {
+
+            profileStatus.textContent =
+                "Not connected";
+
+        }
+
+
+        alert(
+            "Pi Login could not be completed. " +
+            "Please open Video City inside Pi Browser " +
+            "and try again."
+        );
+
     }
-);
+
+});
 
 
 // ------------------------------------------
@@ -175,8 +174,17 @@ const savedUsername =
 
 if (savedUsername) {
 
-    piUser.textContent =
-        "@" + savedUsername;
+    if (piUser) {
+
+        piUser.textContent =
+            "@" + savedUsername;
+
+    }
+
+
+    updateProfile(
+        savedUsername
+    );
 
 
     loginBtn.textContent =
