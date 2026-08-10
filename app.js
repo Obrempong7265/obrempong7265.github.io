@@ -4,18 +4,11 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-const feed =
-    document.getElementById("feed");
-
+const feed = document.getElementById("feed");
 
 if (!feed) {
-
-    console.error(
-        "Video City: Feed not found."
-    );
-
+    console.error("Video City: Feed not found.");
     return;
-
 }
 
 
@@ -26,50 +19,30 @@ if (!feed) {
 const videos = [
 
     {
-        title:
-            "Welcome to Video City",
-
-        creator:
-            "@VideoCity",
-
+        title: "Welcome to Video City",
+        creator: "@VideoCity",
         description:
             "Welcome to Video City — a Pi-powered platform for creators and viewers.",
-
         thumbnail:
             "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=900&q=80"
-
     },
 
-
     {
-        title:
-            "Creator Spotlight",
-
-        creator:
-            "@VideoCity",
-
+        title: "Creator Spotlight",
+        creator: "@VideoCity",
         description:
             "Discover creators, watch their content and support them through the Pi ecosystem.",
-
         thumbnail:
             "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
-
     },
 
-
     {
-        title:
-            "The Future of Creator Economy",
-
-        creator:
-            "@VideoCity",
-
+        title: "The Future of Creator Economy",
+        creator: "@VideoCity",
         description:
             "A new way for creators to connect with audiences and earn from their content.",
-
         thumbnail:
             "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&w=900&q=80"
-
     }
 
 ];
@@ -83,7 +56,6 @@ function createVideo(video) {
 
     const card =
         document.createElement("article");
-
 
     card.className =
         "video-card";
@@ -125,18 +97,31 @@ function createVideo(video) {
 
             <div class="actions">
 
-                <button class="likeBtn">
-                    ♡ <span>0</span>
+                <button
+                    class="likeBtn"
+                    type="button">
+
+                    ♡
+                    <span>0</span>
+
                 </button>
 
 
-                <button class="commentBtn">
+                <button
+                    class="commentBtn"
+                    type="button">
+
                     💬 Comment
+
                 </button>
 
 
-                <button class="supportBtn">
+                <button
+                    class="supportBtn"
+                    type="button">
+
                     💜 Support
+
                 </button>
 
             </div>
@@ -153,30 +138,44 @@ function createVideo(video) {
     const likeButton =
         card.querySelector(".likeBtn");
 
-
-    if (likeButton) {
-
-        likeButton.addEventListener(
-            "click",
-            function () {
-
-                const count =
-                    likeButton.querySelector("span");
-
-                let likes =
-                    Number(count.textContent);
+    const likeCount =
+        likeButton.querySelector("span");
 
 
-                likes++;
+    let liked = false;
 
-                count.textContent =
-                    likes;
+
+    likeButton.addEventListener(
+        "click",
+        function () {
+
+            if (!liked) {
+
+                liked = true;
+
+                likeCount.textContent = "1";
+
+                likeButton.firstChild.textContent =
+                    "♥ ";
+
+            } else {
+
+                liked = false;
+
+                likeCount.textContent = "0";
+
+                likeButton.firstChild.textContent =
+                    "♡ ";
 
             }
-        );
 
-    }
+        }
+    );
 
+
+    // --------------------------------------
+    // ADD CARD
+    // --------------------------------------
 
     feed.appendChild(card);
 
@@ -184,7 +183,7 @@ function createVideo(video) {
 
 
 // ------------------------------------------
-// LOAD VIDEOS
+// LOAD HOME FEED
 // ------------------------------------------
 
 feed.innerHTML = "";
@@ -198,7 +197,7 @@ videos.forEach(function (video) {
 
 
 // ------------------------------------------
-// EXPLORE VIDEOS BUTTON
+// EXPLORE VIDEOS
 // ------------------------------------------
 
 const exploreButton =
