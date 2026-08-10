@@ -4,20 +4,11 @@
 
 <title>Video City</title>
 
-
-<!-- ==========================================
-     PI SDK
-=========================================== -->
-
+<!-- Pi SDK -->
 <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
-
-<!-- ==========================================
-     INITIALIZE PI SDK
-=========================================== -->
-
+<!-- Pi SDK -->
 <script>
-
     document.addEventListener("DOMContentLoaded", function () {
 
         if (typeof Pi !== "undefined") {
@@ -26,7 +17,7 @@
                 version: "2.0"
             });
 
-            console.log("Pi SDK initialized successfully.");
+            console.log("Pi SDK initialized.");
 
         } else {
 
@@ -35,19 +26,12 @@
         }
 
     });
-
 </script>
 
+<!-- Video City CSS -->
+<link rel="stylesheet" href="./style.css">
 
-<!-- ==========================================
-     VIDEO CITY STYLING
-=========================================== -->
-
-<link rel="stylesheet" href="style.css">
-
-</head><body><!-- ==========================================
-     TOP HEADER
-=========================================== -->
+</head><body><!-- TOP HEADER -->
 
 <header class="topbar">
 
@@ -55,21 +39,15 @@
 
         <span class="logo">▶</span>
 
-        <span>
-            Video City
-        </span>
+        <span>Video City</span>
 
     </div>
 
 
     <div class="account">
 
-        <span
-            id="piUser"
-            class="username">
-
+        <span id="piUser" class="username">
             Not connected
-
         </span>
 
 
@@ -87,48 +65,40 @@
 
 
 
-<!-- ==========================================
-     MAIN CONTENT
-=========================================== -->
+<!-- MAIN -->
 
 <main>
 
 
-    <!-- ======================================
-         HOME / VIDEO FEED
-    ======================================= -->
+    <!-- HOME -->
 
     <section
         id="feed"
         class="feed">
 
-        <!-- Videos will appear here -->
-
     </section>
 
 
 
-    <!-- ======================================
-         CREATOR STUDIO
-    ======================================= -->
+    <!-- CREATOR STUDIO -->
 
     <section
         id="studio"
         class="panel hidden">
 
-
         <h2>
             Creator Studio
         </h2>
 
-
         <p class="muted">
+
             Subscribe to a creator plan before
             uploading videos.
+
         </p>
 
 
-        <!-- SUBSCRIPTION PLANS -->
+        <!-- PLANS -->
 
         <div
             id="plans"
@@ -156,7 +126,6 @@
             </div>
 
 
-
             <div class="plan">
 
                 <h3>
@@ -176,7 +145,6 @@
                 </button>
 
             </div>
-
 
 
             <div class="plan">
@@ -203,10 +171,9 @@
 
 
 
-        <!-- VIDEO UPLOAD -->
+        <!-- UPLOAD -->
 
         <div class="upload-box">
-
 
             <h3>
                 Upload Video
@@ -270,14 +237,11 @@
 
 
 
-    <!-- ======================================
-         PROFILE
-    ======================================= -->
+    <!-- PROFILE -->
 
     <section
         id="profile"
         class="panel hidden">
-
 
         <h2>
             My Profile
@@ -286,38 +250,34 @@
 
         <div class="profile-card">
 
+            <div class="logo">
+                ▶
+            </div>
 
-            <p class="muted">
-                Pi Username
-            </p>
 
-
-            <h3
-                id="profilePiUsername">
-
+            <h3 id="profileUsername">
                 Not connected
-
             </h3>
 
 
             <p class="muted">
-                Video City account
+
+                Your Video City profile
+
             </p>
 
 
             <div class="profile-status">
 
                 <p>
+
                     Account status:
+
+                    <strong id="profileStatus">
+                        Not connected
+                    </strong>
+
                 </p>
-
-
-                <strong
-                    id="profileStatus">
-
-                    Not connected
-
-                </strong>
 
             </div>
 
@@ -325,14 +285,11 @@
 
     </section>
 
-
 </main>
 
 
 
-<!-- ==========================================
-     BOTTOM NAVIGATION
-=========================================== -->
+<!-- BOTTOM NAVIGATION -->
 
 <nav class="bottom-nav">
 
@@ -372,14 +329,11 @@
 
     </button>
 
-
 </nav>
 
 
 
-<!-- ==========================================
-     VIDEO TEMPLATE
-=========================================== -->
+<!-- VIDEO TEMPLATE -->
 
 <template id="videoTemplate">
 
@@ -398,9 +352,7 @@
             </video>
 
 
-            <div
-                class="lock-overlay hidden">
-
+            <div class="lock-overlay hidden">
 
                 <div>
 
@@ -449,10 +401,7 @@
                 <button class="likeBtn">
 
                     ♡
-
-                    <span>
-                        0
-                    </span>
+                    <span>0</span>
 
                 </button>
 
@@ -460,10 +409,7 @@
                 <button class="commentBtn">
 
                     💬
-
-                    <span>
-                        Comment
-                    </span>
+                    <span>Comment</span>
 
                 </button>
 
@@ -474,16 +420,13 @@
 
                 </button>
 
-
             </div>
-
 
 
             <div class="comments hidden">
 
 
                 <form class="commentForm">
-
 
                     <input
                         name="text"
@@ -500,13 +443,11 @@
 
                     </button>
 
-
                 </form>
 
 
                 <div class="commentList">
                 </div>
-
 
             </div>
 
@@ -518,12 +459,12 @@
 
 
 
-<!-- ==========================================
-     VIDEO CITY JAVASCRIPT
-=========================================== -->
+<!-- JAVASCRIPT -->
 
-<script src="app.js"></script>
+<script src="./app.js"></script>
 
-<script src="login.js"></script>
+<script src="./login.js"></script>
+
+<script src="./navigation.js"></script>
 
 </body></html>
