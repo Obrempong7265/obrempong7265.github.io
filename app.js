@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     if (typeof supabaseClient === "undefined") {
         console.error("Video City: Supabase is not connected.");
-        return;
+        
     }
 
 
