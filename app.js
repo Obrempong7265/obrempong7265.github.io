@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
     const supabaseClient = window.supabaseClient;
+    console.log(
+    "Video City: Supabase client:",
+    supabaseClient
+);
 
     const feed = document.getElementById("feed");
 
