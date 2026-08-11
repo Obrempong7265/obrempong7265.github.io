@@ -469,36 +469,111 @@
             class="btn"
             type="submit">
 
-            Post
+            <!-- ==========================================
+     VIDEO TEMPLATE
+=========================================== -->
 
-        </button>
+<template id="videoTemplate">
 
-    </form>
+    <article class="video-card">
 
+        <div class="video-wrap">
 
-    <div
-        class="commentList">
-
-    </div>
+            <video
+                class="video"
+                controls
+                playsinline
+                preload="metadata">
+            </video>
 
         </div>
+
+
+        <div class="video-info">
+
+            <h3 class="title">
+            </h3>
+
+
+            <p class="creator">
+            </p>
+
+
+            <p class="description">
+            </p>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+                <button
+                    class="likeBtn"
+                    type="button">
+
+                    ♡
+                    <span>0</span>
 
                 </button>
 
 
-            </form>
+                <button
+                    class="commentBtn"
+                    type="button">
+
+                    💬 Comment
+
+                </button>
 
 
-            <div
-                class="commentList">
+                <button
+                    class="replyBtn"
+                    type="button">
+
+                    ↩ Reply
+
+                </button>
 
             </div>
 
 
+            <!-- COMMENTS -->
+
+            <div
+                class="comments hidden">
+
+                <form
+                    class="commentForm">
+
+                    <textarea
+                        name="comment"
+                        placeholder="Write a comment..."
+                        maxlength="500"
+                        rows="2"
+                        required></textarea>
+
+
+                    <button
+                        class="btn"
+                        type="submit">
+
+                        Post
+
+                    </button>
+
+                </form>
+
+
+                <div
+                    class="commentList">
+
+                </div>
+
+            </div>
+
         </div>
 
-    </div>
-</article>
+    </article>
 
 </template>
 
