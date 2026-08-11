@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
-    const client = window.supabaseClient;
+    const supabaseClient = window.supabaseClient;
 
     const feed = document.getElementById("feed");
 
