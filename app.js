@@ -746,24 +746,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // ======================================
-        // SHOW SAMPLE VIDEOS IF NECESSARY
-        // ======================================
+// SHOW SAMPLE VIDEOS
+// ======================================
 
-        if (
-            realVideos.length === 0
-        ) {
+sampleVideos.forEach(
+    function (video) {
 
-            sampleVideos.forEach(
-                function (video) {
+        createVideo(
+            video
+        );
 
-                    createVideo(
-                        video
-                    );
-
-                }
-            );
-
-        }
+    }
+);
 
 
         console.log(
