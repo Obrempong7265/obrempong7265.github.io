@@ -18,13 +18,60 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // ==========================================
-    // GET PI USERNAME
+    // SAMPLE VIDEOS
+    // ==========================================
+
+    const sampleVideos = [
+
+        {
+            title: "Welcome to Video City",
+            creator: "@VideoCity",
+            description:
+                "Welcome to Video City — a platform where creators can share videos, promote their products and connect with audiences through the Pi ecosystem.",
+            price_pi: 0,
+            media_url:
+                "./7ba2eb8d7397b5b5eef95244c6559301.mp4",
+            media_type: "video",
+            likes: 0
+        },
+
+        {
+            title: "Creator Spotlight",
+            creator: "@VideoCity",
+            description:
+                "Discover creators, explore their content and support the people behind the videos you enjoy.",
+            price_pi: 0,
+            media_url:
+                "./7ba2eb8d7397b5b5eef95244c6559301.mp4",
+            media_type: "video",
+            likes: 0
+        },
+
+        {
+            title: "Sample Product Showcase",
+            creator: "@VideoCity",
+            description:
+                "This is an example of how a creator can introduce a product or service directly below their video.",
+            price_pi: 5,
+            media_url:
+                "./7ba2eb8d7397b5b5eef95244c6559301.mp4",
+            media_type: "video",
+            likes: 0
+        }
+
+    ];
+
+
+    // ==========================================
+    // USERNAME
     // ==========================================
 
     function getUsername() {
 
         const username =
-            sessionStorage.getItem("videoCityUsername");
+            sessionStorage.getItem(
+                "videoCityUsername"
+            );
 
         if (username) {
             return "@" + username;
@@ -35,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     // ==========================================
-    // ESCAPE USER TEXT
+    // ESCAPE TEXT
     // ==========================================
 
     function escapeHTML(text) {
@@ -43,7 +90,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         const div =
             document.createElement("div");
 
-        div.textContent = text || "";
+        div.textContent =
+            text || "";
 
         return div.innerHTML;
     }
@@ -58,21 +106,32 @@ document.addEventListener("DOMContentLoaded", async function () {
         const card =
             document.createElement("article");
 
-        card.className = "video-card";
-
-
-        const mediaType =
-            video.media_type || "video";
+        card.className =
+            "video-card";
 
 
         let mediaHTML = "";
 
 
-        // ======================================
-        // VIDEO
-        // ======================================
+        if (
+            video.media_type === "image"
+        ) {
 
-        if (mediaType === "video") {
+            mediaHTML = `
+
+                <img
+                    class="video"
+                    src="${escapeHTML(video.media_url)}"
+                    alt="${escapeHTML(video.title)}"
+                    style="
+                        width:100%;
+                        height:100%;
+                        object-fit:contain;
+                    ">
+
+            `;
+
+        } else {
 
             mediaHTML = `
 
@@ -90,29 +149,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                     HTML5 video.
 
                 </video>
-
-            `;
-
-        }
-
-
-        // ======================================
-        // IMAGE
-        // ======================================
-
-        else {
-
-            mediaHTML = `
-
-                <img
-                    class="video"
-                    src="${escapeHTML(video.media_url)}"
-                    alt="${escapeHTML(video.title)}"
-                    style="
-                        width:100%;
-                        height:100%;
-                        object-fit:contain;
-                    ">
 
             `;
 
@@ -139,14 +175,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 <p class="creator">
 
-                    ${escapeHTML(video.creator || "@Creator")}
+                    ${escapeHTML(
+                        video.creator ||
+                        "@Creator"
+                    )}
 
                 </p>
 
 
                 <p class="description">
 
-                    ${escapeHTML(video.description)}
+                    ${escapeHTML(
+                        video.description
+                    )}
 
                 </p>
 
@@ -158,7 +199,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <p class="price">
 
                         💰 ${escapeHTML(
-                            video.price_pi
+                            String(video.price_pi)
                         )} Pi
 
                     </p>
@@ -174,7 +215,10 @@ document.addEventListener("DOMContentLoaded", async function () {
                         class="likeBtn"
                         type="button">
 
-                        ♡ <span>${video.likes || 0}</span>
+                        ♡
+                        <span>
+                            ${Number(video.likes) || 0}
+                        </span>
 
                     </button>
 
@@ -213,6 +257,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             autocomplete="off"
                             required>
 
+
                         <button
                             type="submit"
                             class="btn pink">
@@ -224,7 +269,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     </form>
 
 
-                    <div class="commentList"></div>
+                    <div
+                        class="commentList">
+                    </div>
 
                 </div>
 
@@ -238,7 +285,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         // ======================================
 
         const likeButton =
-            card.querySelector(".likeBtn");
+            card.querySelector(
+                ".likeBtn"
+            );
 
 
         let liked = false;
@@ -248,42 +297,72 @@ document.addEventListener("DOMContentLoaded", async function () {
             "click",
             async function () {
 
-                liked = !liked;
+                liked =
+                    !liked;
 
 
-                const currentLikes =
+                const span =
+                    likeButton.querySelector(
+                        "span"
+                    );
+
+
+                let currentLikes =
                     Number(
-                        likeButton
-                            .querySelector("span")
-                            .textContent
-                    );
+                        span.textContent
+                    ) || 0;
 
 
-                const newLikes =
-                    liked
-                    ? currentLikes + 1
-                    : Math.max(
-                        0,
-                        currentLikes - 1
-                    );
+                if (liked) {
+
+                    currentLikes++;
+
+                } else {
+
+                    currentLikes =
+                        Math.max(
+                            0,
+                            currentLikes - 1
+                        );
+
+                }
 
 
                 likeButton.innerHTML =
                     liked
-                    ? `♥ <span>${newLikes}</span>`
-                    : `♡ <span>${newLikes}</span>`;
+                    ?
+                    `♥ <span>${currentLikes}</span>`
+                    :
+                    `♡ <span>${currentLikes}</span>`;
 
 
-                // Save like count to Supabase
+                // Save real posts only
 
                 if (video.id) {
 
-                    await supabaseClient
-                        .from("videos")
-                        .update({
-                            likes: newLikes
-                        })
-                        .eq("id", video.id);
+                    const {
+                        error
+                    } =
+                        await supabaseClient
+                            .from("videos")
+                            .update({
+                                likes:
+                                    currentLikes
+                            })
+                            .eq(
+                                "id",
+                                video.id
+                            );
+
+
+                    if (error) {
+
+                        console.error(
+                            "Like update failed:",
+                            error
+                        );
+
+                    }
 
                 }
 
@@ -296,11 +375,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         // ======================================
 
         const commentButton =
-            card.querySelector(".commentBtn");
+            card.querySelector(
+                ".commentBtn"
+            );
 
 
         const comments =
-            card.querySelector(".comments");
+            card.querySelector(
+                ".comments"
+            );
 
 
         commentButton.addEventListener(
@@ -308,9 +391,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             function () {
 
                 comments.style.display =
-                    comments.style.display === "none"
-                    ? "block"
-                    : "none";
+                    comments.style.display ===
+                    "none"
+                    ?
+                    "block"
+                    :
+                    "none";
 
             }
         );
@@ -321,15 +407,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         // ======================================
 
         const form =
-            card.querySelector(".commentForm");
+            card.querySelector(
+                ".commentForm"
+            );
 
 
         const input =
-            form.querySelector("input");
+            form.querySelector(
+                "input"
+            );
 
 
         const commentList =
-            card.querySelector(".commentList");
+            card.querySelector(
+                ".commentList"
+            );
 
 
         form.addEventListener(
@@ -370,7 +462,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         ) {
 
             const comment =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
 
             comment.className =
@@ -381,7 +475,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 <strong>
 
-                    ${escapeHTML(getUsername())}
+                    ${escapeHTML(
+                        getUsername()
+                    )}
 
                 </strong>
 
@@ -422,14 +518,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                     </button>
 
 
-                    <div class="replyList"></div>
+                    <div
+                        class="replyList">
+                    </div>
 
                 </div>
 
             `;
 
 
-            list.appendChild(comment);
+            list.appendChild(
+                comment
+            );
 
 
             // ==================================
@@ -437,11 +537,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             // ==================================
 
             const replyButton =
-                comment.querySelector(".replyBtn");
+                comment.querySelector(
+                    ".replyBtn"
+                );
 
 
             const replyBox =
-                comment.querySelector(".replyBox");
+                comment.querySelector(
+                    ".replyBox"
+                );
 
 
             replyButton.addEventListener(
@@ -449,28 +553,37 @@ document.addEventListener("DOMContentLoaded", async function () {
                 function () {
 
                     replyBox.style.display =
-                        replyBox.style.display === "none"
-                        ? "block"
-                        : "none";
+                        replyBox.style.display ===
+                        "none"
+                        ?
+                        "block"
+                        :
+                        "none";
 
                 }
             );
 
 
             // ==================================
-            // POST REPLY
+            // REPLY
             // ==================================
 
             const replyInput =
-                replyBox.querySelector("input");
+                replyBox.querySelector(
+                    "input"
+                );
 
 
             const replySubmit =
-                replyBox.querySelector(".replySubmit");
+                replyBox.querySelector(
+                    ".replySubmit"
+                );
 
 
             const replyList =
-                replyBox.querySelector(".replyList");
+                replyBox.querySelector(
+                    ".replyList"
+                );
 
 
             replySubmit.addEventListener(
@@ -487,7 +600,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                     const reply =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
 
 
                     reply.className =
@@ -516,7 +631,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                     `;
 
 
-                    replyList.appendChild(reply);
+                    replyList.appendChild(
+                        reply
+                    );
 
 
                     replyInput.value = "";
@@ -527,13 +644,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
 
-        feed.appendChild(card);
+        feed.appendChild(
+            card
+        );
 
     }
 
 
     // ==========================================
-    // LOAD VIDEOS FROM SUPABASE
+    // LOAD REAL VIDEOS
     // ==========================================
 
     async function loadVideos() {
@@ -541,125 +660,113 @@ document.addEventListener("DOMContentLoaded", async function () {
         feed.innerHTML = "";
 
 
+        let realVideos = [];
+
+
         try {
 
             const {
                 data,
                 error
-            } = await supabaseClient
-
-                .from("videos")
-
-                .select(`
-                    id,
-                    title,
-                    description,
-                    category,
-                    price_pi,
-                    media_url,
-                    media_type,
-                    views,
-                    likes,
-                    created_at,
-                    creators (
-                        username
-                    )
-                `)
-
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+            } =
+                await supabaseClient
+                    .from("videos")
+                    .select(`
+                        id,
+                        creator_id,
+                        title,
+                        description,
+                        category,
+                        price_pi,
+                        media_url,
+                        media_type,
+                        views,
+                        likes,
+                        created_at,
+                        creators (
+                            username
+                        )
+                    `)
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
 
 
             if (error) {
 
                 console.error(
-                    "Video City: Could not load videos.",
+                    "Video City: Feed error:",
                     error
                 );
 
-                return;
+            } else {
+
+                realVideos =
+                    data || [];
 
             }
-
-
-            if (!data || data.length === 0) {
-
-                showEmptyFeed();
-
-                return;
-
-            }
-
-
-            data.forEach(
-                function (video) {
-
-                    video.creator =
-                        video.creators
-                        ? "@" +
-                          video.creators.username
-                        : "@Creator";
-
-
-                    createVideo(video);
-
-                }
-            );
-
-
-            console.log(
-                "Video City: Videos loaded from Supabase."
-            );
-
 
         } catch (error) {
 
             console.error(
-                "Video City feed error:",
+                "Video City: Supabase error:",
                 error
             );
 
         }
 
-    }
+
+        // ======================================
+        // SHOW REAL VIDEOS FIRST
+        // ======================================
+
+        realVideos.forEach(
+            function (video) {
+
+                video.creator =
+                    video.creators
+                    ?
+                    "@" +
+                    video.creators.username
+                    :
+                    "@Creator";
 
 
-    // ==========================================
-    // EMPTY FEED
-    // ==========================================
+                createVideo(
+                    video
+                );
 
-    function showEmptyFeed() {
+            }
+        );
 
-        feed.innerHTML = `
 
-            <div
-                class="upload-box"
-                style="text-align:center;">
+        // ======================================
+        // SHOW SAMPLE VIDEOS IF NECESSARY
+        // ======================================
 
-                <h2>
-                    🎬 Welcome to Video City
-                </h2>
+        if (
+            realVideos.length === 0
+        ) {
 
-                <p class="muted">
+            sampleVideos.forEach(
+                function (video) {
 
-                    No videos have been published yet.
+                    createVideo(
+                        video
+                    );
 
-                </p>
+                }
+            );
 
-                <p class="muted">
+        }
 
-                    Be the first creator to
-                    publish content.
 
-                </p>
-
-            </div>
-
-        `;
+        console.log(
+            "Video City: Feed loaded."
+        );
 
     }
 
@@ -669,7 +776,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // ==========================================
 
     const uploadForm =
-        document.getElementById("uploadForm");
+        document.getElementById(
+            "uploadForm"
+        );
 
 
     if (uploadForm) {
@@ -679,6 +788,13 @@ document.addEventListener("DOMContentLoaded", async function () {
             async function (event) {
 
                 event.preventDefault();
+
+
+                // IMPORTANT:
+                // Stop other scripts from handling
+                // this form submission.
+
+                event.stopPropagation();
 
 
                 const status =
@@ -694,43 +810,41 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                 const title =
-                    uploadForm.elements["title"]
-                    .value
-                    .trim();
+                    uploadForm.elements[
+                        "title"
+                    ].value.trim();
 
 
                 const description =
-                    uploadForm.elements["description"]
-                    .value
-                    .trim();
+                    uploadForm.elements[
+                        "description"
+                    ].value.trim();
 
 
                 const category =
-                    uploadForm.elements["category"]
-                    ? uploadForm.elements["category"]
-                        .value
-                        .trim()
-                    : "";
+                    uploadForm.elements[
+                        "category"
+                    ].value.trim();
 
 
                 const price =
-                    uploadForm.elements["price"]
-                    ? Number(
-                        uploadForm.elements["price"]
-                            .value || 0
-                    )
-                    : 0;
+                    Number(
+                        uploadForm.elements[
+                            "price"
+                        ].value || 0
+                    );
 
 
                 const file =
-                    uploadForm.elements["video"]
-                    .files[0];
+                    uploadForm.elements[
+                        "video"
+                    ].files[0];
 
 
                 if (!file) {
 
                     status.textContent =
-                        "Please select a video or image.";
+                        "❌ Please select a video or image.";
 
                     return;
 
@@ -739,10 +853,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                 try {
 
-                    submitButton.disabled = true;
+                    submitButton.disabled =
+                        true;
+
 
                     submitButton.textContent =
-                        "Publishing...";
+                        "Uploading...";
 
 
                     status.textContent =
@@ -754,13 +870,17 @@ document.addEventListener("DOMContentLoaded", async function () {
                     // ==================================
 
                     const mediaType =
-                        file.type.startsWith("image/")
-                        ? "image"
-                        : "video";
+                        file.type.startsWith(
+                            "image/"
+                        )
+                        ?
+                        "image"
+                        :
+                        "video";
 
 
                     // ==================================
-                    // FILE NAME
+                    // FILE EXTENSION
                     // ==================================
 
                     const extension =
@@ -770,7 +890,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                             .toLowerCase();
 
 
-                    const safeName =
+                    // ==================================
+                    // SAFE FILE NAME
+                    // ==================================
+
+                    const safeTitle =
                         title
                             .toLowerCase()
                             .replace(
@@ -779,125 +903,21 @@ document.addEventListener("DOMContentLoaded", async function () {
                             )
                             .replace(
                                 /^-+|-+$/g,
-                                ""
-                            );
+                                "");
 
 
-                    const uniqueName =
-                        `${Date.now()}-${safeName}.${extension}`;
+                    const fileName =
+                        Date.now() +
+                        "-" +
+                        safeTitle +
+                        "." +
+                        extension;
 
 
                     const filePath =
-                        `uploads/${uniqueName}`;
+                        "uploads/" +
+                        fileName;
 
 
                     // ==================================
-                    // UPLOAD FILE
-                    // ==================================
-
-                    const {
-                        error:
-                        uploadError
-                    } =
-                        await supabaseClient
-                            .storage
-                            .from(
-                                "video-city-media"
-                            )
-                            .upload(
-                                filePath,
-                                file,
-                                {
-                                    cacheControl:
-                                        "3600",
-                                    upsert: false,
-                                    contentType:
-                                        file.type
-                                }
-                            );
-
-
-                    if (uploadError) {
-
-                        throw uploadError;
-
-                    }
-
-
-                    status.textContent =
-                        "File uploaded. Saving post...";
-
-
-                    // ==================================
-                    // GET PUBLIC URL
-                    // ==================================
-
-                    const {
-                        data:
-                        publicURLData
-                    } =
-                        supabaseClient
-                            .storage
-                            .from(
-                                "video-city-media"
-                            )
-                            .getPublicUrl(
-                                filePath
-                            );
-
-
-                    const mediaURL =
-                        publicURLData.publicUrl;
-
-
-                    // ==================================
-                    // CREATOR
-                    // ==================================
-
-                    const username =
-                        sessionStorage.getItem(
-                            "videoCityUsername"
-                        ) || "Creator";
-
-
-                    const piUID =
-                        sessionStorage.getItem(
-                            "videoCityPiUID"
-                        ) || username;
-
-
-                    // ==================================
-                    // FIND / CREATE CREATOR
-                    // ==================================
-
-                    let creator;
-
-
-                    const {
-                        data:
-                        existingCreator
-                    } =
-                        await supabaseClient
-                            .from("creators")
-                            .select("*")
-                            .eq(
-                                "pi_uid",
-                                piUID
-                            )
-                            .maybeSingle();
-
-
-                    if (existingCreator) {
-
-                        creator =
-                            existingCreator;
-
-                    } else {
-
-                        const {
-                            data:
-                            newCreator,
-                            error:
-                            creatorError
-                        } =
-                            await
+     
