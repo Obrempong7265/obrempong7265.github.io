@@ -902,4 +902,3 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     alert(
                         "Comment failed. Please try again."
-                    
