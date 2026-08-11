@@ -915,9 +915,285 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
                     const filePath =
-                        "uploads/" +
-                        fileName;
+    "uploads/" +
+    fileName;
 
 
-                    // ==================================
-     
+// ==================================
+// UPLOAD FILE TO SUPABASE STORAGE
+// ==================================
+
+const {
+    error: uploadError
+} = await supabaseClient
+    .storage
+    .from("video-city-media")
+    .upload(
+        filePath,
+        file,
+        {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: file.type
+        }
+    );
+
+
+if (uploadError) {
+
+    throw uploadError;
+
+}
+
+
+status.textContent =
+    "File uploaded. Saving information...";
+
+
+// ==================================
+// GET PUBLIC URL
+// ==================================
+
+const {
+    data: publicData
+} =
+    supabaseClient
+        .storage
+        .from("video-city-media")
+        .getPublicUrl(
+            filePath
+        );
+
+
+const mediaURL =
+    publicData.publicUrl;
+
+
+// ==================================
+// GET CREATOR
+// ==================================
+
+const username =
+    sessionStorage.getItem(
+        "videoCityUsername"
+    ) || "Creator";
+
+
+const piUID =
+    sessionStorage.getItem(
+        "videoCityPiUID"
+    ) || username;
+
+
+let creator;
+
+
+const {
+    data: existingCreator,
+    error: creatorLookupError
+} =
+    await supabaseClient
+        .from("creators")
+        .select("*")
+        .eq("pi_uid", piUID)
+        .maybeSingle();
+
+
+if (creatorLookupError) {
+
+    throw creatorLookupError;
+
+}
+
+
+if (existingCreator) {
+
+    creator =
+        existingCreator;
+
+} else {
+
+    const {
+        data: newCreator,
+        error: creatorInsertError
+    } =
+        await supabaseClient
+            .from("creators")
+            .insert({
+                pi_uid: piUID,
+                username: username
+            })
+            .select()
+            .single();
+
+
+    if (creatorInsertError) {
+
+        throw creatorInsertError;
+
+    }
+
+
+    creator =
+        newCreator;
+
+}
+
+
+// ==================================
+// SAVE VIDEO RECORD
+// ==================================
+
+const {
+    error: videoInsertError
+} =
+    await supabaseClient
+        .from("videos")
+        .insert({
+
+            creator_id:
+                creator.id,
+
+            title:
+                title,
+
+            description:
+                description,
+
+            category:
+                category,
+
+            price_pi:
+                price,
+
+            media_url:
+                mediaURL,
+
+            media_type:
+                mediaType,
+
+            views:
+                0,
+
+            likes:
+                0
+
+        });
+
+
+if (videoInsertError) {
+
+    throw videoInsertError;
+
+}
+
+
+status.textContent =
+    "✅ Published successfully!";
+
+
+uploadForm.reset();
+
+
+await loadVideos();
+
+
+const uploadSection =
+    document.getElementById(
+        "upload"
+    );
+
+
+const homeFeed =
+    document.getElementById(
+        "feed"
+    );
+
+
+if (uploadSection) {
+
+    uploadSection.classList.add(
+        "hidden"
+    );
+
+}
+
+
+if (homeFeed) {
+
+    homeFeed.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+document
+    .querySelectorAll(".nav")
+    .forEach(
+        function (button) {
+
+            button.classList.remove(
+                "active"
+            );
+
+
+            if (
+                button.dataset.view ===
+                "home"
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+} catch (error) {
+
+    console.error(
+        "Video City upload error:",
+        error
+    );
+
+
+    status.textContent =
+        "❌ Upload failed: " +
+        (
+            error.message ||
+            "Unknown error"
+        );
+
+} finally {
+
+    submitButton.disabled =
+        false;
+
+
+    submitButton.textContent =
+        "Publish to Video City";
+
+}
+
+            }
+        );
+
+    }
+
+
+// ==========================================
+// START APPLICATION
+// ==========================================
+
+await loadVideos();
+
+
+console.log(
+    "Video City: Application ready."
+);
+
+});
