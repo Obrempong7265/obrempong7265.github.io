@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     "Video City: Supabase client:",
     supabaseClient
 );
+    alert("Video City app.js is running");
 
     const feed = document.getElementById("feed");
 
