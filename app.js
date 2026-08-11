@@ -283,95 +283,296 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
         // ======================================
-        // LIKE
-        // ======================================
+        
+// ======================================
+// LIKE
+// ======================================
 
-        const likeButton =
-            card.querySelector(
-                ".likeBtn"
-            );
-
-
-        let liked = false;
+const likeButton =
+    card.querySelector(".likeBtn");
 
 
-        likeButton.addEventListener(
-            "click",
-            async function () {
-
-                liked =
-                    !liked;
+const span =
+    likeButton.querySelector("span");
 
 
-                const span =
-                    likeButton.querySelector(
-                        "span"
-                    );
+let liked = false;
 
 
-                let currentLikes =
-                    Number(
-                        span.textContent
-                    ) || 0;
+// ======================================
+// LOAD LIKE STATUS
+// ======================================
+
+async function loadLikeStatus() {
+
+    // Sample videos don't have a database ID
+    if (!video.id) {
+        return;
+    }
 
 
-                if (liked) {
-
-                    currentLikes++;
-
-                } else {
-
-                    currentLikes =
-                        Math.max(
-                            0,
-                            currentLikes - 1
-                        );
-
-                }
-
-
-                likeButton.innerHTML =
-                    liked
-                    ?
-                    `♥ <span>${currentLikes}</span>`
-                    :
-                    `♡ <span>${currentLikes}</span>`;
-
-
-                // Save real posts only
-
-                if (video.id) {
-
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .from("videos")
-                            .update({
-                                likes:
-                                    currentLikes
-                            })
-                            .eq(
-                                "id",
-                                video.id
-                            );
-
-
-                    if (error) {
-
-                        console.error(
-                            "Like update failed:",
-                            error
-                        );
-
-                    }
-
-                }
-
-            }
+    const username =
+        sessionStorage.getItem(
+            "videoCityUsername"
         );
 
 
+    if (!username) {
+        return;
+    }
+
+
+    const {
+        data: creator,
+        error: creatorError
+    } =
+        await supabaseClient
+            .from("creators")
+            .select("id")
+            .eq(
+                "username",
+                username
+            )
+            .maybeSingle();
+
+
+    if (creatorError || !creator) {
+        return;
+    }
+
+
+    const {
+        data: existingLike
+    } =
+        await supabaseClient
+            .from("video_likes")
+            .select("id")
+            .eq(
+                "video_id",
+                video.id
+            )
+            .eq(
+                "creator_id",
+                creator.id
+            )
+            .maybeSingle();
+
+
+    liked =
+        !!existingLike;
+
+
+    updateLikeButton();
+
+}
+
+
+// ======================================
+// UPDATE BUTTON
+// ======================================
+
+function updateLikeButton() {
+
+    const currentLikes =
+        Number(
+            span.textContent
+        ) || 0;
+
+
+    likeButton.innerHTML =
+        liked
+        ?
+        `♥ <span>${currentLikes}</span>`
+        :
+        `♡ <span>${currentLikes}</span>`;
+
+}
+
+
+// ======================================
+// LIKE / UNLIKE
+// ======================================
+
+likeButton.addEventListener(
+    "click",
+    async function () {
+
+        if (!video.id) {
+
+            // Sample video
+            liked = !liked;
+
+            updateLikeButton();
+
+            return;
+
+        }
+
+
+        const username =
+            sessionStorage.getItem(
+                "videoCityUsername"
+            );
+
+
+        if (!username) {
+
+            alert(
+                "Please login to like videos."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data: creator,
+            error: creatorError
+        } =
+            await supabaseClient
+                .from("creators")
+                .select("id")
+                .eq(
+                    "username",
+                    username
+                )
+                .maybeSingle();
+
+
+        if (creatorError || !creator) {
+
+            console.error(
+                "Creator not found:",
+                creatorError
+            );
+
+            return;
+
+        }
+
+
+        if (!liked) {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("video_likes")
+                    .insert({
+
+                        video_id:
+                            video.id,
+
+                        creator_id:
+                            creator.id
+
+                    });
+
+
+            if (error) {
+
+                console.error(
+                    "Like failed:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            liked = true;
+
+
+        } else {
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("video_likes")
+                    .delete()
+                    .eq(
+                        "video_id",
+                        video.id
+                    )
+                    .eq(
+                        "creator_id",
+                        creator.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Unlike failed:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            liked = false;
+
+        }
+
+
+        // ==================================
+        // GET CURRENT LIKE COUNT
+        // ==================================
+
+        const {
+            count
+        } =
+            await supabaseClient
+                .from("video_likes")
+                .select(
+                    "id",
+                    {
+                        count:
+                            "exact",
+                        head:
+                            true
+                    }
+                )
+                .eq(
+                    "video_id",
+                    video.id
+                );
+
+
+        const totalLikes =
+            count || 0;
+
+
+        span.textContent =
+            totalLikes;
+
+
+        // Keep videos.likes synchronized
+        await supabaseClient
+            .from("videos")
+            .update({
+                likes:
+                    totalLikes
+            })
+            .eq(
+                "id",
+                video.id
+            );
+
+
+        updateLikeButton();
+
+    }
+);
+
+
+// Load current like status
+loadLikeStatus();
         // ======================================
         // COMMENT BUTTON
         // ======================================
