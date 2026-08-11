@@ -1269,23 +1269,32 @@ loadComments();
         // ======================================
 
         realVideos.forEach(
-            function (video) {
+    function (video) {
 
-                video.creator =
-                    video.creators
-                    ?
-                    "@" +
-                    video.creators.username
-                    :
-                    "@Creator";
+        video.creator =
+            video.creators
+            ?
+            "@" +
+            video.creators.username
+            :
+            "@Creator";
 
+        try {
 
-                createVideo(
-                    video
-                );
+            createVideo(video);
 
-            }
-        );
+        } catch (error) {
+
+            console.error(
+                "Video City: Failed to create video card:",
+                error,
+                video
+            );
+
+        }
+
+    }
+);
 
 
         // ======================================
