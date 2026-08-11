@@ -252,12 +252,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <form
                         class="commentForm">
 
-                        <input
-                            type="text"
-                            placeholder="Write a comment..."
-                            maxlength="500"
-                            autocomplete="off"
-                            required>
+                        <textarea
+    name="comment"
+    placeholder="Write a comment..."
+    maxlength="500"
+    rows="2"
+    required></textarea>
 
 
                         <button
