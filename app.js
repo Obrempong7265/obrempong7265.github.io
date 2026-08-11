@@ -574,284 +574,626 @@ likeButton.addEventListener(
 // Load current like status
 loadLikeStatus();
         // ======================================
-        // COMMENT BUTTON
         // ======================================
+// COMMENT BUTTON
+// ======================================
 
-        const commentButton =
-            card.querySelector(
-                ".commentBtn"
+const commentButton =
+    card.querySelector(".commentBtn");
+
+const comments =
+    card.querySelector(".comments");
+
+const form =
+    card.querySelector(".commentForm");
+
+const input =
+    form.querySelector("textarea");
+
+const commentList =
+    card.querySelector(".commentList");
+
+
+commentButton.addEventListener(
+    "click",
+    function () {
+
+        comments.style.display =
+            comments.style.display === "none"
+            ? "block"
+            : "none";
+
+    }
+);
+
+
+// ======================================
+// LOAD COMMENTS
+// ======================================
+
+async function loadComments() {
+
+    if (!video.id) {
+        return;
+    }
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("comments")
+            .select(`
+                id,
+                text,
+                created_at,
+                creators (
+                    username
+                )
+            `)
+            .eq(
+                "video_id",
+                video.id
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
             );
 
 
-        const comments =
-            card.querySelector(
-                ".comments"
-            );
+    if (error) {
 
-
-        commentButton.addEventListener(
-            "click",
-            function () {
-
-                comments.style.display =
-                    comments.style.display ===
-                    "none"
-                    ?
-                    "block"
-                    :
-                    "none";
-
-            }
+        console.error(
+            "Comments load failed:",
+            error
         );
 
+        return;
 
-        // ======================================
-        // COMMENT FORM
-        // ======================================
+    }
 
-        const form =
-            card.querySelector(
-                ".commentForm"
+
+    commentList.innerHTML = "";
+
+
+    data.forEach(
+        function (comment) {
+
+            renderComment(
+                comment,
+                commentList
             );
 
+        }
+    );
 
-        const input =
-            form.querySelector(
-                "input"
+}
+
+
+// ======================================
+// POST COMMENT
+// ======================================
+
+form.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        const text =
+            input.value.trim();
+
+
+        if (!text) {
+            return;
+        }
+
+
+        if (!video.id) {
+
+            alert(
+                "Comments are available on uploaded videos."
             );
 
-
-        const commentList =
-            card.querySelector(
-                ".commentList"
-            );
-
-
-        form.addEventListener(
-            "submit",
-            function (event) {
-
-                event.preventDefault();
-
-
-                const text =
-                    input.value.trim();
-
-
-                if (!text) {
-                    return;
-                }
-
-
-                addComment(
-                    text,
-                    commentList
-                );
-
-
-                input.value = "";
-
-            }
-        );
-
-
-        // ======================================
-        // ADD COMMENT
-        // ======================================
-
-        function addComment(
-            text,
-            list
-        ) {
-
-            const comment =
-                document.createElement(
-                    "div"
-                );
-
-
-            comment.className =
-                "comment";
-
-
-            comment.innerHTML = `
-
-                <strong>
-
-                    ${escapeHTML(
-                        getUsername()
-                    )}
-
-                </strong>
-
-
-                <p>
-
-                    ${escapeHTML(text)}
-
-                </p>
-
-
-                <button
-                    class="replyBtn"
-                    type="button">
-
-                    ↩ Reply
-
-                </button>
-
-
-                <div
-                    class="replyBox"
-                    style="display:none;">
-
-                    <input
-                        type="text"
-                        maxlength="500"
-                        placeholder="Write a reply..."
-                        autocomplete="off">
-
-
-                    <button
-                        class="replySubmit btn pink"
-                        type="button">
-
-                        Reply
-
-                    </button>
-
-
-                    <div
-                        class="replyList">
-                    </div>
-
-                </div>
-
-            `;
-
-
-            list.appendChild(
-                comment
-            );
-
-
-            // ==================================
-            // REPLY BUTTON
-            // ==================================
-
-            const replyButton =
-                comment.querySelector(
-                    ".replyBtn"
-                );
-
-
-            const replyBox =
-                comment.querySelector(
-                    ".replyBox"
-                );
-
-
-            replyButton.addEventListener(
-                "click",
-                function () {
-
-                    replyBox.style.display =
-                        replyBox.style.display ===
-                        "none"
-                        ?
-                        "block"
-                        :
-                        "none";
-
-                }
-            );
-
-
-            // ==================================
-            // REPLY
-            // ==================================
-
-            const replyInput =
-                replyBox.querySelector(
-                    "input"
-                );
-
-
-            const replySubmit =
-                replyBox.querySelector(
-                    ".replySubmit"
-                );
-
-
-            const replyList =
-                replyBox.querySelector(
-                    ".replyList"
-                );
-
-
-            replySubmit.addEventListener(
-                "click",
-                function () {
-
-                    const replyText =
-                        replyInput.value.trim();
-
-
-                    if (!replyText) {
-                        return;
-                    }
-
-
-                    const reply =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    reply.className =
-                        "reply";
-
-
-                    reply.innerHTML = `
-
-                        <strong>
-
-                            ${escapeHTML(
-                                getUsername()
-                            )}
-
-                        </strong>
-
-
-                        <p>
-
-                            ${escapeHTML(
-                                replyText
-                            )}
-
-                        </p>
-
-                    `;
-
-
-                    replyList.appendChild(
-                        reply
-                    );
-
-
-                    replyInput.value = "";
-
-                }
-            );
+            return;
 
         }
 
 
-        feed.appendChild(
-            card
+        const username =
+            sessionStorage.getItem(
+                "videoCityUsername"
+            );
+
+
+        if (!username) {
+
+            alert(
+                "Please login to comment."
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data: creator,
+            error: creatorError
+        } =
+            await supabaseClient
+                .from("creators")
+                .select("id, username")
+                .eq(
+                    "username",
+                    username
+                )
+                .maybeSingle();
+
+
+        if (
+            creatorError ||
+            !creator
+        ) {
+
+            console.error(
+                "Creator lookup failed:",
+                creatorError
+            );
+
+            return;
+
+        }
+
+
+        const {
+            data: newComment,
+            error
+        } =
+            await supabaseClient
+                .from("comments")
+                .insert({
+
+                    video_id:
+                        video.id,
+
+                    creator_id:
+                        creator.id,
+
+                    text:
+                        text
+
+                })
+                .select(`
+                    id,
+                    text,
+                    created_at,
+                    creators (
+                        username
+                    )
+                `)
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "Comment failed:",
+                error
+            );
+
+            alert(
+                "Comment failed. Please try again."
+            );
+
+            return;
+
+        }
+
+
+        renderComment(
+            newComment,
+            commentList
         );
 
+
+        input.value = "";
+
     }
+);
+
+
+// ======================================
+// RENDER COMMENT
+// ======================================
+
+function renderComment(
+    comment,
+    list
+) {
+
+    const commentElement =
+        document.createElement(
+            "div"
+        );
+
+
+    commentElement.className =
+        "comment";
+
+
+    const username =
+        comment.creators &&
+        comment.creators.username
+        ?
+        "@" +
+        comment.creators.username
+        :
+        "@User";
+
+
+    commentElement.innerHTML = `
+
+        <strong>
+            ${escapeHTML(username)}
+        </strong>
+
+        <p>
+            ${escapeHTML(comment.text)}
+        </p>
+
+        <button
+            class="replyBtn"
+            type="button">
+
+            ↩ Reply
+
+        </button>
+
+
+        <div
+            class="replyBox"
+            style="display:none;">
+
+            <textarea
+                maxlength="500"
+                placeholder="Write a reply..."
+                rows="2"></textarea>
+
+
+            <button
+                class="replySubmit btn pink"
+                type="button">
+
+                Reply
+
+            </button>
+
+
+            <div
+                class="replyList">
+            </div>
+
+        </div>
+
+    `;
+
+
+    list.appendChild(
+        commentElement
+    );
+
+
+    // ==================================
+    // REPLY BUTTON
+    // ==================================
+
+    const replyButton =
+        commentElement.querySelector(
+            ".replyBtn"
+        );
+
+
+    const replyBox =
+        commentElement.querySelector(
+            ".replyBox"
+        );
+
+
+    replyButton.addEventListener(
+        "click",
+        async function () {
+
+            replyBox.style.display =
+                replyBox.style.display === "none"
+                ? "block"
+                : "none";
+
+
+            if (
+                replyBox.style.display ===
+                "block"
+            ) {
+
+                await loadReplies(
+                    comment.id,
+                    commentElement
+                );
+
+            }
+
+        }
+    );
+
+
+    // ==================================
+    // REPLY
+    // ==================================
+
+    const replyInput =
+        replyBox.querySelector(
+            "textarea"
+        );
+
+
+    const replySubmit =
+        replyBox.querySelector(
+            ".replySubmit"
+        );
+
+
+    replySubmit.addEventListener(
+        "click",
+        async function () {
+
+            const replyText =
+                replyInput.value.trim();
+
+
+            if (!replyText) {
+                return;
+            }
+
+
+            const username =
+                sessionStorage.getItem(
+                    "videoCityUsername"
+                );
+
+
+            if (!username) {
+
+                alert(
+                    "Please login to reply."
+                );
+
+                return;
+
+            }
+
+
+            const {
+                data: creator,
+                error: creatorError
+            } =
+                await supabaseClient
+                    .from("creators")
+                    .select("id")
+                    .eq(
+                        "username",
+                        username
+                    )
+                    .maybeSingle();
+
+
+            if (
+                creatorError ||
+                !creator
+            ) {
+
+                console.error(
+                    "Creator lookup failed:",
+                    creatorError
+                );
+
+                return;
+
+            }
+
+
+            const {
+                data: newReply,
+                error
+            } =
+                await supabaseClient
+                    .from("replies")
+                    .insert({
+
+                        comment_id:
+                            comment.id,
+
+                        creator_id:
+                            creator.id,
+
+                        text:
+                            replyText
+
+                    })
+                    .select(`
+                        id,
+                        text,
+                        created_at,
+                        creators (
+                            username
+                        )
+                    `)
+                    .single();
+
+
+            if (error) {
+
+                console.error(
+                    "Reply failed:",
+                    error
+                );
+
+                alert(
+                    "Reply failed. Please try again."
+                );
+
+                return;
+
+            }
+
+
+            renderReply(
+                newReply,
+                commentElement
+            );
+
+
+            replyInput.value = "";
+
+        }
+    );
+
+}
+
+
+// ======================================
+// LOAD REPLIES
+// ======================================
+
+async function loadReplies(
+    commentId,
+    commentElement
+) {
+
+    const replyList =
+        commentElement.querySelector(
+            ".replyList"
+        );
+
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("replies")
+            .select(`
+                id,
+                text,
+                created_at,
+                creators (
+                    username
+                )
+            `)
+            .eq(
+                "comment_id",
+                commentId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Replies load failed:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    replyList.innerHTML = "";
+
+
+    data.forEach(
+        function (reply) {
+
+            renderReply(
+                reply,
+                commentElement
+            );
+
+        }
+    );
+
+}
+
+
+// ======================================
+// RENDER REPLY
+// ======================================
+
+function renderReply(
+    reply,
+    commentElement
+) {
+
+    const replyList =
+        commentElement.querySelector(
+            ".replyList"
+        );
+
+
+    const replyElement =
+        document.createElement(
+            "div"
+        );
+
+
+    replyElement.className =
+        "reply";
+
+
+    const username =
+        reply.creators &&
+        reply.creators.username
+        ?
+        "@" +
+        reply.creators.username
+        :
+        "@User";
+
+
+    replyElement.innerHTML = `
+
+        <strong>
+            ${escapeHTML(username)}
+        </strong>
+
+        <p>
+            ${escapeHTML(reply.text)}
+        </p>
+
+    `;
+
+
+    replyList.appendChild(
+        replyElement
+    );
+
+}
+
+
+// ======================================
+// LOAD COMMENTS WHEN CARD IS CREATED
+// ======================================
+
+loadComments();
 
 
     // ==========================================
