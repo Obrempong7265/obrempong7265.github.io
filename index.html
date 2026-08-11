@@ -463,11 +463,23 @@
                 class="commentForm">
 
 
-                <input
-                    name="text"
-                    maxlength="500"
-                    placeholder="Write a comment..."
-                    required>
+
+    <textarea
+        name="comment"
+        placeholder="Write a comment..."
+        maxlength="500"
+        rows="2"
+        required></textarea>
+
+    <button
+        class="btn"
+        type="submit">
+
+        Post
+
+    </button>
+
+            </form>
 
 
                 <button
@@ -503,7 +515,7 @@
 
 <script src="./supabase.js"></script>
 
-<script src="./app.js?v=10"></script>
+<script src="./app.js?v=12"></script>
 
 <script src="./login.js"></script>
 
