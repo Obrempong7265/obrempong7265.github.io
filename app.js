@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
+    const supabaseClient = window.supabaseClient;
+
     const feed = document.getElementById("feed");
 
     if (!feed) {
