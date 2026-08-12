@@ -1331,6 +1331,255 @@ document.addEventListener(
                             throw uploadError;
 
                         }
+                        // ==================================
+                        // UPLOAD FILE
+                        // ==================================
+
+                        status.textContent =
+                            "Uploading file...";
+
+
+                        const {
+                            error: uploadError
+                        } =
+                            await supabaseClient
+                                .storage
+                                .from(
+                                    "video-city-media"
+                                )
+                                .upload(
+                                    filePath,
+                                    file,
+                                    {
+                                        cacheControl:
+                                            "3600",
+
+                                        upsert:
+                                            false,
+
+                                        contentType:
+                                            file.type
+                                    }
+                                );
+
+
+                        if (uploadError) {
+
+                            throw uploadError;
+
+                        }
+
+
+                        // ==================================
+                        // GET PUBLIC URL
+                        // ==================================
+
+                        const {
+                            data: publicData
+                        } =
+                            supabaseClient
+                                .storage
+                                .from(
+                                    "video-city-media"
+                                )
+                                .getPublicUrl(
+                                    filePath
+                                );
+
+
+                        const mediaURL =
+                            publicData &&
+                            publicData.publicUrl;
+
+
+                        if (!mediaURL) {
+
+                            throw new Error(
+                                "Unable to create media URL."
+                            );
+
+                        }
+
+
+                        // ==================================
+                        // SAVE VIDEO RECORD
+                        // ==================================
+
+                        status.textContent =
+                            "Saving video information...";
+
+
+                        const {
+                            data: savedVideo,
+                            error: videoError
+                        } =
+                            await supabaseClient
+                                .from("videos")
+                                .insert({
+
+                                    creator_id:
+                                        creator.id,
+
+                                    title:
+                                        title,
+
+                                    description:
+                                        description,
+
+                                    category:
+                                        category,
+
+                                    price_pi:
+                                        price,
+
+                                    media_url:
+                                        mediaURL,
+
+                                    media_type:
+                                        mediaType,
+
+                                    views:
+                                        0,
+
+                                    likes:
+                                        0
+
+                                })
+                                .select()
+                                .single();
+
+
+                        if (videoError) {
+
+                            throw videoError;
+
+                        }
+
+
+                        console.log(
+                            "Video City: Video saved:",
+                            savedVideo
+                        );
+
+
+                        // ==================================
+                        // SUCCESS
+                        // ==================================
+
+                        status.textContent =
+                            "✅ Published successfully!";
+
+
+                        uploadForm.reset();
+
+
+                        await loadVideos();
+
+
+                        // ==================================
+                        // RETURN TO HOME
+                        // ==================================
+
+                        const uploadSection =
+                            document.getElementById(
+                                "upload"
+                            );
+
+
+                        const homeFeed =
+                            document.getElementById(
+                                "feed"
+                            );
+
+
+                        if (uploadSection) {
+
+                            uploadSection.classList.add(
+                                "hidden"
+                            );
+
+                        }
+
+
+                        if (homeFeed) {
+
+                            homeFeed.classList.remove(
+                                "hidden"
+                            );
+
+                        }
+
+
+                        document
+                            .querySelectorAll(
+                                ".nav"
+                            )
+                            .forEach(
+                                function (button) {
+
+                                    button.classList.remove(
+                                        "active"
+                                    );
+
+
+                                    if (
+                                        button.dataset.view ===
+                                        "home"
+                                    ) {
+
+                                        button.classList.add(
+                                            "active"
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Video City: Upload error:",
+                            error
+                        );
+
+
+                        status.textContent =
+                            "❌ Upload failed: " +
+                            (
+                                error.message ||
+                                "Unknown error"
+                            );
+
+                    } finally {
+
+                        submitButton.disabled =
+                            false;
+
+
+                        submitButton.textContent =
+                            "Publish to Video City";
+
+                    }
+
+                }
+            );
+
+                            }
+                // ==========================================
+        // START VIDEO CITY
+        // ==========================================
+
+        await loadVideos();
+
+
+        console.log(
+            "Video City: Application ready."
+        );
+
+    }
+);
 
 
                 
