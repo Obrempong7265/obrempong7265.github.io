@@ -1029,7 +1029,22 @@ async function loadVideos() {
         } =
             await supabaseClient
                 .from("videos")
-                .select("*")
+                .select(`
+    id,
+    creator_id,
+    title,
+    description,
+    category,
+    price_pi,
+    media_url,
+    media_type,
+    views,
+    likes,
+    created_at,
+    creators (
+        username
+    )
+`)
                 .order(
                     "created_at",
                     {
