@@ -997,7 +997,7 @@ async function loadVideos() {
     feed.innerHTML = `
         <div class="panel">
             <p class="muted">
-                Loading Video City...
+                Loading videos...
             </p>
         </div>
     `;
@@ -1030,11 +1030,26 @@ async function loadVideos() {
 
             feed.innerHTML = `
                 <div class="panel">
-                    <h3>Video City</h3>
+
+                    <h3>
+                        Video City Database Error
+                    </h3>
+
+                    <p>
+                        ${escapeHTML(
+                            error.message ||
+                            "Unknown database error"
+                        )}
+                    </p>
 
                     <p class="muted">
-                        Unable to load videos.
+                        Code:
+                        ${escapeHTML(
+                            error.code ||
+                            "No code"
+                        )}
                     </p>
+
                 </div>
             `;
 
@@ -1046,14 +1061,11 @@ async function loadVideos() {
             data || [];
 
 
-        // ======================================
-        // NO VIDEOS
-        // ======================================
-
         if (videos.length === 0) {
 
             feed.innerHTML = `
                 <div class="panel">
+
                     <h2>
                         Video City is ready
                     </h2>
@@ -1061,16 +1073,13 @@ async function loadVideos() {
                     <p class="muted">
                         No videos have been published yet.
                     </p>
+
                 </div>
             `;
 
             return;
         }
 
-
-        // ======================================
-        // DISPLAY VIDEOS
-        // ======================================
 
         feed.innerHTML = "";
 
@@ -1100,6 +1109,7 @@ async function loadVideos() {
             " video(s)."
         );
 
+
     } catch (error) {
 
         console.error(
@@ -1110,11 +1120,18 @@ async function loadVideos() {
 
         feed.innerHTML = `
             <div class="panel">
-                <h3>Video City</h3>
 
-                <p class="muted">
-                    Unable to load videos.
+                <h3>
+                    Video City Error
+                </h3>
+
+                <p>
+                    ${escapeHTML(
+                        error.message ||
+                        "Unable to load videos."
+                    )}
                 </p>
+
             </div>
         `;
 
