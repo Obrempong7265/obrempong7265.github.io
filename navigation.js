@@ -105,13 +105,23 @@ function showPage(page) {
 
     if (page === "studio") {
 
-        if (studio) {
+    if (studio) {
 
-            studio.classList.remove(
-                "hidden"
-            );
+        studio.classList.remove(
+            "hidden"
+        );
 
-        }
+    }
+
+
+    if (
+        typeof loadCreatorStudio ===
+        "function"
+    ) {
+
+        loadCreatorStudio();
+
+    }
 
     }
 
