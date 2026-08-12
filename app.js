@@ -756,6 +756,67 @@ function setupComments(card, video) {
         card.querySelector(".commentList");
 
 
+    // ======================================
+    // INITIAL COMMENT COUNT
+    // ======================================
+
+    commentButton.textContent =
+        "💬 Comments 0";
+
+
+    // ======================================
+    // LOAD COMMENT COUNT
+    // ======================================
+
+    async function loadCommentCount() {
+
+        if (!video.id) {
+            return;
+        }
+
+
+        const {
+            count,
+            error
+        } =
+            await supabaseClient
+                .from("comments")
+                .select(
+                    "id",
+                    {
+                        count: "exact",
+                        head: true
+                    }
+                )
+                .eq(
+                    "video_id",
+                    video.id
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Video City: Comment count error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        commentButton.textContent =
+            "💬 Comments " +
+            (count || 0);
+
+    }
+
+
+    // ======================================
+    // OPEN / CLOSE COMMENTS
+    // ======================================
+
     commentButton.addEventListener(
         "click",
         async function () {
@@ -764,6 +825,7 @@ function setupComments(card, video) {
                 comments.style.display === "none"
                     ? "block"
                     : "none";
+
 
             if (
                 comments.style.display === "block" &&
@@ -777,6 +839,10 @@ function setupComments(card, video) {
         }
     );
 
+
+    // ======================================
+    // LOAD COMMENTS
+    // ======================================
 
     async function loadComments() {
 
@@ -813,6 +879,12 @@ function setupComments(card, video) {
                 error
             );
 
+            commentList.innerHTML = `
+                <p class="muted">
+                    Unable to load comments.
+                </p>
+            `;
+
             return;
 
         }
@@ -821,19 +893,40 @@ function setupComments(card, video) {
         commentList.innerHTML = "";
 
 
-        (data || []).forEach(
-            function (comment) {
+        if (!data || data.length === 0) {
 
-                addComment(
-                    comment,
-                    commentList
-                );
+            commentList.innerHTML = `
+                <p class="muted">
+                    No comments yet.
+                </p>
+            `;
 
-            }
-        );
+        } else {
+
+            data.forEach(
+                function (comment) {
+
+                    addComment(
+                        comment,
+                        commentList
+                    );
+
+                }
+            );
+
+        }
+
+
+        commentButton.textContent =
+            "💬 Comments " +
+            (data ? data.length : 0);
 
     }
 
+
+    // ======================================
+    // POST COMMENT
+    // ======================================
 
     form.addEventListener(
         "submit",
@@ -947,6 +1040,13 @@ function setupComments(card, video) {
                 input.value = "";
 
 
+                await loadCommentCount();
+
+
+                comments.style.display =
+                    "block";
+
+
             } catch (error) {
 
                 console.error(
@@ -963,6 +1063,10 @@ function setupComments(card, video) {
         }
     );
 
+
+    // ======================================
+    // DISPLAY COMMENT
+    // ======================================
 
     function addComment(
         comment,
@@ -1002,10 +1106,14 @@ function setupComments(card, video) {
 
     }
 
-            }
 
+    // ======================================
+    // GET INITIAL COUNT
+    // ======================================
 
+    loadCommentCount();
 
+}
         // ==========================================
 // LOAD REAL VIDEOS
 // ==========================================
