@@ -991,7 +991,7 @@ document.addEventListener(
             }
 
         }
-        // ==========================================
+                // ==========================================
         // LOAD REAL VIDEOS
         // ==========================================
 
@@ -1019,10 +1019,7 @@ document.addEventListener(
                             media_type,
                             views,
                             likes,
-                            created_at,
-                            creators (
-                                username
-                            )
+                            created_at
                         `)
                         .order(
                             "created_at",
@@ -1041,9 +1038,15 @@ document.addEventListener(
 
 
                     feed.innerHTML = `
-                        <p class="muted">
-                            Unable to load videos.
-                        </p>
+                        <div class="panel">
+                            <h2>
+                                Unable to load videos
+                            </h2>
+
+                            <p class="muted">
+                                Please try again shortly.
+                            </p>
+                        </div>
                     `;
 
                     return;
@@ -1051,6 +1054,83 @@ document.addEventListener(
                 }
 
 
+                const videos =
+                    data || [];
+
+
+                if (videos.length === 0) {
+
+                    feed.innerHTML = `
+                        <div class="panel">
+                            <h2>
+                                Video City
+                            </h2>
+
+                            <p class="muted">
+                                No videos have been published yet.
+                            </p>
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                // ======================================
+                // DISPLAY VIDEOS
+                // ======================================
+
+                videos.forEach(
+                    function (video) {
+
+                        video.creator =
+                            "@Creator";
+
+
+                        const card =
+                            createVideo(video);
+
+
+                        feed.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+
+                console.log(
+                    "Video City: Loaded " +
+                    videos.length +
+                    " video(s)."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Feed error:",
+                    error
+                );
+
+
+                feed.innerHTML = `
+                    <div class="panel">
+                        <h2>
+                            Unable to load videos
+                        </h2>
+
+                        <p class="muted">
+                            Please try again shortly.
+                        </p>
+                    </div>
+                `;
+
+            }
+
+            }
+        
                 const videos =
                     data || [];
 
