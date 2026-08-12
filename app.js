@@ -893,13 +893,20 @@ function setupComments(card, video) {
         commentList.innerHTML = "";
 
 
-        if (!data || data.length === 0) {
+        if (data && data.length > 0) {
 
-            commentList.innerHTML = `
-                <p class="muted">
-                    No comments yet.
-                </p>
-            `;
+    data.forEach(
+        function (comment) {
+
+            addComment(
+                comment,
+                commentList
+            );
+
+        }
+    );
+
+        }
 
         } else {
 
