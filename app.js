@@ -945,6 +945,112 @@ document.addEventListener(
 
                 }
             );
+            // ======================================
+            // DISPLAY COMMENT
+            // ======================================
+
+            function addComment(
+                comment,
+                list
+            ) {
+
+                const commentElement =
+                    document.createElement("div");
+
+                commentElement.className =
+                    "comment";
+
+
+                const username =
+                    comment.creators &&
+                    comment.creators.username
+                        ? comment.creators.username
+                        : "Guest";
+
+
+                commentElement.innerHTML = `
+
+                    <strong>
+                        @${escapeHTML(username)}
+                    </strong>
+
+                    <p>
+                        ${escapeHTML(comment.text)}
+                    </p>
+
+                `;
+
+
+                list.appendChild(
+                    commentElement
+                );
+
+            }
+
+        }
+        // ==========================================
+        // LOAD REAL VIDEOS
+        // ==========================================
+
+        async function loadVideos() {
+
+            feed.innerHTML = "";
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("videos")
+                        .select(`
+                            id,
+                            creator_id,
+                            title,
+                            description,
+                            category,
+                            price_pi,
+                            media_url,
+                            media_type,
+                            views,
+                            likes,
+                            created_at,
+                            creators (
+                                username
+                            )
+                        `)
+                        .order(
+                            "created_at",
+                            {
+                                ascending: false
+                            }
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Video City: Video loading error:",
+                        error
+                    );
+
+
+                    feed.innerHTML = `
+                        <p class="muted">
+                            Unable to load videos.
+                        </p>
+                    `;
+
+                    return;
+
+                }
+
+
+                const videos =
+                    data || [];
+                
 
             
 
