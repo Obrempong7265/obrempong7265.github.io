@@ -688,7 +688,7 @@ document.addEventListener(
                             );
 
 
-                    } catch (error) {
+                                        } catch (error) {
 
                         console.error(
                             "Video City: Like error:",
@@ -704,7 +704,44 @@ document.addEventListener(
                 }
             );
 
-                                }
+        }
+
+
+// ==========================================
+// SUPPORT SYSTEM
+// ==========================================
+
+function setupSupport(card, video) {
+
+    const supportButton =
+        card.querySelector(".supportBtn");
+
+
+    if (!supportButton) {
+        return;
+    }
+
+
+    supportButton.addEventListener(
+        "click",
+        function () {
+
+            alert(
+                "Pi Support payments will be added soon."
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// COMMENT SYSTEM
+// ==========================================
+
+function setupComments(card, video) {
+                                
                 // ==========================================
         // COMMENT SYSTEM
         // ==========================================
