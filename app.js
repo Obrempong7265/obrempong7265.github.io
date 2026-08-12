@@ -1050,6 +1050,80 @@ document.addEventListener(
 
                 const videos =
                     data || [];
+                // ======================================
+                // NO SAMPLE VIDEOS
+                // ======================================
+
+                if (videos.length === 0) {
+
+                    feed.innerHTML = `
+                        <div class="panel">
+                            <h2>
+                                Video City is ready
+                            </h2>
+
+                            <p class="muted">
+                                No videos have been published yet.
+                            </p>
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                // ======================================
+                // DISPLAY REAL VIDEOS
+                // ======================================
+
+                videos.forEach(
+                    function (video) {
+
+                        video.creator =
+                            video.creators &&
+                            video.creators.username
+                                ? "@" +
+                                  video.creators.username
+                                : "@Creator";
+
+
+                        const card =
+                            createVideo(video);
+
+
+                        feed.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+
+                console.log(
+                    "Video City: Loaded " +
+                    videos.length +
+                    " video(s)."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Feed error:",
+                    error
+                );
+
+
+                feed.innerHTML = `
+                    <p class="muted">
+                        Unable to load videos.
+                    </p>
+                `;
+
+            }
+
+        }
                 
 
             
