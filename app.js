@@ -1664,22 +1664,89 @@ if (uploadForm) {
 
                             }
                 // ==========================================
-        // START VIDEO CITY
-        // ==========================================
+// START VIDEO CITY
+// ==========================================
 
-        await loadVideos();
+await loadVideos();
 
 
-        console.log(
-            "Video City: Application ready."
+console.log(
+    "Video City: Application ready."
+);
+
+
+// ==========================================
+// CREATOR SUBSCRIPTION BUTTONS
+// ==========================================
+
+const subscriptionButtons =
+    document.querySelectorAll(
+        '[data-plan]'
+    );
+
+
+subscriptionButtons.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const plan =
+                    button.dataset.plan;
+
+                let amount = 0;
+
+
+                if (plan === "weekly") {
+                    amount = 10;
+                }
+
+
+                if (plan === "monthly") {
+                    amount = 40;
+                }
+
+
+                if (plan === "yearly") {
+                    amount = 480;
+                }
+
+
+                const status =
+                    document.getElementById(
+                        "subscriptionStatus"
+                    );
+
+
+                if (status) {
+
+                    status.textContent =
+                        "Selected " +
+                        plan +
+                        " subscription: " +
+                        amount +
+                        " Pi. Payment connection coming next.";
+
+                }
+
+
+                console.log(
+                    "Video City: Subscription selected:",
+                    plan,
+                    amount + " Pi"
+                );
+
+            }
         );
 
     }
 );
 
 
-                
+// ==========================================
+// END VIDEO CITY
+// ==========================================
 
-            
-
-              
+    }
+);
