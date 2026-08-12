@@ -1,26 +1,18 @@
 document.addEventListener("DOMContentLoaded", async function () {
 
-    // ==========================================
-    // VIDEO CITY APP
-    // ==========================================
-
-    const supabaseClient = window.supabaseClient;
     const feed = document.getElementById("feed");
-
-    console.log("Video City: app.js loaded.");
 
     if (!feed) {
         console.error("Video City: Feed not found.");
         return;
     }
 
-    if (!supabaseClient) {
-        console.error("Video City: Supabase client not found.");
-        feed.innerHTML = `
-            <p class="muted">
-                Unable to connect to Video City database.
-            </p>
-        `;
+    // ==========================================
+    // SUPABASE CHECK
+    // ==========================================
+
+    if (typeof supabaseClient === "undefined") {
+        console.error("Video City: Supabase is not connected.");
         return;
     }
 
@@ -68,38 +60,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
     ];
-
-
     // ==========================================
     // USERNAME
     // ==========================================
 
-    function getStoredUsername() {
+    function getUsername() {
 
-        return (
+        const username =
             sessionStorage.getItem(
                 "videoCityUsername"
-            ) || ""
-        );
+            );
 
-    }
-
-
-    function displayUsername(username) {
-
-        if (!username) {
-            return "@Guest";
+        if (username) {
+            return "@" + username;
         }
 
-        return username.startsWith("@")
-            ? username
-            : "@" + username;
-
+        return "@Guest";
     }
 
 
     // ==========================================
-    // ESCAPE HTML
+    // ESCAPE TEXT
     // ==========================================
 
     function escapeHTML(text) {
@@ -111,58 +92,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             text || "";
 
         return div.innerHTML;
-
-    }
-
-
-    // ==========================================
-    // GET CREATOR
-    // ==========================================
-
-    async function getCurrentCreator() {
-
-        const username =
-            getStoredUsername();
-
-        if (!username) {
-            return null;
-        }
-
-        const cleanUsername =
-            username.startsWith("@")
-                ? username.substring(1)
-                : username;
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("creators")
-                .select("*")
-                .eq(
-                    "username",
-                    cleanUsername
-                )
-                .maybeSingle();
-
-        if (error) {
-
-            console.error(
-                "Creator lookup failed:",
-                error
-            );
-
-            return null;
-
-        }
-
-        return data || null;
-
-    }
-
-
-    // ==========================================
+    }// ==========================================
     // CREATE VIDEO CARD
     // ==========================================
 
@@ -175,17 +105,15 @@ document.addEventListener("DOMContentLoaded", async function () {
             "video-card";
 
 
-        // ======================================
-        // MEDIA
-        // ======================================
-
         let mediaHTML = "";
+
 
         if (
             video.media_type === "image"
         ) {
 
             mediaHTML = `
+
                 <img
                     class="video"
                     src="${escapeHTML(video.media_url)}"
@@ -195,11 +123,13 @@ document.addEventListener("DOMContentLoaded", async function () {
                         height:100%;
                         object-fit:contain;
                     ">
+
             `;
 
         } else {
 
             mediaHTML = `
+
                 <video
                     class="video"
                     controls
@@ -210,17 +140,15 @@ document.addEventListener("DOMContentLoaded", async function () {
                         src="${escapeHTML(video.media_url)}"
                         type="video/mp4">
 
-                    Your browser does not support HTML5 video.
+                    Your browser does not support
+                    HTML5 video.
 
                 </video>
+
             `;
 
         }
 
-
-        // ======================================
-        // CARD HTML
-        // ======================================
 
         card.innerHTML = `
 
@@ -234,21 +162,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             <div class="video-info">
 
                 <h3 class="title">
+
                     ${escapeHTML(video.title)}
+
                 </h3>
 
 
                 <p class="creator">
+
                     ${escapeHTML(
-                        video.creator || "@Creator"
+                        video.creator ||
+                        "@Creator"
                     )}
+
                 </p>
 
 
                 <p class="description">
+
                     ${escapeHTML(
-                        video.description || ""
+                        video.description
                     )}
+
                 </p>
 
 
@@ -257,9 +192,11 @@ document.addEventListener("DOMContentLoaded", async function () {
                     ?
                     `
                     <p class="price">
+
                         💰 ${escapeHTML(
                             String(video.price_pi)
                         )} Pi
+
                     </p>
                     `
                     :
@@ -308,12 +245,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <form
                         class="commentForm">
 
-                        <textarea
-                            name="comment"
+                        <input
+                            type="text"
                             placeholder="Write a comment..."
                             maxlength="500"
-                            rows="2"
-                            required></textarea>
+                            autocomplete="off"
+                            required>
 
 
                         <button
@@ -327,7 +264,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     </form>
 
 
-                    <div class="commentList">
+                    <div
+                        class="commentList">
                     </div>
 
                 </div>
@@ -335,372 +273,140 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
 
         `;
-
-
-        // ======================================
+    // ======================================
         // LIKE
         // ======================================
-
-        setupLikes(
-            card,
-            video
-        );
-
-
-        // ======================================
-        // COMMENTS
-        // ======================================
-
-        setupComments(
-            card,
-            video
-        );
-
-
-        // ======================================
-        // SUPPORT
-        // ======================================
-
-        const supportButton =
-            card.querySelector(
-                ".supportBtn"
-            );
-
-        if (supportButton) {
-
-            supportButton.addEventListener(
-                "click",
-                function () {
-
-                    alert(
-                        "Pi Support payments will be added soon."
-                    );
-
-                }
-            );
-
-        }
-
-
-        return card;
-
-    }
-
-
-    // ==========================================
-    // LIKE SYSTEM
-    // ==========================================
-
-    function setupLikes(
-        card,
-        video
-    ) {
 
         const likeButton =
             card.querySelector(
                 ".likeBtn"
             );
 
-        const span =
-            likeButton.querySelector(
-                "span"
-            );
 
         let liked = false;
-
-
-        function updateLikeButton() {
-
-            const count =
-                Number(
-                    span.textContent
-                ) || 0;
-
-            likeButton.innerHTML =
-                liked
-                ?
-                `♥ <span>${count}</span>`
-                :
-                `♡ <span>${count}</span>`;
-
-        }
-
-
-        async function loadLikeStatus() {
-
-            if (!video.id) {
-                return;
-            }
-
-            const creator =
-                await getCurrentCreator();
-
-            if (!creator) {
-                return;
-            }
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("video_likes")
-                    .select("id")
-                    .eq(
-                        "video_id",
-                        video.id
-                    )
-                    .eq(
-                        "creator_id",
-                        creator.id
-                    )
-                    .maybeSingle();
-
-            if (error) {
-
-                console.error(
-                    "Like status error:",
-                    error
-                );
-
-                return;
-
-            }
-
-            liked =
-                !!data;
-
-            updateLikeButton();
-
-        }
 
 
         likeButton.addEventListener(
             "click",
             async function () {
 
-                const username =
-                    getStoredUsername();
+                liked =
+                    !liked;
 
 
-                // Sample video
-                if (!video.id) {
+                const span =
+                    likeButton.querySelector(
+                        "span"
+                    );
 
-                    liked =
-                        !liked;
 
-                    const current =
-                        Number(
-                            span.textContent
-                        ) || 0;
+                let currentLikes =
+                    Number(
+                        span.textContent
+                    ) || 0;
 
-                    span.textContent =
-                        liked
-                        ?
-                        current + 1
-                        :
+
+                if (liked) {
+
+                    currentLikes++;
+
+                } else {
+
+                    currentLikes =
                         Math.max(
                             0,
-                            current - 1
+                            currentLikes - 1
                         );
 
-                    updateLikeButton();
-
-                    return;
-
                 }
 
 
-                if (!username) {
-
-                    alert(
-                        "Please login to like videos."
-                    );
-
-                    return;
-
-                }
+                likeButton.innerHTML =
+                    liked
+                    ?
+                    `♥ <span>${currentLikes}</span>`
+                    :
+                    `♡ <span>${currentLikes}</span>`;
 
 
-                const creator =
-                    await getCurrentCreator();
+                // Save real posts only
 
-                if (!creator) {
-
-                    alert(
-                        "Your creator account could not be found."
-                    );
-
-                    return;
-
-                }
-
-
-                // ==================================
-                // LIKE
-                // ==================================
-
-                if (!liked) {
+                if (video.id) {
 
                     const {
                         error
                     } =
                         await supabaseClient
-                            .from("video_likes")
-                            .insert({
-
-                                video_id:
-                                    video.id,
-
-                                creator_id:
-                                    creator.id
-
-                            });
-
-
-                    if (error) {
-
-                        console.error(
-                            "Like failed:",
-                            error
-                        );
-
-                        alert(
-                            "Unable to like this video."
-                        );
-
-                        return;
-
-                    }
-
-                    liked = true;
-
-                }
-
-
-                // ==================================
-                // UNLIKE
-                // ==================================
-
-                else {
-
-                    const {
-                        error
-                    } =
-                        await supabaseClient
-                            .from("video_likes")
-                            .delete()
+                            .from("videos")
+                            .update({
+                                likes:
+                                    currentLikes
+                            })
                             .eq(
-                                "video_id",
+                                "id",
                                 video.id
-                            )
-                            .eq(
-                                "creator_id",
-                                creator.id
                             );
 
 
                     if (error) {
 
                         console.error(
-                            "Unlike failed:",
+                            "Like update failed:",
                             error
                         );
 
-                        return;
-
                     }
 
-                    liked = false;
-
                 }
-
-
-                // ==================================
-                // UPDATE COUNT
-                // ==================================
-
-                const {
-                    count,
-                    error: countError
-                } =
-                    await supabaseClient
-                        .from("video_likes")
-                        .select(
-                            "id",
-                            {
-                                count: "exact",
-                                head: true
-                            }
-                        )
-                        .eq(
-                            "video_id",
-                            video.id
-                        );
-
-
-                if (!countError) {
-
-                    const totalLikes =
-                        count || 0;
-
-                    span.textContent =
-                        totalLikes;
-
-
-                    await supabaseClient
-                        .from("videos")
-                        .update({
-                            likes:
-                                totalLikes
-                        })
-                        .eq(
-                            "id",
-                            video.id
-                        );
-
-                }
-
-
-                updateLikeButton();
 
             }
         );
-
-
-        loadLikeStatus();
-
-    }
-
-
-    // ==========================================
-    // COMMENT SYSTEM
-    // ==========================================
-
-    function setupComments(
-        card,
-        video
-    ) {
+        // COMMENT BUTTON
+        // ======================================
 
         const commentButton =
             card.querySelector(
                 ".commentBtn"
             );
 
+
         const comments =
             card.querySelector(
                 ".comments"
             );
+
+
+        commentButton.addEventListener(
+            "click",
+            function () {
+
+                comments.style.display =
+                    comments.style.display ===
+                    "none"
+                    ?
+                    "block"
+                    :
+                    "none";
+
+            }
+        );
+
+
+        // ======================================
+        // COMMENT FORM
+        // ======================================
 
         const form =
             card.querySelector(
                 ".commentForm"
             );
 
+
         const input =
             form.querySelector(
-                "textarea"
+                "input"
             );
+
 
         const commentList =
             card.querySelector(
@@ -708,108 +414,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             );
 
 
-        // ======================================
-        // OPEN COMMENTS
-        // ======================================
-
-        commentButton.addEventListener(
-            "click",
-            async function () {
-
-                comments.style.display =
-                    comments.style.display === "none"
-                    ?
-                    "block"
-                    :
-                    "none";
-
-
-                if (
-                    comments.style.display ===
-                    "block"
-                ) {
-
-                    await loadComments();
-
-                }
-
-            }
-        );
-
-
-        // ======================================
-        // LOAD COMMENTS
-        // ======================================
-
-        async function loadComments() {
-
-            if (!video.id) {
-                return;
-            }
-
-
-            const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("comments")
-                    .select(`
-                        id,
-                        text,
-                        created_at,
-                        creators (
-                            username
-                        )
-                    `)
-                    .eq(
-                        "video_id",
-                        video.id
-                    )
-                    .order(
-                        "created_at",
-                        {
-                            ascending: true
-                        }
-                    );
-
-
-            if (error) {
-
-                console.error(
-                    "Comments load failed:",
-                    error
-                );
-
-                return;
-
-            }
-
-
-            commentList.innerHTML = "";
-
-
-            (data || []).forEach(
-                function (comment) {
-
-                    renderComment(
-                        comment,
-                        commentList
-                    );
-
-                }
-            );
-
-        }
-
-
-        // ======================================
-        // POST COMMENT
-        // ======================================
-
         form.addEventListener(
             "submit",
-            async function (event) {
+            function (event) {
 
                 event.preventDefault();
 
@@ -823,82 +430,748 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
 
 
-                if (!video.id) {
+                addComment(
+                    text,
+                    commentList
+                );
 
-                    alert(
-                        "Comments are available on uploaded videos."
-                    );
 
-                    return;
+                input.value = "";
+
+            }
+        );
+
+
+        // ======================================
+        // ADD COMMENT
+        // ======================================
+
+        function addComment(
+            text,
+            list
+        ) {
+
+            const comment =
+                document.createElement(
+                    "div"
+                );
+
+
+            comment.className =
+                "comment";
+
+
+            comment.innerHTML = `
+
+                <strong>
+
+                    ${escapeHTML(
+                        getUsername()
+                    )}
+
+                </strong>
+
+
+                <p>
+
+                    ${escapeHTML(text)}
+
+                </p>
+
+
+                <button
+                    class="replyBtn"
+                    type="button">
+
+                    ↩ Reply
+
+                </button>
+
+
+                <div
+                    class="replyBox"
+                    style="display:none;">
+
+                    <input
+                        type="text"
+                        maxlength="500"
+                        placeholder="Write a reply..."
+                        autocomplete="off">
+
+
+                    <button
+                        class="replySubmit btn pink"
+                        type="button">
+
+                        Reply
+
+                    </button>
+
+
+                    <div
+                        class="replyList">
+                    </div>
+
+                </div>
+
+            `;
+
+
+            list.appendChild(
+                comment
+            );
+            // ==================================
+            // REPLY BUTTON
+            // ==================================
+
+            const replyButton =
+                comment.querySelector(
+                    ".replyBtn"
+                );
+
+
+            const replyBox =
+                comment.querySelector(
+                    ".replyBox"
+                );
+
+
+            replyButton.addEventListener(
+                "click",
+                function () {
+
+                    replyBox.style.display =
+                        replyBox.style.display ===
+                        "none"
+                        ?
+                        "block"
+                        :
+                        "none";
 
                 }
+            );
 
 
-                const username =
-                    getStoredUsername();
+            // ==================================
+            // REPLY
+            // ==================================
+
+            const replyInput =
+                replyBox.querySelector(
+                    "input"
+                );
 
 
-                if (!username) {
+            const replySubmit =
+                replyBox.querySelector(
+                    ".replySubmit"
+                );
 
-                    alert(
-                        "Please login to comment."
+
+            const replyList =
+                replyBox.querySelector(
+                    ".replyList"
+                );
+
+
+            replySubmit.addEventListener(
+                "click",
+                function () {
+
+                    const replyText =
+                        replyInput.value.trim();
+
+
+                    if (!replyText) {
+                        return;
+                    }
+
+
+                    const reply =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    reply.className =
+                        "reply";
+
+
+                    reply.innerHTML = `
+
+                        <strong>
+
+                            ${escapeHTML(
+                                getUsername()
+                            )}
+
+                        </strong>
+
+
+                        <p>
+
+                            ${escapeHTML(
+                                replyText
+                            )}
+
+                        </p>
+
+                    `;
+
+
+                    replyList.appendChild(
+                        reply
                     );
 
-                    return;
+
+                    replyInput.value = "";
 
                 }
+            );
+
+        }
 
 
-                const creator =
-                    await getCurrentCreator();
+        feed.appendChild(
+            card
+        );
+
+                        }
+    // ==========================================
+    // LOAD REAL VIDEOS
+    // ==========================================
+
+    async function loadVideos() {
+
+        feed.innerHTML = "";
 
 
-                if (!creator) {
+        let realVideos = [];
 
-                    alert(
-                        "Your creator account could not be found."
+
+        try {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("videos")
+                    .select(`
+                        id,
+                        creator_id,
+                        title,
+                        description,
+                        category,
+                        price_pi,
+                        media_url,
+                        media_type,
+                        views,
+                        likes,
+                        created_at,
+                        creators (
+                            username
+                        )
+                    `)
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
                     );
 
-                    return;
 
-                }
+            if (error) {
 
-
-                const {
-                    data,
+                console.error(
+                    "Video City: Feed error:",
                     error
-                } =
-                    await supabaseClient
-                        .from("comments")
-                        .insert({
+                );
 
-                            video_id:
-                                video.id,
+            } else {
 
-                            creator_id:
-                                creator.id,
+                realVideos =
+                    data || [];
 
-                            text:
-                                text
+            }
 
-                        })
-                        .select(`
-                            id,
-                            text,
-                            created_at,
-                            creators (
-                                username
-                            )
-                        `)
-                        .single();
+        } catch (error) {
+
+            console.error(
+                "Video City: Supabase error:",
+                error
+            );
+
+        }
 
 
-                if (error) {
+        // ======================================
+        // SHOW REAL VIDEOS FIRST
+        // ======================================
 
-                    console.error(
-                        "Comment failed:",
-                        error
+        realVideos.forEach(
+            function (video) {
+
+                video.creator =
+                    video.creators
+                    ?
+                    "@" +
+                    video.creators.username
+                    :
+                    "@Creator";
+
+
+                createVideo(
+                    video
+                );
+
+            }
+        );
+        // ======================================
+        // SHOW SAMPLE VIDEOS IF NECESSARY
+        // ======================================
+
+        if (
+            realVideos.length === 0
+        ) {
+
+            sampleVideos.forEach(
+                function (video) {
+
+                    createVideo(
+                        video
                     );
 
-                    alert(
-                        "Comment failed. Please try again."
+                }
+            );
+
+        }
+
+
+        console.log(
+            "Video City: Feed loaded."
+        );
+
+    }
+
+
+    // ==========================================
+    // UPLOAD FORM
+    // ==========================================
+
+    const uploadForm =
+        document.getElementById(
+            "uploadForm"
+        );
+
+
+    if (uploadForm) {
+
+        uploadForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                // IMPORTANT:
+                // Stop other scripts from handling
+                // this form submission.
+
+                event.stopPropagation();
+
+
+                const status =
+                    document.getElementById(
+                        "uploadStatus"
+                    );
+
+
+                const submitButton =
+                    uploadForm.querySelector(
+                        'button[type="submit"]'
+                    );
+
+
+                const title =
+                    uploadForm.elements[
+                        "title"
+                    ].value.trim();
+
+
+                const description =
+                    uploadForm.elements[
+                        "description"
+                    ].value.trim();
+
+
+                const category =
+                    uploadForm.elements[
+                        "category"
+                    ].value.trim();
+
+
+                const price =
+                    Number(
+                        uploadForm.elements[
+                            "price"
+                        ].value || 0
+                    );
+
+
+                const file =
+                    uploadForm.elements[
+                        "video"
+                    ].files[0];
+
+
+                if (!file) {
+
+                    status.textContent =
+                        "❌ Please select a video or image.";
+
+                    return;
+
+                }
+
+
+                try {
+
+                    submitButton.disabled =
+                        true;
+
+
+                    submitButton.textContent =
+                        "Uploading...";
+
+
+                    status.textContent =
+                        "Uploading your content...";
+                    // ==================================
+                    // FILE TYPE
+                    // ==================================
+
+                    const mediaType =
+                        file.type.startsWith(
+                            "image/"
+                        )
+                        ?
+                        "image"
+                        :
+                        "video";
+
+
+                    // ==================================
+                    // FILE EXTENSION
+                    // ==================================
+
+                    const extension =
+                        file.name
+                            .split(".")
+                            .pop()
+                            .toLowerCase();
+
+
+                    // ==================================
+                    // SAFE FILE NAME
+                    // ==================================
+
+                    const safeTitle =
+                        title
+                            .toLowerCase()
+                            .replace(
+                                /[^a-z0-9]+/g,
+                                "-"
+                            )
+                            .replace(
+                                /^-+|-+$/g,
+                                "");
+
+
+                    const fileName =
+                        Date.now() +
+                        "-" +
+                        safeTitle +
+                        "." +
+                        extension;
+
+
+                    const filePath =
+    "uploads/" +
+    fileName;
+
+
+// ==================================
+// UPLOAD FILE TO SUPABASE STORAGE
+// ==================================
+
+const {
+    error: uploadError
+} = await supabaseClient
+    .storage
+    .from("video-city-media")
+    .upload(
+        filePath,
+        file,
+        {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: file.type
+        }
+    );
+
+
+if (uploadError) {
+
+    throw uploadError;
+
+}
+
+
+status.textContent =
+    "File uploaded. Saving information...";
+
+
+// ==================================
+// GET PUBLIC URL
+// ==================================
+
+const {
+    data: publicData
+} =
+    supabaseClient
+        .storage
+        .from("video-city-media")
+        .getPublicUrl(
+            filePath
+        );
+
+
+const mediaURL =
+    publicData.publicUrl;
+
+
+// ==================================
+// GET CREATOR
+// ==================================
+
+const username =
+    sessionStorage.getItem(
+        "videoCityUsername"
+    ) || "Creator";
+
+
+const piUID =
+    sessionStorage.getItem(
+        "videoCityPiUID"
+    ) || username;
+
+
+let creator;
+
+
+const {
+    data: existingCreator,
+    error: creatorLookupError
+} =
+    await supabaseClient
+        .from("creators")
+        .select("*")
+        .eq("pi_uid", piUID)
+        .maybeSingle();
+
+
+if (creatorLookupError) {
+
+    throw creatorLookupError;
+
+}
+
+
+if (existingCreator) {
+
+    creator =
+        existingCreator;
+
+} else {
+
+    const {
+        data: newCreator,
+        error: creatorInsertError
+    } =
+        await supabaseClient
+            .from("creators")
+            .insert({
+                pi_uid: piUID,
+                username: username
+            })
+            .select()
+            .single();
+
+
+    if (creatorInsertError) {
+
+        throw creatorInsertError;
+
+    }
+
+
+    creator =
+        newCreator;
+
+                        }
+                    // ==================================
+// SAVE VIDEO RECORD
+// ==================================
+
+const {
+    error: videoInsertError
+} =
+    await supabaseClient
+        .from("videos")
+        .insert({
+
+            creator_id:
+                creator.id,
+
+            title:
+                title,
+
+            description:
+                description,
+
+            category:
+                category,
+
+            price_pi:
+                price,
+
+            media_url:
+                mediaURL,
+
+            media_type:
+                mediaType,
+
+            views:
+                0,
+
+            likes:
+                0
+
+        });
+
+
+if (videoInsertError) {
+
+    throw videoInsertError;
+
+}
+
+
+status.textContent =
+    "✅ Published successfully!";
+
+
+uploadForm.reset();
+
+
+await loadVideos();
+
+
+const uploadSection =
+    document.getElementById(
+        "upload"
+    );
+
+
+const homeFeed =
+    document.getElementById(
+        "feed"
+    );
+
+
+if (uploadSection) {
+
+    uploadSection.classList.add(
+        "hidden"
+    );
+
+}
+
+
+if (homeFeed) {
+
+    homeFeed.classList.remove(
+        "hidden"
+    );
+
+}
+
+
+document
+    .querySelectorAll(".nav")
+    .forEach(
+        function (button) {
+
+            button.classList.remove(
+                "active"
+            );
+
+
+            if (
+                button.dataset.view ===
+                "home"
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+        }
+    );
+
+
+} catch (error) {
+
+    console.error(
+        "Video City upload error:",
+        error
+    );
+
+
+    status.textContent =
+        "❌ Upload failed: " +
+        (
+            error.message ||
+            "Unknown error"
+        );
+
+} finally {
+
+    submitButton.disabled =
+        false;
+
+
+    submitButton.textContent =
+        "Publish to Video City";
+
+}
+
+            }
+        );
+
+}
+    // ==========================================
+// START APPLICATION
+// ==========================================
+
+await loadVideos();
+
+
+console.log(
+    "Video City: Application ready."
+);
+
+});
