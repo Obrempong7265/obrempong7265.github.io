@@ -1218,9 +1218,120 @@ document.addEventListener(
 
                         status.textContent =
                             "Uploading your content...";
+                        // ==================================
+                        // FILE TYPE
+                        // ==================================
+
+                        const mediaType =
+                            file.type.startsWith(
+                                "image/"
+                            )
+                                ? "image"
+                                : "video";
 
 
                         // ==================================
+                        // FILE EXTENSION
+                        // ==================================
+
+                        const extension =
+                            file.name
+                                .split(".")
+                                .pop()
+                                .toLowerCase();
+
+
+                        // ==================================
+                        // SAFE FILE NAME
+                        // ==================================
+
+                        const safeTitle =
+                            (
+                                title ||
+                                "video"
+                            )
+                                .toLowerCase()
+                                .replace(
+                                    /[^a-z0-9]+/g,
+                                    "-"
+                                )
+                                .replace(
+                                    /^-+|-+$/g,
+                                    "");
+
+
+                        const fileName =
+                            Date.now() +
+                            "-" +
+                            safeTitle +
+                            "." +
+                            extension;
+
+
+                        const filePath =
+                            "uploads/" +
+                            fileName;
+
+
+                        // ==================================
+                        // GET / CREATE CREATOR
+                        // ==================================
+
+                        status.textContent =
+                            "Preparing creator account...";
+
+
+                        const creator =
+                            await getOrCreateCreator();
+
+
+                        if (!creator) {
+
+                            throw new Error(
+                                "Unable to identify your Video City creator account."
+                            );
+
+                        }
+
+
+                        // ==================================
+                        // UPLOAD FILE
+                        // ==================================
+
+                        status.textContent =
+                            "Uploading file...";
+
+
+                        const {
+                            error: uploadError
+                        } =
+                            await supabaseClient
+                                .storage
+                                .from(
+                                    "video-city-media"
+                                )
+                                .upload(
+                                    filePath,
+                                    file,
+                                    {
+                                        cacheControl:
+                                            "3600",
+
+                                        upsert:
+                                            false,
+
+                                        contentType:
+                                            file.type
+                                    }
+                                );
+
+
+                        if (uploadError) {
+
+                            throw uploadError;
+
+                        }
+
 
                 
 
