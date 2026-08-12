@@ -1,451 +1,884 @@
-document.addEventListener("DOMContentLoaded", async function () {
+// ==========================================
+// VIDEO CITY - PRODUCTION APP
+// PART 1 OF 5
+// APP SETUP + SUPABASE + HELPERS
+// ==========================================
 
-    // ==========================================
-    // VIDEO CITY - APP START
-    // ==========================================
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-    const feed = document.getElementById("feed");
-    const supabaseClient = window.supabaseClient;
-
-    console.log("Video City: app.js loaded.");
-
-    if (!feed) {
-        console.error("Video City: Feed not found.");
-        return;
-    }
-
-    if (!supabaseClient) {
-        console.error("Video City: Supabase client not found.");
-
-        feed.innerHTML = `
-            <p class="muted">
-                Unable to connect to Video City database.
-            </p>
-        `;
-
-        return;
-    }
-
-
-    // ==========================================
-    // SAMPLE VIDEOS
-    // ==========================================
-
-    const sampleVideos = [
-
-        {
-            title: "Welcome to Video City",
-            creator: "@VideoCity",
-            description:
-                "Welcome to Video City — a platform where creators can share videos, promote their products and connect with audiences through the Pi ecosystem.",
-            price_pi: 0,
-            media_url:
-                "./7ba2eb8d7397b5b5eef95244c6559301.mp4",
-            media_type: "video",
-            likes: 0
-        },
-
-        {
-            title: "Creator Spotlight",
-            creator: "@VideoCity",
-            description:
-                "Discover creators, explore their content and support the people behind the videos you enjoy.",
-            price_pi: 0,
-            media_url:
-                "./7ba2eb8d7397b5b5eef95244c6559301.mp4",
-            media_type: "video",
-            likes: 0
-        },
-
-        {
-            title: "Sample Product Showcase",
-            creator: "@VideoCity",
-            description:
-                "This is an example of how a creator can introduce a product or service directly below their video.",
-            price_pi: 5,
-            media_url:
-                "./7ba2eb8d7397b5b5eef95244c6559301.mp4",
-            media_type: "video",
-            likes: 0
-        }
-
-    ];
-
-
-    // ==========================================
-    // USERNAME
-    // ==========================================
-
-    function getUsername() {
-
-        return (
-            sessionStorage.getItem(
-                "videoCityUsername"
-            ) || ""
+        console.log(
+            "Video City: Production app starting..."
         );
 
-    }
+
+        // ==========================================
+        // GET PAGE ELEMENTS
+        // ==========================================
+
+        const feed =
+            document.getElementById("feed");
+
+        const uploadForm =
+            document.getElementById("uploadForm");
+
+        const uploadStatus =
+            document.getElementById("uploadStatus");
 
 
-    // ==========================================
-    // ESCAPE HTML
-    // ==========================================
+        // ==========================================
+        // GET SUPABASE CLIENT
+        // ==========================================
 
-    function escapeHTML(text) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent =
-            text == null
-                ? ""
-                : String(text);
-
-        return div.innerHTML;
-
-    }
+        const supabaseClient =
+            window.supabaseClient;
 
 
-    // ==========================================
-    // CREATE VIDEO CARD
-    // ==========================================
+        // ==========================================
+        // BASIC CHECK - FEED
+        // ==========================================
 
-    function createVideo(video) {
+        if (!feed) {
 
-        const card =
-            document.createElement("article");
+            console.error(
+                "Video City: Feed element not found."
+            );
 
-        card.className =
-            "video-card";
-
-
-        let mediaHTML = "";
-
-
-        if (video.media_type === "image") {
-
-            mediaHTML = `
-                <img
-                    class="video"
-                    src="${escapeHTML(video.media_url)}"
-                    alt="${escapeHTML(video.title)}"
-                    style="
-                        width:100%;
-                        height:100%;
-                        object-fit:contain;
-                    ">
-            `;
-
-        } else {
-
-            mediaHTML = `
-                <video
-                    class="video"
-                    controls
-                    playsinline
-                    preload="metadata">
-
-                    <source
-                        src="${escapeHTML(video.media_url)}"
-                        type="video/mp4">
-
-                    Your browser does not support HTML5 video.
-
-                </video>
-            `;
+            return;
 
         }
 
 
-        card.innerHTML = `
+        // ==========================================
+        // BASIC CHECK - SUPABASE
+        // ==========================================
 
-            <div class="video-wrap">
-                ${mediaHTML}
-            </div>
+        if (!supabaseClient) {
 
-            <div class="video-info">
+            console.error(
+                "Video City: Supabase client not found."
+            );
 
-                <h3 class="title">
-                    ${escapeHTML(video.title)}
-                </h3>
 
-                <p class="creator">
-                    ${escapeHTML(
-                        video.creator || "@Creator"
-                    )}
-                </p>
+            feed.innerHTML = `
 
-                <p class="description">
-                    ${escapeHTML(
-                        video.description || ""
-                    )}
-                </p>
+                <div class="upload-box">
 
-                ${
-                    Number(video.price_pi) > 0
-                    ?
-                    `
-                    <p class="price">
-                        💰 ${escapeHTML(
-                            String(video.price_pi)
-                        )} Pi
+                    <h3>
+                        Video City is temporarily unavailable
+                    </h3>
+
+                    <p class="muted">
+
+                        We are performing maintenance.
+                        Please try again shortly.
+
                     </p>
-                    `
-                    :
-                    ""
-                }
-
-                <div class="actions">
-
-                    <button
-                        class="likeBtn"
-                        type="button">
-                        ♡
-                        <span>
-                            ${Number(video.likes) || 0}
-                        </span>
-                    </button>
-
-                    <button
-                        class="commentBtn"
-                        type="button">
-                        💬 Comment
-                    </button>
-
-                    <button
-                        class="supportBtn"
-                        type="button">
-                        💜 Support
-                    </button>
 
                 </div>
 
-                <div
-                    class="comments"
-                    style="display:none;">
+            `;
 
-                    <form class="commentForm">
+            return;
 
-                        <input
-                            type="text"
-                            placeholder="Write a comment..."
-                            maxlength="500"
-                            required>
-
-                        <button
-                            type="submit"
-                            class="btn pink">
-                            Post
-                        </button>
-
-                    </form>
-
-                    <div class="commentList"></div>
-
-                </div>
-
-            </div>
-        `;
+        }
 
 
-        // Simple sample-video like
-        const likeButton =
-            card.querySelector(".likeBtn");
+        console.log(
+            "Video City: Supabase client detected."
+        );
 
-        if (!video.id) {
 
-            likeButton.addEventListener(
-                "click",
-                function () {
+        // ==========================================
+        // GET LOGGED-IN USERNAME
+        // ==========================================
 
-                    const span =
-                        likeButton.querySelector("span");
+        function getUsername() {
 
-                    let count =
-                        Number(span.textContent) || 0;
-
-                    count++;
-
-                    span.textContent = count;
-
-                }
+            return (
+                sessionStorage.getItem(
+                    "videoCityUsername"
+                ) || ""
             );
 
         }
 
 
-        // Comment open/close
-        const commentButton =
-            card.querySelector(".commentBtn");
+        // ==========================================
+        // GET PI UID
+        // ==========================================
 
-        const comments =
-            card.querySelector(".comments");
+        function getPiUID() {
 
-        commentButton.addEventListener(
-            "click",
-            function () {
+            return (
+                sessionStorage.getItem(
+                    "videoCityPiUID"
+                ) || ""
+            );
 
-                comments.style.display =
-                    comments.style.display === "none"
-                    ? "block"
-                    : "none";
+        }
+
+
+        // ==========================================
+        // DISPLAY USERNAME
+        // ==========================================
+
+        function displayUsername(
+            username
+        ) {
+
+            if (!username) {
+
+                return "@Guest";
 
             }
-        );
 
 
-        // Support
-        const supportButton =
-            card.querySelector(".supportBtn");
+            return username.startsWith("@")
+                ? username
+                : "@" + username;
 
-        supportButton.addEventListener(
-            "click",
-            function () {
+        }
 
-                alert(
-                    "Pi Support payments will be added soon."
+
+        // ==========================================
+        // ESCAPE HTML
+        // ==========================================
+
+        function escapeHTML(
+            text
+        ) {
+
+            const div =
+                document.createElement(
+                    "div"
                 );
 
-            }
-        );
+
+            div.textContent =
+                text == null
+                    ? ""
+                    : String(text);
 
 
-        return card;
+            return div.innerHTML;
 
-    }
+        }
+
+
         // ==========================================
-    // LOAD VIDEOS FROM SUPABASE
-    // ==========================================
+        // SHOW FEED MESSAGE
+        // ==========================================
 
-    async function loadVideos() {
+        function showFeedMessage(
+            title,
+            message
+        ) {
 
-        console.log(
-            "Video City: Loading videos..."
-        );
+            feed.innerHTML = `
+
+                <div class="upload-box">
+
+                    <h3>
+                        ${escapeHTML(title)}
+                    </h3>
+
+                    <p class="muted">
+
+                        ${escapeHTML(message)}
+
+                    </p>
+
+                </div>
+
+            `;
+
+        }
 
 
-        feed.innerHTML = `
-            <p class="muted">
-                Loading Video City...
-            </p>
-        `;
+        // ==========================================
+        // SHOW ERROR
+        // ==========================================
+
+        function showFeedError(
+            message
+        ) {
+
+            console.error(
+                "Video City:",
+                message
+            );
 
 
-        try {
+            showFeedMessage(
+                "Video City is under maintenance",
+                message
+            );
+
+        }
+
+
+        // ==========================================
+        // GET CURRENT CREATOR
+        // ==========================================
+
+        async function getCurrentCreator() {
+
+            const username =
+                getUsername();
+
+
+            const piUID =
+                getPiUID();
+
+
+            if (!username && !piUID) {
+
+                return null;
+
+            }
+
+
+            // --------------------------------------
+            // TRY PI UID FIRST
+            // --------------------------------------
+
+            if (piUID) {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("creators")
+                        .select("*")
+                        .eq(
+                            "pi_uid",
+                            piUID
+                        )
+                        .maybeSingle();
+
+
+                if (error) {
+
+                    console.error(
+                        "Creator UID lookup error:",
+                        error
+                    );
+
+                }
+
+
+                if (data) {
+
+                    return data;
+
+                }
+
+            }
+
+
+            // --------------------------------------
+            // TRY USERNAME
+            // --------------------------------------
+
+            if (username) {
+
+                const cleanUsername =
+                    username.startsWith("@")
+                        ? username.substring(1)
+                        : username;
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("creators")
+                        .select("*")
+                        .eq(
+                            "username",
+                            cleanUsername
+                        )
+                        .maybeSingle();
+
+
+                if (error) {
+
+                    console.error(
+                        "Creator username lookup error:",
+                        error
+                    );
+
+                }
+
+
+                if (data) {
+
+                    return data;
+
+                }
+
+            }
+
+
+            return null;
+
+        }
+
+
+        // ==========================================
+        // GET OR CREATE CREATOR
+        // ==========================================
+
+        async function getOrCreateCreator() {
+
+            const username =
+                getUsername();
+
+
+            if (!username) {
+
+                return null;
+
+            }
+
+
+            const cleanUsername =
+                username.startsWith("@")
+                    ? username.substring(1)
+                    : username;
+
+
+            const piUID =
+                getPiUID() ||
+                cleanUsername;
+
+
+            // --------------------------------------
+            // LOOK FOR EXISTING CREATOR
+            // --------------------------------------
 
             const {
-                data,
-                error
-            } = await supabaseClient
-                .from("videos")
-                .select(`
-                    id,
-                    creator_id,
-                    title,
-                    description,
-                    category,
-                    price_pi,
-                    media_url,
-                    media_type,
-                    views,
-                    likes,
-                    created_at,
-                    creators (
-                        username
+                data: existingCreator,
+                error: lookupError
+            } =
+                await supabaseClient
+                    .from("creators")
+                    .select("*")
+                    .eq(
+                        "pi_uid",
+                        piUID
                     )
-                `)
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+                    .maybeSingle();
 
 
-            // ======================================
-            // DATABASE ERROR
-            // ======================================
-
-            if (error) {
+            if (lookupError) {
 
                 console.error(
-                    "Video City: Feed error:",
-                    error
+                    "Creator lookup failed:",
+                    lookupError
+                );
+
+                throw lookupError;
+
+            }
+
+
+            if (existingCreator) {
+
+                return existingCreator;
+
+            }
+
+
+            // --------------------------------------
+            // CREATE CREATOR
+            // --------------------------------------
+
+            const {
+                data: newCreator,
+                error: insertError
+            } =
+                await supabaseClient
+                    .from("creators")
+                    .insert({
+
+                        pi_uid:
+                            piUID,
+
+                        username:
+                            cleanUsername
+
+                    })
+                    .select()
+                    .single();
+
+
+            if (insertError) {
+
+                console.error(
+                    "Creator creation failed:",
+                    insertError
+                );
+
+                throw insertError;
+
+            }
+
+
+            return newCreator;
+
+        }
+
+
+        console.log(
+            "Video City: Part 1 loaded successfully."
+        );
+                // ==========================================
+        // VIDEO CITY - PART 2
+        // VIDEO DISPLAY + FEED
+        // ==========================================
+
+
+        // ==========================================
+        // CREATE VIDEO CARD
+        // ==========================================
+
+        function createVideoCard(
+            video
+        ) {
+
+            const card =
+                document.createElement(
+                    "article"
                 );
 
 
-                feed.innerHTML = `
-                    <p class="muted">
-                        Unable to load videos.
-                    </p>
-                `;
+            card.className =
+                "video-card";
 
-                return;
+
+            // ======================================
+            // CREATOR NAME
+            // ======================================
+
+            let creatorName =
+                "@Creator";
+
+
+            if (
+                video.creators &&
+                video.creators.username
+            ) {
+
+                creatorName =
+                    displayUsername(
+                        video.creators.username
+                    );
+
+            } else if (
+                video.creator
+            ) {
+
+                creatorName =
+                    displayUsername(
+                        video.creator
+                    );
 
             }
 
 
             // ======================================
-            // CLEAR LOADING MESSAGE
+            // MEDIA
             // ======================================
 
-            feed.innerHTML = "";
+            let mediaHTML = "";
 
 
-            // ======================================
-            // REAL VIDEOS
-            // ======================================
+            if (
+                video.media_type === "image"
+            ) {
 
-            if (data && data.length > 0) {
+                mediaHTML = `
 
-                console.log(
-                    "Video City: Real videos found:",
-                    data.length
-                );
+                    <img
+                        class="video"
+                        src="${escapeHTML(
+                            video.media_url
+                        )}"
+                        alt="${escapeHTML(
+                            video.title
+                        )}"
+                        style="
+                            width:100%;
+                            height:100%;
+                            object-fit:contain;
+                        ">
 
-
-                data.forEach(
-                    function (video) {
-
-                        video.creator =
-                            video.creators &&
-                            video.creators.username
-                            ?
-                            "@" +
-                            video.creators.username
-                            :
-                            "@Creator";
-
-
-                        feed.appendChild(
-                            createVideo(video)
-                        );
-
-                    }
-                );
-
+                `;
 
             } else {
 
-                // ==================================
-                // NO REAL VIDEOS
-                // ==================================
+                mediaHTML = `
 
-                console.log(
-                    "Video City: No real videos found."
+                    <video
+                        class="video"
+                        controls
+                        playsinline
+                        preload="metadata">
+
+                        <source
+                            src="${escapeHTML(
+                                video.media_url
+                            )}"
+                            type="video/mp4">
+
+                        Your browser does not support
+                        HTML5 video.
+
+                    </video>
+
+                `;
+
+            }
+
+
+            // ======================================
+            // CARD HTML
+            // ======================================
+
+            card.innerHTML = `
+
+                <div class="video-wrap">
+
+                    ${mediaHTML}
+
+                </div>
+
+
+                <div class="video-info">
+
+                    <h3 class="title">
+
+                        ${escapeHTML(
+                            video.title ||
+                            "Untitled"
+                        )}
+
+                    </h3>
+
+
+                    <p class="creator">
+
+                        ${escapeHTML(
+                            creatorName
+                        )}
+
+                    </p>
+
+
+                    <p class="description">
+
+                        ${escapeHTML(
+                            video.description ||
+                            ""
+                        )}
+
+                    </p>
+
+
+                    ${
+                        Number(
+                            video.price_pi
+                        ) > 0
+                        ?
+                        `
+                        <p class="price">
+
+                            💰
+                            ${escapeHTML(
+                                String(
+                                    video.price_pi
+                                )
+                            )}
+                            Pi
+
+                        </p>
+                        `
+                        :
+                        ""
+                    }
+
+
+                    <div class="actions">
+
+                        <button
+                            class="likeBtn"
+                            type="button">
+
+                            ♡
+                            <span>
+
+                                ${
+                                    Number(
+                                        video.likes
+                                    ) || 0
+                                }
+
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="commentBtn"
+                            type="button">
+
+                            💬 Comment
+
+                        </button>
+
+
+                        <button
+                            class="supportBtn"
+                            type="button">
+
+                            💜 Support
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        class="comments"
+                        style="display:none;">
+
+                        <form
+                            class="commentForm">
+
+                            <input
+                                type="text"
+                                placeholder="Write a comment..."
+                                maxlength="500"
+                                autocomplete="off"
+                                required>
+
+
+                            <button
+                                type="submit"
+                                class="btn pink">
+
+                                Post
+
+                            </button>
+
+                        </form>
+
+
+                        <div
+                            class="commentList">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            // ======================================
+            // BASIC LIKE BUTTON
+            // ======================================
+
+            const likeButton =
+                card.querySelector(
+                    ".likeBtn"
                 );
 
 
-                console.log(
-                    "Video City: Loading sample videos."
+            if (likeButton) {
+
+                likeButton.addEventListener(
+                    "click",
+                    function () {
+
+                        let count =
+                            Number(
+                                likeButton
+                                    .querySelector(
+                                        "span"
+                                    )
+                                    .textContent
+                            ) || 0;
+
+
+                        count++;
+
+
+                        likeButton.innerHTML =
+                            `♥ <span>${count}</span>`;
+
+                    }
+                );
+
+            }
+
+
+            // ======================================
+            // COMMENT TOGGLE
+            // ======================================
+
+            const commentButton =
+                card.querySelector(
+                    ".commentBtn"
                 );
 
 
-                sampleVideos.forEach(
-                    function (video) {
+            const comments =
+                card.querySelector(
+                    ".comments"
+                );
 
-                        feed.appendChild(
-                            createVideo(video)
+
+            if (
+                commentButton &&
+                comments
+            ) {
+
+                commentButton.addEventListener(
+                    "click",
+                    function () {
+
+                        comments.style.display =
+                            comments.style.display ===
+                            "none"
+                            ?
+                            "block"
+                            :
+                            "none";
+
+                    }
+                );
+
+            }
+
+
+            // ======================================
+            // LOCAL COMMENT DISPLAY
+            // ======================================
+
+            const commentForm =
+                card.querySelector(
+                    ".commentForm"
+                );
+
+
+            const commentInput =
+                card.querySelector(
+                    ".commentForm input"
+                );
+
+
+            const commentList =
+                card.querySelector(
+                    ".commentList"
+                );
+
+
+            if (
+                commentForm &&
+                commentInput &&
+                commentList
+            ) {
+
+                commentForm.addEventListener(
+                    "submit",
+                    function (event) {
+
+                        event.preventDefault();
+
+
+                        const text =
+                            commentInput.value.trim();
+
+
+                        if (!text) {
+
+                            return;
+
+                        }
+
+
+                        const comment =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        comment.className =
+                            "comment";
+
+
+                        comment.innerHTML = `
+
+                            <strong>
+
+                                ${escapeHTML(
+                                    displayUsername(
+                                        getUsername()
+                                    )
+                                )}
+
+                            </strong>
+
+                            <p>
+
+                                ${escapeHTML(
+                                    text
+                                )}
+
+                            </p>
+
+                        `;
+
+
+                        commentList.appendChild(
+                            comment
+                        );
+
+
+                        commentInput.value =
+                            "";
+
+                    }
+                );
+
+            }
+
+
+            // ======================================
+            // SUPPORT BUTTON
+            // ======================================
+
+            const supportButton =
+                card.querySelector(
+                    ".supportBtn"
+                );
+
+
+            if (supportButton) {
+
+                supportButton.addEventListener(
+                    "click",
+                    function () {
+
+                        alert(
+                            "Pi Support will be enabled after the core Video City platform is stable."
                         );
 
                     }
@@ -454,481 +887,1294 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
 
 
-        } catch (error) {
+            return card;
 
-            console.error(
-                "Video City: Video loading error:",
-                error
+        }
+
+
+        // ==========================================
+        // LOAD REAL VIDEOS FROM SUPABASE
+        // ==========================================
+
+        async function loadVideos() {
+
+            console.log(
+                "Video City: Loading videos..."
             );
 
-
-            // ======================================
-            // FALLBACK TO SAMPLES
-            // ======================================
 
             feed.innerHTML = "";
 
 
-            sampleVideos.forEach(
-                function (video) {
+            try {
 
-                    feed.appendChild(
-                        createVideo(video)
-                    );
-
-                }
-            );
-
-        }
-
-                }
-        // ==========================================
-    // UPLOAD SYSTEM
-    // ==========================================
-
-    const uploadForm =
-        document.getElementById("uploadForm");
-
-
-    if (uploadForm) {
-
-        uploadForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-                event.stopPropagation();
-
-
-                const status =
-                    document.getElementById(
-                        "uploadStatus"
-                    );
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("videos")
+                        .select(`
+                            id,
+                            creator_id,
+                            title,
+                            description,
+                            category,
+                            price_pi,
+                            media_url,
+                            media_type,
+                            views,
+                            likes,
+                            created_at,
+                            creators (
+                                username
+                            )
+                        `)
+                        .order(
+                            "created_at",
+                            {
+                                ascending: false
+                            }
+                        );
 
 
-                const submitButton =
-                    uploadForm.querySelector(
-                        'button[type="submit"]'
-                    );
+                // ==================================
+                // DATABASE ERROR
+                // ==================================
 
+                if (error) {
 
-                const title =
-                    uploadForm.elements[
-                        "title"
-                    ].value.trim();
-
-
-                const description =
-                    uploadForm.elements[
-                        "description"
-                    ].value.trim();
-
-
-                const category =
-                    uploadForm.elements[
-                        "category"
-                    ].value.trim();
-
-
-                const price =
-                    Number(
-                        uploadForm.elements[
-                            "price"
-                        ].value || 0
+                    console.error(
+                        "Video City: Video query failed:",
+                        error
                     );
 
 
-                const file =
-                    uploadForm.elements[
-                        "video"
-                    ].files[0];
+                    showFeedError(
+                        "We could not retrieve videos from the Video City database."
+                    );
 
-
-                if (!file) {
-
-                    status.textContent =
-                        "❌ Please select a video or image.";
 
                     return;
 
                 }
 
 
-                try {
-
-                    submitButton.disabled =
-                        true;
-
-
-                    submitButton.textContent =
-                        "Uploading...";
+                console.log(
+                    "Video City: Videos retrieved:",
+                    data
+                );
 
 
-                    status.textContent =
-                        "Uploading your content...";
+                // ==================================
+                // NO VIDEOS
+                // ==================================
+
+                if (
+                    !data ||
+                    data.length === 0
+                ) {
+
+                    showFeedMessage(
+                        "No videos available yet.",
+                        "Be the first creator to upload content to Video City."
+                    );
 
 
-                    // ==================================
-                    // MEDIA TYPE
-                    // ==================================
+                    return;
 
-                    const mediaType =
-                        file.type.startsWith(
-                            "image/"
-                        )
-                        ? "image"
-                        : "video";
+                }
 
 
-                    // ==================================
-                    // FILE EXTENSION
-                    // ==================================
+                // ==================================
+                // DISPLAY VIDEOS
+                // ==================================
 
-                    const extension =
-                        file.name
-                            .split(".")
-                            .pop()
-                            .toLowerCase();
+                data.forEach(
+                    function (video) {
 
-
-                    // ==================================
-                    // SAFE FILE NAME
-                    // ==================================
-
-                    const safeTitle =
-                        title
-                            .toLowerCase()
-                            .replace(
-                                /[^a-z0-9]+/g,
-                                "-"
-                            )
-                            .replace(
-                                /^-+|-+$/g,
-                                "");
-
-
-                    const fileName =
-                        Date.now() +
-                        "-" +
-                        safeTitle +
-                        "." +
-                        extension;
-
-
-                    const filePath =
-                        "uploads/" +
-                        fileName;
-
-
-                    // ==================================
-                    // UPLOAD TO STORAGE
-                    // ==================================
-
-                    const {
-                        error: uploadError
-                    } =
-                        await supabaseClient
-                            .storage
-                            .from(
-                                "video-city-media"
-                            )
-                            .upload(
-                                filePath,
-                                file,
-                                {
-                                    cacheControl:
-                                        "3600",
-
-                                    upsert:
-                                        false,
-
-                                    contentType:
-                                        file.type
-                                }
+                        const card =
+                            createVideoCard(
+                                video
                             );
 
 
-                    if (uploadError) {
-                        throw uploadError;
+                        feed.appendChild(
+                            card
+                        );
+
                     }
+                );
 
 
-                    status.textContent =
-                        "File uploaded. Saving information...";
+                console.log(
+                    "Video City: Feed loaded successfully."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Unexpected feed error:",
+                    error
+                );
 
 
-                    // ==================================
-                    // GET PUBLIC URL
-                    // ==================================
+                showFeedError(
+                    "An unexpected error occurred while loading the Video City feed."
+                );
 
-                    const {
-                        data: publicData
-                    } =
-                        supabaseClient
-                            .storage
-                            .from(
-                                "video-city-media"
-                            )
-                            .getPublicUrl(
-                                filePath
-                            );
+            }
+
+        }
 
 
-                    const mediaURL =
-                        publicData.publicUrl;
+        console.log(
+            "Video City: Part 2 loaded successfully."
+        );
+                // ==========================================
+        // LIKE SYSTEM
+        // ==========================================
 
+        function setupLike(card, video) {
 
-                    // ==================================
-                    // GET LOGGED-IN USER
-                    // ==================================
+            const likeButton =
+                card.querySelector(".likeBtn");
+
+            const span =
+                likeButton.querySelector("span");
+
+            let liked = false;
+
+            likeButton.addEventListener(
+                "click",
+                async function () {
 
                     const username =
                         getUsername();
 
+                    if (!username) {
+
+                        alert(
+                            "Please login with Pi to like videos."
+                        );
+
+                        return;
+                    }
+
+                    const creator =
+                        await getCurrentCreator();
+
+                    if (!creator) {
+
+                        alert(
+                            "Your Video City account could not be found."
+                        );
+
+                        return;
+                    }
+
+                    if (!video.id) {
+
+                        liked = !liked;
+
+                        let count =
+                            Number(span.textContent) || 0;
+
+                        count = liked
+                            ? count + 1
+                            : Math.max(0, count - 1);
+
+                        likeButton.innerHTML =
+                            liked
+                                ? `♥ <span>${count}</span>`
+                                : `♡ <span>${count}</span>`;
+
+                        return;
+                    }
+
+                    try {
+
+                        if (!liked) {
+
+                            const { error } =
+                                await supabaseClient
+                                    .from("video_likes")
+                                    .insert({
+                                        video_id: video.id,
+                                        creator_id: creator.id
+                                    });
+
+                            if (error) {
+                                throw error;
+                            }
+
+                            liked = true;
+
+                        } else {
+
+                            const { error } =
+                                await supabaseClient
+                                    .from("video_likes")
+                                    .delete()
+                                    .eq(
+                                        "video_id",
+                                        video.id
+                                    )
+                                    .eq(
+                                        "creator_id",
+                                        creator.id
+                                    );
+
+                            if (error) {
+                                throw error;
+                            }
+
+                            liked = false;
+                        }
+
+                        const {
+                            count,
+                            error: countError
+                        } =
+                            await supabaseClient
+                                .from("video_likes")
+                                .select(
+                                    "id",
+                                    {
+                                        count: "exact",
+                                        head: true
+                                    }
+                                )
+                                .eq(
+                                    "video_id",
+                                    video.id
+                                );
+
+                        if (countError) {
+                            throw countError;
+                        }
+
+                        const totalLikes =
+                            count || 0;
+
+                        likeButton.innerHTML =
+                            liked
+                                ? `♥ <span>${totalLikes}</span>`
+                                : `♡ <span>${totalLikes}</span>`;
+
+                        await supabaseClient
+                            .from("videos")
+                            .update({
+                                likes: totalLikes
+                            })
+                            .eq(
+                                "id",
+                                video.id
+                            );
+
+                    } catch (error) {
+
+                        console.error(
+                            "Video City: Like error:",
+                            error
+                        );
+
+                        alert(
+                            "Unable to update like. Please try again."
+                        );
+
+                    }
+
+                }
+            );
+
+                                          }
+                // ==========================================
+        // COMMENT SYSTEM
+        // ==========================================
+
+        function setupComments(card, video) {
+
+            const commentButton =
+                card.querySelector(".commentBtn");
+
+            const comments =
+                card.querySelector(".comments");
+
+            const form =
+                card.querySelector(".commentForm");
+
+            const input =
+                form.querySelector("input");
+
+            const commentList =
+                card.querySelector(".commentList");
+
+
+            // --------------------------------------
+            // OPEN / CLOSE COMMENTS
+            // --------------------------------------
+
+            commentButton.addEventListener(
+                "click",
+                async function () {
+
+                    comments.style.display =
+                        comments.style.display === "none"
+                            ? "block"
+                            : "none";
+
+                    if (
+                        comments.style.display === "block" &&
+                        video.id
+                    ) {
+
+                        await loadComments();
+
+                    }
+
+                }
+            );
+
+
+            // --------------------------------------
+            // LOAD COMMENTS
+            // --------------------------------------
+
+            async function loadComments() {
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("comments")
+                        .select(`
+                            id,
+                            text,
+                            created_at,
+                            creators (
+                                username
+                            )
+                        `)
+                        .eq(
+                            "video_id",
+                            video.id
+                        )
+                        .order(
+                            "created_at",
+                            {
+                                ascending: true
+                            }
+                        );
+
+                if (error) {
+
+                    console.error(
+                        "Video City: Comment load error:",
+                        error
+                    );
+
+                    return;
+
+                }
+
+                commentList.innerHTML = "";
+
+                (data || []).forEach(
+                    function (comment) {
+
+                        addComment(
+                            comment,
+                            commentList
+                        );
+
+                    }
+                );
+
+            }
+
+
+            // --------------------------------------
+            // POST COMMENT
+            // --------------------------------------
+
+            form.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+                    const text =
+                        input.value.trim();
+
+                    if (!text) {
+                        return;
+                    }
+
+                    const username =
+                        getUsername();
 
                     if (!username) {
 
-                        throw new Error(
-                            "Please login with Pi before uploading."
+                        alert(
+                            "Please login with Pi to comment."
                         );
 
+                        return;
+
                     }
 
+                    const creator =
+                        await getCurrentCreator();
 
-                    const cleanUsername =
-                        username.startsWith("@")
-                        ? username.substring(1)
-                        : username;
+                    if (!creator) {
 
+                        alert(
+                            "Your Video City account could not be found."
+                        );
 
-                    const piUID =
-                        sessionStorage.getItem(
-                            "videoCityPiUID"
-                        ) || cleanUsername;
+                        return;
 
-
-                    // ==================================
-                    // FIND CREATOR
-                    // ==================================
-
-                    let creator;
-
-
-                    const {
-                        data: existingCreator,
-                        error: creatorLookupError
-                    } =
-                        await supabaseClient
-                            .from("creators")
-                            .select("*")
-                            .eq(
-                                "pi_uid",
-                                piUID
-                            )
-                            .maybeSingle();
-
-
-                    if (creatorLookupError) {
-                        throw creatorLookupError;
                     }
 
+                    // ----------------------------------
+                    // SAMPLE VIDEO
+                    // ----------------------------------
 
-                    // ==================================
-                    // CREATE CREATOR IF NECESSARY
-                    // ==================================
+                    if (!video.id) {
 
-                    if (existingCreator) {
+                        addComment(
+                            {
+                                text: text,
+                                creators: {
+                                    username:
+                                        creator.username
+                                }
+                            },
+                            commentList
+                        );
 
-                        creator =
-                            existingCreator;
+                        input.value = "";
 
-                    } else {
+                        return;
+
+                    }
+
+                    // ----------------------------------
+                    // REAL VIDEO
+                    // ----------------------------------
+
+                    try {
 
                         const {
-                            data: newCreator,
-                            error: creatorInsertError
+                            data,
+                            error
                         } =
                             await supabaseClient
-                                .from("creators")
+                                .from("comments")
                                 .insert({
+                                    video_id:
+                                        video.id,
 
-                                    pi_uid:
-                                        piUID,
+                                    creator_id:
+                                        creator.id,
 
-                                    username:
-                                        cleanUsername
-
+                                    text:
+                                        text
                                 })
-                                .select()
+                                .select(`
+                                    id,
+                                    text,
+                                    created_at,
+                                    creators (
+                                        username
+                                    )
+                                `)
                                 .single();
 
-
-                        if (creatorInsertError) {
-                            throw creatorInsertError;
+                        if (error) {
+                            throw error;
                         }
 
-
-                        creator =
-                            newCreator;
-
-                    }
-
-
-                    // ==================================
-                    // SAVE VIDEO RECORD
-                    // ==================================
-
-                    const {
-                        error: videoInsertError
-                    } =
-                        await supabaseClient
-                            .from("videos")
-                            .insert({
-
-                                creator_id:
-                                    creator.id,
-
-                                title:
-                                    title,
-
-                                description:
-                                    description,
-
-                                category:
-                                    category,
-
-                                price_pi:
-                                    price,
-
-                                media_url:
-                                    mediaURL,
-
-                                media_type:
-                                    mediaType,
-
-                                views:
-                                    0,
-
-                                likes:
-                                    0
-
-                            });
-
-
-                    if (videoInsertError) {
-                        throw videoInsertError;
-                    }
-
-
-                    // ==================================
-                    // SUCCESS
-                    // ==================================
-
-                    status.textContent =
-                        "✅ Published successfully!";
-
-
-                    uploadForm.reset();
-
-
-                    // Reload videos
-                    await loadVideos();
-
-
-                    // ==================================
-                    // RETURN TO HOME
-                    // ==================================
-
-                    const uploadSection =
-                        document.getElementById(
-                            "upload"
+                        addComment(
+                            data,
+                            commentList
                         );
 
+                        input.value = "";
 
-                    if (uploadSection) {
+                    } catch (error) {
 
-                        uploadSection.classList.add(
-                            "hidden"
+                        console.error(
+                            "Video City: Comment error:",
+                            error
+                        );
+
+                        alert(
+                            "Unable to post comment. Please try again."
                         );
 
                     }
 
+                }
+            );
 
-                    if (feed) {
 
-                        feed.classList.remove(
-                            "hidden"
-                        );
+            // --------------------------------------
+            // ADD COMMENT TO SCREEN
+            // --------------------------------------
+
+            function addComment(
+                comment,
+                list
+            ) {
+
+                const commentElement =
+                    document.createElement("div");
+
+                commentElement.className =
+                    "comment";
+
+
+                const username =
+                    comment.creators &&
+                    comment.creators.username
+                        ? comment.creators.username
+                        : "Guest";
+
+
+                commentElement.innerHTML = `
+
+                    <strong>
+                        @${escapeHTML(username)}
+                    </strong>
+
+                    <p>
+                        ${escapeHTML(comment.text)}
+                    </p>
+
+                    <button
+                        class="replyBtn"
+                        type="button">
+
+                        ↩ Reply
+
+                    </button>
+
+                    <div
+                        class="replyBox"
+                        style="display:none;">
+
+                        <input
+                            type="text"
+                            maxlength="500"
+                            placeholder="Write a reply..."
+                            autocomplete="off">
+
+                        <button
+                            class="replySubmit btn pink"
+                            type="button">
+
+                            Reply
+
+                        </button>
+
+                        <div
+                            class="replyList">
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                list.appendChild(
+                    commentElement
+                );
+
+
+                // ----------------------------------
+                // REPLY BUTTON
+                // ----------------------------------
+
+                const replyButton =
+                    commentElement.querySelector(
+                        ".replyBtn"
+                    );
+
+                const replyBox =
+                    commentElement.querySelector(
+                        ".replyBox"
+                    );
+
+
+                replyButton.addEventListener(
+                    "click",
+                    function () {
+
+                        replyBox.style.display =
+                            replyBox.style.display === "none"
+                                ? "block"
+                                : "none";
 
                     }
+                );
 
 
-                    document
-                        .querySelectorAll(".nav")
-                        .forEach(
-                            function (button) {
+                // ----------------------------------
+                // REPLY
+                // ----------------------------------
 
-                                button.classList.remove(
-                                    "active"
-                                );
+                const replyInput =
+                    replyBox.querySelector("input");
+
+                const replySubmit =
+                    replyBox.querySelector(
+                        ".replySubmit"
+                    );
+
+                const replyList =
+                    replyBox.querySelector(
+                        ".replyList"
+                    );
 
 
-                                if (
-                                    button.dataset.view ===
-                                    "home"
-                                ) {
+                replySubmit.addEventListener(
+                    "click",
+                    function () {
 
-                                    button.classList.add(
-                                        "active"
-                                    );
+                        const replyText =
+                            replyInput.value.trim();
 
-                                }
+                        if (!replyText) {
+                            return;
+                        }
 
+                        const reply =
+                            document.createElement("div");
+
+                        reply.className =
+                            "reply";
+
+                        reply.innerHTML = `
+
+                            <strong>
+                                ${escapeHTML(
+                                    displayUsername(
+                                        getUsername()
+                                    )
+                                )}
+                            </strong>
+
+                            <p>
+                                ${escapeHTML(
+                                    replyText
+                                )}
+                            </p>
+
+                        `;
+
+                        replyList.appendChild(
+                            reply
+                        );
+
+                        replyInput.value = "";
+
+                    }
+                );
+
+            }
+
+                    }
+                // ==========================================
+        // SUPPORT SYSTEM
+        // ==========================================
+
+        function setupSupport(card, video) {
+
+            const supportButton =
+                card.querySelector(".supportBtn");
+
+            if (!supportButton) {
+                return;
+            }
+
+            supportButton.addEventListener(
+                "click",
+                function () {
+
+                    const username =
+                        getUsername();
+
+                    if (!username) {
+
+                        alert(
+                            "Please login with Pi to support this creator."
+                        );
+
+                        return;
+                    }
+
+                    alert(
+                        "Pi Support payments will be added soon."
+                    );
+
+                }
+            );
+
+        }
+
+
+        // ==========================================
+        // LOAD VIDEOS
+        // ==========================================
+
+        async function loadVideos() {
+
+            feed.innerHTML = "";
+
+            try {
+
+                console.log(
+                    "Video City: Loading videos..."
+                );
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("videos")
+                        .select(`
+                            id,
+                            creator_id,
+                            title,
+                            description,
+                            category,
+                            price_pi,
+                            media_url,
+                            media_type,
+                            views,
+                            likes,
+                            created_at,
+                            creators (
+                                username
+                            )
+                        `)
+                        .order(
+                            "created_at",
+                            {
+                                ascending: false
                             }
                         );
 
 
-                } catch (error) {
+                if (error) {
 
                     console.error(
-                        "Video City upload error:",
+                        "Video City: Feed error:",
                         error
                     );
 
+                    feed.innerHTML = `
+                        <div class="panel">
+                            <h3>
+                                Video City is under maintenance
+                            </h3>
 
-                    status.textContent =
-                        "❌ Upload failed: " +
-                        (
-                            error.message ||
-                            "Unknown error"
-                        );
+                            <p class="muted">
+                                We are restoring the video feed.
+                                Please try again shortly.
+                            </p>
+                        </div>
+                    `;
 
-                } finally {
-
-                    submitButton.disabled =
-                        false;
-
-
-                    submitButton.textContent =
-                        "Publish to Video City";
+                    return;
 
                 }
 
-            }
+
+                const videos =
+                    data || [];
+
+
+                console.log(
+                    "Video City: Videos found:",
+                    videos.length
+                );
+
+
+                // --------------------------------------
+                // NO SAMPLE VIDEOS
+                // --------------------------------------
+
+                if (videos.length === 0) {
+
+                    feed.innerHTML = `
+                        <div class="panel">
+                            <h3>
+                                Video City is under maintenance
+                            </h3>
+
+                            <p class="muted">
+                                No videos are currently available.
+                                New content will appear here when published.
+                            </p>
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+
+                // --------------------------------------
+                // CREATE VIDEO CARDS
+                // --------------------------------------
+
+                videos.forEach(
+                    function (video) {
+
+                        video.creator =
+                            video.creators &&
+                            video.creators.username
+                                ? "@" +
+                                  video.creators.username
+                                : "@Creator";
+
+
+                        const card =
+                            createVideo(video);
+
+
+                        feed.appendChild(
+                            card
+                        );
+
+                    }
+                );
+
+
+                console.log(
+                    "Video City: Feed loaded successfully."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Unexpected feed error:",
+                    error
+                );
+
+                feed.innerHTML = `
+                    <div class="panel">
+                        <h3>
+                            Video City is under maintenance
+                        </h3>
+
+                        <p class="muted">
+                            We are temporarily
+                                    // ==========================================
+        // UPLOAD SYSTEM
+        // ==========================================
+
+        const uploadForm =
+            document.getElementById("uploadForm");
+
+        if (uploadForm) {
+
+            uploadForm.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const status =
+                        document.getElementById(
+                            "uploadStatus"
+                        );
+
+                    const submitButton =
+                        uploadForm.querySelector(
+                            'button[type="submit"]'
+                        );
+
+                    try {
+
+                        const username =
+                            getUsername();
+
+                        if (!username) {
+
+                            alert(
+                                "Please login with Pi before uploading."
+                            );
+
+                            return;
+                        }
+
+                        const title =
+                            uploadForm.elements[
+                                "title"
+                            ].value.trim();
+
+                        const description =
+                            uploadForm.elements[
+                                "description"
+                            ].value.trim();
+
+                        const category =
+                            uploadForm.elements[
+                                "category"
+                            ].value.trim();
+
+                        const price =
+                            Number(
+                                uploadForm.elements[
+                                    "price"
+                                ].value || 0
+                            );
+
+                        const file =
+                            uploadForm.elements[
+                                "video"
+                            ].files[0];
+
+
+                        if (!title) {
+
+                            status.textContent =
+                                "❌ Please enter a title.";
+
+                            return;
+                        }
+
+
+                        if (!description) {
+
+                            status.textContent =
+                                "❌ Please enter a description.";
+
+                            return;
+                        }
+
+
+                        if (!file) {
+
+                            status.textContent =
+                                "❌ Please select a video or image.";
+
+                            return;
+                        }
+
+
+                        submitButton.disabled =
+                            true;
+
+                        submitButton.textContent =
+                            "Uploading...";
+
+                        status.textContent =
+                            "Uploading your content...";
+
+
+                        // --------------------------------------
+                        // FILE TYPE
+                        // --------------------------------------
+
+                        const mediaType =
+                            file.type.startsWith(
+                                "image/"
+                            )
+                            ? "image"
+                            : "video";
+
+
+                        // --------------------------------------
+                        // SAFE FILE NAME
+                        // --------------------------------------
+
+                        const extension =
+                            file.name
+                                .split(".")
+                                .pop()
+                                .toLowerCase();
+
+
+                        const safeTitle =
+                            title
+                                .toLowerCase()
+                                .replace(
+                                    /[^a-z0-9]+/g,
+                                    "-"
+                                )
+                                .replace(
+                                    /^-+|-+$/g,
+                                    "");
+
+
+                        const fileName =
+                            Date.now() +
+                            "-" +
+                            safeTitle +
+                            "." +
+                            extension;
+
+
+                        const filePath =
+                            "uploads/" +
+                            fileName;
+
+
+                        // --------------------------------------
+                        // STORAGE UPLOAD
+                        // --------------------------------------
+
+                        const {
+                            error: uploadError
+                        } =
+                            await supabaseClient
+                                .storage
+                                .from(
+                                    "video-city-media"
+                                )
+                                .upload(
+                                    filePath,
+                                    file,
+                                    {
+                                        cacheControl:
+                                            "3600",
+
+                                        upsert:
+                                            false,
+
+                                        contentType:
+                                            file.type
+                                    }
+                                );
+
+
+                        if (uploadError) {
+
+                            throw uploadError;
+                        }
+
+
+                        status.textContent =
+                            "File uploaded. Saving video information...";
+
+
+                        // --------------------------------------
+                        // PUBLIC URL
+                        // --------------------------------------
+
+                        const {
+                            data: publicData
+                        } =
+                            supabaseClient
+                                .storage
+                                .from(
+                                    "video-city-media"
+                                )
+                                .getPublicUrl(
+                                    filePath
+                                );
+
+
+                        const mediaURL =
+                            publicData &&
+                            publicData.publicUrl
+                                ? publicData.publicUrl
+                                : "";
+
+
+                        if (!mediaURL) {
+
+                            throw new Error(
+                                "Unable to create media URL."
+                            );
+                        }
+
+
+                        // --------------------------------------
+                        // GET / CREATE CREATOR
+                        // --------------------------------------
+
+                        const creator =
+                            await getOrCreateCreator();
+
+
+                        if (!creator) {
+
+                            throw new Error(
+                                "Unable to create or find your Video City creator account."
+                            );
+                        }
+
+
+                        // --------------------------------------
+                        // SAVE VIDEO RECORD
+                        // --------------------------------------
+
+                        const {
+                            error: videoError
+                        } =
+                            await supabaseClient
+                                .from("videos")
+                                .insert({
+
+                                    creator_id:
+                                        creator.id,
+
+                                    title:
+                                        title,
+
+                                    description:
+                                        description,
+
+                                    category:
+                                        category,
+
+                                    price_pi:
+                                        price,
+
+                                    media_url:
+                                        mediaURL,
+
+                                    media_type:
+                                        mediaType,
+
+                                    views:
+                                        0,
+
+                                    likes:
+                                        0
+
+                                });
+
+
+                        if (videoError) {
+
+                            throw videoError;
+                        }
+
+
+                        // --------------------------------------
+                        // SUCCESS
+                        // --------------------------------------
+
+                        status.textContent =
+                            "✅ Published successfully!";
+
+
+                        uploadForm.reset();
+
+
+                        await loadVideos();
+
+
+                        // --------------------------------------
+                        // RETURN TO HOME
+                        // --------------------------------------
+
+                        const uploadSection =
+                            document.getElementById(
+                                "upload"
+                            );
+
+                        const homeFeed =
+                            document.getElementById(
+                                "feed"
+                            );
+
+
+                        if (uploadSection) {
+
+                            uploadSection.classList.add(
+                                "hidden"
+                            );
+
+                        }
+
+
+                        if (homeFeed) {
+
+                            homeFeed.classList.remove(
+                                "hidden"
+                            );
+
+                        }
+
+
+                        document
+                            .querySelectorAll(".nav")
+                            .forEach(
+                                function (button) {
+
+                                    button.classList.remove(
+                                        "active"
+                                    );
+
+
+                                    if (
+                                        button.dataset.view ===
+                                        "home"
+                                    ) {
+
+                                        button.classList.add(
+                                            "active"
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Video City: Upload error:",
+                            error
+                        );
+
+
+                        status.textContent =
+                            "❌ Upload failed: " +
+                            (
+                                error.message ||
+                                "Unknown error"
+                            );
+
+
+                    } finally {
+
+                        submitButton.disabled =
+                            false;
+
+                        submitButton.textContent =
+                            "Publish to Video City";
+
+                    }
+
+                }
+            );
+
+        }
+                // ==========================================
+        // START VIDEO CITY APPLICATION
+        // ==========================================
+
+        await loadVideos();
+
+
+        console.log(
+            "Video City: Application ready."
         );
 
     }
+);
+    
 
-
-    // ==========================================
-    // START APPLICATION
-    // ==========================================
-
-    await loadVideos();
-
-
-    console.log(
-        "Video City: Application ready."
-    );
-
-});
