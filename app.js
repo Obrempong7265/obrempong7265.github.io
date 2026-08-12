@@ -1272,6 +1272,247 @@ async function loadVideos() {
 
 }
         // ==========================================
+// CREATOR STUDIO - EARNINGS & TRANSACTIONS
+// ==========================================
+
+async function loadCreatorStudio() {
+
+    const creator =
+        await getCurrentCreator();
+
+    if (!creator) {
+        console.log(
+            "Video City: Creator not found."
+        );
+        return;
+    }
+
+
+    // ======================================
+    // LOAD TRANSACTIONS
+    // ======================================
+
+    const {
+        data: transactions,
+        error
+    } =
+        await supabaseClient
+            .from("transactions")
+            .select("*")
+            .or(
+                "creator_id.eq." +
+                creator.id +
+                ",payer_id.eq." +
+                creator.id
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Video City: Transaction loading error:",
+            error
+        );
+
+        return;
+    }
+
+
+    const records =
+        transactions || [];
+
+
+    // ======================================
+    // CALCULATE EARNINGS
+    // ======================================
+
+    let totalEarnings = 0;
+    let totalTips = 0;
+    let totalSales = 0;
+
+
+    records.forEach(
+        function (transaction) {
+
+            if (
+                transaction.status !==
+                "completed"
+            ) {
+                return;
+            }
+
+
+            const amount =
+                Number(
+                    transaction.creator_earning_pi
+                ) || 0;
+
+
+            totalEarnings += amount;
+
+
+            if (
+                transaction.transaction_type ===
+                "tip"
+            ) {
+
+                totalTips += amount;
+
+            }
+
+
+            if (
+                transaction.transaction_type ===
+                "video_purchase"
+            ) {
+
+                totalSales += amount;
+
+            }
+
+        }
+    );
+
+
+    // ======================================
+    // UPDATE STUDIO
+    // ======================================
+
+    const earnings =
+        document.getElementById(
+            "totalEarnings"
+        );
+
+
+    const tips =
+        document.getElementById(
+            "totalTips"
+        );
+
+
+    const sales =
+        document.getElementById(
+            "totalSales"
+        );
+
+
+    if (earnings) {
+
+        earnings.textContent =
+            totalEarnings.toFixed(2) +
+            " Pi";
+
+    }
+
+
+    if (tips) {
+
+        tips.textContent =
+            totalTips.toFixed(2) +
+            " Pi";
+
+    }
+
+
+    if (sales) {
+
+        sales.textContent =
+            totalSales.toFixed(2) +
+            " Pi";
+
+    }
+
+
+    // ======================================
+    // TRANSACTION LIST
+    // ======================================
+
+    const transactionList =
+        document.getElementById(
+            "transactionsList"
+        );
+
+
+    if (!transactionList) {
+        return;
+    }
+
+
+    if (records.length === 0) {
+
+        transactionList.innerHTML = `
+            <p class="muted">
+                No transactions yet.
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    transactionList.innerHTML = "";
+
+
+    records.forEach(
+        function (transaction) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "comment";
+
+
+            item.innerHTML = `
+
+                <strong>
+                    ${escapeHTML(
+                        transaction.transaction_type
+                    )}
+                </strong>
+
+                <p>
+                    ${Number(
+                        transaction.amount_pi
+                    ).toFixed(2)}
+                    Pi
+                </p>
+
+                <small class="muted">
+                    Status:
+                    ${escapeHTML(
+                        transaction.status
+                    )}
+                </small>
+
+            `;
+
+
+            transactionList.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    console.log(
+        "Video City: Creator Studio updated."
+    );
+
+}
+        
+        // ==========================================
 // UPLOAD SYSTEM
 // ==========================================
 
