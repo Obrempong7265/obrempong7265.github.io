@@ -803,5 +803,149 @@ document.addEventListener(
 
                 (data || []).forEach(
                     function (comment) {
+                        addComment(
+                            comment,
+                            commentList
+                        );
+
+                    }
+                );
+
+            }
+
+
+            // ======================================
+            // POST COMMENT
+            // ======================================
+
+            form.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+
+                    const text =
+                        input.value.trim();
+
+
+                    if (!text) {
+                        return;
+                    }
+
+
+                    const username =
+                        getUsername();
+
+
+                    if (!username) {
+
+                        alert(
+                            "Please login with Pi to comment."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const creator =
+                        await getCurrentCreator();
+
+
+                    if (!creator) {
+
+                        alert(
+                            "Your Video City account could not be found."
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!video.id) {
+
+                        addComment(
+                            {
+                                text: text,
+
+                                creators: {
+                                    username:
+                                        creator.username
+                                }
+                            },
+                            commentList
+                        );
+
+                        input.value = "";
+
+                        return;
+
+                    }
+
+
+                    try {
+
+                        const {
+                            data,
+                            error
+                        } =
+                            await supabaseClient
+                                .from("comments")
+                                .insert({
+
+                                    video_id:
+                                        video.id,
+
+                                    creator_id:
+                                        creator.id,
+
+                                    text:
+                                        text
+
+                                })
+                                .select(`
+                                    id,
+                                    text,
+                                    created_at,
+                                    creators (
+                                        username
+                                    )
+                                `)
+                                .single();
+
+
+                        if (error) {
+                            throw error;
+                        }
+
+
+                        addComment(
+                            data,
+                            commentList
+                        );
+
+
+                        input.value = "";
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Video City: Comment error:",
+                            error
+                        );
+
+                        alert(
+                            "Unable to post comment. Please try again."
+                        );
+
+                    }
+
+                }
+            );
+
+            
 
               
