@@ -989,141 +989,138 @@ document.addEventListener(
 
         }
         // ==========================================
-        // LOAD REAL VIDEOS
-        // ==========================================
+// LOAD REAL VIDEOS
+// ==========================================
 
-        async function loadVideos() {
+async function loadVideos() {
 
-            feed.innerHTML = "";
-
-
-            try {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from("videos")
-                        .select(`
-                            id,
-                            creator_id,
-                            title,
-                            description,
-                            category,
-                            price_pi,
-                            media_url,
-                            media_type,
-                            views,
-                            likes,
-                            created_at,
-                            creators (
-                                username
-                            )
-                        `)
-                        .order(
-                            "created_at",
-                            {
-                                ascending: false
-                            }
-                        );
+    feed.innerHTML = `
+        <div class="panel">
+            <p class="muted">
+                Loading Video City...
+            </p>
+        </div>
+    `;
 
 
-                if (error) {
+    try {
 
-                    console.error(
-                        "Video City: Video loading error:",
-                        error
-                    );
-
-
-                    feed.innerHTML = `
-                        <p class="muted">
-                            Unable to load videos.
-                        </p>
-                    `;
-
-                    return;
-
-                }
-
-
-                const videos =
-                    data || [];
-                // ======================================
-                // NO SAMPLE VIDEOS
-                // ======================================
-
-                if (videos.length === 0) {
-
-                    feed.innerHTML = `
-                        <div class="panel">
-                            <h2>
-                                Video City is ready
-                            </h2>
-
-                            <p class="muted">
-                                No videos have been published yet.
-                            </p>
-                        </div>
-                    `;
-
-                    return;
-
-                }
-
-
-                // ======================================
-                // DISPLAY REAL VIDEOS
-                // ======================================
-
-                videos.forEach(
-                    function (video) {
-
-                        video.creator =
-                            video.creators &&
-                            video.creators.username
-                                ? "@" +
-                                  video.creators.username
-                                : "@Creator";
-
-
-                        const card =
-                            createVideo(video);
-
-
-                        feed.appendChild(
-                            card
-                        );
-
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("videos")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
                     }
                 );
 
 
-                console.log(
-                    "Video City: Loaded " +
-                    videos.length +
-                    " video(s)."
-                );
+        if (error) {
+
+            console.error(
+                "Video City: Video loading error:",
+                error
+            );
 
 
-            } catch (error) {
+            feed.innerHTML = `
+                <div class="panel">
+                    <h3>Video City</h3>
 
-                console.error(
-                    "Video City: Feed error:",
-                    error
-                );
-
-
-                feed.innerHTML = `
                     <p class="muted">
                         Unable to load videos.
                     </p>
-                `;
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const videos =
+            data || [];
+
+
+        // ======================================
+        // NO VIDEOS
+        // ======================================
+
+        if (videos.length === 0) {
+
+            feed.innerHTML = `
+                <div class="panel">
+                    <h2>
+                        Video City is ready
+                    </h2>
+
+                    <p class="muted">
+                        No videos have been published yet.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        // ======================================
+        // DISPLAY VIDEOS
+        // ======================================
+
+        feed.innerHTML = "";
+
+
+        videos.forEach(
+            function (video) {
+
+                video.creator =
+                    "@Creator";
+
+
+                const card =
+                    createVideo(video);
+
+
+                feed.appendChild(
+                    card
+                );
 
             }
+        );
 
-        }
+
+        console.log(
+            "Video City: Loaded " +
+            videos.length +
+            " video(s)."
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Video City: Feed error:",
+            error
+        );
+
+
+        feed.innerHTML = `
+            <div class="panel">
+                <h3>Video City</h3>
+
+                <p class="muted">
+                    Unable to load videos.
+                </p>
+            </div>
+        `;
+
+    }
+
+}
         // ==========================================
 // UPLOAD SYSTEM
 // ==========================================
