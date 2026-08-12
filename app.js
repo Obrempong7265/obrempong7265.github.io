@@ -893,7 +893,7 @@ function setupComments(card, video) {
         commentList.innerHTML = "";
 
 
-        if (data && data.length > 0) {
+if (data && data.length > 0) {
 
     data.forEach(
         function (comment) {
@@ -906,24 +906,7 @@ function setupComments(card, video) {
         }
     );
 
-        }
-
-        } else {
-
-            data.forEach(
-                function (comment) {
-
-                    addComment(
-                        comment,
-                        commentList
-                    );
-
-                }
-            );
-
-        }
-
-
+}
         commentButton.textContent =
             "💬 Comments " +
             (data ? data.length : 0);
