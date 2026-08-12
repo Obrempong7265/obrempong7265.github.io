@@ -1124,6 +1124,104 @@ document.addEventListener(
             }
 
         }
+        // ==========================================
+        // UPLOAD SYSTEM
+        // ==========================================
+
+        const uploadForm =
+            document.getElementById("uploadForm");
+
+
+        if (uploadForm) {
+
+            uploadForm.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+
+                    const status =
+                        document.getElementById(
+                            "uploadStatus"
+                        );
+
+
+                    const submitButton =
+                        uploadForm.querySelector(
+                            'button[type="submit"]'
+                        );
+
+
+                    const title =
+                        uploadForm.elements[
+                            "title"
+                        ].value.trim();
+
+
+                    const description =
+                        uploadForm.elements[
+                            "description"
+                        ].value.trim();
+
+
+                    const category =
+                        uploadForm.elements[
+                            "category"
+                        ].value.trim();
+
+
+                    const price =
+                        Number(
+                            uploadForm.elements[
+                                "price"
+                            ].value || 0
+                        );
+
+
+                    const file =
+                        uploadForm.elements[
+                            "video"
+                        ].files[0];
+
+
+                    if (!file) {
+
+                        status.textContent =
+                            "❌ Please select a video or image.";
+
+                        return;
+
+                    }
+
+
+                    if (!getUsername()) {
+
+                        status.textContent =
+                            "❌ Please login with Pi first.";
+
+                        return;
+
+                    }
+
+
+                    try {
+
+                        submitButton.disabled =
+                            true;
+
+
+                        submitButton.textContent =
+                            "Uploading...";
+
+
+                        status.textContent =
+                            "Uploading your content...";
+
+
+                        // ==================================
+
                 
 
             
