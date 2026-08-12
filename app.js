@@ -734,68 +734,175 @@ function setupSupport(card, video) {
     );
 
 }
-
-
-// ==========================================
+        // ==========================================
 // COMMENT SYSTEM
 // ==========================================
 
 function setupComments(card, video) {
-                                
-                // ==========================================
-        // COMMENT SYSTEM
-        // ==========================================
 
-        function setupComments(card, video) {
+    const commentButton =
+        card.querySelector(".commentBtn");
 
-            const commentButton =
-                card.querySelector(".commentBtn");
+    const comments =
+        card.querySelector(".comments");
 
-            const comments =
-                card.querySelector(".comments");
+    const form =
+        card.querySelector(".commentForm");
 
-            const form =
-                card.querySelector(".commentForm");
+    const input =
+        form.querySelector("input");
 
-            const input =
-                form.querySelector("input");
-
-            const commentList =
-                card.querySelector(".commentList");
+    const commentList =
+        card.querySelector(".commentList");
 
 
-            // ======================================
-            // OPEN / CLOSE COMMENTS
-            // ======================================
+    commentButton.addEventListener(
+        "click",
+        async function () {
 
-            commentButton.addEventListener(
-                "click",
-                async function () {
+            comments.style.display =
+                comments.style.display === "none"
+                    ? "block"
+                    : "none";
 
-                    comments.style.display =
-                        comments.style.display === "none"
-                            ? "block"
-                            : "none";
+            if (
+                comments.style.display === "block" &&
+                video.id
+            ) {
+
+                await loadComments();
+
+            }
+
+        }
+    );
 
 
-                    if (
-                        comments.style.display === "block" &&
-                        video.id
-                    ) {
+    async function loadComments() {
 
-                        await loadComments();
-
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("comments")
+                .select(`
+                    id,
+                    text,
+                    created_at,
+                    creators (
+                        username
+                    )
+                `)
+                .eq(
+                    "video_id",
+                    video.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: true
                     }
+                );
 
-                }
+
+        if (error) {
+
+            console.error(
+                "Video City: Comment load error:",
+                error
             );
 
+            return;
 
-            // ======================================
-            // LOAD COMMENTS
-            // ======================================
+        }
 
-            async function loadComments() {
+
+        commentList.innerHTML = "";
+
+
+        (data || []).forEach(
+            function (comment) {
+
+                addComment(
+                    comment,
+                    commentList
+                );
+
+            }
+        );
+
+    }
+
+
+    form.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const text =
+                input.value.trim();
+
+
+            if (!text) {
+                return;
+            }
+
+
+            const username =
+                getUsername();
+
+
+            if (!username) {
+
+                alert(
+                    "Please login with Pi to comment."
+                );
+
+                return;
+
+            }
+
+
+            const creator =
+                await getCurrentCreator();
+
+
+            if (!creator) {
+
+                alert(
+                    "Your Video City account could not be found."
+                );
+
+                return;
+
+            }
+
+
+            if (!video.id) {
+
+                addComment(
+                    {
+                        text: text,
+
+                        creators: {
+                            username:
+                                creator.username
+                        }
+                    },
+                    commentList
+                );
+
+                input.value = "";
+
+                return;
+
+            }
+
+
+            try {
 
                 const {
                     data,
@@ -803,6 +910,18 @@ function setupComments(card, video) {
                 } =
                     await supabaseClient
                         .from("comments")
+                        .insert({
+
+                            video_id:
+                                video.id,
+
+                            creator_id:
+                                creator.id,
+
+                            text:
+                                text
+
+                        })
                         .select(`
                             id,
                             text,
@@ -811,220 +930,82 @@ function setupComments(card, video) {
                                 username
                             )
                         `)
-                        .eq(
-                            "video_id",
-                            video.id
-                        )
-                        .order(
-                            "created_at",
-                            {
-                                ascending: true
-                            }
-                        );
+                        .single();
 
 
                 if (error) {
-
-                    console.error(
-                        "Video City: Comment load error:",
-                        error
-                    );
-
-                    return;
-
+                    throw error;
                 }
 
 
-                commentList.innerHTML = "";
-
-
-                (data || []).forEach(
-                    function (comment) {
-                        addComment(
-                            comment,
-                            commentList
-                        );
-
-                    }
+                addComment(
+                    data,
+                    commentList
                 );
 
-            }
+
+                input.value = "";
 
 
-            // ======================================
-            // POST COMMENT
-            // ======================================
+            } catch (error) {
 
-            form.addEventListener(
-                "submit",
-                async function (event) {
+                console.error(
+                    "Video City: Comment error:",
+                    error
+                );
 
-                    event.preventDefault();
-
-
-                    const text =
-                        input.value.trim();
-
-
-                    if (!text) {
-                        return;
-                    }
-
-
-                    const username =
-                        getUsername();
-
-
-                    if (!username) {
-
-                        alert(
-                            "Please login with Pi to comment."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const creator =
-                        await getCurrentCreator();
-
-
-                    if (!creator) {
-
-                        alert(
-                            "Your Video City account could not be found."
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (!video.id) {
-
-                        addComment(
-                            {
-                                text: text,
-
-                                creators: {
-                                    username:
-                                        creator.username
-                                }
-                            },
-                            commentList
-                        );
-
-                        input.value = "";
-
-                        return;
-
-                    }
-
-
-                    try {
-
-                        const {
-                            data,
-                            error
-                        } =
-                            await supabaseClient
-                                .from("comments")
-                                .insert({
-
-                                    video_id:
-                                        video.id,
-
-                                    creator_id:
-                                        creator.id,
-
-                                    text:
-                                        text
-
-                                })
-                                .select(`
-                                    id,
-                                    text,
-                                    created_at,
-                                    creators (
-                                        username
-                                    )
-                                `)
-                                .single();
-
-
-                        if (error) {
-                            throw error;
-                        }
-
-
-                        addComment(
-                            data,
-                            commentList
-                        );
-
-
-                        input.value = "";
-
-
-                    } catch (error) {
-
-                        console.error(
-                            "Video City: Comment error:",
-                            error
-                        );
-
-                        alert(
-                            "Unable to post comment. Please try again."
-                        );
-
-                    }
-
-                }
-            );
-            // ======================================
-            // DISPLAY COMMENT
-            // ======================================
-
-            function addComment(
-                comment,
-                list
-            ) {
-
-                const commentElement =
-                    document.createElement("div");
-
-                commentElement.className =
-                    "comment";
-
-
-                const username =
-                    comment.creators &&
-                    comment.creators.username
-                        ? comment.creators.username
-                        : "Guest";
-
-
-                commentElement.innerHTML = `
-
-                    <strong>
-                        @${escapeHTML(username)}
-                    </strong>
-
-                    <p>
-                        ${escapeHTML(comment.text)}
-                    </p>
-
-                `;
-
-
-                list.appendChild(
-                    commentElement
+                alert(
+                    "Unable to post comment. Please try again."
                 );
 
             }
 
         }
+    );
+
+
+    function addComment(
+        comment,
+        list
+    ) {
+
+        const commentElement =
+            document.createElement("div");
+
+        commentElement.className =
+            "comment";
+
+
+        const username =
+            comment.creators &&
+            comment.creators.username
+                ? comment.creators.username
+                : "Guest";
+
+
+        commentElement.innerHTML = `
+
+            <strong>
+                @${escapeHTML(username)}
+            </strong>
+
+            <p>
+                ${escapeHTML(comment.text)}
+            </p>
+
+        `;
+
+
+        list.appendChild(
+            commentElement
+        );
+
+    }
+
+            }
+
+
+
         // ==========================================
 // LOAD REAL VIDEOS
 // ==========================================
