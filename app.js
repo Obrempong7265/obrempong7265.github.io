@@ -1103,15 +1103,17 @@ async function loadVideos() {
 
 
         videos.forEach(
-            function (video) {
+    function (video) {
 
-                video.creator =
-                    "@Creator";
+        video.creator =
+            video.creators &&
+            video.creators.username
+                ? "@" + video.creators.username
+                : "@Creator";
 
 
-                const card =
-                    createVideo(video);
-
+        const card =
+            createVideo(video);
 
                 feed.appendChild(
                     card
