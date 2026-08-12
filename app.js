@@ -1125,446 +1125,395 @@ document.addEventListener(
 
         }
         // ==========================================
-        // UPLOAD SYSTEM
-        // ==========================================
+// UPLOAD SYSTEM
+// ==========================================
 
-        const uploadForm =
-            document.getElementById("uploadForm");
+const uploadForm =
+    document.getElementById("uploadForm");
 
 
-        if (uploadForm) {
+if (uploadForm) {
 
-            uploadForm.addEventListener(
-                "submit",
-                async function (event) {
+    uploadForm.addEventListener(
+        "submit",
+        async function (event) {
 
-                    event.preventDefault();
-                    event.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
 
 
-                    const status =
-                        document.getElementById(
-                            "uploadStatus"
-                        );
+            const status =
+                document.getElementById(
+                    "uploadStatus"
+                );
 
 
-                    const submitButton =
-                        uploadForm.querySelector(
-                            'button[type="submit"]'
-                        );
+            const submitButton =
+                uploadForm.querySelector(
+                    'button[type="submit"]'
+                );
 
 
-                    const title =
-                        uploadForm.elements[
-                            "title"
-                        ].value.trim();
+            const title =
+                uploadForm.elements["title"]
+                    .value.trim();
 
 
-                    const description =
-                        uploadForm.elements[
-                            "description"
-                        ].value.trim();
+            const description =
+                uploadForm.elements["description"]
+                    .value.trim();
 
 
-                    const category =
-                        uploadForm.elements[
-                            "category"
-                        ].value.trim();
+            const category =
+                uploadForm.elements["category"]
+                    .value.trim();
 
 
-                    const price =
-                        Number(
-                            uploadForm.elements[
-                                "price"
-                            ].value || 0
-                        );
+            const price =
+                Number(
+                    uploadForm.elements["price"]
+                        .value || 0
+                );
 
 
-                    const file =
-                        uploadForm.elements[
-                            "video"
-                        ].files[0];
+            const file =
+                uploadForm.elements["video"]
+                    .files[0];
 
 
-                    if (!file) {
+            if (!file) {
 
-                        status.textContent =
-                            "❌ Please select a video or image.";
+                status.textContent =
+                    "❌ Please select a video or image.";
 
-                        return;
+                return;
 
-                    }
+            }
 
 
-                    if (!getUsername()) {
+            if (!getUsername()) {
 
-                        status.textContent =
-                            "❌ Please login with Pi first.";
+                status.textContent =
+                    "❌ Please login with Pi first.";
 
-                        return;
+                return;
 
-                    }
+            }
 
 
-                    try {
+            try {
 
-                        submitButton.disabled =
-                            true;
+                submitButton.disabled = true;
 
+                submitButton.textContent =
+                    "Uploading...";
 
-                        submitButton.textContent =
-                            "Uploading...";
+                status.textContent =
+                    "Uploading your content...";
 
 
-                        status.textContent =
-                            "Uploading your content...";
-                        // ==================================
-                        // FILE TYPE
-                        // ==================================
+                // ======================================
+                // GET / CREATE CREATOR
+                // ======================================
 
-                        const mediaType =
-                            file.type.startsWith(
-                                "image/"
-                            )
-                                ? "image"
-                                : "video";
+                const creator =
+                    await getOrCreateCreator();
 
 
-                        // ==================================
-                        // FILE EXTENSION
-                        // ==================================
+                if (!creator) {
 
-                        const extension =
-                            file.name
-                                .split(".")
-                                .pop()
-                                .toLowerCase();
-
-
-                        // ==================================
-                        // SAFE FILE NAME
-                        // ==================================
-
-                        const safeTitle =
-                            (
-                                title ||
-                                "video"
-                            )
-                                .toLowerCase()
-                                .replace(
-                                    /[^a-z0-9]+/g,
-                                    "-"
-                                )
-                                .replace(
-                                    /^-+|-+$/g,
-                                    "");
-
-
-                        const fileName =
-                            Date.now() +
-                            "-" +
-                            safeTitle +
-                            "." +
-                            extension;
-
-
-                        const filePath =
-                            "uploads/" +
-                            fileName;
-
-
-                        // ==================================
-                        // GET / CREATE CREATOR
-                        // ==================================
-
-                        status.textContent =
-                            "Preparing creator account...";
-
-
-                        const creator =
-                            await getOrCreateCreator();
-
-
-                        if (!creator) {
-
-                            throw new Error(
-                                "Unable to identify your Video City creator account."
-                            );
-
-                        }
-
-
-                        // ==================================
-                        // UPLOAD FILE
-                        // ==================================
-
-                        status.textContent =
-                            "Uploading file...";
-
-
-                        const {
-                            error: uploadError
-                        } =
-                            await supabaseClient
-                                .storage
-                                .from(
-                                    "video-city-media"
-                                )
-                                .upload(
-                                    filePath,
-                                    file,
-                                    {
-                                        cacheControl:
-                                            "3600",
-
-                                        upsert:
-                                            false,
-
-                                        contentType:
-                                            file.type
-                                    }
-                                );
-
-
-                        if (uploadError) {
-
-                            throw uploadError;
-
-                        }
-                        // ==================================
-                        // UPLOAD FILE
-                        // ==================================
-
-                        status.textContent =
-                            "Uploading file...";
-
-
-                        const {
-                            error: uploadError
-                        } =
-                            await supabaseClient
-                                .storage
-                                .from(
-                                    "video-city-media"
-                                )
-                                .upload(
-                                    filePath,
-                                    file,
-                                    {
-                                        cacheControl:
-                                            "3600",
-
-                                        upsert:
-                                            false,
-
-                                        contentType:
-                                            file.type
-                                    }
-                                );
-
-
-                        if (uploadError) {
-
-                            throw uploadError;
-
-                        }
-
-
-                        // ==================================
-                        // GET PUBLIC URL
-                        // ==================================
-
-                        const {
-                            data: publicData
-                        } =
-                            supabaseClient
-                                .storage
-                                .from(
-                                    "video-city-media"
-                                )
-                                .getPublicUrl(
-                                    filePath
-                                );
-
-
-                        const mediaURL =
-                            publicData &&
-                            publicData.publicUrl;
-
-
-                        if (!mediaURL) {
-
-                            throw new Error(
-                                "Unable to create media URL."
-                            );
-
-                        }
-
-
-                        // ==================================
-                        // SAVE VIDEO RECORD
-                        // ==================================
-
-                        status.textContent =
-                            "Saving video information...";
-
-
-                        const {
-                            data: savedVideo,
-                            error: videoError
-                        } =
-                            await supabaseClient
-                                .from("videos")
-                                .insert({
-
-                                    creator_id:
-                                        creator.id,
-
-                                    title:
-                                        title,
-
-                                    description:
-                                        description,
-
-                                    category:
-                                        category,
-
-                                    price_pi:
-                                        price,
-
-                                    media_url:
-                                        mediaURL,
-
-                                    media_type:
-                                        mediaType,
-
-                                    views:
-                                        0,
-
-                                    likes:
-                                        0
-
-                                })
-                                .select()
-                                .single();
-
-
-                        if (videoError) {
-
-                            throw videoError;
-
-                        }
-
-
-                        console.log(
-                            "Video City: Video saved:",
-                            savedVideo
-                        );
-
-
-                        // ==================================
-                        // SUCCESS
-                        // ==================================
-
-                        status.textContent =
-                            "✅ Published successfully!";
-
-
-                        uploadForm.reset();
-
-
-                        await loadVideos();
-
-
-                        // ==================================
-                        // RETURN TO HOME
-                        // ==================================
-
-                        const uploadSection =
-                            document.getElementById(
-                                "upload"
-                            );
-
-
-                        const homeFeed =
-                            document.getElementById(
-                                "feed"
-                            );
-
-
-                        if (uploadSection) {
-
-                            uploadSection.classList.add(
-                                "hidden"
-                            );
-
-                        }
-
-
-                        if (homeFeed) {
-
-                            homeFeed.classList.remove(
-                                "hidden"
-                            );
-
-                        }
-
-
-                        document
-                            .querySelectorAll(
-                                ".nav"
-                            )
-                            .forEach(
-                                function (button) {
-
-                                    button.classList.remove(
-                                        "active"
-                                    );
-
-
-                                    if (
-                                        button.dataset.view ===
-                                        "home"
-                                    ) {
-
-                                        button.classList.add(
-                                            "active"
-                                        );
-
-                                    }
-
-                                }
-                            );
-
-
-                    } catch (error) {
-
-                        console.error(
-                            "Video City: Upload error:",
-                            error
-                        );
-
-
-                        status.textContent =
-                            "❌ Upload failed: " +
-                            (
-                                error.message ||
-                                "Unknown error"
-                            );
-
-                    } finally {
-
-                        submitButton.disabled =
-                            false;
-
-
-                        submitButton.textContent =
-                            "Publish to Video City";
-
-                    }
+                    throw new Error(
+                        "Unable to identify your creator account."
+                    );
 
                 }
-            );
+
+
+                // ======================================
+                // FILE TYPE
+                // ======================================
+
+                const mediaType =
+                    file.type.startsWith("image/")
+                        ? "image"
+                        : "video";
+
+
+                // ======================================
+                // FILE EXTENSION
+                // ======================================
+
+                const extension =
+                    file.name
+                        .split(".")
+                        .pop()
+                        .toLowerCase();
+
+
+                // ======================================
+                // SAFE FILE NAME
+                // ======================================
+
+                const safeTitle =
+                    (
+                        title ||
+                        "video"
+                    )
+                        .toLowerCase()
+                        .replace(
+                            /[^a-z0-9]+/g,
+                            "-"
+                        )
+                        .replace(
+                            /^-+|-+$/g,
+                            "");
+
+
+                const fileName =
+                    Date.now() +
+                    "-" +
+                    safeTitle +
+                    "." +
+                    extension;
+
+
+                const filePath =
+                    "uploads/" +
+                    fileName;
+
+
+                // ======================================
+                // UPLOAD FILE
+                // ======================================
+
+                status.textContent =
+                    "Uploading file...";
+
+
+                const {
+                    error: uploadError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from("video-city-media")
+                        .upload(
+                            filePath,
+                            file,
+                            {
+                                cacheControl:
+                                    "3600",
+
+                                upsert:
+                                    false,
+
+                                contentType:
+                                    file.type
+                            }
+                        );
+
+
+                if (uploadError) {
+
+                    throw uploadError;
+
+                }
+
+
+                // ======================================
+                // GET PUBLIC URL
+                // ======================================
+
+                const {
+                    data: publicData
+                } =
+                    supabaseClient
+                        .storage
+                        .from("video-city-media")
+                        .getPublicUrl(
+                            filePath
+                        );
+
+
+                const mediaURL =
+                    publicData &&
+                    publicData.publicUrl;
+
+
+                if (!mediaURL) {
+
+                    throw new Error(
+                        "Unable to create media URL."
+                    );
+
+                }
+
+
+                // ======================================
+                // SAVE VIDEO RECORD
+                // ======================================
+
+                status.textContent =
+                    "Saving video information...";
+
+
+                const {
+                    data: savedVideo,
+                    error: videoError
+                } =
+                    await supabaseClient
+                        .from("videos")
+                        .insert({
+
+                            creator_id:
+                                creator.id,
+
+                            title:
+                                title,
+
+                            description:
+                                description,
+
+                            category:
+                                category,
+
+                            price_pi:
+                                price,
+
+                            media_url:
+                                mediaURL,
+
+                            media_type:
+                                mediaType,
+
+                            views:
+                                0,
+
+                            likes:
+                                0
+
+                        })
+                        .select()
+                        .single();
+
+
+                if (videoError) {
+
+                    throw videoError;
+
+                }
+
+
+                console.log(
+                    "Video City: Video saved:",
+                    savedVideo
+                );
+
+
+                // ======================================
+                // SUCCESS
+                // ======================================
+
+                status.textContent =
+                    "✅ Published successfully!";
+
+
+                uploadForm.reset();
+
+
+                // ======================================
+                // RELOAD FEED
+                // ======================================
+
+                await loadVideos();
+
+
+                // ======================================
+                // RETURN HOME
+                // ======================================
+
+                const uploadSection =
+                    document.getElementById(
+                        "upload"
+                    );
+
+
+                const homeFeed =
+                    document.getElementById(
+                        "feed"
+                    );
+
+
+                if (uploadSection) {
+
+                    uploadSection.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+
+                if (homeFeed) {
+
+                    homeFeed.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                document
+                    .querySelectorAll(".nav")
+                    .forEach(
+                        function (button) {
+
+                            button.classList.remove(
+                                "active"
+                            );
+
+
+                            if (
+                                button.dataset.view ===
+                                "home"
+                            ) {
+
+                                button.classList.add(
+                                    "active"
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Upload error:",
+                    error
+                );
+
+
+                status.textContent =
+                    "❌ Upload failed: " +
+                    (
+                        error.message ||
+                        "Unknown error"
+                    );
+
+            } finally {
+
+                submitButton.disabled =
+                    false;
+
+
+                submitButton.textContent =
+                    "Publish to Video City";
+
+            }
+
+        }
+    );
 
                             }
                 // ==========================================
