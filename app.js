@@ -2037,16 +2037,25 @@ subscriptionButtons.forEach(
                                             },
 
                                             body:
-                                                JSON.stringify({
-                                                    action:
-                                                        "approve",
+                            JSON.stringify({
 
-                                                    paymentId:
-                                                        paymentId
-                                                })
-                                        }
-                                    );
+                                action:
+                                    "approve",
 
+                                paymentId:
+                                    paymentId,
+
+                                piAccessToken:
+                                    sessionStorage.getItem(
+                                        "videoCityPiAccessToken"
+                                    )
+
+                            })
+                    }
+                );
+
+
+            
 
                                 const result =
                                     await response.json();
@@ -2080,86 +2089,98 @@ subscriptionButtons.forEach(
 
 
                     onReadyForServerCompletion:
-                        async function (
-                            paymentId,
-                            txid
-                        ) {
+    async function (
+        paymentId,
+        txid
+    ) {
 
-                            console.log(
-                                "Video City: Payment ready for completion:",
-                                paymentId,
-                                txid
-                            );
-
-
-                            try {
-
-                                const response =
-                                    await fetch(
-                                        "https://fkcyhqaxsfsnukbeebwu.supabase.co/functions/v1/pi-payment",
-                                        {
-                                            method: "POST",
-
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json"
-                                            },
-
-                                            body:
-                                                JSON.stringify({
-                                                    action:
-                                                        "complete",
-
-                                                    paymentId:
-                                                        paymentId,
-
-                                                    txid:
-                                                        txid
-                                                })
-                                        }
-                                    );
+        console.log(
+            "Video City: Payment ready for completion:",
+            paymentId,
+            txid
+        );
 
 
-                                const result =
-                                    await response.json();
+        try {
 
+            const response =
+                await fetch(
+                    "https://fkcyhqaxsfsnukbeebwu.supabase.co/functions/v1/pi-payment",
+                    {
+                        method: "POST",
 
-                                console.log(
-                                    "Video City: Completion response:",
-                                    result
-                                );
-
-
-                                if (
-                                    response.ok &&
-                                    status
-                                ) {
-
-                                    status.textContent =
-                                        "Payment completed successfully.";
-
-                                }
-
-
-                            } catch (error) {
-
-                                console.error(
-                                    "Video City: Completion error:",
-                                    error
-                                );
-
-
-                                if (status) {
-
-                                    status.textContent =
-                                        "Payment completion error.";
-
-                                }
-
-                            }
-
+                        headers: {
+                            "Content-Type":
+                                "application/json"
                         },
 
+                        body:
+                            JSON.stringify({
+
+                                action:
+                                    "complete",
+
+                                paymentId:
+                                    paymentId,
+
+                                txid:
+                                    txid,
+
+                                piAccessToken:
+                                    sessionStorage.getItem(
+                                        "videoCityPiAccessToken"
+                                    ),
+
+                                plan:
+                                    plan,
+
+                                amount:
+                                    amount
+
+                            })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            console.log(
+                "Video City: Completion response:",
+                result
+            );
+
+
+            if (
+                response.ok &&
+                status
+            ) {
+
+                status.textContent =
+                    "Payment completed successfully.";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Video City: Completion error:",
+                error
+            );
+
+
+            if (status) {
+
+                status.textContent =
+                    "Payment completion error.";
+
+            }
+
+        }
+
+    },
 
                     onCancel:
                         function (paymentId) {
