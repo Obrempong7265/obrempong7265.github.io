@@ -2271,3 +2271,63 @@ subscriptionButtons.forEach(
 
     }
 );
+
+const paymentId =
+    "447a3da02045b04c9c6e36330c3e165a2c3643a2e4dc22a015b4eeb34bf7d939";
+
+const piAccessToken =
+    sessionStorage.getItem(
+        "videoCityPiAccessToken"
+    );
+
+fetch(
+    "https://fkcyhqaxsfsnukbeebwu.supabase.co/functions/v1/pi-payment",
+    {
+        method: "POST",
+
+        headers: {
+            "Content-Type":
+                "application/json"
+        },
+
+        body:
+            JSON.stringify({
+
+                action:
+                    "recover",
+
+                paymentId:
+                    paymentId,
+
+                piAccessToken:
+                    piAccessToken
+
+            })
+    }
+)
+.then(
+    response =>
+        response.json()
+            .then(data => ({
+                ok:
+                    response.ok,
+                data:
+                    data
+            }))
+)
+.then(result => {
+
+    console.log(
+        "Video City recovery result:",
+        result
+    );
+
+})
+.catch(error => {
+
+    console.error(
+        "Video City recovery error:",
+        error
+    );
+
+});
