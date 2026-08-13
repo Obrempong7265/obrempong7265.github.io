@@ -107,6 +107,18 @@ loginBtn.addEventListener(
                     scopes,
                     onIncompletePaymentFound
                 );
+            // ==========================================
+// SAVE PI ACCESS TOKEN
+// ==========================================
+
+if (auth.accessToken) {
+
+    sessionStorage.setItem(
+        "videoCityPiAccessToken",
+        auth.accessToken
+    );
+
+}
 
 
             console.log(
