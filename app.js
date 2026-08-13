@@ -1931,7 +1931,7 @@ subscriptionButtons.forEach(
 
         button.addEventListener(
             "click",
-            function () {
+            async function () {
 
                 const plan =
                     button.dataset.plan;
@@ -1963,20 +1963,279 @@ subscriptionButtons.forEach(
                 if (status) {
 
                     status.textContent =
-                        "Selected " +
-                        plan +
-                        " subscription: " +
-                        amount +
-                        " Pi. Payment connection coming next.";
+                        "Starting Pi payment...";
+
+                }
+
+
+                if (
+                    typeof Pi === "undefined"
+                ) {
+
+                    if (status) {
+
+                        status.textContent =
+                            "Pi SDK is not available.";
+
+                    }
+
+                    return;
 
                 }
 
 
                 console.log(
-                    "Video City: Subscription selected:",
+                    "Video City: Starting Pi payment:",
                     plan,
                     amount + " Pi"
                 );
+
+
+                const paymentData = {
+
+                    amount: amount,
+
+                    memo:
+                        "Video City " +
+                        plan +
+                        " Creator Subscription",
+
+                    metadata: {
+
+                        plan: plan,
+
+                        subscription:
+                            "creator"
+
+                    }
+
+                };
+
+
+                const paymentCallbacks = {
+
+                    onReadyForServerApproval:
+                        async function (paymentId) {
+
+                            console.log(
+                                "Video City: Payment ready for approval:",
+                                paymentId
+                            );
+
+
+                            try {
+
+                                const response =
+                                    await fetch(
+                                        "https://fkcyhqaxsfsnukbeebwu.supabase.co/functions/v1/pi-payment",
+                                        {
+                                            method: "POST",
+
+                                            headers: {
+                                                "Content-Type":
+                                                    "application/json"
+                                            },
+
+                                            body:
+                                                JSON.stringify({
+                                                    action:
+                                                        "approve",
+
+                                                    paymentId:
+                                                        paymentId
+                                                })
+                                        }
+                                    );
+
+
+                                const result =
+                                    await response.json();
+
+
+                                console.log(
+                                    "Video City: Approval response:",
+                                    result
+                                );
+
+
+                                if (!response.ok) {
+
+                                    console.error(
+                                        "Video City: Payment approval failed:",
+                                        result
+                                    );
+
+                                }
+
+                            } catch (error) {
+
+                                console.error(
+                                    "Video City: Approval error:",
+                                    error
+                                );
+
+                            }
+
+                        },
+
+
+                    onReadyForServerCompletion:
+                        async function (
+                            paymentId,
+                            txid
+                        ) {
+
+                            console.log(
+                                "Video City: Payment ready for completion:",
+                                paymentId,
+                                txid
+                            );
+
+
+                            try {
+
+                                const response =
+                                    await fetch(
+                                        "https://fkcyhqaxsfsnukbeebwu.supabase.co/functions/v1/pi-payment",
+                                        {
+                                            method: "POST",
+
+                                            headers: {
+                                                "Content-Type":
+                                                    "application/json"
+                                            },
+
+                                            body:
+                                                JSON.stringify({
+                                                    action:
+                                                        "complete",
+
+                                                    paymentId:
+                                                        paymentId,
+
+                                                    txid:
+                                                        txid
+                                                })
+                                        }
+                                    );
+
+
+                                const result =
+                                    await response.json();
+
+
+                                console.log(
+                                    "Video City: Completion response:",
+                                    result
+                                );
+
+
+                                if (
+                                    response.ok &&
+                                    status
+                                ) {
+
+                                    status.textContent =
+                                        "Payment completed successfully.";
+
+                                }
+
+
+                            } catch (error) {
+
+                                console.error(
+                                    "Video City: Completion error:",
+                                    error
+                                );
+
+
+                                if (status) {
+
+                                    status.textContent =
+                                        "Payment completion error.";
+
+                                }
+
+                            }
+
+                        },
+
+
+                    onCancel:
+                        function (paymentId) {
+
+                            console.log(
+                                "Video City: Payment cancelled:",
+                                paymentId
+                            );
+
+
+                            if (status) {
+
+                                status.textContent =
+                                    "Payment cancelled.";
+
+                            }
+
+                        },
+
+
+                    onError:
+                        function (
+                            error,
+                            payment
+                        ) {
+
+                            console.error(
+                                "Video City: Payment error:",
+                                error,
+                                payment
+                            );
+
+
+                            if (status) {
+
+                                status.textContent =
+                                    "Payment failed.";
+
+                            }
+
+                        }
+
+                };
+
+
+                try {
+
+                    const payment =
+                        await Pi.createPayment(
+                            paymentData,
+                            paymentCallbacks
+                        );
+
+
+                    console.log(
+                        "Video City: Pi payment created:",
+                        payment
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Video City: Pi payment creation error:",
+                        error
+                    );
+
+
+                    if (status) {
+
+                        status.textContent =
+                            "Unable to start Pi payment.";
+
+                    }
+
+                }
 
             }
         );
