@@ -85,8 +85,9 @@ loginBtn.addEventListener(
         try {
 
             const scopes = [
-                "username"
-            ];
+    "username",
+    "payments"
+];
 
 
             function onIncompletePaymentFound(
