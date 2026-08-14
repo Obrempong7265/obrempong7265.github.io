@@ -2099,6 +2099,30 @@ subscriptionButtons.forEach(
             paymentId,
             txid
         );
+        const debugBox =
+    document.createElement("div");
+
+debugBox.style.position = "fixed";
+debugBox.style.top = "10px";
+debugBox.style.left = "10px";
+debugBox.style.right = "10px";
+debugBox.style.zIndex = "99999";
+debugBox.style.background = "white";
+debugBox.style.color = "black";
+debugBox.style.padding = "15px";
+debugBox.style.border = "2px solid black";
+debugBox.style.fontSize = "12px";
+debugBox.style.wordBreak = "break-all";
+
+debugBox.innerHTML =
+    "<strong>PI PAYMENT DEBUG</strong><br><br>" +
+    "Payment ID:<br>" +
+    paymentId +
+    "<br><br>" +
+    "Transaction ID:<br>" +
+    txid;
+
+document.body.appendChild(debugBox);
 
 
         try {
