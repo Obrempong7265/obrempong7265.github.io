@@ -433,7 +433,7 @@ document.addEventListener(
                         </button>
 
 
-                        <button
+                                                <button
                             class="supportBtn"
                             type="button">
 
@@ -441,6 +441,14 @@ document.addEventListener(
 
                         </button>
 
+
+                        <button
+                            class="reportBtn"
+                            type="button">
+
+                            🚨 Report
+
+                        </button>
                     </div>
 
 
