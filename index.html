@@ -61,51 +61,87 @@
 
 <body>
 
+<!-- ==========================================
+     TOP HEADER
+========================================== -->
 
-    <!-- ==========================================
-         TOP HEADER
-    =========================================== -->
+<header class="topbar">
 
-    <header class="topbar">
+    <div class="brand">
 
-        <div class="brand">
+        <span class="logo">
+            ▶
+        </span>
 
-            <span class="logo">
-                ▶
-            </span>
+        <span>
+            Video City
+        </span>
 
-            <span>
-                Video City
-            </span>
-
-        </div>
+    </div>
 
 
-        <div class="account">
+    <div class="account">
+
+        <!-- NOTIFICATIONS -->
+
+        <button
+            id="notificationBtn"
+            class="top-icon-btn"
+            type="button"
+            aria-label="Notifications">
+
+            🔔
 
             <span
-                id="piUser"
-                class="username">
+                id="notificationBadge"
+                class="notification-badge hidden">
 
-                Not connected
+                0
 
             </span>
 
-
-            <button
-                id="loginBtn"
-                class="btn pink"
-                type="button">
-
-                Login with Pi
-
-            </button>
-
-        </div>
-
-    </header>
+        </button>
 
 
+        <!-- SETTINGS -->
+
+        <button
+            id="settingsBtn"
+            class="top-icon-btn"
+            type="button"
+            aria-label="Settings">
+
+            ⚙️
+
+        </button>
+
+
+        <!-- USERNAME -->
+
+        <span
+            id="piUser"
+            class="username">
+
+            Not connected
+
+        </span>
+
+
+        <!-- LOGIN -->
+
+        <button
+            id="loginBtn"
+            class="btn pink"
+            type="button">
+
+            Login with Pi
+
+        </button>
+
+    </div>
+
+</header>
+    
     <!-- ==========================================
          MAIN CONTENT
     =========================================== -->
@@ -391,7 +427,75 @@
     </div>
 
 
-    <!-- TRANSACTIONS -->
+    <!-- ======================================
+         WITHDRAWAL
+    ======================================= -->
+
+    <div class="withdraw-box">
+
+        <h3>
+            💸 Withdraw Pi
+        </h3>
+
+        <p class="muted">
+            Request a withdrawal from your available
+            creator earnings.
+        </p>
+
+
+        <div class="withdraw-balance">
+
+            <span>
+                Available Balance
+            </span>
+
+            <strong id="availableBalance">
+                0 Pi
+            </strong>
+
+        </div>
+
+
+        <form id="withdrawForm">
+
+            <label for="withdrawAmount">
+                Amount to Withdraw
+            </label>
+
+            <input
+                id="withdrawAmount"
+                name="amount"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Enter Pi amount"
+                required>
+
+
+            <button
+                id="withdrawBtn"
+                class="btn pink"
+                type="submit">
+
+                💸 Request Withdrawal
+
+            </button>
+
+        </form>
+
+
+        <p
+            id="withdrawStatus"
+            class="muted">
+
+        </p>
+
+    </div>
+
+
+    <!-- ======================================
+         TRANSACTIONS
+    ======================================= -->
 
     <h3>
         📋 Recent Transactions
@@ -405,8 +509,12 @@
 
     </div>
 
+    </div>
+
 </div>
-            <!-- ======================================
+
+
+<!-- ======================================
      CREATOR SUBSCRIPTION
 ======================================= -->
 
@@ -556,11 +664,175 @@
 
 
             </div>
+        </section>
+
+
+        <!-- ======================================
+             NOTIFICATIONS
+        ======================================= -->
+
+        <section
+            id="notifications"
+            class="panel hidden">
+
+            <h2>
+                🔔 Notifications
+            </h2>
+
+            <p class="muted">
+                Your Video City notifications will appear here.
+            </p>
+
+            <div
+                id="notificationList"
+                class="notification-list">
+
+                <div class="notification-item">
+
+                    <strong>
+                        Welcome to Video City
+                    </strong>
+
+                    <p class="muted">
+                        Your notifications will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             SETTINGS
+        ======================================= -->
+
+        <section
+            id="settings"
+            class="panel hidden">
+
+            <h2>
+                ⚙️ Settings
+            </h2>
+
+            <p class="muted">
+                Video City settings will be available here.
+            </p>
+
+
+            <div class="upload-box">
+
+                <h3>
+                    Account Settings
+                </h3>
+
+                <p class="muted">
+                    Settings and preferences will be added here.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ======================================
+             SUPPORT
+        ======================================= -->
+
+        <section
+            id="support"
+            class="panel hidden">
+
+            <h2>
+                🎧 Help & Support
+            </h2>
+
+            <p class="muted">
+                Tell us how we can help you.
+            </p>
+
+
+            <div class="upload-box">
+
+                <form id="supportForm">
+
+                    <label for="supportCategory">
+                        Support Category
+                    </label>
+
+                    <select
+                        id="supportCategory"
+                        name="category"
+                        required>
+
+                        <option value="">
+                            Select a category
+                        </option>
+
+                        <option value="account">
+                            Account
+                        </option>
+
+                        <option value="payment">
+                            Payment
+                        </option>
+
+                        <option value="withdrawal">
+                            Withdrawal
+                        </option>
+
+                        <option value="video">
+                            Video
+                        </option>
+
+                        <option value="technical">
+                            Technical Problem
+                        </option>
+
+                        <option value="other">
+                            Other
+                        </option>
+
+                    </select>
+
+
+                    <label for="supportMessage">
+                        Message
+                    </label>
+
+                    <textarea
+                        id="supportMessage"
+                        name="message"
+                        placeholder="Describe your problem..."
+                        maxlength="2000"
+                        required></textarea>
+
+
+                    <button
+                        class="btn pink"
+                        type="submit">
+
+                        Send Support Request
+
+                    </button>
+
+                </form>
+
+
+                <p
+                    id="supportStatus"
+                    class="muted">
+
+                </p>
+
+            </div>
 
         </section>
 
 
     </main>
+        
 
 
     <!-- ==========================================
