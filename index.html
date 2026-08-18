@@ -513,24 +513,42 @@
 
 </div>
 
-
 <!-- ======================================
      CREATOR SUBSCRIPTION
 ======================================= -->
 
-<div class="upload-box">
+<div class="upload-box subscription-box">
 
-    <h3>
-        ⭐ Creator Subscription
-    </h3>
+    <div class="section-heading">
 
-    <p class="muted">
-        Subscribe to unlock paid video selling and creator earning features.
-    </p>
+        <div>
+            <h3>
+                ⭐ Creator Subscription
+            </h3>
 
-    <div class="plans">
+            <p class="muted">
+                Unlock paid video selling and creator earning features.
+            </p>
+        </div>
 
-        <div class="plan">
+    </div>
+
+
+    <!-- SUBSCRIPTION PLANS -->
+
+    <div class="plans subscription-plans">
+
+
+        <!-- WEEKLY -->
+
+        <button
+            class="plan subscription-card"
+            type="button"
+            data-subscription="weekly">
+
+            <span class="subscription-icon">
+                📅
+            </span>
 
             <h3>
                 Weekly
@@ -540,19 +558,27 @@
                 10 Pi
             </strong>
 
-            <button
-                class="btn pink"
-                type="button"
-                data-plan="weekly">
+            <span class="subscription-action">
+                View details →
+            </span>
 
-                Subscribe
-
-            </button>
-
-        </div>
+        </button>
 
 
-        <div class="plan">
+        <!-- MONTHLY -->
+
+        <button
+            class="plan subscription-card featured"
+            type="button"
+            data-subscription="monthly">
+
+            <span class="popular-badge">
+                POPULAR
+            </span>
+
+            <span class="subscription-icon">
+                ⭐
+            </span>
 
             <h3>
                 Monthly
@@ -562,19 +588,23 @@
                 40 Pi
             </strong>
 
-            <button
-                class="btn pink"
-                type="button"
-                data-plan="monthly">
+            <span class="subscription-action">
+                View details →
+            </span>
 
-                Subscribe
-
-            </button>
-
-        </div>
+        </button>
 
 
-        <div class="plan">
+        <!-- YEARLY -->
+
+        <button
+            class="plan subscription-card"
+            type="button"
+            data-subscription="yearly">
+
+            <span class="subscription-icon">
+                👑
+            </span>
 
             <h3>
                 Yearly
@@ -584,16 +614,92 @@
                 480 Pi
             </strong>
 
-            <button
-                class="btn pink"
-                type="button"
-                data-plan="yearly">
+            <span class="subscription-action">
+                View details →
+            </span>
 
-                Subscribe
+        </button>
 
-            </button>
+    </div>
+
+
+    <!-- SUBSCRIPTION DETAIL -->
+
+    <div
+        id="subscriptionDetails"
+        class="subscription-details hidden">
+
+        <button
+            id="closeSubscriptionDetails"
+            class="close-detail"
+            type="button">
+
+            ✕
+
+        </button>
+
+
+        <div
+            id="subscriptionDetailIcon"
+            class="detail-icon">
+
+            ⭐
 
         </div>
+
+
+        <h3 id="subscriptionDetailTitle">
+            Monthly Creator Subscription
+        </h3>
+
+
+        <p
+            id="subscriptionDetailPrice"
+            class="subscription-price">
+
+            40 Pi
+
+        </p>
+
+
+        <p
+            id="subscriptionDetailDescription"
+            class="muted">
+
+            Unlock creator features and start earning from your content.
+
+        </p>
+
+
+        <div class="subscription-benefits">
+
+            <p>
+                ✓ Sell paid videos
+            </p>
+
+            <p>
+                ✓ Receive creator tips
+            </p>
+
+            <p>
+                ✓ Track your earnings
+            </p>
+
+            <p>
+                ✓ Access creator tools
+            </p>
+
+        </div>
+
+
+        <button
+            id="subscribeDetailBtn"
+            class="btn pink"
+            type="button">
+
+            Subscribe with Pi
+
+        </button>
 
     </div>
 
@@ -607,7 +713,6 @@
     </p>
 
 </div>
-
         </section>
 
 
