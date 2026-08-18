@@ -2295,14 +2295,246 @@ document.body.appendChild(debugBox);
 
     }
 );
+// ==========================================
+// SUBSCRIPTION CARD DETAILS
+// ==========================================
+
+const subscriptionCards =
+    document.querySelectorAll(
+        ".subscription-card"
+    );
+
+const subscriptionDetails =
+    document.getElementById(
+        "subscriptionDetails"
+    );
+
+const closeSubscriptionDetails =
+    document.getElementById(
+        "closeSubscriptionDetails"
+    );
+
+const subscriptionDetailIcon =
+    document.getElementById(
+        "subscriptionDetailIcon"
+    );
+
+const subscriptionDetailTitle =
+    document.getElementById(
+        "subscriptionDetailTitle"
+    );
+
+const subscriptionDetailPrice =
+    document.getElementById(
+        "subscriptionDetailPrice"
+    );
+
+const subscriptionDetailDescription =
+    document.getElementById(
+        "subscriptionDetailDescription"
+    );
+
+const subscribeDetailBtn =
+    document.getElementById(
+        "subscribeDetailBtn"
+    );
+
+
+const subscriptionPlans = {
+
+    weekly: {
+
+        icon: "📅",
+
+        title:
+            "Weekly Creator Subscription",
+
+        price:
+            "10 Pi",
+
+        description:
+            "Get access to Video City creator features for one week."
+
+    },
+
+    monthly: {
+
+        icon: "⭐",
+
+        title:
+            "Monthly Creator Subscription",
+
+        price:
+            "40 Pi",
+
+        description:
+            "Unlock creator features and start earning from your content."
+
+    },
+
+    yearly: {
+
+        icon: "👑",
+
+        title:
+            "Yearly Creator Subscription",
+
+        price:
+            "480 Pi",
+
+        description:
+            "Get the full Video City creator experience for one year."
+
+    }
+
+};
+
+
+let selectedSubscriptionPlan = null;
+
+
+// ==========================================
+// OPEN SUBSCRIPTION DETAILS
+// ==========================================
+
+subscriptionCards.forEach(
+    function (card) {
+
+        card.addEventListener(
+            "click",
+            function () {
+
+                const plan =
+                    card.dataset.subscription;
+
+                const details =
+                    subscriptionPlans[plan];
+
+                if (!details) {
+                    return;
+                }
+
+                selectedSubscriptionPlan =
+                    plan;
+
+
+                if (subscriptionDetailIcon) {
+
+                    subscriptionDetailIcon.textContent =
+                        details.icon;
+
+                }
+
+
+                if (subscriptionDetailTitle) {
+
+                    subscriptionDetailTitle.textContent =
+                        details.title;
+
+                }
+
+
+                if (subscriptionDetailPrice) {
+
+                    subscriptionDetailPrice.textContent =
+                        details.price;
+
+                }
+
+
+                if (subscriptionDetailDescription) {
+
+                    subscriptionDetailDescription.textContent =
+                        details.description;
+
+                }
+
+
+                if (subscriptionDetails) {
+
+                    subscriptionDetails.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// ==========================================
+// CLOSE SUBSCRIPTION DETAILS
+// ==========================================
+
+if (closeSubscriptionDetails) {
+
+    closeSubscriptionDetails.addEventListener(
+        "click",
+        function () {
+
+            if (subscriptionDetails) {
+
+                subscriptionDetails.classList.add(
+                    "hidden"
+                );
+
+            }
+
+            selectedSubscriptionPlan =
+                null;
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// SUBSCRIBE FROM DETAILS
+// ==========================================
+
+if (subscribeDetailBtn) {
+
+    subscribeDetailBtn.addEventListener(
+        "click",
+        function () {
+
+            if (!selectedSubscriptionPlan) {
+                return;
+            }
+
+
+            const plan =
+                selectedSubscriptionPlan;
+
+
+            const originalButton =
+                document.querySelector(
+                    '[data-plan="' +
+                    plan +
+                    '"]'
+                );
+
+
+            if (originalButton) {
+
+                originalButton.click();
+
+            }
+
+        }
+    );
+
+}
+
 
 
 // ==========================================
 // END VIDEO CITY
 // ==========================================
-
-    }
-);
 
 const paymentId =
     "447a3da02045b04c9c6e36330c3e165a2c3643a2e4dc22a015b4eeb34bf7d939";
