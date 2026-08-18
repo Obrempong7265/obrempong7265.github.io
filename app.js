@@ -2303,7 +2303,10 @@ const subscriptionCards =
     document.querySelectorAll(
         ".subscription-card"
     );
-
+console.log(
+    "VIDEO CITY: subscription cards found:",
+    subscriptionCards.length
+);
 const subscriptionDetails =
     document.getElementById(
         "subscriptionDetails"
