@@ -839,3 +839,72 @@ MOBILE
 }
 
   }
+
+/* ==========================================
+   FORCE SUBSCRIPTION POPUP
+========================================== */
+
+.subscription-details {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+
+    width: calc(100% - 24px) !important;
+    max-width: 430px !important;
+
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+
+    margin: 0 !important;
+    padding: 28px 22px !important;
+
+    background: #171717 !important;
+
+    border: 1px solid #444 !important;
+    border-radius: 18px !important;
+
+    z-index: 99999 !important;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.8) !important;
+}
+
+.subscription-details::before {
+    content: "" !important;
+
+    position: fixed !important;
+    inset: 0 !important;
+
+    background: rgba(0, 0, 0, 0.75) !important;
+
+    z-index: -1 !important;
+}
+
+.subscription-details.hidden {
+    display: none !important;
+}
+
+.subscription-details .close-detail {
+    position: absolute !important;
+
+    top: 12px !important;
+    right: 12px !important;
+
+    width: 36px !important;
+    height: 36px !important;
+
+    border: none !important;
+    border-radius: 50% !important;
+
+    background: #292929 !important;
+    color: white !important;
+
+    font-size: 20px !important;
+}
+
+#subscribeDetailBtn {
+    width: 100% !important;
+    max-width: 320px !important;
+    margin-top: 10px !important;
+}
