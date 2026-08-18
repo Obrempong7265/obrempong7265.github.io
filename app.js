@@ -2598,44 +2598,7 @@ fetch(
     );
 
 });
-// ==========================================
-// SUBSCRIPTION CARD DETAILS
-// ==========================================
 
-const subscriptionDetails =
-    document.getElementById(
-        "subscriptionDetails"
-    );
-
-const closeSubscriptionDetails =
-    document.getElementById(
-        "closeSubscriptionDetails"
-    );
-
-const subscriptionDetailIcon =
-    document.getElementById(
-        "subscriptionDetailIcon"
-    );
-
-const subscriptionDetailTitle =
-    document.getElementById(
-        "subscriptionDetailTitle"
-    );
-
-const subscriptionDetailPrice =
-    document.getElementById(
-        "subscriptionDetailPrice"
-    );
-
-const subscriptionDetailDescription =
-    document.getElementById(
-        "subscriptionDetailDescription"
-    );
-
-const subscribeDetailBtn =
-    document.getElementById(
-        "subscribeDetailBtn"
-    );
 
 
 // ==========================================
