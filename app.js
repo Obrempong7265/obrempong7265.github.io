@@ -2601,73 +2601,7 @@ fetch(
 
 
 
-// ==========================================
-// PLAN INFORMATION
-// ==========================================
 
-const subscriptionPlans = {
-
-    weekly: {
-
-        icon: "📅",
-
-        title:
-            "Weekly Creator Subscription",
-
-        price:
-            "10 Pi",
-
-        amount:
-            10,
-
-        description:
-            "Get access to Video City creator features for one week."
-
-    },
-
-
-    monthly: {
-
-        icon: "⭐",
-
-        title:
-            "Monthly Creator Subscription",
-
-        price:
-            "40 Pi",
-
-        amount:
-            40,
-
-        description:
-            "Enjoy full creator features and earning tools for one month."
-
-    },
-
-
-    yearly: {
-
-        icon: "👑",
-
-        title:
-            "Yearly Creator Subscription",
-
-        price:
-            "480 Pi",
-
-        amount:
-            480,
-
-        description:
-            "Get the full Video City creator experience for one year."
-
-    }
-
-};
-
-
-let selectedSubscriptionPlan =
-    null;
 
 
 // ==========================================
