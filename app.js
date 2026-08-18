@@ -1930,7 +1930,7 @@ console.log(
 
 const subscriptionButtons =
     document.querySelectorAll(
-        '[data-plan]'
+'[data-plan]:not(.subscription-card)'
     );
 
 
