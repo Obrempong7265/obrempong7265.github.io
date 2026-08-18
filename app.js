@@ -2704,55 +2704,6 @@ if (closeSubscriptionDetails) {
 }
 
 
-// ==========================================
-// SUBSCRIBE BUTTON
-// ==========================================
 
-if (subscribeDetailBtn) {
-
-    subscribeDetailBtn.addEventListener(
-        "click",
-        function () {
-
-            if (!selectedSubscriptionPlan) {
-
-                return;
-
-            }
-
-
-            const plan =
-                selectedSubscriptionPlan;
-
-
-            console.log(
-                "Video City: Selected subscription:",
-                plan
-            );
-
-
-            /*
-             * The existing Pi subscription
-             * payment system will be connected
-             * here in the next step.
-             */
-
-            const status =
-                document.getElementById(
-                    "subscriptionStatus"
-                );
-
-
-            if (status) {
-
-                status.textContent =
-                    "Selected " +
-                    plan +
-                    " subscription. Preparing Pi payment...";
-
-            }
-
-                }
-    );
-
-}
+    }
+);
