@@ -1927,10 +1927,11 @@ console.log(
 // ==========================================
 // CREATOR SUBSCRIPTION BUTTONS
 // ==========================================
-
 const subscriptionButtons =
     document.querySelectorAll(
-'[data-plan]'
+        '#subscribeDetailBtn'
+    
+
     );
 
 
