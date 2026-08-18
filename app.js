@@ -2515,25 +2515,19 @@ if (subscribeDetailBtn) {
                 selectedSubscriptionPlan;
 
 
-            const originalButton =
-                document.querySelector(
-                    '[data-plan="' +
-                    plan +
-                    '"]'
-                );
+            console.log(
+                "Video City: Selected subscription:",
+                plan
+            );
 
 
-            if (originalButton) {
-
-                originalButton.click();
-
-            }
+            subscribeDetailBtn.dataset.plan =
+                plan;
 
         }
     );
 
 }
-
 
 
 // ==========================================
