@@ -2602,11 +2602,6 @@ fetch(
 // SUBSCRIPTION CARD DETAILS
 // ==========================================
 
-const subscriptionCards =
-    document.querySelectorAll(
-        ".subscription-card"
-    );
-
 const subscriptionDetails =
     document.getElementById(
         "subscriptionDetails"
