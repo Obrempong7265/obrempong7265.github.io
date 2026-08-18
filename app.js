@@ -2363,3 +2363,269 @@ fetch(
     );
 
 });
+// ==========================================
+// SUBSCRIPTION CARD DETAILS
+// ==========================================
+
+const subscriptionCards =
+    document.querySelectorAll(
+        ".subscription-card"
+    );
+
+const subscriptionDetails =
+    document.getElementById(
+        "subscriptionDetails"
+    );
+
+const closeSubscriptionDetails =
+    document.getElementById(
+        "closeSubscriptionDetails"
+    );
+
+const subscriptionDetailIcon =
+    document.getElementById(
+        "subscriptionDetailIcon"
+    );
+
+const subscriptionDetailTitle =
+    document.getElementById(
+        "subscriptionDetailTitle"
+    );
+
+const subscriptionDetailPrice =
+    document.getElementById(
+        "subscriptionDetailPrice"
+    );
+
+const subscriptionDetailDescription =
+    document.getElementById(
+        "subscriptionDetailDescription"
+    );
+
+const subscribeDetailBtn =
+    document.getElementById(
+        "subscribeDetailBtn"
+    );
+
+
+// ==========================================
+// PLAN INFORMATION
+// ==========================================
+
+const subscriptionPlans = {
+
+    weekly: {
+
+        icon: "📅",
+
+        title:
+            "Weekly Creator Subscription",
+
+        price:
+            "10 Pi",
+
+        amount:
+            10,
+
+        description:
+            "Get access to Video City creator features for one week."
+
+    },
+
+
+    monthly: {
+
+        icon: "⭐",
+
+        title:
+            "Monthly Creator Subscription",
+
+        price:
+            "40 Pi",
+
+        amount:
+            40,
+
+        description:
+            "Enjoy full creator features and earning tools for one month."
+
+    },
+
+
+    yearly: {
+
+        icon: "👑",
+
+        title:
+            "Yearly Creator Subscription",
+
+        price:
+            "480 Pi",
+
+        amount:
+            480,
+
+        description:
+            "Get the full Video City creator experience for one year."
+
+    }
+
+};
+
+
+let selectedSubscriptionPlan =
+    null;
+
+
+// ==========================================
+// OPEN SUBSCRIPTION DETAILS
+// ==========================================
+
+subscriptionCards.forEach(
+    function (card) {
+
+        card.addEventListener(
+            "click",
+            function () {
+
+                const plan =
+                    card.dataset.subscription;
+
+                const details =
+                    subscriptionPlans[plan];
+
+                if (!details) {
+                    return;
+                }
+
+
+                selectedSubscriptionPlan =
+                    plan;
+
+
+                if (subscriptionDetailIcon) {
+
+                    subscriptionDetailIcon.textContent =
+                        details.icon;
+
+                }
+
+
+                if (subscriptionDetailTitle) {
+
+                    subscriptionDetailTitle.textContent =
+                        details.title;
+
+                }
+
+
+                if (subscriptionDetailPrice) {
+
+                    subscriptionDetailPrice.textContent =
+                        details.price;
+
+                }
+
+
+                if (subscriptionDetailDescription) {
+
+                    subscriptionDetailDescription.textContent =
+                        details.description;
+
+                }
+
+
+                if (subscriptionDetails) {
+
+                    subscriptionDetails.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// ==========================================
+// CLOSE DETAILS
+// ==========================================
+
+if (closeSubscriptionDetails) {
+
+    closeSubscriptionDetails.addEventListener(
+        "click",
+        function () {
+
+            if (subscriptionDetails) {
+
+                subscriptionDetails.classList.add(
+                    "hidden"
+                );
+
+            }
+
+            selectedSubscriptionPlan =
+                null;
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// SUBSCRIBE BUTTON
+// ==========================================
+
+if (subscribeDetailBtn) {
+
+    subscribeDetailBtn.addEventListener(
+        "click",
+        function () {
+
+            if (!selectedSubscriptionPlan) {
+
+                return;
+
+            }
+
+
+            const plan =
+                selectedSubscriptionPlan;
+
+
+            console.log(
+                "Video City: Selected subscription:",
+                plan
+            );
+
+
+            /*
+             * The existing Pi subscription
+             * payment system will be connected
+             * here in the next step.
+             */
+
+            const status =
+                document.getElementById(
+                    "subscriptionStatus"
+                );
+
+
+            if (status) {
+
+                status.textContent =
+                    "Selected " +
+                    plan +
+                    " subscription. Preparing Pi payment...";
+
+            }
+
+                }
+    );
+
+}
