@@ -475,91 +475,199 @@ margin-bottom: 15px;
 }
 
 /* ==========================================
-   SUBSCRIPTION DETAILS
+   SUBSCRIPTION DETAILS POPUP
 ========================================== */
 
 .subscription-details {
-    position: relative;
-    margin-top: 20px;
-    padding: 24px;
-    background: #111;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 32px);
+    max-width: 430px;
+    max-height: 85vh;
+    overflow-y: auto;
+
+    background: #171717;
     border: 1px solid #333;
-    border-radius: 14px;
+    border-radius: 18px;
+    padding: 28px 22px;
+
     text-align: center;
-    animation: subscriptionOpen 0.25s ease;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+
+    z-index: 1000;
+
+    animation: subscriptionPopup 0.2s ease-out;
 }
 
-@keyframes subscriptionOpen {
+
+/* ==========================================
+   POPUP BACKDROP
+========================================== */
+
+.subscription-details::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    z-index: -1;
+}
+
+
+/* ==========================================
+   POPUP ANIMATION
+========================================== */
+
+@keyframes subscriptionPopup {
 
     from {
         opacity: 0;
-        transform: translateY(8px);
+        transform:
+            translate(-50%, -47%)
+            scale(0.96);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform:
+            translate(-50%, -50%)
+            scale(1);
     }
 
 }
 
+
+/* ==========================================
+   CLOSE BUTTON
+========================================== */
+
 .close-detail {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 34px;
-    height: 34px;
+    top: 12px;
+    right: 12px;
+
+    width: 36px;
+    height: 36px;
+
     border: none;
     border-radius: 50%;
-    background: #222;
+
+    background: #292929;
     color: #aaa;
-    font-size: 18px;
+
+    font-size: 20px;
+
     cursor: pointer;
 }
 
 .close-detail:hover {
-    background: #333;
+    background: #3a3a3a;
     color: white;
 }
 
+
+/* ==========================================
+   DETAIL ICON
+========================================== */
+
 .detail-icon {
-    font-size: 40px;
+    font-size: 42px;
     margin-bottom: 10px;
 }
+
+
+/* ==========================================
+   DETAIL TITLE
+========================================== */
 
 .subscription-details h3 {
     font-size: 22px;
     margin-bottom: 8px;
 }
 
+
+/* ==========================================
+   DETAIL PRICE
+========================================== */
+
 .subscription-price {
     color: #ff0055;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
+
     margin: 8px 0 15px;
 }
 
+
+/* ==========================================
+   DETAIL DESCRIPTION
+========================================== */
+
+.subscription-details > .muted {
+    color: #aaa;
+    line-height: 1.5;
+}
+
+
+/* ==========================================
+   BENEFITS
+========================================== */
+
 .subscription-benefits {
     margin: 20px 0;
-    padding: 15px;
-    background: #191919;
-    border-radius: 10px;
+
+    padding: 16px;
+
+    background: #202020;
+
+    border: 1px solid #303030;
+
+    border-radius: 12px;
+
     text-align: left;
 }
 
 .subscription-benefits p {
     color: #ddd;
-    margin-bottom: 9px;
+
+    margin-bottom: 10px;
+
+    font-size: 14px;
 }
 
 .subscription-benefits p:last-child {
     margin-bottom: 0;
 }
 
+
+/* ==========================================
+   SUBSCRIBE BUTTON
+========================================== */
+
 #subscribeDetailBtn {
     width: 100%;
     max-width: 320px;
+
+    padding: 13px 18px;
+
+    border-radius: 25px;
+
+    font-size: 16px;
 }
+
+
+/* ==========================================
+   SUBSCRIPTION STATUS
+========================================== */
+
+#subscriptionStatus {
+    margin-top: 15px;
+}
+
 
 /* ==========================================
    MOBILE SUBSCRIPTION
@@ -567,17 +675,24 @@ margin-bottom: 15px;
 
 @media (max-width: 600px) {
 
-    .subscription-card {
-        min-height: 150px;
-    }
-
     .subscription-details {
-        padding: 20px 16px;
+        width: calc(100% - 24px);
+        max-height: 88vh;
+
+        padding: 26px 18px;
     }
 
     .subscription-details h3 {
         font-size: 20px;
         padding: 0 25px;
+    }
+
+    .subscription-price {
+        font-size: 28px;
+    }
+
+    .subscription-benefits {
+        margin-top: 18px;
     }
 
 }
