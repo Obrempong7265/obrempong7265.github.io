@@ -1943,7 +1943,7 @@ subscriptionButtons.forEach(
             async function () {
 
                 const plan =
-                    button.dataset.plan;
+                    selectedSubscriptionPlan;
 
                 let amount = 0;
 
@@ -1960,6 +1960,16 @@ subscriptionButtons.forEach(
 
                 if (plan === "yearly") {
                     amount = 480;
+                }
+                if (!plan || amount <= 0) {
+
+    console.error(
+        "Video City: Invalid subscription plan:",
+        plan,
+        amount
+    );
+
+    return;
                 }
 
 
