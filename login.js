@@ -159,9 +159,10 @@ fetch(
 )
 .then(result => {
 
-    console.log(
-        "Video City recovery result:",
-        result
+    alert(
+    "Recovery result:\n\n" +
+    JSON.stringify(result, null, 2)
+
     );
 
 })
