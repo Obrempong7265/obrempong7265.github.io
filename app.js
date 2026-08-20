@@ -2941,18 +2941,11 @@ if (closeSubscriptionDetails) {
 
     }
 );
-document.addEventListener(
-    "DOMContentLoaded",
+setTimeout(
     function () {
 
-        setTimeout(
-            function () {
+        markActiveSubscriptionCard();
 
-                markActiveSubscriptionCard();
-
-            },
-            1500
-        );
-
-    }
+    },
+    1500
 );
