@@ -533,7 +533,17 @@ async function markActiveSubscriptionCard() {
         ) {
             return;
         }
-
+alert(
+    "SUBSCRIPTION FOUND!\n\n" +
+    "Creator: " +
+    creator.id +
+    "\n\n" +
+    "Plan: " +
+    subscription.plan +
+    "\n\n" +
+    "Status: " +
+    subscription.status
+);
         const activePlan =
             subscription.plan;
 
