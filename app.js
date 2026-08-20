@@ -324,6 +324,15 @@ async function loadCreatorSubscriptionStatus() {
 
         const creator =
     await getOrCreateCreator();
+        console.log(
+    "Video City: Subscription creator:",
+    creator
+);
+
+console.log(
+    "Video City: Subscription creator ID:",
+    creator ? creator.id : "NO CREATOR"
+);
         if (!creator) {
 
             status.textContent =
