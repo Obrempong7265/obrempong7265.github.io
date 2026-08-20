@@ -2926,3 +2926,18 @@ if (closeSubscriptionDetails) {
 
     }
 );
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        setTimeout(
+            function () {
+
+                markActiveSubscriptionCard();
+
+            },
+            1500
+        );
+
+    }
+);
