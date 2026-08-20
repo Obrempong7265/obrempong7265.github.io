@@ -119,61 +119,7 @@ if (auth.accessToken) {
     );
 
 }
-            // ==========================================
-// TEMPORARY RECOVERY OF COMPLETED PAYMENT
-// ==========================================
-
-fetch(
-    "https://fkcyhqaxsfsnukbeebwu.supabase.co/functions/v1/pi-payment",
-    {
-        method: "POST",
-
-        headers: {
-            "Content-Type":
-                "application/json"
-        },
-
-        body:
-            JSON.stringify({
-
-                action:
-                    "recover",
-
-                paymentId:
-    "kxk96o3XJYmgkWe4QXbsEOMjquQE",
-                piAccessToken:
-                    auth.accessToken
-
-            })
-    }
-)
-.then(
-    response =>
-        response.json()
-            .then(data => ({
-                ok:
-                    response.ok,
-                data:
-                    data
-            }))
-)
-.then(result => {
-
-    alert(
-    "Recovery result:\n\n" +
-    JSON.stringify(result, null, 2)
-
-    );
-
-})
-.catch(error => {
-
-    console.error(
-        "Video City recovery error:",
-        error
-    );
-
-});
+            
 
 
             console.log(
