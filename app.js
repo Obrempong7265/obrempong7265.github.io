@@ -2941,13 +2941,3 @@ if (closeSubscriptionDetails) {
 
     }
 );
-setTimeout(
-    function () {
-
-        alert("SUBSCRIPTION FUNCTION STARTED");
-
-        markActiveSubscriptionCard();
-
-    },
-    1500
-);
