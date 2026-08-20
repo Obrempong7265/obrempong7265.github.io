@@ -249,6 +249,7 @@ fetch(
 
             loginBtn.disabled =
                 false;
+            await loadCreatorSubscriptionStatus();
 
 
             loginBtn.style.background =
