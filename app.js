@@ -464,7 +464,13 @@ async function markActiveSubscriptionCard() {
             await getOrCreateCreator();
 
         if (!creator) {
-            return;
+
+    alert(
+        "SUBSCRIPTION DEBUG:\n\n" +
+        "Creator not found."
+    );
+
+    return;
         }
 
         const {
@@ -502,7 +508,16 @@ async function markActiveSubscriptionCard() {
         }
 
         if (!subscription) {
-            return;
+
+    alert(
+        "SUBSCRIPTION DEBUG:\n\n" +
+        "Creator found:\n" +
+        creator.id +
+        "\n\n" +
+        "But NO ACTIVE SUBSCRIPTION was found."
+    );
+
+    return;
         }
 
         const expireAt =
