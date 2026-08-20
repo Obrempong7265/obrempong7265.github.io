@@ -345,3 +345,18 @@ console.log(
 );
 
 });
+setTimeout(
+    function () {
+
+        if (
+            typeof loadCreatorSubscriptionStatus ===
+            "function"
+        ) {
+
+            loadCreatorSubscriptionStatus();
+
+        }
+
+    },
+    1500
+);
