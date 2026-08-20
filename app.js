@@ -304,6 +304,142 @@ document.addEventListener(
             return newCreator;
 
                 }
+        // ==========================================
+// LOAD CREATOR SUBSCRIPTION STATUS
+// ==========================================
+
+async function loadCreatorSubscriptionStatus() {
+
+    const status =
+        document.getElementById(
+            "subscriptionStatus"
+        );
+
+    if (!status) {
+        return;
+    }
+
+
+    try {
+
+        const creator =
+            await getCurrentCreator();
+
+
+        if (!creator) {
+
+            status.textContent =
+                "Subscription status: Not subscribed";
+
+            return;
+
+        }
+
+
+        const {
+            data: subscription,
+            error
+        } =
+            await supabaseClient
+                .from("creator_subscriptions")
+                .select("*")
+                .eq(
+                    "creator_id",
+                    creator.id
+                )
+                .eq(
+                    "status",
+                    "active"
+                )
+                .order(
+                    "expire_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(1)
+                .maybeSingle();
+
+
+        if (error) {
+
+            console.error(
+                "Subscription status lookup error:",
+                error
+            );
+
+            status.textContent =
+                "Subscription status: Unable to check";
+
+            return;
+
+        }
+
+
+        if (!subscription) {
+
+            status.textContent =
+                "Subscription status: Not subscribed";
+
+            return;
+
+        }
+
+
+        const expireAt =
+            new Date(
+                subscription.expire_at
+            );
+
+
+        if (
+            isNaN(
+                expireAt.getTime()
+            ) ||
+            expireAt <= new Date()
+        ) {
+
+            status.textContent =
+                "Subscription status: Expired";
+
+            return;
+
+        }
+
+
+        const plan =
+            subscription.plan
+                ? subscription.plan
+                    .charAt(0)
+                    .toUpperCase() +
+                  subscription.plan.slice(1)
+                : "Active";
+
+
+        status.textContent =
+            "Subscription status: " +
+            plan +
+            " — Active";
+
+        console.log(
+            "Video City: Active subscription:",
+            subscription
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Video City: Subscription status error:",
+            error
+        );
+
+        status.textContent =
+            "Subscription status: Unable to check";
+
+    }
+
+}
                 // ==========================================
         // CREATE VIDEO CARD
         // ==========================================
