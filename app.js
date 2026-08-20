@@ -478,7 +478,7 @@ async function markActiveSubscriptionCard() {
             error
         } =
             await supabaseClient
-                .from("creator_subscription")
+                .from("creator_subscriptions")
                 .select("*")
                 .eq(
                     "creator_id",
