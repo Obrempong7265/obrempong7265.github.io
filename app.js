@@ -522,7 +522,7 @@ async function markActiveSubscriptionCard() {
 
         const expireAt =
             new Date(
-                subscription.expire_at
+                subscription.expired_at
             );
 
         if (
