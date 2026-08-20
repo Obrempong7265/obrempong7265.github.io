@@ -282,6 +282,16 @@ if (savedUsername) {
 
     loginBtn.style.background =
         "#22c55e";
+    
+setTimeout(
+    function () {
+
+        markActiveSubscriptionCard();
+
+    },
+    1000
+);
+
 
 }
 
@@ -291,18 +301,3 @@ console.log(
 );
 
 });
-setTimeout(
-    function () {
-
-        if (
-            typeof loadCreatorSubscriptionStatus ===
-            "function"
-        ) {
-
-            loadCreatorSubscriptionStatus();
-
-        }
-
-    },
-    1500
-);
