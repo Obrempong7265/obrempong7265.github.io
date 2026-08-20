@@ -385,10 +385,15 @@ console.log(
 
         if (!subscription) {
 
-            status.textContent =
-                "Subscription status: Not subscribed";
+    status.textContent =
+        "Subscription status: NOT FOUND";
 
-            return;
+    alert(
+        "No active subscription found for creator ID:\n\n" +
+        creator.id
+    );
+
+    return;
 
         }
 
