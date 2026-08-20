@@ -489,7 +489,7 @@ async function markActiveSubscriptionCard() {
                     "active"
                 )
                 .order(
-                    "expire_at",
+                    "expired_at",
                     {
                         ascending: false
                     }
