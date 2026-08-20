@@ -249,9 +249,7 @@ fetch(
 
             loginBtn.disabled =
                 false;
-            await loadCreatorSubscriptionStatus();
-
-
+            // await loadCreatorSubscriptionStatus();
             loginBtn.style.background =
                 "#22c55e";
 
