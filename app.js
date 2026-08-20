@@ -348,7 +348,7 @@ console.log(
             error
         } =
             await supabaseClient
-                .from("creator_subscriptions")
+                .from("creator_subscription")
                 .select("*")
                 .eq(
                     "creator_id",
