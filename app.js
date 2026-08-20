@@ -452,6 +452,135 @@ console.log(
     }
 
 }
+        // ==========================================
+// MARK ACTIVE CREATOR SUBSCRIPTION CARD
+// ==========================================
+
+async function markActiveSubscriptionCard() {
+
+    try {
+
+        const creator =
+            await getOrCreateCreator();
+
+        if (!creator) {
+            return;
+        }
+
+        const {
+            data: subscription,
+            error
+        } =
+            await supabaseClient
+                .from("creator_subscription")
+                .select("*")
+                .eq(
+                    "creator_id",
+                    creator.id
+                )
+                .eq(
+                    "status",
+                    "active"
+                )
+                .order(
+                    "expire_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(1)
+                .maybeSingle();
+
+        if (error) {
+
+            console.error(
+                "Video City: Active subscription card lookup error:",
+                error
+            );
+
+            return;
+        }
+
+        if (!subscription) {
+            return;
+        }
+
+        const expireAt =
+            new Date(
+                subscription.expire_at
+            );
+
+        if (
+            isNaN(
+                expireAt.getTime()
+            ) ||
+            expireAt <= new Date()
+        ) {
+            return;
+        }
+
+        const activePlan =
+            subscription.plan;
+
+        const cards =
+            document.querySelectorAll(
+                ".subscription-card"
+            );
+
+        cards.forEach(
+            function (card) {
+
+                const plan =
+                    card.dataset.subscription;
+
+                const oldBadge =
+                    card.querySelector(
+                        ".active-subscription-badge"
+                    );
+
+                if (oldBadge) {
+                    oldBadge.remove();
+                }
+
+                if (
+                    plan === activePlan
+                ) {
+
+                    const badge =
+                        document.createElement(
+                            "span"
+                        );
+
+                    badge.className =
+                        "active-subscription-badge";
+
+                    badge.textContent =
+                        "🟢 ACTIVE ✓";
+
+                    card.appendChild(
+                        badge
+                    );
+
+                }
+
+            }
+        );
+
+        console.log(
+            "Video City: Active subscription card:",
+            activePlan
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Video City: Subscription card error:",
+            error
+        );
+
+    }
+
+}
                 // ==========================================
         // CREATE VIDEO CARD
         // ==========================================
