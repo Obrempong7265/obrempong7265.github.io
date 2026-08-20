@@ -323,9 +323,7 @@ async function loadCreatorSubscriptionStatus() {
     try {
 
         const creator =
-            await getCurrentCreator();
-
-
+    await getOrCreateCreator();
         if (!creator) {
 
             status.textContent =
