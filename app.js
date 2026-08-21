@@ -2961,3 +2961,7 @@ if (closeSubscriptionDetails) {
 
     }
 );
+console.log(
+    "MARK ACTIVE FUNCTION TYPE:",
+    typeof markActiveSubscriptionCard
+);
