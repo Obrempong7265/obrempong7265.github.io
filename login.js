@@ -205,7 +205,10 @@ setTimeout(
 
         alert("POST-LOGIN SUBSCRIPTION CHECK STARTED");
 
-        markActiveSubscriptionCard();
+        alert(
+    "FUNCTION TYPE: " +
+    typeof markActiveSubscriptionCard
+);
 
     },
     1000
