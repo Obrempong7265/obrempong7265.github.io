@@ -198,21 +198,7 @@ if (auth.accessToken) {
             // await loadCreatorSubscriptionStatus();
             loginBtn.style.background =
                 "#22c55e";
-            alert("SUCCESSFUL PI LOGIN BLOCK REACHED");
             
-setTimeout(
-    function () {
-
-        alert("POST-LOGIN SUBSCRIPTION CHECK STARTED");
-
-        alert(
-    "FUNCTION TYPE: " +
-    typeof markActiveSubscriptionCard
-);
-
-    },
-    1000
-);
 
             console.log(
                 "Video City: Pi Username:",
