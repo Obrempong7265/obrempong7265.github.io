@@ -616,6 +616,8 @@ alert(
     }
 
 }
+        window.markActiveSubscriptionCard =
+    markActiveSubscriptionCard;
                 // ==========================================
         // CREATE VIDEO CARD
         // ==========================================
