@@ -1,4 +1,3 @@
-alert("APP.JS VERSION 23 LOADED");
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
