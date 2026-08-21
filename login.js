@@ -198,6 +198,7 @@ if (auth.accessToken) {
             // await loadCreatorSubscriptionStatus();
             loginBtn.style.background =
                 "#22c55e";
+            alert("SUCCESSFUL PI LOGIN BLOCK REACHED");
             
 setTimeout(
     function () {
