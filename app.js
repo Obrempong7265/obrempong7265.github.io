@@ -529,6 +529,20 @@ async function markActiveSubscriptionCard() {
 
     return;
         }
+        alert(
+    "ACTIVE ROW FOUND\n\n" +
+    "Creator ID:\n" +
+    creator.id +
+    "\n\n" +
+    "Plan:\n" +
+    subscription.plan +
+    "\n\n" +
+    "Status:\n" +
+    subscription.status +
+    "\n\n" +
+    "Expires:\n" +
+    subscription.expires_at
+);
 
         const expireAt =
             new Date(
