@@ -499,12 +499,21 @@ async function markActiveSubscriptionCard() {
 
         if (error) {
 
-            console.error(
-                "Video City: Active subscription card lookup error:",
-                error
-            );
+    alert(
+        "SUBSCRIPTION DATABASE ERROR\n\n" +
+        JSON.stringify(
+            error,
+            null,
+            2
+        )
+    );
 
-            return;
+    console.error(
+        "Video City: Active subscription card lookup error:",
+        error
+    );
+
+    return;
         }
 
         if (!subscription) {
