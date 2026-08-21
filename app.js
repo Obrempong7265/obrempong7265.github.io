@@ -497,7 +497,7 @@ async function markActiveSubscriptionCard() {
                     }
                 )
                 .limit(1)
-                .maybeSingle();
+                .single();
         alert(
     "QUERY RESULT\n\n" +
     JSON.stringify(
