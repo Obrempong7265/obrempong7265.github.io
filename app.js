@@ -497,6 +497,18 @@ async function markActiveSubscriptionCard() {
                 )
                 .limit(1)
                 .maybeSingle();
+        alert(
+    "QUERY RESULT\n\n" +
+    JSON.stringify(
+        {
+            creatorId: creator.id,
+            subscription: subscription,
+            error: error
+        },
+        null,
+        2
+    )
+);
 
         if (error) {
 
