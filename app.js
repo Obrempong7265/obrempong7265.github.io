@@ -459,6 +459,7 @@ console.log(
 async function markActiveSubscriptionCard() {
 
     try {
+        alert("MARK ACTIVE SUBSCRIPTION FUNCTION STARTED");
 
         const creator =
             await getOrCreateCreator();
