@@ -198,15 +198,17 @@ if (auth.accessToken) {
             // await loadCreatorSubscriptionStatus();
             loginBtn.style.background =
                 "#22c55e";
-            setTimeout(
+            
+setTimeout(
     function () {
+
+        alert("POST-LOGIN SUBSCRIPTION CHECK STARTED");
 
         markActiveSubscriptionCard();
 
     },
     1000
 );
-
 
             console.log(
                 "Video City: Pi Username:",
