@@ -460,18 +460,12 @@ console.log(
 async function markActiveSubscriptionCard() {
 
     try {
-        alert("MARK ACTIVE SUBSCRIPTION FUNCTION STARTED");
+        
 
         const creator =
             await getOrCreateCreator();
 
         if (!creator) {
-
-    alert(
-        "SUBSCRIPTION DEBUG:\n\n" +
-        "Creator not found."
-    );
-
     return;
         }
 
@@ -498,29 +492,9 @@ async function markActiveSubscriptionCard() {
                 )
                 .limit(1)
                 .single();
-        alert(
-    "QUERY RESULT\n\n" +
-    JSON.stringify(
-        {
-            creatorId: creator.id,
-            subscription: subscription,
-            error: error
-        },
-        null,
-        2
-    )
-);
+        
 
         if (error) {
-
-    alert(
-        "SUBSCRIPTION DATABASE ERROR\n\n" +
-        JSON.stringify(
-            error,
-            null,
-            2
-        )
-    );
 
     console.error(
         "Video City: Active subscription card lookup error:",
@@ -532,30 +506,10 @@ async function markActiveSubscriptionCard() {
 
         if (!subscription) {
 
-    alert(
-        "SUBSCRIPTION DEBUG:\n\n" +
-        "Creator found:\n" +
-        creator.id +
-        "\n\n" +
-        "But NO ACTIVE SUBSCRIPTION was found."
-    );
-
+    
     return;
         }
-        alert(
-    "ACTIVE ROW FOUND\n\n" +
-    "Creator ID:\n" +
-    creator.id +
-    "\n\n" +
-    "Plan:\n" +
-    subscription.plan +
-    "\n\n" +
-    "Status:\n" +
-    subscription.status +
-    "\n\n" +
-    "Expires:\n" +
-    subscription.expires_at
-);
+        
 
         const expireAt =
             new Date(
@@ -570,17 +524,7 @@ async function markActiveSubscriptionCard() {
         ) {
             return;
         }
-alert(
-    "SUBSCRIPTION FOUND!\n\n" +
-    "Creator: " +
-    creator.id +
-    "\n\n" +
-    "Plan: " +
-    subscription.plan +
-    "\n\n" +
-    "Status: " +
-    subscription.status
-);
+
         const activePlan =
             subscription.plan;
 
@@ -645,10 +589,8 @@ alert(
 }
         window.markActiveSubscriptionCard =
     markActiveSubscriptionCard;
-        alert(
-    "WINDOW FUNCTION TYPE: " +
-    typeof window.markActiveSubscriptionCard
-);
+        
+
                 // ==========================================
         // CREATE VIDEO CARD
         // ==========================================
