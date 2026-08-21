@@ -198,6 +198,12 @@ if (auth.accessToken) {
             // await loadCreatorSubscriptionStatus();
             loginBtn.style.background =
                 "#22c55e";
+setTimeout(
+    function () {
+        markActiveSubscriptionCard();
+    },
+    1000
+);
             
 
             console.log(
