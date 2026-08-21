@@ -618,6 +618,10 @@ alert(
 }
         window.markActiveSubscriptionCard =
     markActiveSubscriptionCard;
+        alert(
+    "WINDOW FUNCTION TYPE: " +
+    typeof window.markActiveSubscriptionCard
+);
                 // ==========================================
         // CREATE VIDEO CARD
         // ==========================================
