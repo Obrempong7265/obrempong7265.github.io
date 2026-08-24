@@ -3019,6 +3019,8 @@ console.log(
     "MARK ACTIVE FUNCTION TYPE:",
     typeof markActiveSubscriptionCard
 );
+            }
+);
 
 
 
