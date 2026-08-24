@@ -304,154 +304,9 @@ document.addEventListener(
             return newCreator;
 
                 }
-        // ==========================================
-// LOAD CREATOR SUBSCRIPTION STATUS
-// ==========================================
-
-async function loadCreatorSubscriptionStatus() {
-
-    const status =
-        document.getElementById(
-            "subscriptionStatus"
-        );
-
-    if (!status) {
-        return;
-    }
 
 
-    try {
-
-        const creator =
-    await getOrCreateCreator();
-        console.log(
-    "Video City: Subscription creator:",
-    creator
-);
-
-console.log(
-    "Video City: Subscription creator ID:",
-    creator ? creator.id : "NO CREATOR"
-);
-        if (!creator) {
-
-            status.textContent =
-                "Subscription status: Not subscribed";
-
-            return;
-
-        }
-
-
-        const {
-            data: subscription,
-            error
-        } =
-            await supabaseClient
-                .from("creator_subscription")
-                .select("*")
-                .eq(
-                    "creator_id",
-                    creator.id
-                )
-                .eq(
-                    "status",
-                    "active"
-                )
-                .order(
-                    "expire_at",
-                    {
-                        ascending: false
-                    }
-                )
-                .limit(1)
-                .maybeSingle();
-
-
-        if (error) {
-
-            console.error(
-                "Subscription status lookup error:",
-                error
-            );
-
-            status.textContent =
-                "Subscription status: Unable to check";
-
-            return;
-
-        }
-
-
-        if (!subscription) {
-
-    status.textContent =
-        "Subscription status: NOT FOUND";
-
-    alert(
-        "No active subscription found for creator ID:\n\n" +
-        creator.id
-    );
-
-    return;
-
-        }
-
-
-        const expireAt =
-            new Date(
-                subscription.expire_at
-            );
-
-
-        if (
-            isNaN(
-                expireAt.getTime()
-            ) ||
-            expireAt <= new Date()
-        ) {
-
-            status.textContent =
-                "Subscription status: Expired";
-
-            return;
-
-        }
-
-
-        const plan =
-            subscription.plan
-                ? subscription.plan
-                    .charAt(0)
-                    .toUpperCase() +
-                  subscription.plan.slice(1)
-                : "Active";
-
-
-        status.textContent =
-            "Subscription status: " +
-            plan +
-            " — Active";
-
-        console.log(
-            "Video City: Active subscription:",
-            subscription
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Video City: Subscription status error:",
-            error
-        );
-
-        status.textContent =
-            "Subscription status: Unable to check";
-
-    }
-
-}
+        
         
         // ==========================================
 // MARK ACTIVE CREATOR SUBSCRIPTION CARD
@@ -2820,7 +2675,6 @@ const subscriptionPlans = {
 
 let selectedSubscriptionPlan = null;
 
-
 // ==========================================
 // OPEN SUBSCRIPTION DETAILS
 // ==========================================
@@ -2830,7 +2684,7 @@ subscriptionCards.forEach(
 
         card.addEventListener(
             "click",
-            function () {
+            async function () {
 
                 const plan =
                     card.dataset.subscription;
@@ -2842,9 +2696,14 @@ subscriptionCards.forEach(
                     return;
                 }
 
+
                 selectedSubscriptionPlan =
                     plan;
 
+
+                // ==================================
+                // BASIC PLAN DETAILS
+                // ==================================
 
                 if (subscriptionDetailIcon) {
 
@@ -2878,7 +2737,178 @@ subscriptionCards.forEach(
                 }
 
 
-                if (subscriptionDetails) {
+                // ==================================
+                // CHECK ACTIVE STATE
+                // ==================================
+
+                const isActive =
+                    card.classList.contains(
+                        "active-subscription"
+                    );
+
+
+                if (isActive) {
+
+                    try {
+
+                        const creator =
+                            await getOrCreateCreator();
+
+
+                        if (creator) {
+
+                            const {
+                                data: subscription,
+                                error
+                            } =
+                                await supabaseClient
+                                    .from(
+                                        "creator_subscriptions"
+                                    )
+                                    .select("*")
+                                    .eq(
+                                        "creator_id",
+                                        creator.id
+                                    )
+                                    .eq(
+                                        "plan",
+                                        plan
+                                    )
+                                    .eq(
+                                        "status",
+                                        "active"
+                                    )
+                                    .gt(
+                                        "expires_at",
+                                        new Date().toISOString()
+                                    )
+                                    .order(
+                                        "expires_at",
+                                        {
+                                            ascending: false
+                                        }
+                                    )
+                                    .limit(1)
+                                    .maybeSingle();
+
+
+                            if (error) {
+
+                                console.error(
+                                    "Video City: Active subscription details error:",
+                                    error
+                                );
+
+                            }
+
+
+                            if (subscription) {
+
+                                const startedAt =
+                                    new Date(
+                                        subscription.started_at
+                                    );
+
+                                const expiresAt =
+                                    new Date(
+                                        subscription.expires_at
+                                    );
+
+
+                                if (
+                                    subscriptionDetailDescription
+                                ) {
+
+                                    subscriptionDetailDescription.innerHTML =
+                                        `
+                                        <strong>
+                                            🟢 Active Subscription
+                                        </strong>
+                                        <br><br>
+                                        Started:
+                                        ${startedAt.toLocaleDateString(
+                                            undefined,
+                                            {
+                                                day: "numeric",
+                                                month: "short",
+                                                year: "numeric"
+                                            }
+                                        )}
+                                        <br>
+                                        Expires:
+                                        ${expiresAt.toLocaleDateString(
+                                            undefined,
+                                            {
+                                                day: "numeric",
+                                                month: "short",
+                                                year: "numeric"
+                                            }
+                                        )}
+                                    `;
+
+                                }
+
+
+                                // ==================================
+                                // HIDE SUBSCRIBE BUTTON
+                                // ==================================
+
+                                if (
+                                    subscribeDetailBtn
+                                ) {
+
+                                    subscribeDetailBtn.style.display =
+                                        "none";
+
+                                }
+
+                            }
+
+                        }
+
+                    } catch (error) {
+
+                        console.error(
+                            "Video City: Unable to load active subscription details:",
+                            error
+                        );
+
+                    }
+
+                } else {
+
+                    // ==================================
+                    // AVAILABLE PLAN
+                    // ==================================
+
+                    if (
+                        subscribeDetailBtn
+                    ) {
+
+                        subscribeDetailBtn.style.display =
+                            "";
+
+                        subscribeDetailBtn.disabled =
+                            false;
+
+                        subscribeDetailBtn.textContent =
+                            "Subscribe with Pi";
+
+                        subscribeDetailBtn.dataset.plan =
+                            plan;
+
+                    }
+
+                }
+
+
+                // ==================================
+                // SHOW DETAILS PANEL
+                // ==================================
+
+                if (
+                    subscriptionDetails
+                ) {
 
                     subscriptionDetails.classList.remove(
                         "hidden"
@@ -2897,19 +2927,40 @@ subscriptionCards.forEach(
 // CLOSE SUBSCRIPTION DETAILS
 // ==========================================
 
-if (closeSubscriptionDetails) {
+if (
+    closeSubscriptionDetails
+) {
 
     closeSubscriptionDetails.addEventListener(
         "click",
         function () {
 
-            if (subscriptionDetails) {
+            if (
+                subscriptionDetails
+            ) {
 
                 subscriptionDetails.classList.add(
                     "hidden"
                 );
 
             }
+
+
+            if (
+                subscribeDetailBtn
+            ) {
+
+                subscribeDetailBtn.style.display =
+                    "";
+
+                subscribeDetailBtn.disabled =
+                    false;
+
+                subscribeDetailBtn.textContent =
+                    "Subscribe with Pi";
+
+            }
+
 
             selectedSubscriptionPlan =
                 null;
@@ -2924,14 +2975,20 @@ if (closeSubscriptionDetails) {
 // SUBSCRIBE FROM DETAILS
 // ==========================================
 
-if (subscribeDetailBtn) {
+if (
+    subscribeDetailBtn
+) {
 
     subscribeDetailBtn.addEventListener(
         "click",
         function () {
 
-            if (!selectedSubscriptionPlan) {
+            if (
+                !selectedSubscriptionPlan
+            ) {
+
                 return;
+
             }
 
 
@@ -2955,115 +3012,13 @@ if (subscribeDetailBtn) {
 
 
 // ==========================================
-// END VIDEO CITY
+// END SUBSCRIPTION CARD DETAILS
 // ==========================================
 
-
-
-// ==========================================
-// OPEN SUBSCRIPTION DETAILS
-// ==========================================
-
-subscriptionCards.forEach(
-    function (card) {
-
-        card.addEventListener(
-            "click",
-            function () {
-
-                const plan =
-                    card.dataset.subscription;
-
-                const details =
-                    subscriptionPlans[plan];
-
-                if (!details) {
-                    return;
-                }
-
-
-                selectedSubscriptionPlan =
-                    plan;
-
-
-                if (subscriptionDetailIcon) {
-
-                    subscriptionDetailIcon.textContent =
-                        details.icon;
-
-                }
-
-
-                if (subscriptionDetailTitle) {
-
-                    subscriptionDetailTitle.textContent =
-                        details.title;
-
-                }
-
-
-                if (subscriptionDetailPrice) {
-
-                    subscriptionDetailPrice.textContent =
-                        details.price;
-
-                }
-
-
-                if (subscriptionDetailDescription) {
-
-                    subscriptionDetailDescription.textContent =
-                        details.description;
-
-                }
-
-
-                if (subscriptionDetails) {
-
-                    subscriptionDetails.classList.remove(
-                        "hidden"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-);
-
-
-// ==========================================
-// CLOSE DETAILS
-// ==========================================
-
-if (closeSubscriptionDetails) {
-
-    closeSubscriptionDetails.addEventListener(
-        "click",
-        function () {
-
-            if (subscriptionDetails) {
-
-                subscriptionDetails.classList.add(
-                    "hidden"
-                );
-
-            }
-
-            selectedSubscriptionPlan =
-                null;
-
-        }
-    );
-
-}
-
-
-
-    }
-);
 console.log(
     "MARK ACTIVE FUNCTION TYPE:",
     typeof markActiveSubscriptionCard
 );
+
+
+
