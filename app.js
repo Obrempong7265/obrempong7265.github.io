@@ -452,6 +452,7 @@ console.log(
     }
 
 }
+        
         // ==========================================
 // MARK ACTIVE CREATOR SUBSCRIPTION CARD
 // ==========================================
@@ -459,14 +460,18 @@ console.log(
 async function markActiveSubscriptionCard() {
 
     try {
-        
 
         const creator =
             await getOrCreateCreator();
 
         if (!creator) {
-    return;
+            return;
         }
+
+
+        // ==========================================
+        // GET ACTIVE SUBSCRIPTION
+        // ==========================================
 
         const {
             data: subscription,
@@ -483,6 +488,10 @@ async function markActiveSubscriptionCard() {
                     "status",
                     "active"
                 )
+                .gt(
+                    "expires_at",
+                    new Date().toISOString()
+                )
                 .order(
                     "expires_at",
                     {
@@ -490,53 +499,52 @@ async function markActiveSubscriptionCard() {
                     }
                 )
                 .limit(1)
-                .single();
-        
+                .maybeSingle();
+
 
         if (error) {
 
-    console.error(
-        "Video City: Active subscription card lookup error:",
-        error
-    );
-
-    return;
-        }
-
-        if (!subscription) {
-
-    
-    return;
-        }
-        
-
-        const expireAt =
-            new Date(
-                subscription.expires_at
+            console.error(
+                "Video City: Active subscription lookup error:",
+                error
             );
 
-        if (
-            isNaN(
-                expireAt.getTime()
-            ) ||
-            expireAt <= new Date()
-        ) {
             return;
         }
 
-        const activePlan =
-            subscription.plan;
+
+        // ==========================================
+        // GET ALL SUBSCRIPTION CARDS
+        // ==========================================
 
         const cards =
             document.querySelectorAll(
                 ".subscription-card"
             );
 
+
+        // ==========================================
+        // RESET ALL CARDS FIRST
+        // ==========================================
+
         cards.forEach(
             function (card) {
 
                 const plan =
                     card.dataset.subscription;
+
+                const details =
+                    subscriptionPlans[plan];
+
+                if (!details) {
+                    return;
+                }
+
+
+                card.classList.remove(
+                    "active-subscription"
+                );
+
 
                 const oldBadge =
                     card.querySelector(
@@ -547,34 +555,153 @@ async function markActiveSubscriptionCard() {
                     oldBadge.remove();
                 }
 
-                if (
-                    plan === activePlan
-                ) {
 
-                    const badge =
-                        document.createElement(
-                            "span"
-                        );
-
-                    badge.className =
-                        "active-subscription-badge";
-
-                    badge.textContent =
-                        "🟢 ACTIVE ✓";
-
-                    card.appendChild(
-                        badge
+                const oldExpiry =
+                    card.querySelector(
+                        ".subscription-expiry"
                     );
+
+                if (oldExpiry) {
+                    oldExpiry.remove();
+                }
+
+
+                const action =
+                    card.querySelector(
+                        ".subscription-action"
+                    );
+
+                if (action) {
+
+                    action.textContent =
+                        "Subscribe with Pi";
 
                 }
 
             }
         );
 
+
+        // ==========================================
+        // NO ACTIVE SUBSCRIPTION
+        // ==========================================
+
+        if (!subscription) {
+
+            console.log(
+                "Video City: No active subscription."
+            );
+
+            return;
+        }
+
+
+        // ==========================================
+        // ACTIVE PLAN
+        // ==========================================
+
+        const activePlan =
+            subscription.plan;
+
+
+        const expireAt =
+            new Date(
+                subscription.expires_at
+            );
+
+
+        cards.forEach(
+            function (card) {
+
+                const plan =
+                    card.dataset.subscription;
+
+
+                if (
+                    plan !== activePlan
+                ) {
+                    return;
+                }
+
+
+                card.classList.add(
+                    "active-subscription"
+                );
+
+
+                // ==================================
+                // ACTIVE BADGE
+                // ==================================
+
+                const badge =
+                    document.createElement(
+                        "span"
+                    );
+
+                badge.className =
+                    "active-subscription-badge";
+
+                badge.textContent =
+                    "🟢 ACTIVE ✓";
+
+                card.appendChild(
+                    badge
+                );
+
+
+                // ==================================
+                // EXPIRY DATE
+                // ==================================
+
+                const expiry =
+                    document.createElement(
+                        "span"
+                    );
+
+                expiry.className =
+                    "subscription-expiry";
+
+                expiry.textContent =
+                    "Expires: " +
+                    expireAt.toLocaleDateString(
+                        undefined,
+                        {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
+
+                card.appendChild(
+                    expiry
+                );
+
+
+                // ==================================
+                // CHANGE CARD ACTION
+                // ==================================
+
+                const action =
+                    card.querySelector(
+                        ".subscription-action"
+                    );
+
+                if (action) {
+
+                    action.textContent =
+                        "View subscription details →";
+
+                }
+
+            }
+        );
+
+
         console.log(
             "Video City: Active subscription card:",
             activePlan
         );
+
 
     } catch (error) {
 
@@ -586,9 +713,10 @@ async function markActiveSubscriptionCard() {
     }
 
 }
-        window.markActiveSubscriptionCard =
+
+
+window.markActiveSubscriptionCard =
     markActiveSubscriptionCard;
-        
 
                 // ==========================================
         // CREATE VIDEO CARD
