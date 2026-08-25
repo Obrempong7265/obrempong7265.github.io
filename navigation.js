@@ -429,12 +429,17 @@ if (settingsSupportBtn) {
         "click",
         function () {
 
+            console.log(
+                "VIDEO CITY: Help & Support button clicked"
+            );
+
             showPage("support");
 
         }
     );
 
 }
+
 
 // ==========================================
 // START ON HOME
