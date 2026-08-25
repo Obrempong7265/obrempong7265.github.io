@@ -1006,3 +1006,79 @@ MOBILE
     background: transparent;
     border: none;
 }
+/* ==========================================
+   SETTINGS ACCORDION
+========================================== */
+
+.settings-section {
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.settings-section-header {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 20px;
+
+    background: transparent;
+    border: none;
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.settings-arrow {
+    font-size: 22px;
+    transition: transform 0.2s ease;
+}
+
+
+.settings-section-content {
+    padding: 0 20px 20px;
+}
+
+
+/* ==========================================
+   SETTINGS OPTIONS
+========================================== */
+
+.setting-option {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 14px 0;
+
+    border-top: 1px solid #292929;
+
+    color: white;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .setting-option {
+        flex-direction: row;
+        align-items: center;
+    }
+
+}
