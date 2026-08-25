@@ -840,60 +840,72 @@ data-plan="yearly">
      NOTIFICATIONS SETTINGS
 ======================================= -->
 
-<div class="upload-box">
+<div class="upload-box settings-section">
 
-    <h3>
-        🔔 Notifications
-    </h3>
-
-    <p class="muted">
-        Manage your notification preferences.
-    </p>
-
-
-    <!-- GENERAL NOTIFICATIONS -->
-
-    <label class="setting-option">
+    <button
+        type="button"
+        class="settings-section-header"
+        data-settings-section="notifications">
 
         <span>
-            🔔 General notifications
+            🔔 Notifications
         </span>
 
-        <input
-            type="checkbox"
-            id="generalNotificationsToggle">
-
-    </label>
-
-
-    <!-- PAYMENT NOTIFICATIONS -->
-
-    <label class="setting-option">
-
-        <span>
-            💰 Payment notifications
+        <span class="settings-arrow">
+            ›
         </span>
 
-        <input
-            type="checkbox"
-            id="paymentNotificationsToggle">
-
-    </label>
+    </button>
 
 
-    <!-- SUBSCRIPTION NOTIFICATIONS -->
+    <div
+        class="settings-section-content hidden"
+        id="notificationsSettingsContent">
 
-    <label class="setting-option">
+        <p class="muted">
+            Manage your notification preferences.
+        </p>
 
-        <span>
-            ⭐ Subscription notifications
-        </span>
 
-        <input
-            type="checkbox"
-            id="subscriptionNotificationsToggle">
+        <label class="setting-option">
 
-    </label>
+            <span>
+                🔔 General notifications
+            </span>
+
+            <input
+                type="checkbox"
+                id="generalNotificationsToggle">
+
+        </label>
+
+
+        <label class="setting-option">
+
+            <span>
+                💰 Payment notifications
+            </span>
+
+            <input
+                type="checkbox"
+                id="paymentNotificationsToggle">
+
+        </label>
+
+
+        <label class="setting-option">
+
+            <span>
+                ⭐ Subscription notifications
+            </span>
+
+            <input
+                type="checkbox"
+                id="subscriptionNotificationsToggle">
+
+        </label>
+
+    </div>
 
 </div>
 
