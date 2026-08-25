@@ -22,6 +22,8 @@ const studio =
 
 const profile =
     document.getElementById("profile");
+    const settings =
+    document.getElementById("settings");
 
 
 const profileUsername =
@@ -144,6 +146,21 @@ function showPage(page) {
         updateProfile();
 
     }
+    // ======================================
+// SETTINGS
+// ======================================
+
+if (page === "settings") {
+
+    if (settings) {
+
+        settings.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
 
 
 
@@ -254,7 +271,28 @@ navButtons.forEach(
 
     }
 );
+// ==========================================
+// SETTINGS BUTTON
+// ==========================================
 
+const settingsBtn =
+    document.getElementById(
+        "settingsBtn"
+    );
+
+
+if (settingsBtn) {
+
+    settingsBtn.addEventListener(
+        "click",
+        function () {
+
+            showPage("settings");
+
+        }
+    );
+
+}
 
 
 // ==========================================
