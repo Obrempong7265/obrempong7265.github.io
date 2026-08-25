@@ -413,6 +413,7 @@ settingsSectionHeaders.forEach(
 
     }
 );
+
 // ==========================================
 // SETTINGS SUPPORT BUTTON
 // ==========================================
@@ -429,17 +430,29 @@ if (settingsSupportBtn) {
         "click",
         function () {
 
-            console.log(
-                "VIDEO CITY: Help & Support button clicked"
-            );
+            // Hide Settings
+            if (settings) {
 
-            showPage("support");
+                settings.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            // Show Support
+            if (support) {
+
+                support.classList.remove(
+                    "hidden"
+                );
+
+            }
 
         }
     );
 
 }
-
 
 // ==========================================
 // START ON HOME
