@@ -295,6 +295,105 @@ if (settingsBtn) {
     );
 
 }
+    // ==========================================
+// SETTINGS ACCORDION
+// ==========================================
+
+const settingsSectionHeaders =
+    document.querySelectorAll(
+        ".settings-section-header"
+    );
+
+
+settingsSectionHeaders.forEach(
+    function (header) {
+
+        header.addEventListener(
+            "click",
+            function () {
+
+                const section =
+                    header.dataset.settingsSection;
+
+                const content =
+                    document.getElementById(
+                        section +
+                        "SettingsContent"
+                    );
+
+                if (!content) {
+                    return;
+                }
+
+
+                const isOpen =
+                    !content.classList.contains(
+                        "hidden"
+                    );
+
+
+                // ==================================
+                // CLOSE ALL SETTINGS SECTIONS
+                // ==================================
+
+                document
+                    .querySelectorAll(
+                        ".settings-section-content"
+                    )
+                    .forEach(
+                        function (item) {
+
+                            item.classList.add(
+                                "hidden"
+                            );
+
+                        }
+                    );
+
+
+                document
+                    .querySelectorAll(
+                        ".settings-arrow"
+                    )
+                    .forEach(
+                        function (arrow) {
+
+                            arrow.textContent =
+                                "›";
+
+                        }
+                    );
+
+
+                // ==================================
+                // OPEN SELECTED SECTION
+                // ==================================
+
+                if (!isOpen) {
+
+                    content.classList.remove(
+                        "hidden"
+                    );
+
+                    const arrow =
+                        header.querySelector(
+                            ".settings-arrow"
+                        );
+
+                    if (arrow) {
+
+                        arrow.textContent =
+                            "⌄";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+);
 
 
 // ==========================================
