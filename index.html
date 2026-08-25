@@ -909,22 +909,68 @@ data-plan="yearly">
 
 </div>
 
+
 <!-- ======================================
      PRIVACY SETTINGS
 ======================================= -->
 
-<div class="upload-box">
+<div class="upload-box settings-section">
 
-    <h3>
-        🔒 Privacy
-    </h3>
+    <button
+        type="button"
+        class="settings-section-header"
+        data-settings-section="privacy">
 
-    <p class="muted">
-        Manage your profile and content privacy.
-    </p>
+        <span>
+            🔒 Privacy
+        </span>
+
+        <span class="settings-arrow">
+            ›
+        </span>
+
+    </button>
+
+
+    <div
+        class="settings-section-content hidden"
+        id="privacySettingsContent">
+
+        <p class="muted">
+            Manage your profile and content privacy.
+        </p>
+
+
+        <label class="setting-option">
+
+            <span>
+                👤 Show my Pi username on my profile
+            </span>
+
+            <input
+                type="checkbox"
+                id="showUsernameToggle"
+                checked>
+
+        </label>
+
+
+        <label class="setting-option">
+
+            <span>
+                🎬 Allow my videos to appear publicly
+            </span>
+
+            <input
+                type="checkbox"
+                id="publicVideosToggle"
+                checked>
+
+        </label>
+
+    </div>
 
 </div>
-
 
 <!-- ======================================
      SUPPORT
