@@ -1089,17 +1089,13 @@ data-plan="yearly">
 
                 <form id="supportForm">
 
-                    <label for="supportCategory">
-                        Support Category
-                    </label>
-
                     <select
                         id="supportCategory"
                         name="category"
                         required>
 
-                        <option value="">
-                            Select a category
+                        <option value="" selected disabled>
+    Select a support category
                         </option>
 
                         <option value="account">
@@ -1127,11 +1123,6 @@ data-plan="yearly">
                         </option>
 
                     </select>
-
-
-                    <label for="supportMessage">
-                        Message
-                    </label>
 
                     <textarea
                         id="supportMessage"
