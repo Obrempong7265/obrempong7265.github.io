@@ -24,6 +24,8 @@ const profile =
     document.getElementById("profile");
     const settings =
     document.getElementById("settings");
+    const support =
+    document.getElementById("support");
 
 
 const profileUsername =
@@ -65,6 +67,9 @@ function showPage(page) {
 if (settings) {
     settings.classList.add("hidden");
 }
+    if (support) {
+    support.classList.add("hidden");
+    }
 
 
     // ======================================
@@ -163,7 +168,21 @@ if (page === "settings") {
     }
 
 }
+// ======================================
+// SUPPORT
+// ======================================
 
+if (page === "support") {
+
+    if (support) {
+
+        support.classList.remove(
+            "hidden"
+        );
+
+    }
+
+        }
 
 
     // ======================================
@@ -394,7 +413,28 @@ settingsSectionHeaders.forEach(
 
     }
 );
+// ==========================================
+// SETTINGS SUPPORT BUTTON
+// ==========================================
 
+const settingsSupportBtn =
+    document.getElementById(
+        "settingsSupportBtn"
+    );
+
+
+if (settingsSupportBtn) {
+
+    settingsSupportBtn.addEventListener(
+        "click",
+        function () {
+
+            showPage("support");
+
+        }
+    );
+
+}
 
 // ==========================================
 // START ON HOME
