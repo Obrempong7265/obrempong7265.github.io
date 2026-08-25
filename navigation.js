@@ -62,7 +62,9 @@ function showPage(page) {
     if (profile) {
         profile.classList.add("hidden");
     }
-
+if (settings) {
+    settings.classList.add("hidden");
+}
 
 
     // ======================================
