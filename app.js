@@ -414,31 +414,28 @@ if (supportForm) {
                 // ======================================
 
                 const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from("support_request")
-                        .insert({
+    error
+} =
+    await supabaseClient
+        .from("support_request")
+        .insert({
 
-                            pi_uid:
-                                creator.pi_uid,
+            pi_uid:
+                creator.pi_uid,
 
-                            username:
-                                creator.username,
+            username:
+                creator.username,
 
-                            category:
-                                category,
+            category:
+                category,
 
-                            message:
-                                message,
+            message:
+                message,
 
-                            status:
-                                "pending"
+            status:
+                "pending"
 
-                        })
-                        .select()
-                        .single();
+        });
 
 
                 if (error) {
@@ -449,9 +446,8 @@ if (supportForm) {
 
 
                 console.log(
-                    "Video City: Support request saved:",
-                    data
-                );
+    "Video City: Support request saved successfully."
+);
 
 
                 // ======================================
