@@ -304,6 +304,191 @@ document.addEventListener(
             return newCreator;
 
                 }
+        // ==========================================
+// SUPPORT REQUEST
+// ==========================================
+
+const supportForm =
+    document.getElementById("supportForm");
+
+
+if (supportForm) {
+
+    supportForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+
+            const status =
+                document.getElementById(
+                    "supportStatus"
+                );
+
+
+            const submitButton =
+                supportForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+
+            const category =
+                supportForm.elements[
+                    "category"
+                ].value;
+
+
+            const message =
+                supportForm.elements[
+                    "message"
+                ].value.trim();
+
+
+            // ======================================
+            // VALIDATION
+            // ======================================
+
+            if (!category) {
+
+                status.textContent =
+                    "❌ Please select a support category.";
+
+                return;
+
+            }
+
+
+            if (!message) {
+
+                status.textContent =
+                    "❌ Please describe your problem.";
+
+                return;
+
+            }
+
+
+            if (!getUsername()) {
+
+                status.textContent =
+                    "❌ Please login with Pi first.";
+
+                return;
+
+            }
+
+
+            try {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "Sending...";
+
+                status.textContent =
+                    "Sending your support request...";
+
+
+                // ======================================
+                // GET / CREATE CREATOR
+                // ======================================
+
+                const creator =
+                    await getOrCreateCreator();
+
+
+                if (!creator) {
+
+                    throw new Error(
+                        "Unable to identify your Video City account."
+                    );
+
+                }
+
+
+                // ======================================
+                // SAVE SUPPORT REQUEST
+                // ======================================
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("support_request")
+                        .insert({
+
+                            pi_uid:
+                                creator.pi_uid,
+
+                            username:
+                                creator.username,
+
+                            category:
+                                category,
+
+                            message:
+                                message,
+
+                            status:
+                                "pending"
+
+                        })
+                        .select()
+                        .single();
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                console.log(
+                    "Video City: Support request saved:",
+                    data
+                );
+
+
+                // ======================================
+                // SUCCESS
+                // ======================================
+
+                status.textContent =
+                    "✅ Your support request has been sent successfully.";
+
+                supportForm.reset();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Support request error:",
+                    error
+                );
+
+
+                status.textContent =
+                    "❌ Unable to send your support request. Please try again.";
+
+            } finally {
+
+                submitButton.disabled =
+                    false;
+
+                submitButton.textContent =
+                    "Send Support Request";
+
+            }
+
+        }
+    );
+
+}
 
 
         
