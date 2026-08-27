@@ -74,6 +74,9 @@ if (settings) {
     if (support) {
     support.classList.add("hidden");
     }
+    if (notifications) {
+    notifications.classList.add("hidden");
+    }
 
 
     // ======================================
