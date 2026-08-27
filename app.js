@@ -391,10 +391,19 @@ window.loadNotifications = async function () {
 
         if (error) {
 
-            throw error;
+    console.error(
+        "Video City: Notification query error:",
+        error
+    );
 
-        }
+    throw error;
 
+}
+
+console.log(
+    "Video City: Notifications returned:",
+    notifications
+);
 
         // ======================================
         // NO NOTIFICATIONS
