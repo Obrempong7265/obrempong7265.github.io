@@ -163,6 +163,18 @@ if (auth.accessToken) {
                 );
 
             }
+    // ==========================================
+// UPDATE NOTIFICATION BADGE AFTER LOGIN
+// ==========================================
+
+if (
+    typeof window.updateNotificationBadge ===
+    "function"
+) {
+
+    await window.updateNotificationBadge();
+
+}
 
 
             // ==================================
