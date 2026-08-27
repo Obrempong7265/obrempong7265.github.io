@@ -658,9 +658,10 @@ window.markNotificationAsRead = async function (
     }
 
 
-    console.log(
-        "Video City: Marking notification as read:",
-        notificationId
+    alert(
+    "MARK FUNCTION RUNNING: " +
+    notificationId
+
     );
 
 
