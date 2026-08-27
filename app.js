@@ -586,6 +586,61 @@ window.updateNotificationBadge = async function () {
     }
 
 };
+        // ==========================================
+// MARK NOTIFICATION AS READ
+// ==========================================
+
+window.markNotificationAsRead = async function (
+    notificationId
+) {
+
+    if (!notificationId) {
+        return;
+    }
+
+
+    try {
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("notifications")
+                .update({
+                    is_read: true
+                })
+                .eq(
+                    "id",
+                    notificationId
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Video City: Unable to mark notification as read:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        // Update unread badge
+        await window.updateNotificationBadge();
+
+
+    } catch (error) {
+
+        console.error(
+            "Video City: Mark notification error:",
+            error
+        );
+
+    }
+
+};
 // ==========================================
 // SUPPORT REQUEST
 // ==========================================
