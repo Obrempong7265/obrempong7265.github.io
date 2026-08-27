@@ -400,20 +400,7 @@ window.loadNotifications = async function () {
 
 }
 
-console.log(
-    "Video City: Notifications returned:",
-    notifications
-);
-        notificationList.innerHTML = `
-    <div class="notification-item">
-        <strong>
-            Notifications found: ${notifications ? notifications.length : "NULL"}
-        </strong>
-        <p class="muted">
-            Creator ID: ${creator.id}
-        </p>
-    </div>
-`;
+
 
         // ======================================
 // NO NOTIFICATIONS
@@ -424,10 +411,15 @@ if (
     notifications.length === 0
 ) {
 
+    notificationList.innerHTML = `
+        <p class="muted">
+            Your Video City notifications will appear here.
+        </p>
+    `;
+
     return;
 
 }
-
         // ======================================
         // DISPLAY NOTIFICATIONS
         // ======================================
