@@ -455,59 +455,68 @@ if (
                     }
                 )
                 .join("");
+
         // ==========================================
 // NOTIFICATION CLICK HANDLER
 // ==========================================
 
-notificationList
-    .querySelectorAll(
-        ".notification-item"
-    )
-    .forEach(
-        function (item) {
-
-            item.addEventListener(
-                "click",
-                async function () {
-
-                    const notificationId =
-                        item.dataset
-                            .notificationId;
+const notificationItems =
+    notificationList.querySelectorAll(
+        "[data-notification-id]"
+    );
 
 
-                    if (!notificationId) {
-                        return;
-                    }
+notificationItems.forEach(
+    function (item) {
 
+        item.addEventListener(
+            "click",
+            async function () {
 
-                    await window.markNotificationAsRead(
-                        notificationId
+                const notificationId =
+                    item.getAttribute(
+                        "data-notification-id"
                     );
 
 
-                    item.classList.remove(
-                        "unread"
+                console.log(
+                    "Video City: Notification clicked:",
+                    notificationId
+                );
+
+
+                if (!notificationId) {
+                    return;
+                }
+
+
+                await window.markNotificationAsRead(
+                    notificationId
+                );
+
+
+                item.classList.remove(
+                    "unread"
+                );
+
+
+                const unreadDot =
+                    item.querySelector(
+                        ".notification-unread-dot"
                     );
 
 
-                    const unreadDot =
-                        item.querySelector(
-                            ".notification-unread-dot"
-                        );
+                if (unreadDot) {
 
-
-                    if (unreadDot) {
-
-                        unreadDot.remove();
-
-                    }
+                    unreadDot.remove();
 
                 }
-            );
 
-        }
-    );
-        
+            }
+        );
+
+    }
+);
 
 
     } catch (error) {
