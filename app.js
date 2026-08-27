@@ -479,11 +479,7 @@ notificationItems.forEach(
                     );
 
 
-                alert(
-    "Notification clicked: " +
-    notificationId
-
-                );
+                
 
 
                 if (!notificationId) {
@@ -494,10 +490,7 @@ notificationItems.forEach(
                 await window.markNotificationAsRead(
                     notificationId
                 );
-                alert(
-    "Mark as read function completed"
-);
-
+                
 
                 item.classList.remove(
                     "unread"
