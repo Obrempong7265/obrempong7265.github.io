@@ -432,7 +432,7 @@ settingsSectionHeaders.forEach(
 
     }
 );
-// ==========================================
+ // ==========================================
 // NOTIFICATIONS BUTTON
 // ==========================================
 
@@ -440,9 +440,11 @@ if (notificationBtn) {
 
     notificationBtn.addEventListener(
         "click",
-        function () {
+        async function () {
 
             showPage("notifications");
+
+            await loadNotifications();
 
         }
     );
