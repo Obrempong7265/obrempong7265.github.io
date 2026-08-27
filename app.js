@@ -668,15 +668,17 @@ window.markNotificationAsRead = async function (
     try {
 
         const result =
-            await supabaseClient
-                .from("notifications")
-                .update({
-                    is_read: true
-                })
-                .eq(
-                    "id",
-                    notificationId
-                );
+    await supabaseClient
+        .from("notifications")
+        .update({
+            is_read: true
+        })
+        .eq(
+            "id",
+            notificationId
+        )
+        .select("id, is_read");
+                
         alert(
     "SUPABASE RESULT: " +
     JSON.stringify(result)
