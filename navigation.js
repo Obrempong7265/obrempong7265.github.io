@@ -26,6 +26,10 @@ const profile =
     document.getElementById("settings");
     const support =
     document.getElementById("support");
+    const notifications =
+    document.getElementById("notifications");
+    const notificationBtn =
+    document.getElementById("notificationBtn");
 
 
 const profileUsername =
@@ -162,6 +166,21 @@ if (page === "settings") {
     if (settings) {
 
         settings.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
+    // ======================================
+// NOTIFICATIONS
+// ======================================
+
+if (page === "notifications") {
+
+    if (notifications) {
+
+        notifications.classList.remove(
             "hidden"
         );
 
@@ -413,7 +432,22 @@ settingsSectionHeaders.forEach(
 
     }
 );
+// ==========================================
+// NOTIFICATIONS BUTTON
+// ==========================================
 
+if (notificationBtn) {
+
+    notificationBtn.addEventListener(
+        "click",
+        function () {
+
+            showPage("notifications");
+
+        }
+    );
+
+}
 // ==========================================
 // SETTINGS SUPPORT BUTTON
 // ==========================================
