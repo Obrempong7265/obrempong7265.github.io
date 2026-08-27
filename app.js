@@ -677,6 +677,10 @@ window.markNotificationAsRead = async function (
                     "id",
                     notificationId
                 );
+        alert(
+    "SUPABASE RESULT: " +
+    JSON.stringify(result)
+);
 
 
         console.log(
