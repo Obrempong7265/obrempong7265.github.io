@@ -328,14 +328,9 @@ window.loadNotifications = async function () {
 
         const creator =
             await getOrCreateCreator();
-        console.log(
-    "Video City: Current creator:",
-    creator
-);
         
-
-
-        if (!creator) {
+    
+     if (!creator) {
 
             notificationList.innerHTML = `
                 <div class="notification-item">
