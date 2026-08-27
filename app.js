@@ -404,34 +404,29 @@ console.log(
     "Video City: Notifications returned:",
     notifications
 );
+        notificationList.innerHTML = `
+    <div class="notification-item">
+        <strong>
+            Notifications found: ${notifications ? notifications.length : "NULL"}
+        </strong>
+        <p class="muted">
+            Creator ID: ${creator.id}
+        </p>
+    </div>
+`;
 
         // ======================================
-        // NO NOTIFICATIONS
-        // ======================================
+// NO NOTIFICATIONS
+// ======================================
 
-        if (
-            !notifications ||
-            notifications.length === 0
-        ) {
+if (
+    !notifications ||
+    notifications.length === 0
+) {
 
-            notificationList.innerHTML = `
-                <div class="notification-item">
+    return;
 
-                    <strong>
-                        🔔 No notifications yet
-                    </strong>
-
-                    <p class="muted">
-                        We'll let you know when something important happens.
-                    </p>
-
-                </div>
-            `;
-
-            return;
-
-        }
-
+}
 
         // ======================================
         // DISPLAY NOTIFICATIONS
