@@ -672,17 +672,24 @@ window.markNotificationAsRead = async function (
     try {
 
         const {
-            error
-        } =
-            await supabaseClient
-                .from("notifications")
-                .update({
-                    is_read: true
-                })
-                .eq(
-                    "id",
-                    notificationId
-                );
+    data,
+    error
+} =
+    await supabaseClient
+        .from("notifications")
+        .update({
+            is_read: true
+        })
+        .eq(
+            "id",
+            notificationId
+        )
+        .select();
+        console.log(
+            "Video City: Mark notification update result:",
+            data
+        );
+        
 
 
         if (error) {
