@@ -328,6 +328,11 @@ window.loadNotifications = async function () {
 
         const creator =
             await getOrCreateCreator();
+        console.log(
+    "Video City: Current creator:",
+    creator
+);
+        
 
 
         if (!creator) {
