@@ -663,40 +663,39 @@ window.markNotificationAsRead = async function (
     if (!notificationId) {
         return;
     }
+
+
     console.log(
-    "Video City: Marking notification as read:",
-    notificationId
-);
+        "Video City: Marking notification as read:",
+        notificationId
+    );
 
 
     try {
 
-        const {
-    data,
-    error
-} =
-    await supabaseClient
-        .from("notifications")
-        .update({
-            is_read: true
-        })
-        .eq(
-            "id",
-            notificationId
-        )
-        .select();
+        const result =
+            await supabaseClient
+                .from("notifications")
+                .update({
+                    is_read: true
+                })
+                .eq(
+                    "id",
+                    notificationId
+                );
+
+
         console.log(
-            "Video City: Mark notification update result:",
-            data
+            "Video City: Notification update result:",
+            result
         );
-        
 
 
-        if (error) {
+        if (result.error) {
 
             console.error(
                 "Video City: Unable to mark notification as read:",
-                error
+                result.error
             );
 
             return;
@@ -704,7 +703,11 @@ window.markNotificationAsRead = async function (
         }
 
 
-        // Update unread badge
+        console.log(
+            "Video City: Notification marked as read successfully."
+        );
+
+
         await window.updateNotificationBadge();
 
 
