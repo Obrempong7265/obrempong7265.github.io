@@ -487,6 +487,110 @@ if (
     }
 
 }
+        // ==========================================
+// UPDATE NOTIFICATION BADGE
+// ==========================================
+
+window.updateNotificationBadge = async function () {
+
+    const notificationBadge =
+        document.getElementById(
+            "notificationBadge"
+        );
+
+
+    if (!notificationBadge) {
+        return;
+    }
+
+
+    try {
+
+        const creator =
+            await getOrCreateCreator();
+
+
+        if (!creator) {
+
+            notificationBadge.classList.add(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        const {
+            count,
+            error
+        } =
+            await supabaseClient
+                .from("notifications")
+                .select(
+                    "id",
+                    {
+                        count: "exact",
+                        head: true
+                    }
+                )
+                .eq(
+                    "recipient_id",
+                    creator.id
+                )
+                .eq(
+                    "is_read",
+                    false
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Video City: Notification badge error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        if (!count || count === 0) {
+
+            notificationBadge.classList.add(
+                "hidden"
+            );
+
+            notificationBadge.textContent =
+                "0";
+
+            return;
+
+        }
+
+
+        notificationBadge.textContent =
+            count > 99
+                ? "99+"
+                : count;
+
+
+        notificationBadge.classList.remove(
+            "hidden"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Video City: Notification badge error:",
+            error
+        );
+
+    }
+
+};
 // ==========================================
 // SUPPORT REQUEST
 // ==========================================
