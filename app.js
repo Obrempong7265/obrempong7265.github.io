@@ -650,6 +650,10 @@ window.markNotificationAsRead = async function (
     if (!notificationId) {
         return;
     }
+    console.log(
+    "Video City: Marking notification as read:",
+    notificationId
+);
 
 
     try {
