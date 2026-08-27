@@ -308,8 +308,7 @@ document.addEventListener(
 // LOAD NOTIFICATIONS
 // ==========================================
 
-async function loadNotifications() {
-
+window.loadNotifications = async function () {
     const notificationList =
         document.getElementById(
             "notificationList"
