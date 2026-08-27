@@ -3482,6 +3482,11 @@ console.log(
     "MARK ACTIVE FUNCTION TYPE:",
     typeof markActiveSubscriptionCard
 );
+        // ==========================================
+// INITIALIZE NOTIFICATION BADGE
+// ==========================================
+
+await updateNotificationBadge();
             }
 );
 
