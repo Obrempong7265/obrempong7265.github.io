@@ -304,6 +304,189 @@ document.addEventListener(
             return newCreator;
 
                 }
+        // ==========================================
+// LOAD NOTIFICATIONS
+// ==========================================
+
+async function loadNotifications() {
+
+    const notificationList =
+        document.getElementById(
+            "notificationList"
+        );
+
+
+    if (!notificationList) {
+        return;
+    }
+
+
+    try {
+
+        // ======================================
+        // GET CURRENT CREATOR
+        // ======================================
+
+        const creator =
+            await getOrCreateCreator();
+
+
+        if (!creator) {
+
+            notificationList.innerHTML = `
+                <div class="notification-item">
+
+                    <strong>
+                        🔔 Please login
+                    </strong>
+
+                    <p class="muted">
+                        Login with Pi to view your notifications.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        // ======================================
+        // LOAD NOTIFICATIONS
+        // ======================================
+
+        const {
+            data: notifications,
+            error
+        } =
+            await supabaseClient
+                .from("notifications")
+                .select(`
+                    id,
+                    recipient_id,
+                    sender_id,
+                    type,
+                    message,
+                    video_id,
+                    comment_id,
+                    is_read,
+                    created_at
+                `)
+                .eq(
+                    "recipient_id",
+                    creator.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        // ======================================
+        // NO NOTIFICATIONS
+        // ======================================
+
+        if (
+            !notifications ||
+            notifications.length === 0
+        ) {
+
+            notificationList.innerHTML = `
+                <div class="notification-item">
+
+                    <strong>
+                        🔔 No notifications yet
+                    </strong>
+
+                    <p class="muted">
+                        We'll let you know when something important happens.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        // ======================================
+        // DISPLAY NOTIFICATIONS
+        // ======================================
+
+        notificationList.innerHTML =
+            notifications
+                .map(
+                    function (notification) {
+
+                        const unreadClass =
+                            notification.is_read
+                                ? ""
+                                : " unread";
+
+
+                        return `
+                            <div
+                                class="notification-item${unreadClass}"
+                                data-notification-id="${notification.id}">
+
+                                ${
+                                    notification.is_read
+                                        ? ""
+                                        : '<span class="notification-unread-dot"></span>'
+                                }
+
+                                <strong>
+                                    ${notification.message}
+                                </strong>
+
+                                <p class="muted">
+                                    ${notification.type}
+                                </p>
+
+                            </div>
+                        `;
+
+                    }
+                )
+                .join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "Video City: Notification loading error:",
+            error
+        );
+
+
+        notificationList.innerHTML = `
+            <div class="notification-item">
+
+                <strong>
+                    ❌ Unable to load notifications
+                </strong>
+
+                <p class="muted">
+                    Please try again.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
 // ==========================================
 // SUPPORT REQUEST
 // ==========================================
