@@ -455,6 +455,59 @@ if (
                     }
                 )
                 .join("");
+        // ==========================================
+// NOTIFICATION CLICK HANDLER
+// ==========================================
+
+notificationList
+    .querySelectorAll(
+        ".notification-item"
+    )
+    .forEach(
+        function (item) {
+
+            item.addEventListener(
+                "click",
+                async function () {
+
+                    const notificationId =
+                        item.dataset
+                            .notificationId;
+
+
+                    if (!notificationId) {
+                        return;
+                    }
+
+
+                    await window.markNotificationAsRead(
+                        notificationId
+                    );
+
+
+                    item.classList.remove(
+                        "unread"
+                    );
+
+
+                    const unreadDot =
+                        item.querySelector(
+                            ".notification-unread-dot"
+                        );
+
+
+                    if (unreadDot) {
+
+                        unreadDot.remove();
+
+                    }
+
+                }
+            );
+
+        }
+    );
+        
 
 
     } catch (error) {
