@@ -479,9 +479,10 @@ notificationItems.forEach(
                     );
 
 
-                console.log(
-                    "Video City: Notification clicked:",
-                    notificationId
+                alert(
+    "Notification clicked: " +
+    notificationId
+
                 );
 
 
