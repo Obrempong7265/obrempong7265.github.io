@@ -644,7 +644,7 @@ window.updateNotificationBadge = async function () {
 
     }
 
-};
+
 
 };
 // ==========================================
