@@ -645,7 +645,9 @@ window.updateNotificationBadge = async function () {
     }
 
 };
-        // ==========================================
+
+};
+// ==========================================
 // MARK NOTIFICATION AS READ
 // ==========================================
 
@@ -657,45 +659,89 @@ window.markNotificationAsRead = async function (
         return;
     }
 
-
-    alert(
-    "MARK FUNCTION RUNNING: " +
-    notificationId
-
+    console.log(
+        "Video City: Marking notification as read:",
+        notificationId
     );
-
 
     try {
 
+        // ==========================================
+        // GET PI ACCESS TOKEN
+        // ==========================================
+
+        const accessToken =
+            sessionStorage.getItem(
+                "videoCityPiAccessToken"
+            );
+
+        if (!accessToken) {
+
+            console.error(
+                "Video City: Pi access token not found."
+            );
+
+            return;
+
+        }
+
+
+        // ==========================================
+        // GET SUPABASE URL FROM EXISTING CLIENT
+        // ==========================================
+
+        const supabaseUrl =
+            supabaseClient.supabaseUrl;
+
+
+        // ==========================================
+        // CALL SECURE EDGE FUNCTION
+        // ==========================================
+
+        const response =
+            await fetch(
+                `${supabaseUrl}/functions/v1/mark-notification-read`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        notificationId:
+                            notificationId,
+
+                        accessToken:
+                            accessToken
+                    })
+                }
+            );
+
+
         const result =
-    await supabaseClient
-        .from("notifications")
-        .update({
-            is_read: true
-        })
-        .eq(
-            "id",
-            notificationId
-        )
-        .select("id, is_read");
-                
-        alert(
-    "SUPABASE RESULT: " +
-    JSON.stringify(result)
-);
+            await response.json();
 
 
         console.log(
-            "Video City: Notification update result:",
+            "Video City: Mark notification response:",
             result
         );
 
 
-        if (result.error) {
+        // ==========================================
+        // CHECK RESULT
+        // ==========================================
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
 
             console.error(
                 "Video City: Unable to mark notification as read:",
-                result.error
+                result
             );
 
             return;
@@ -707,6 +753,10 @@ window.markNotificationAsRead = async function (
             "Video City: Notification marked as read successfully."
         );
 
+
+        // ==========================================
+        // UPDATE BADGE
+        // ==========================================
 
         await window.updateNotificationBadge();
 
