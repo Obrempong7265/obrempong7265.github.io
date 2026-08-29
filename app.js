@@ -415,105 +415,188 @@ if (
     return;
 
 }
-        // ======================================
-        // DISPLAY NOTIFICATIONS
-        // ======================================
+// ======================================
+// DISPLAY NOTIFICATIONS
+// ======================================
 
-        notificationList.innerHTML =
-            notifications
-                .map(
-                    function (notification) {
+notificationList.innerHTML =
+    notifications
+        .map(
+            function (notification) {
 
-                        const unreadClass =
+                const unreadClass =
+                    notification.is_read
+                        ? ""
+                        : " unread";
+
+
+                return `
+                    <div
+                        class="notification-item${unreadClass}"
+                        data-notification-id="${notification.id}">
+
+                        ${
                             notification.is_read
                                 ? ""
-                                : " unread";
+                                : '<span class="notification-unread-dot"></span>'
+                        }
+
+                        <strong>
+                            ${notification.type}
+                        </strong>
+
+                        <p class="muted notification-preview">
+                            ${notification.message}
+                        </p>
+
+                        <div
+                            class="notification-details"
+                            style="display: none;">
+
+                            <p>
+                                ${notification.message}
+                            </p>
+
+                            <small class="muted">
+                                ${new Date(
+                                    notification.created_at
+                                ).toLocaleString()}
+                            </small>
+
+                        </div>
+
+                    </div>
+                `;
+
+            }
+        )
+        .join("");
+
+ 
+// ==========================================
+        // NOTIFICATION CLICK HANDLER
+        // ==========================================
+
+        const notificationItems =
+            notificationList.querySelectorAll(
+                "[data-notification-id]"
+            );
 
 
-                        return `
-                            <div
-                                class="notification-item${unreadClass}"
-                                data-notification-id="${notification.id}">
+        notificationItems.forEach(
+            function (item) {
 
-                                ${
-                                    notification.is_read
-                                        ? ""
-                                        : '<span class="notification-unread-dot"></span>'
-                                }
+                item.addEventListener(
+                    "click",
+                    async function () {
 
-                                <strong>
-                                    ${notification.message}
-                                </strong>
+                        const notificationId =
+                            item.getAttribute(
+                                "data-notification-id"
+                            );
 
-                                <p class="muted">
-                                    ${notification.type}
-                                </p>
 
-                            </div>
-                        `;
+                        if (!notificationId) {
+                            return;
+                        }
+
+
+                        // ==========================================
+                        // MARK NOTIFICATION AS READ
+                        // ==========================================
+
+                        await window.markNotificationAsRead(
+                            notificationId
+                        );
+
+
+                        // ==========================================
+                        // UPDATE NOTIFICATION BADGE
+                        // ==========================================
+
+                        await window.updateNotificationBadge();
+
+
+                        // ==========================================
+                        // REMOVE UNREAD VISUALS
+                        // ==========================================
+
+                        item.classList.remove(
+                            "unread"
+                        );
+
+
+                        const unreadDot =
+                            item.querySelector(
+                                ".notification-unread-dot"
+                            );
+
+
+                        if (unreadDot) {
+
+                            unreadDot.remove();
+
+                        }
+
+
+                        // ==========================================
+                        // SHOW / HIDE NOTIFICATION DETAILS
+                        // ==========================================
+
+                        const details =
+                            item.querySelector(
+                                ".notification-details"
+                            );
+
+
+                        const preview =
+                            item.querySelector(
+                                ".notification-preview"
+                            );
+
+
+                        if (!details) {
+                            return;
+                        }
+
+
+                        const isHidden =
+                            details.style.display === "none";
+
+
+                        if (isHidden) {
+
+                            details.style.display =
+                                "block";
+
+
+                            if (preview) {
+
+                                preview.style.display =
+                                    "none";
+
+                            }
+
+                        } else {
+
+                            details.style.display =
+                                "none";
+
+
+                            if (preview) {
+
+                                preview.style.display =
+                                    "block";
+
+                            }
+
+                        }
 
                     }
-                )
-                .join("");
-
-        // ==========================================
-// NOTIFICATION CLICK HANDLER
-// ==========================================
-
-const notificationItems =
-    notificationList.querySelectorAll(
-        "[data-notification-id]"
-    );
-
-
-notificationItems.forEach(
-    function (item) {
-
-        item.addEventListener(
-            "click",
-            async function () {
-
-                const notificationId =
-                    item.getAttribute(
-                        "data-notification-id"
-                    );
-
-
-                
-
-
-                if (!notificationId) {
-                    return;
-                }
-
-
-                await window.markNotificationAsRead(
-                    notificationId
                 );
-                
-
-                item.classList.remove(
-                    "unread"
-                );
-
-
-                const unreadDot =
-                    item.querySelector(
-                        ".notification-unread-dot"
-                    );
-
-
-                if (unreadDot) {
-
-                    unreadDot.remove();
-
-                }
 
             }
         );
-
-    }
-);
 
 
     } catch (error) {
@@ -541,130 +624,134 @@ notificationItems.forEach(
     }
 
 }
+
+
         // ==========================================
-// UPDATE NOTIFICATION BADGE
-// ==========================================
+        // UPDATE NOTIFICATION BADGE
+        // ==========================================
 
-window.updateNotificationBadge = async function () {
+        window.updateNotificationBadge =
+            async function () {
 
-    const notificationBadge =
-        document.getElementById(
-            "notificationBadge"
-        );
-
-
-    if (!notificationBadge) {
-        return;
-    }
+                const notificationBadge =
+                    document.getElementById(
+                        "notificationBadge"
+                    );
 
 
-    try {
-
-        const creator =
-            await getOrCreateCreator();
-
-
-        if (!creator) {
-
-            notificationBadge.classList.add(
-                "hidden"
-            );
-
-            return;
-
-        }
+                if (!notificationBadge) {
+                    return;
+                }
 
 
-        const {
-            count,
-            error
-        } =
-            await supabaseClient
-                .from("notifications")
-                .select(
-                    "id",
-                    {
-                        count: "exact",
-                        head: true
+                try {
+
+                    const creator =
+                        await getOrCreateCreator();
+
+
+                    if (!creator) {
+
+                        notificationBadge.classList.add(
+                            "hidden"
+                        );
+
+                        return;
+
                     }
-                )
-                .eq(
-                    "recipient_id",
-                    creator.id
-                )
-                .eq(
-                    "is_read",
-                    false
+
+
+                    const {
+                        count,
+                        error
+                    } =
+                        await supabaseClient
+                            .from("notifications")
+                            .select(
+                                "id",
+                                {
+                                    count: "exact",
+                                    head: true
+                                }
+                            )
+                            .eq(
+                                "recipient_id",
+                                creator.id
+                            )
+                            .eq(
+                                "is_read",
+                                false
+                            );
+
+
+                    if (error) {
+
+                        console.error(
+                            "Video City: Notification badge error:",
+                            error
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!count || count === 0) {
+
+                        notificationBadge.classList.add(
+                            "hidden"
+                        );
+
+                        notificationBadge.textContent =
+                            "0";
+
+                        return;
+
+                    }
+
+
+                    notificationBadge.textContent =
+                        count > 99
+                            ? "99+"
+                            : count;
+
+
+                    notificationBadge.classList.remove(
+                        "hidden"
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Video City: Notification badge error:",
+                        error
+                    );
+
+                }
+
+            };
+
+
+        // ==========================================
+        // MARK NOTIFICATION AS READ
+        // ==========================================
+
+        window.markNotificationAsRead =
+            async function (
+                notificationId
+            ) {
+
+                if (!notificationId) {
+                    return;
+                }
+
+                console.log(
+                    "Video City: Marking notification as read:",
+                    notificationId
                 );
 
-
-        if (error) {
-
-            console.error(
-                "Video City: Notification badge error:",
-                error
-            );
-
-            return;
-
-        }
-
-
-        if (!count || count === 0) {
-
-            notificationBadge.classList.add(
-                "hidden"
-            );
-
-            notificationBadge.textContent =
-                "0";
-
-            return;
-
-        }
-
-
-        notificationBadge.textContent =
-            count > 99
-                ? "99+"
-                : count;
-
-
-        notificationBadge.classList.remove(
-            "hidden"
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Video City: Notification badge error:",
-            error
-        );
-
-    }
-
-
-
-};
-// ==========================================
-// MARK NOTIFICATION AS READ
-// ==========================================
-
-window.markNotificationAsRead = async function (
-    notificationId
-) {
-
-    if (!notificationId) {
-        return;
-    }
-
-    console.log(
-        "Video City: Marking notification as read:",
-        notificationId
-    );
-
-    try {
+                try {
 
         // ==========================================
         // GET PI ACCESS TOKEN
