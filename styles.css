@@ -1114,3 +1114,125 @@ MOBILE
 .notification-item.unread {
     font-weight: 600;
 }
+/* ==========================================
+   NOTIFICATION CARD STYLING
+   ========================================== */
+
+.notification-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.notification-item {
+    position: relative;
+    display: block;
+    padding: 15px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.notification-item:hover {
+    background: #f8fafc;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.notification-item:active {
+    transform: scale(0.99);
+}
+
+
+/* ==========================================
+   UNREAD NOTIFICATION
+   ========================================== */
+
+.notification-item.unread {
+    font-weight: 600;
+    border-left: 4px solid #2563eb;
+    background: #eff6ff;
+}
+
+
+/* ==========================================
+   READ NOTIFICATION
+   ========================================== */
+
+.notification-item:not(.unread) {
+    font-weight: 400;
+    background: #ffffff;
+}
+
+
+/* ==========================================
+   UNREAD BLUE DOT
+   ========================================== */
+
+.notification-unread-dot {
+    display: inline-block;
+
+    width: 9px;
+    height: 9px;
+
+    background: #2563eb;
+    border-radius: 50%;
+
+    margin-right: 8px;
+
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+
+/* ==========================================
+   NOTIFICATION MESSAGE
+   ========================================== */
+
+.notification-item strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    line-height: 1.4;
+}
+
+
+/* ==========================================
+   NOTIFICATION TYPE
+   ========================================== */
+
+.notification-item .muted {
+    margin: 0;
+
+    font-size: 0.85rem;
+
+    opacity: 0.7;
+
+    text-transform: capitalize;
+}
+
+
+/* ==========================================
+   MOBILE NOTIFICATIONS
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .notification-list {
+        gap: 10px;
+    }
+
+    .notification-item {
+        padding: 13px 14px;
+        border-radius: 9px;
+    }
+
+}
