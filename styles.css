@@ -1093,61 +1093,38 @@ MOBILE
 }
 
 /* ==========================================
-   NOTIFICATION UNREAD INDICATOR
-   ========================================== */
-
-.notification-item {
-    position: relative;
-}
-
-.notification-unread-dot {
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    background: #2563eb;
-    border-radius: 50%;
-    margin-right: 8px;
-    vertical-align: middle;
-    flex-shrink: 0;
-}
-
-.notification-item.unread {
-    font-weight: 600;
-}
-/* ==========================================
-   NOTIFICATION CARD STYLING
+   COMPACT NOTIFICATION CARDS
    ========================================== */
 
 .notification-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 15px;
+    gap: 8px;
+    margin-top: 12px;
 }
+
+
+/* ==========================================
+   NOTIFICATION CARD
+   ========================================== */
 
 .notification-item {
     position: relative;
     display: block;
-    padding: 15px 16px;
+
+    min-height: 54px;
+    padding: 9px 12px;
+
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 9px;
+
     background: #ffffff;
+
     cursor: pointer;
 
     transition:
         background-color 0.2s ease,
-        transform 0.2s ease,
         box-shadow 0.2s ease;
-}
-
-.notification-item:hover {
-    background: #f8fafc;
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.notification-item:active {
-    transform: scale(0.99);
 }
 
 
@@ -1157,7 +1134,9 @@ MOBILE
 
 .notification-item.unread {
     font-weight: 600;
+
     border-left: 4px solid #2563eb;
+
     background: #eff6ff;
 }
 
@@ -1179,16 +1158,16 @@ MOBILE
 .notification-unread-dot {
     display: inline-block;
 
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
+
+    margin-right: 7px;
 
     background: #2563eb;
+
     border-radius: 50%;
 
-    margin-right: 8px;
-
     vertical-align: middle;
-    flex-shrink: 0;
 }
 
 
@@ -1199,40 +1178,77 @@ MOBILE
 .notification-item strong {
     display: block;
 
-    margin-bottom: 6px;
+    margin: 0;
 
-    line-height: 1.4;
+    line-height: 1.25;
+
+    font-size: 0.95rem;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
 /* ==========================================
-   NOTIFICATION TYPE
+   NOTIFICATION TYPE / PREVIEW
    ========================================== */
 
 .notification-item .muted {
-    margin: 0;
+    margin: 3px 0 0;
 
-    font-size: 0.85rem;
+    font-size: 0.78rem;
 
-    opacity: 0.7;
+    line-height: 1.2;
 
-    text-transform: capitalize;
+    opacity: 0.65;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
 /* ==========================================
-   MOBILE NOTIFICATIONS
+   HOVER / TAP EFFECT
+   ========================================== */
+
+.notification-item:hover {
+    background: #f8fafc;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.06);
+}
+
+.notification-item:active {
+    transform: scale(0.99);
+}
+
+
+/* ==========================================
+   MOBILE
    ========================================== */
 
 @media (max-width: 600px) {
 
     .notification-list {
-        gap: 10px;
+        gap: 7px;
     }
 
     .notification-item {
-        padding: 13px 14px;
-        border-radius: 9px;
+        min-height: 52px;
+
+        padding: 8px 11px;
+
+        border-radius: 8px;
     }
 
-}
+    .notification-item strong {
+        font-size: 0.92rem;
+    }
+
+    .notification-item .muted {
+        font-size: 0.76rem;
+    }
+
+  }
