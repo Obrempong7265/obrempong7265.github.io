@@ -463,6 +463,12 @@ notificationList.innerHTML =
                                 ).toLocaleString()}
                             </small>
 
+                            <button
+                                type="button"
+                                class="notification-close-btn">
+                                Close
+                            </button>
+
                         </div>
 
                     </div>
@@ -474,130 +480,175 @@ notificationList.innerHTML =
 
  
 // ==========================================
-        // NOTIFICATION CLICK HANDLER
-        // ==========================================
+// NOTIFICATION CLICK HANDLER
+// ==========================================
 
-        const notificationItems =
-            notificationList.querySelectorAll(
-                "[data-notification-id]"
-            );
-
-
-        notificationItems.forEach(
-            function (item) {
-
-                item.addEventListener(
-                    "click",
-                    async function () {
-
-                        const notificationId =
-                            item.getAttribute(
-                                "data-notification-id"
-                            );
+const notificationItems =
+    notificationList.querySelectorAll(
+        "[data-notification-id]"
+    );
 
 
-                        if (!notificationId) {
-                            return;
-                        }
+notificationItems.forEach(
+    function (item) {
 
+        item.addEventListener(
+            "click",
+            async function (event) {
 
-                        // ==========================================
-                        // MARK NOTIFICATION AS READ
-                        // ==========================================
+                // ==========================================
+                // CLOSE BUTTON
+                // ==========================================
 
-                        await window.markNotificationAsRead(
-                            notificationId
+                if (
+                    event.target.closest(
+                        ".notification-close-btn"
+                    )
+                ) {
+
+                    const details =
+                        item.querySelector(
+                            ".notification-details"
+                        );
+
+                    const preview =
+                        item.querySelector(
+                            ".notification-preview"
                         );
 
 
-                        // ==========================================
-                        // UPDATE NOTIFICATION BADGE
-                        // ==========================================
+                    if (details) {
 
-                        await window.updateNotificationBadge();
-
-
-                        // ==========================================
-                        // REMOVE UNREAD VISUALS
-                        // ==========================================
-
-                        item.classList.remove(
-                            "unread"
-                        );
-
-
-                        const unreadDot =
-                            item.querySelector(
-                                ".notification-unread-dot"
-                            );
-
-
-                        if (unreadDot) {
-
-                            unreadDot.remove();
-
-                        }
-
-
-                        // ==========================================
-                        // SHOW / HIDE NOTIFICATION DETAILS
-                        // ==========================================
-
-                        const details =
-                            item.querySelector(
-                                ".notification-details"
-                            );
-
-
-                        const preview =
-                            item.querySelector(
-                                ".notification-preview"
-                            );
-
-
-                        if (!details) {
-                            return;
-                        }
-
-
-                        const isHidden =
-                            details.style.display === "none";
-
-
-                        if (isHidden) {
-
-                            details.style.display =
-                                "block";
-
-
-                            if (preview) {
-
-                                preview.style.display =
-                                    "none";
-
-                            }
-
-                        } else {
-
-                            details.style.display =
-                                "none";
-
-
-                            if (preview) {
-
-                                preview.style.display =
-                                    "block";
-
-                            }
-
-                        }
+                        details.style.display =
+                            "none";
 
                     }
+
+
+                    if (preview) {
+
+                        preview.style.display =
+                            "block";
+
+                    }
+
+
+                    return;
+
+                }
+
+
+                // ==========================================
+                // GET NOTIFICATION ID
+                // ==========================================
+
+                const notificationId =
+                    item.getAttribute(
+                        "data-notification-id"
+                    );
+
+
+                if (!notificationId) {
+                    return;
+                }
+
+
+                // ==========================================
+                // MARK NOTIFICATION AS READ
+                // ==========================================
+
+                await window.markNotificationAsRead(
+                    notificationId
                 );
+
+
+                // ==========================================
+                // UPDATE NOTIFICATION BADGE
+                // ==========================================
+
+                await window.updateNotificationBadge();
+
+
+                // ==========================================
+                // REMOVE UNREAD VISUALS
+                // ==========================================
+
+                item.classList.remove(
+                    "unread"
+                );
+
+
+                const unreadDot =
+                    item.querySelector(
+                        ".notification-unread-dot"
+                    );
+
+
+                if (unreadDot) {
+
+                    unreadDot.remove();
+
+                }
+
+
+                // ==========================================
+                // SHOW / HIDE NOTIFICATION DETAILS
+                // ==========================================
+
+                const details =
+                    item.querySelector(
+                        ".notification-details"
+                    );
+
+
+                const preview =
+                    item.querySelector(
+                        ".notification-preview"
+                    );
+
+
+                if (!details) {
+                    return;
+                }
+
+
+                const isHidden =
+                    details.style.display === "none";
+
+
+                if (isHidden) {
+
+                    details.style.display =
+                        "block";
+
+
+                    if (preview) {
+
+                        preview.style.display =
+                            "none";
+
+                    }
+
+                } else {
+
+                    details.style.display =
+                        "none";
+
+
+                    if (preview) {
+
+                        preview.style.display =
+                            "block";
+
+                    }
+
+                }
 
             }
         );
 
+    }
+);
 
     } catch (error) {
 
