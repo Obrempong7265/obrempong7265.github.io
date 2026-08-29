@@ -1091,3 +1091,26 @@ MOBILE
     }
 
 }
+
+/* ==========================================
+   NOTIFICATION UNREAD INDICATOR
+   ========================================== */
+
+.notification-item {
+    position: relative;
+}
+
+.notification-unread-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: #2563eb;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.notification-item.unread {
+    font-weight: 600;
+}
