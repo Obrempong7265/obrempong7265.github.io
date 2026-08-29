@@ -695,43 +695,39 @@ window.markNotificationAsRead = async function (
 
 
         // ==========================================
-        // CALL SECURE EDGE FUNCTION
-        // ==========================================
+// CALL SECURE EDGE FUNCTION
+// ==========================================
 
-        const response =
-            await fetch(
-                `${supabaseUrl}/functions/v1/mark-notification-read`,
-                {
-                    method: "POST",
+const response =
+    await fetch(
+        `${supabaseUrl}/functions/v1/mark-notification-read`,
+        {
+            method: "POST",
 
-                    headers: {
-    "Content-Type":
-        "application/json",
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
 
-    "Authorization":
-        `Bearer ${accessToken}`
-},
+            body: JSON.stringify({
+                notificationId:
+                    notificationId,
 
-                    body: JSON.stringify({
-                        notificationId:
-                            notificationId,
-
-                        accessToken:
-                            accessToken
-                    })
-                }
-            );
+                accessToken:
+                    accessToken
+            })
+        }
+    );
 
 
-        const result =
-            await response.json();
+const result =
+    await response.json();
 
 
-        console.log(
-            "Video City: Mark notification response:",
-            result
-        );
-
+console.log(
+    "Video City: Mark notification response:",
+    result
+);
 
         // ==========================================
         // CHECK RESULT
