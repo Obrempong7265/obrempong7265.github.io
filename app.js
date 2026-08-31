@@ -1781,6 +1781,13 @@ function setupViews(card, video) {
                                             creatorId
                                         )
                                         .maybeSingle();
+                                alert(
+    "VIDEO_VIEWS CHECK COMPLETE\n" +
+    "Existing View: " +
+    (existingView ? "YES" : "NO") +
+    "\nError: " +
+    (checkError ? checkError.message : "NONE")
+);
 
 
                                 if (checkError) {
