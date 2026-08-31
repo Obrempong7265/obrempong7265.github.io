@@ -2705,6 +2705,9 @@ if (uploadForm) {
             const file =
                 uploadForm.elements["video"]
                     .files[0];
+            const coverFile =
+    uploadForm.elements["cover"]
+        .files[0];
 
 
             if (!file) {
@@ -2872,6 +2875,93 @@ if (uploadForm) {
                     );
 
                 }
+                // ======================================
+// UPLOAD COVER IMAGE
+// ======================================
+
+let coverURL = null;
+
+
+if (coverFile) {
+
+    status.textContent =
+        "Uploading cover image...";
+
+
+    const coverExtension =
+        coverFile.name
+            .split(".")
+            .pop()
+            .toLowerCase();
+
+
+    const coverFileName =
+        Date.now() +
+        "-" +
+        safeTitle +
+        "-cover." +
+        coverExtension;
+
+
+    const coverPath =
+        "uploads/covers/" +
+        coverFileName;
+
+
+    const {
+        error: coverUploadError
+    } =
+        await supabaseClient
+            .storage
+            .from("video-city-media")
+            .upload(
+                coverPath,
+                coverFile,
+                {
+                    cacheControl:
+                        "3600",
+
+                    upsert:
+                        false,
+
+                    contentType:
+                        coverFile.type
+                }
+            );
+
+
+    if (coverUploadError) {
+
+        throw coverUploadError;
+
+    }
+
+
+    const {
+        data: coverPublicData
+    } =
+        supabaseClient
+            .storage
+            .from("video-city-media")
+            .getPublicUrl(
+                coverPath
+            );
+
+
+    coverURL =
+        coverPublicData &&
+        coverPublicData.publicUrl;
+
+
+    if (!coverURL) {
+
+        throw new Error(
+            "Unable to create cover image URL."
+        );
+
+    }
+
+}
 
 
                 // ======================================
