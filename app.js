@@ -2997,6 +2997,8 @@ if (coverFile) {
 
                             media_url:
                                 mediaURL,
+                            cover_url:
+    coverURL,
 
                             media_type:
                                 mediaType,
