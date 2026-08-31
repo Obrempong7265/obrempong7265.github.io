@@ -1466,131 +1466,158 @@ function formatCount(number) {
 
 
             // ======================================
-            // CARD CONTENT
-            // ======================================
+// CARD CONTENT
+// ======================================
 
-            card.innerHTML = `
+card.innerHTML = `
 
-                <div class="video-wrap">
-                    ${mediaHTML}
-                </div>
-
-
-                <div class="video-info">
-
-                    <h3 class="title">
-                        ${escapeHTML(video.title)}
-                    </h3>
+    <div class="video-wrap">
+        ${mediaHTML}
+    </div>
 
 
-                    <p class="creator">
-                        ${escapeHTML(
-                            video.creator || "@Creator"
-                        )}
-                    </p>
+    <div class="video-view-count">
+
+        👁
+        <span>
+            ${formatCount(video.views)}
+        </span>
+
+    </div>
 
 
-                    <p class="description">
-                        ${escapeHTML(
-                            video.description || ""
-                        )}
-                    </p>
+    <div class="video-info">
 
 
-                    ${
-                        Number(video.price_pi) > 0
-                        ?
-                        `
-                        <p class="price">
-                            💰
-                            ${escapeHTML(
-                                String(video.price_pi)
-                            )}
-                            Pi
-                        `
-                        :
-                        ""
-                    }
+        <p class="creator">
+
+            ${escapeHTML(
+                video.creator || "@Creator"
+            )}
+
+        </p>
 
 
-                    <div class="actions">
+        <h3 class="title">
 
-                        <button
-                            class="likeBtn"
-                            type="button">
+            ${escapeHTML(
+                video.title
+            )}
 
-                            ♡
-                            <span>
-                                ${Number(video.likes) || 0}
-                            </span>
-
-                        </button>
+        </h3>
 
 
-                        <button
-                            class="commentBtn"
-                            type="button">
+        <p class="description">
 
-                            💬 Comment
+            ${escapeHTML(
+                video.description || ""
+            )}
 
-                        </button>
-
-
-                                                <button
-                            class="supportBtn"
-                            type="button">
-
-                            💜 Support
-
-                        </button>
+        </p>
 
 
-                        <button
-                            class="reportBtn"
-                            type="button">
-
-                            🚨 Report
-
-                        </button>
-                    </div>
+        <div class="actions">
 
 
-                    <div
-                        class="comments"
-                        style="display:none;">
+            <button
+                class="likeBtn"
+                type="button">
 
-                        <form
-                            class="commentForm">
+                ♡
+                <span>
+                    ${formatCount(video.likes)}
+                </span>
 
-                            <input
-                                type="text"
-                                placeholder="Write a comment..."
-                                maxlength="500"
-                                autocomplete="off"
-                                required>
+            </button>
 
 
-                            <button
-                                type="submit"
-                                class="btn pink">
+            <button
+                class="commentBtn"
+                type="button">
 
-                                Post
+                💬 Comments 0
 
-                            </button>
-
-                        </form>
+            </button>
 
 
-                        <div
-                            class="commentList">
-                        </div>
+            <button
+                class="supportBtn"
+                type="button">
 
-                    </div>
+                💜 Tip
 
-                </div>
+            </button>
 
-            `;
 
+            <button
+                class="reportBtn"
+                type="button">
+
+                🚩 Report
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            class="comments"
+            style="display:none;">
+
+            <form
+                class="commentForm">
+
+                <input
+                    type="text"
+                    placeholder="Write a comment..."
+                    maxlength="500"
+                    autocomplete="off"
+                    required>
+
+
+                <button
+                    type="submit"
+                    class="btn pink">
+
+                    Post
+
+                </button>
+
+            </form>
+
+
+            <div
+                class="commentList">
+            </div>
+
+        </div>
+
+
+        ${
+            Number(video.price_pi) > 0
+            ?
+            `
+            <button
+                class="unlockBtn btn pink"
+                type="button">
+
+                🔓 Unlock for
+                ${escapeHTML(
+                    String(video.price_pi)
+                )}
+                Pi
+
+            </button>
+            `
+            :
+            ""
+        }
+
+
+    </div>
+
+`;
 
             // ======================================
             // FEATURES
