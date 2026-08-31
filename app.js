@@ -1731,6 +1731,13 @@ function setupViews(card, video) {
                                 creator
                                     ? creator.id
                                     : null;
+                            alert(
+    "CREATOR CHECK\n" +
+    "Username: " +
+    getUsername() +
+    "\nCreator ID: " +
+    creatorId
+);
 
 
                             console.log(
