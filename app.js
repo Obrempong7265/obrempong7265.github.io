@@ -1694,6 +1694,10 @@ function setupViews(card, video) {
     "3-SECOND TIMER FIRED\nVideo ID: " +
     video.id
 );
+                        alert(
+    "CURRENT TIME: " +
+    videoElement.currentTime
+);
 
                         // Make sure the viewer
                         // actually watched for 3 seconds
