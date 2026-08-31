@@ -1658,6 +1658,11 @@ function setupViews(card, video) {
     
     const videoElement =
         card.querySelector("video");
+    console.log(
+    "Video City: video element found:",
+    !!videoElement,
+    video.id
+);
 
 
     if (!videoElement) {
