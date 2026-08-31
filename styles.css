@@ -903,34 +903,184 @@ margin-top: 15px;
 }
 
 /* ==========================================
-BOTTOM NAVIGATION
-========================================== */
+   BOTTOM NAVIGATION
+   ========================================== */
 
 .bottom-nav {
-position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-height: 70px;
-background: #111;
-border-top: 1px solid #333;
-display: flex;
-justify-content: space-around;
-align-items: center;
-z-index: 200;
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 76px;
+
+    background: #111;
+
+    border-top: 1px solid #333;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+    z-index: 200;
+
+    padding: 4px 6px;
 }
+
+
+/* ==========================================
+   NAVIGATION BUTTON
+   ========================================== */
 
 .nav {
-background: transparent;
-border: none;
-color: #aaa;
-font-size: 15px;
-cursor: pointer;
+    flex: 1;
+
+    max-width: 100px;
+
+    height: 68px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 4px;
+
+    background: transparent;
+
+    border: none;
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    border-radius: 10px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
 }
 
+
+/* ==========================================
+   NAVIGATION ICON
+   ========================================== */
+
+.nav-icon {
+    width: 30px;
+
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #ff0055;
+
+    border-radius: 8px;
+
+    font-size: 17px;
+
+    line-height: 1;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* ==========================================
+   NAVIGATION LABEL
+   ========================================== */
+
+.nav-label {
+    display: block;
+
+    line-height: 1.1;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+/* ==========================================
+   ACTIVE NAVIGATION
+   ========================================== */
+
 .nav.active {
-color: #ff0055;
-font-weight: bold;
+    color: #ffffff;
+
+    font-weight: bold;
+}
+
+
+.nav.active .nav-icon {
+    transform: scale(1.05);
+
+    box-shadow:
+        0 0 10px rgba(255, 0, 85, 0.25);
+}
+
+
+/* ==========================================
+   TAP EFFECT
+   ========================================== */
+
+.nav:active {
+    transform: scale(0.96);
+}
+
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .bottom-nav {
+        height: 72px;
+
+        padding:
+            3px 4px;
+    }
+
+
+    .nav {
+        height: 64px;
+
+        gap: 3px;
+
+        font-size: 12px;
+    }
+
+
+    .nav-icon {
+        width: 29px;
+
+        height: 29px;
+
+        font-size: 16px;
+
+        border-radius: 7px;
+    }
+
+
+    .nav-label {
+        font-size: 12px;
+    }
+
 }
 
 /* ==========================================
