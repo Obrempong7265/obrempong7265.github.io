@@ -2273,6 +2273,7 @@ async function loadVideos() {
     category,
     price_pi,
     media_url,
+    cover_url,
     media_type,
     views,
     likes,
