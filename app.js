@@ -3293,10 +3293,7 @@ if (coverFile) {
                 // ======================================
 
                 status.textContent =
-    "✅ Published successfully! ID: " +
-    (savedVideo && savedVideo.id
-        ? savedVideo.id
-        : "NO ID RETURNED");
+    "✅ Published successfully!";
 
                 uploadForm.reset();
 
