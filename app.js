@@ -1658,12 +1658,7 @@ function setupViews(card, video) {
     
     const videoElement =
         card.querySelector("video");
-    alert(
-    "Video element found: " +
-    !!videoElement +
-    "\nVideo ID: " +
-    video.id
-);
+    
 
     if (!videoElement) {
         return;
@@ -1677,8 +1672,8 @@ function setupViews(card, video) {
     videoElement.addEventListener(
         "play",
         function () {
-            console.log(
-    "Video City: PLAY EVENT FIRED:",
+            alert(
+    "PLAY EVENT FIRED\nVideo ID: " +
     video.id
 );
 
