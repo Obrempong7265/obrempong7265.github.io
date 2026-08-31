@@ -1672,11 +1672,7 @@ function setupViews(card, video) {
     videoElement.addEventListener(
         "play",
         function () {
-            alert(
-    "PLAY EVENT FIRED\nVideo ID: " +
-    video.id
-);
-
+            
             if (viewCounted) {
                 return;
             }
@@ -1694,8 +1690,8 @@ function setupViews(card, video) {
             viewTimer =
                 setTimeout(
                     async function () {
-                        console.log(
-    "Video City: 3-second view timer fired:",
+                        alert(
+    "3-SECOND TIMER FIRED\nVideo ID: " +
     video.id
 );
 
