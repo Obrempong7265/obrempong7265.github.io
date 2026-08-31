@@ -1357,6 +1357,55 @@ async function markActiveSubscriptionCard() {
 
 window.markActiveSubscriptionCard =
     markActiveSubscriptionCard;
+        // ==========================================
+// FORMAT LARGE COUNTS
+// ==========================================
+
+function formatCount(number) {
+
+    const value =
+        Number(number) || 0;
+
+
+    if (value >= 1000000000) {
+
+        return (
+            (value / 1000000000)
+                .toFixed(1)
+                .replace(/\.0$/, "") +
+            "B"
+        );
+
+    }
+
+
+    if (value >= 1000000) {
+
+        return (
+            (value / 1000000)
+                .toFixed(1)
+                .replace(/\.0$/, "") +
+            "M"
+        );
+
+    }
+
+
+    if (value >= 1000) {
+
+        return (
+            (value / 1000)
+                .toFixed(1)
+                .replace(/\.0$/, "") +
+            "K"
+        );
+
+    }
+
+
+    return String(value);
+
+            }
 
                 // ==========================================
         // CREATE VIDEO CARD
