@@ -1649,7 +1649,7 @@ card.innerHTML = `
             return card;
 
         }
-        // ==========================================
+// ==========================================
 // VIEW COUNT SYSTEM
 // ==========================================
 
@@ -1665,14 +1665,15 @@ function setupViews(card, video) {
     }
 
 
-    // Prevent counting the same video
-    // repeatedly during the current page session
+    // Prevent repeated counting
+    // while this card remains open
     let viewCounted = false;
 
 
+    // Track when playback begins
     videoElement.addEventListener(
         "play",
-        async function () {
+        function () {
 
             if (viewCounted) {
                 return;
@@ -1684,81 +1685,213 @@ function setupViews(card, video) {
             }
 
 
-            viewCounted = true;
+            // Wait until the viewer has watched
+            // at least 3 seconds
+            setTimeout(
+                async function () {
+
+                    if (
+                        videoElement.paused ||
+                        videoElement.currentTime < 3
+                    ) {
+                        return;
+                    }
 
 
-            try {
-
-                const currentViews =
-                    Number(video.views) || 0;
-
-
-                const newViews =
-                    currentViews + 1;
+                    if (viewCounted) {
+                        return;
+                    }
 
 
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("videos")
-                        .update({
+                    try {
 
-                            views:
-                                newViews
+                        // ======================================
+                        // GET CURRENT CREATOR
+                        // ======================================
 
-                        })
-                        .eq(
-                            "id",
-                            video.id
+                        const creator =
+                            await getCurrentCreator();
+
+
+                        const creatorId =
+                            creator
+                                ? creator.id
+                                : null;
+
+
+                        // ======================================
+                        // CHECK EXISTING VIEW
+                        // ======================================
+
+                        let existingView = null;
+
+
+                        if (creatorId) {
+
+                            const {
+                                data,
+                                error
+                            } =
+                                await supabaseClient
+                                    .from("video_views")
+                                    .select("id")
+                                    .eq(
+                                        "video_id",
+                                        video.id
+                                    )
+                                    .eq(
+                                        "creator_id",
+                                        creatorId
+                                    )
+                                    .maybeSingle();
+
+
+                            if (error) {
+                                throw error;
+                            }
+
+
+                            existingView =
+                                data;
+
+                        }
+
+
+                        // ======================================
+                        // ALREADY VIEWED
+                        // ======================================
+
+                        if (existingView) {
+
+                            viewCounted = true;
+
+                            return;
+
+                        }
+
+
+                        // ======================================
+                        // RECORD VIEW
+                        // ======================================
+
+                        const {
+                            error: viewError
+                        } =
+                            await supabaseClient
+                                .from("video_views")
+                                .insert({
+
+                                    video_id:
+                                        video.id,
+
+                                    creator_id:
+                                        creatorId
+
+                                });
+
+
+                        if (viewError) {
+
+                            // Duplicate view is acceptable.
+                            // The database protects us.
+                            if (
+                                viewError.code ===
+                                "23505"
+                            ) {
+
+                                viewCounted = true;
+
+                                return;
+
+                            }
+
+
+                            throw viewError;
+
+                        }
+
+
+                        // ======================================
+                        // INCREASE VIDEO VIEW COUNT
+                        // ======================================
+
+                        const currentViews =
+                            Number(video.views) || 0;
+
+
+                        const newViews =
+                            currentViews + 1;
+
+
+                        const {
+                            error:
+                                updateError
+                        } =
+                            await supabaseClient
+                                .from("videos")
+                                .update({
+
+                                    views:
+                                        newViews
+
+                                })
+                                .eq(
+                                    "id",
+                                    video.id
+                                );
+
+
+                        if (updateError) {
+                            throw updateError;
+                        }
+
+
+                        // ======================================
+                        // UPDATE LOCAL DISPLAY
+                        // ======================================
+
+                        video.views =
+                            newViews;
+
+
+                        const viewCount =
+                            card.querySelector(
+                                ".video-view-count span"
+                            );
+
+
+                        if (viewCount) {
+
+                            viewCount.textContent =
+                                formatCount(
+                                    newViews
+                                );
+
+                        }
+
+
+                        viewCounted = true;
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Video City: View tracking error:",
+                            error
                         );
 
+                    }
 
-                if (error) {
-                    throw error;
-                }
-
-
-                // Update the local value
-                video.views =
-                    newViews;
-
-
-                // Update the displayed count
-                const viewCount =
-                    card.querySelector(
-                        ".video-view-count span"
-                    );
-
-
-                if (viewCount) {
-
-                    viewCount.textContent =
-                        formatCount(
-                            newViews
-                        );
-
-                }
-
-
-            } catch (error) {
-
-                console.error(
-                    "Video City: View count error:",
-                    error
-                );
-
-                // Allow another attempt if
-                // the database update failed
-                viewCounted = false;
-
-            }
+                },
+                3000
+            );
 
         }
     );
 
-        }
-                // ==========================================
+}
+                
+        // ==========================================
         // LIKE SYSTEM
         // ==========================================
 
