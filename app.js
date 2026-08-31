@@ -1824,6 +1824,14 @@ function setupViews(card, video) {
                                             creatorId
 
                                     });
+                            alert(
+    "VIDEO VIEW INSERT RESULT\n" +
+    "Error: " +
+    (insertError
+        ? insertError.message
+        : "NONE")
+);
+                            
 
 
                             if (insertError) {
