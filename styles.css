@@ -303,6 +303,20 @@ ACTION BUTTONS
 .actions button:hover {
     background: #333;
 }
+/* ==========================================
+VIDEO VIEW COUNT
+========================================== */
+
+.video-view-count {
+    width: 100%;
+    text-align: right;
+    margin-top: 4px;
+    margin-bottom: 8px;
+    padding-right: 4px;
+    color: #8fd3ff;
+    font-size: 13px;
+    font-weight: 500;
+}
 
 /* ==========================================
 COMMENTS AREA
