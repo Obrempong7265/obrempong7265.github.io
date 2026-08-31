@@ -1654,7 +1654,8 @@ card.innerHTML = `
 // ==========================================
 
 function setupViews(card, video) {
-
+    console.log("Video City: setupViews started:", video.id);
+    
     const videoElement =
         card.querySelector("video");
 
