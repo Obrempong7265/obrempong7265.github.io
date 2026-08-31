@@ -1421,49 +1421,50 @@ function formatCount(number) {
 
 
             // ======================================
-            // MEDIA
-            // ======================================
+// MEDIA
+// ======================================
 
-            let mediaHTML = "";
+let mediaHTML = "";
 
 
-            if (
-                video.media_type === "image"
-            ) {
+if (video.media_type === "image") {
 
-                mediaHTML = `
-                    <img
-                        class="video"
-                        src="${escapeHTML(video.media_url)}"
-                        alt="${escapeHTML(video.title)}"
-                        style="
-                            width:100%;
-                            height:100%;
-                            object-fit:contain;
-                        ">
-                `;
+    mediaHTML = `
+        <img
+            class="video"
+            src="${escapeHTML(video.media_url)}"
+            alt="${escapeHTML(video.title)}"
+            style="
+                width:100%;
+                height:100%;
+                object-fit:contain;
+            ">
+    `;
 
-            } else {
+} else {
 
-                mediaHTML = `
-                    <video
-                        class="video"
-                        controls
-                        playsinline
-                        preload="metadata">
+    mediaHTML = `
+        <video
+            class="video"
+            controls
+            playsinline
+            preload="metadata"
+            ${video.cover_url
+                ? `poster="${escapeHTML(video.cover_url)}"`
+                : ""
+            }>
 
-                        <source
-                            src="${escapeHTML(video.media_url)}"
-                            type="video/mp4">
+            <source
+                src="${escapeHTML(video.media_url)}"
+                type="video/mp4">
 
-                        Your browser does not support
-                        HTML5 video.
+            Your browser does not support
+            HTML5 video.
 
-                    </video>
-                `;
+        </video>
+    `;
 
-            }
-
+}
 
             // ======================================
 // CARD CONTENT
