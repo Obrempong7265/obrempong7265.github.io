@@ -3218,6 +3218,19 @@ if (coverFile) {
 
                 status.textContent =
                     "Saving video information...";
+                console.log(
+    "Video City: About to save video:",
+    {
+        creator_id: creator.id,
+        title: title,
+        description: description,
+        category: category,
+        price_pi: price,
+        media_url: mediaURL,
+        cover_url: coverURL,
+        media_type: mediaType
+    }
+);
 
 
                 const {
