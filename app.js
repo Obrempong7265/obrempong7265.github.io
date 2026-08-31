@@ -1710,6 +1710,10 @@ function setupViews(card, video) {
 
 
                         try {
+                            alert(
+    "VIEW DATABASE PROCESS STARTED\nVideo ID: " +
+    video.id
+);
 
                             // ==================================
                             // GET LOGGED-IN CREATOR
