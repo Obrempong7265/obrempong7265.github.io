@@ -1672,6 +1672,10 @@ function setupViews(card, video) {
     videoElement.addEventListener(
         "play",
         function () {
+            console.log(
+    "Video City: PLAY EVENT FIRED:",
+    video.id
+);
 
             if (viewCounted) {
                 return;
