@@ -1659,18 +1659,15 @@ function setupViews(card, video) {
         card.querySelector("video");
 
 
-    // Images do not generate video views
     if (!videoElement) {
         return;
     }
 
 
-    // Prevent repeated counting
-    // while this card remains open
+    let viewTimer = null;
     let viewCounted = false;
 
 
-    // Track when playback begins
     videoElement.addEventListener(
         "play",
         function () {
@@ -1685,211 +1682,226 @@ function setupViews(card, video) {
             }
 
 
-            // Wait until the viewer has watched
-            // at least 3 seconds
-            setTimeout(
-                async function () {
+            // ======================================
+            // START 3-SECOND VIEW TIMER
+            // ======================================
 
-                    if (
-                        videoElement.paused ||
-                        videoElement.currentTime < 3
-                    ) {
-                        return;
-                    }
+            viewTimer =
+                setTimeout(
+                    async function () {
 
-
-                    if (viewCounted) {
-                        return;
-                    }
-
-
-                    try {
-
-                        // ======================================
-                        // GET CURRENT CREATOR
-                        // ======================================
-
-                        const creator =
-                            await getCurrentCreator();
-
-
-                        const creatorId =
-                            creator
-                                ? creator.id
-                                : null;
-
-
-                        // ======================================
-                        // CHECK EXISTING VIEW
-                        // ======================================
-
-                        let existingView = null;
-
-
-                        if (creatorId) {
-
-                            const {
-                                data,
-                                error
-                            } =
-                                await supabaseClient
-                                    .from("video_views")
-                                    .select("id")
-                                    .eq(
-                                        "video_id",
-                                        video.id
-                                    )
-                                    .eq(
-                                        "creator_id",
-                                        creatorId
-                                    )
-                                    .maybeSingle();
-
-
-                            if (error) {
-                                throw error;
-                            }
-
-
-                            existingView =
-                                data;
-
-                        }
-
-
-                        // ======================================
-                        // ALREADY VIEWED
-                        // ======================================
-
-                        if (existingView) {
-
-                            viewCounted = true;
-
+                        // Make sure the viewer
+                        // actually watched for 3 seconds
+                        if (
+                            videoElement.currentTime < 3
+                        ) {
                             return;
-
                         }
 
 
-                        // ======================================
-                        // RECORD VIEW
-                        // ======================================
+                        if (viewCounted) {
+                            return;
+                        }
 
-                        const {
-                            error: viewError
-                        } =
-                            await supabaseClient
-                                .from("video_views")
-                                .insert({
 
-                                    video_id:
+                        try {
+
+                            // ==================================
+                            // GET LOGGED-IN CREATOR
+                            // ==================================
+
+                            const creator =
+                                await getCurrentCreator();
+
+
+                            const creatorId =
+                                creator
+                                    ? creator.id
+                                    : null;
+
+
+                            console.log(
+                                "Video City: Recording view",
+                                {
+                                    videoId:
                                         video.id,
 
-                                    creator_id:
+                                    creatorId:
                                         creatorId
-
-                                });
-
-
-                        if (viewError) {
-
-                            // Duplicate view is acceptable.
-                            // The database protects us.
-                            if (
-                                viewError.code ===
-                                "23505"
-                            ) {
-
-                                viewCounted = true;
-
-                                return;
-
-                            }
-
-
-                            throw viewError;
-
-                        }
-
-
-                        // ======================================
-                        // INCREASE VIDEO VIEW COUNT
-                        // ======================================
-
-                        const currentViews =
-                            Number(video.views) || 0;
-
-
-                        const newViews =
-                            currentViews + 1;
-
-
-                        const {
-                            error:
-                                updateError
-                        } =
-                            await supabaseClient
-                                .from("videos")
-                                .update({
-
-                                    views:
-                                        newViews
-
-                                })
-                                .eq(
-                                    "id",
-                                    video.id
-                                );
-
-
-                        if (updateError) {
-                            throw updateError;
-                        }
-
-
-                        // ======================================
-                        // UPDATE LOCAL DISPLAY
-                        // ======================================
-
-                        video.views =
-                            newViews;
-
-
-                        const viewCount =
-                            card.querySelector(
-                                ".video-view-count span"
+                                }
                             );
 
 
-                        if (viewCount) {
+                            // ==================================
+                            // CHECK EXISTING VIEW
+                            // ==================================
 
-                            viewCount.textContent =
-                                formatCount(
-                                    newViews
+                            if (creatorId) {
+
+                                const {
+                                    data: existingView,
+                                    error: checkError
+                                } =
+                                    await supabaseClient
+                                        .from("video_views")
+                                        .select("id")
+                                        .eq(
+                                            "video_id",
+                                            video.id
+                                        )
+                                        .eq(
+                                            "creator_id",
+                                            creatorId
+                                        )
+                                        .maybeSingle();
+
+
+                                if (checkError) {
+                                    throw checkError;
+                                }
+
+
+                                if (existingView) {
+
+                                    viewCounted = true;
+
+                                    return;
+
+                                }
+
+                            }
+
+
+                            // ==================================
+                            // INSERT VIEW
+                            // ==================================
+
+                            const {
+                                error: insertError
+                            } =
+                                await supabaseClient
+                                    .from("video_views")
+                                    .insert({
+
+                                        video_id:
+                                            video.id,
+
+                                        creator_id:
+                                            creatorId
+
+                                    });
+
+
+                            if (insertError) {
+                                throw insertError;
+                            }
+
+
+                            // ==================================
+                            // INCREASE TOTAL VIEWS
+                            // ==================================
+
+                            const {
+                                data: updatedVideo,
+                                error: updateError
+                            } =
+                                await supabaseClient
+                                    .from("videos")
+                                    .update({
+
+                                        views:
+                                            (Number(video.views) || 0) + 1
+
+                                    })
+                                    .eq(
+                                        "id",
+                                        video.id
+                                    )
+                                    .select("views")
+                                    .single();
+
+
+                            if (updateError) {
+                                throw updateError;
+                            }
+
+
+                            // ==================================
+                            // UPDATE DISPLAY
+                            // ==================================
+
+                            video.views =
+                                updatedVideo.views;
+
+
+                            const viewCount =
+                                card.querySelector(
+                                    ".video-view-count span"
                                 );
+
+
+                            if (viewCount) {
+
+                                viewCount.textContent =
+                                    formatCount(
+                                        updatedVideo.views
+                                    );
+
+                            }
+
+
+                            viewCounted = true;
+
+
+                            console.log(
+                                "Video City: View recorded successfully."
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "Video City: View tracking error:",
+                                error
+                            );
 
                         }
 
+                    },
+                    3000
+                );
 
-                        viewCounted = true;
+        }
+    );
 
 
-                    } catch (error) {
+    // ======================================
+    // CANCEL TIMER WHEN VIDEO IS PAUSED
+    // BEFORE 3 SECONDS
+    // ======================================
 
-                        console.error(
-                            "Video City: View tracking error:",
-                            error
-                        );
+    videoElement.addEventListener(
+        "pause",
+        function () {
 
-                    }
+            if (
+                !viewCounted &&
+                viewTimer
+            ) {
 
-                },
-                3000
-            );
+                clearTimeout(
+                    viewTimer
+                );
+
+                viewTimer = null;
+
+            }
 
         }
     );
 
 }
+
                 
         // ==========================================
         // LIKE SYSTEM
