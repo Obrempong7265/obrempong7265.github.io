@@ -1738,6 +1738,13 @@ function setupViews(card, video) {
     "\nCreator ID: " +
     creatorId
 );
+                            alert(
+    "CHECKING VIDEO_VIEWS\n" +
+    "Video ID: " +
+    video.id +
+    "\nCreator ID: " +
+    creatorId
+);
 
 
                             console.log(
