@@ -1895,61 +1895,61 @@ function setupComments(card, video) {
         card.querySelector(".commentList");
 
 
-    // ======================================
-    // INITIAL COMMENT COUNT
-    // ======================================
+// ======================================
+// INITIAL COMMENT COUNT
+// ======================================
 
-    commentButton.textContent =
-        "💬 Comments 0";
-
-
-    // ======================================
-    // LOAD COMMENT COUNT
-    // ======================================
-
-    async function loadCommentCount() {
-
-        if (!video.id) {
-            return;
-        }
+commentButton.textContent =
+    "💬 Comments 0";
 
 
-        const {
-            count,
-            error
-        } =
-            await supabaseClient
-                .from("comments")
-                .select(
-                    "id",
-                    {
-                        count: "exact",
-                        head: true
-                    }
-                )
-                .eq(
-                    "video_id",
-                    video.id
-                );
+// ======================================
+// LOAD COMMENT COUNT
+// ======================================
+
+async function loadCommentCount() {
+
+    if (!video.id) {
+        return;
+    }
 
 
-        if (error) {
-
-            console.error(
-                "Video City: Comment count error:",
-                error
+    const {
+        count,
+        error
+    } =
+        await supabaseClient
+            .from("comments")
+            .select(
+                "id",
+                {
+                    count: "exact",
+                    head: true
+                }
+            )
+            .eq(
+                "video_id",
+                video.id
             );
 
-            return;
 
-        }
+    if (error) {
 
+        console.error(
+            "Video City: Comment count error:",
+            error
+        );
 
-        commentButton.textContent =
-            "💬 Comments " +
-            (count || 0);
+        return;
 
     }
+
+
+    commentButton.textContent =
+        "💬 Comments " +
+        formatCount(count);
+
+}
 
 
     // ======================================
