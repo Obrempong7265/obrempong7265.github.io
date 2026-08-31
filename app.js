@@ -1690,6 +1690,10 @@ function setupViews(card, video) {
             viewTimer =
                 setTimeout(
                     async function () {
+                        console.log(
+    "Video City: 3-second view timer fired:",
+    video.id
+);
 
                         // Make sure the viewer
                         // actually watched for 3 seconds
