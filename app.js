@@ -1628,6 +1628,10 @@ card.innerHTML = `
                 card,
                 video
             );
+            setupViews(
+    card,
+    video
+);
 
 
             setupComments(
@@ -1643,6 +1647,115 @@ card.innerHTML = `
 
 
             return card;
+
+        }
+        // ==========================================
+// VIEW COUNT SYSTEM
+// ==========================================
+
+function setupViews(card, video) {
+
+    const videoElement =
+        card.querySelector("video");
+
+
+    // Images do not generate video views
+    if (!videoElement) {
+        return;
+    }
+
+
+    // Prevent counting the same video
+    // repeatedly during the current page session
+    let viewCounted = false;
+
+
+    videoElement.addEventListener(
+        "play",
+        async function () {
+
+            if (viewCounted) {
+                return;
+            }
+
+
+            if (!video.id) {
+                return;
+            }
+
+
+            viewCounted = true;
+
+
+            try {
+
+                const currentViews =
+                    Number(video.views) || 0;
+
+
+                const newViews =
+                    currentViews + 1;
+
+
+                const {
+                    error
+                } =
+                    await supabaseClient
+                        .from("videos")
+                        .update({
+
+                            views:
+                                newViews
+
+                        })
+                        .eq(
+                            "id",
+                            video.id
+                        );
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                // Update the local value
+                video.views =
+                    newViews;
+
+
+                // Update the displayed count
+                const viewCount =
+                    card.querySelector(
+                        ".video-view-count span"
+                    );
+
+
+                if (viewCount) {
+
+                    viewCount.textContent =
+                        formatCount(
+                            newViews
+                        );
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: View count error:",
+                    error
+                );
+
+                // Allow another attempt if
+                // the database update failed
+                viewCounted = false;
+
+            }
+
+        }
+    );
 
         }
                 // ==========================================
