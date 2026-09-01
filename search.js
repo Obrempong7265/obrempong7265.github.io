@@ -424,7 +424,7 @@ document.addEventListener(
                                     }
                                 )
                                 .join("");
-                        // ==========================================
+// ==========================================
 // SEARCH RESULT CLICK
 // ==========================================
 
@@ -459,19 +459,29 @@ searchResultCards.forEach(
 
 
                 // ==========================================
-                // CLOSE SEARCH
+                // RETURN TO HOME
                 // ==========================================
 
-                if (searchPage) {
+                if (
+                    typeof showPage ===
+                    "function"
+                ) {
 
-                    searchPage.classList.add(
-                        "hidden"
+                    showPage("home");
+
+                } else {
+
+                    console.error(
+                        "Video City: showPage() is not available."
                     );
+
+                    return;
 
                 }
 
+
                 // ==========================================
-                // SHOW HOME FEED
+                // FIND EXACT VIDEO CARD
                 // ==========================================
 
                 const feed =
@@ -485,15 +495,6 @@ searchResultCards.forEach(
                 }
 
 
-                feed.classList.remove(
-                    "hidden"
-                );
-
-
-                // ==========================================
-                // FIND EXACT VIDEO
-                // ==========================================
-
                 const matchingCard =
                     feed.querySelector(
                         `[data-video-id="${videoId}"]`
@@ -503,7 +504,7 @@ searchResultCards.forEach(
                 if (!matchingCard) {
 
                     console.log(
-                        "Video City: Video card not found in feed:",
+                        "Video City: Video card not found:",
                         videoId
                     );
 
@@ -523,7 +524,7 @@ searchResultCards.forEach(
 
 
                 // ==========================================
-                // HIGHLIGHT VIDEO
+                // HIGHLIGHT SELECTED VIDEO
                 // ==========================================
 
                 matchingCard.classList.add(
@@ -542,14 +543,20 @@ searchResultCards.forEach(
                     2000
                 );
 
-
-        // ==========================================
-        // SEARCH MODULE READY
-        // ==========================================
-
-        console.log(
-            "Video City: Search module ready."
+            }
         );
+
+    }
+);
+
+
+// ==========================================
+// SEARCH MODULE READY
+// ==========================================
+
+console.log(
+    "Video City: Search module ready."
+);
 
     }
 );
