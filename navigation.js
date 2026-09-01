@@ -10,6 +10,8 @@ const navButtons =
 
 const feed =
     document.getElementById("feed");
+    const search =
+    document.getElementById("search");
 
 
 const upload =
@@ -53,6 +55,9 @@ function showPage(page) {
     if (feed) {
         feed.classList.add("hidden");
     }
+    if (search) {
+    search.classList.add("hidden");
+    }
 
 
     if (upload) {
@@ -94,7 +99,21 @@ if (settings) {
         }
 
     }
+// ======================================
+// SEARCH
+// ======================================
 
+if (page === "search") {
+
+    if (search) {
+
+        search.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
 
 
     // ======================================
@@ -331,6 +350,28 @@ if (settingsBtn) {
         function () {
 
             showPage("settings");
+
+        }
+    );
+
+}
+    // ==========================================
+// SEARCH BUTTON
+// ==========================================
+
+const searchBtn =
+    document.getElementById(
+        "searchBtn"
+    );
+
+
+if (searchBtn) {
+
+    searchBtn.addEventListener(
+        "click",
+        function () {
+
+            showPage("search");
 
         }
     );
