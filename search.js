@@ -470,7 +470,6 @@ searchResultCards.forEach(
 
                 }
 
-
                 // ==========================================
                 // SHOW HOME FEED
                 // ==========================================
@@ -481,45 +480,67 @@ searchResultCards.forEach(
                     );
 
 
-                if (feed) {
+                if (!feed) {
+                    return;
+                }
 
-                    feed.classList.remove(
-                        "hidden"
+
+                feed.classList.remove(
+                    "hidden"
+                );
+
+
+                // ==========================================
+                // FIND EXACT VIDEO
+                // ==========================================
+
+                const matchingCard =
+                    feed.querySelector(
+                        `[data-video-id="${videoId}"]`
                     );
 
+
+                if (!matchingCard) {
+
+                    console.log(
+                        "Video City: Video card not found in feed:",
+                        videoId
+                    );
+
+                    return;
+
                 }
 
-            }
-        );
 
-    }
-);
+                // ==========================================
+                // SCROLL TO EXACT VIDEO
+                // ==========================================
+
+                matchingCard.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
 
 
-                    } catch (error) {
+                // ==========================================
+                // HIGHLIGHT VIDEO
+                // ==========================================
 
-                        console.error(
-                            "Video City: Search exception:",
-                            error
+                matchingCard.classList.add(
+                    "search-selected-video"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        matchingCard.classList.remove(
+                            "search-selected-video"
                         );
 
-
-                        searchResults.innerHTML = `
-
-                            <div class="search-empty">
-
-                                Something went wrong while searching.
-
-                            </div>
-
-                        `;
-
-                    }
-
-                }
-            );
-
-        }
+                    },
+                    2000
+                );
 
 
         // ==========================================
