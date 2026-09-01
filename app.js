@@ -4469,7 +4469,7 @@ searchResults.innerHTML = `
 // INITIALIZE NOTIFICATION BADGE
 // ==========================================
 
-await updateNotificationBadge();
+ updateNotificationBadge();
             }
 );
 
