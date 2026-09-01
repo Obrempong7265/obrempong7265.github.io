@@ -424,6 +424,76 @@ document.addEventListener(
                                     }
                                 )
                                 .join("");
+                        // ==========================================
+// SEARCH RESULT CLICK
+// ==========================================
+
+const searchResultCards =
+    searchResults.querySelectorAll(
+        "[data-video-id]"
+    );
+
+
+searchResultCards.forEach(
+    function (resultCard) {
+
+        resultCard.addEventListener(
+            "click",
+            function () {
+
+                const videoId =
+                    resultCard.getAttribute(
+                        "data-video-id"
+                    );
+
+
+                if (!videoId) {
+                    return;
+                }
+
+
+                console.log(
+                    "Video City: Search result selected:",
+                    videoId
+                );
+
+
+                // ==========================================
+                // CLOSE SEARCH
+                // ==========================================
+
+                if (searchPage) {
+
+                    searchPage.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+
+                // ==========================================
+                // SHOW HOME FEED
+                // ==========================================
+
+                const feed =
+                    document.getElementById(
+                        "feed"
+                    );
+
+
+                if (feed) {
+
+                    feed.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
 
 
                     } catch (error) {
