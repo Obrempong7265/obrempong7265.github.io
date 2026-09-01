@@ -105,6 +105,145 @@ padding-bottom: 75px;
 .top-icon-btn:active {
     transform: scale(0.95);
 }
+/* ==========================================
+   SEARCH PAGE
+   ========================================== */
+
+#search {
+    padding: 18px 14px 30px;
+}
+
+
+#search h2 {
+    margin: 0 0 18px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+
+/* ==========================================
+   SEARCH BOX
+   ========================================== */
+
+.search-box {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+
+#searchInput {
+    width: 100%;
+    min-height: 50px;
+
+    box-sizing: border-box;
+
+    padding: 0 16px;
+
+    border: 1px solid #333;
+    border-radius: 14px;
+
+    background: #181818;
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+#searchInput::placeholder {
+    color: #999;
+}
+
+
+#searchInput:focus {
+    border-color: #ff2d75;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255, 45, 117, 0.12);
+}
+
+
+/* ==========================================
+   SEARCH FILTERS
+   ========================================== */
+
+.search-filters {
+    display: flex;
+
+    gap: 8px;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    padding-bottom: 6px;
+
+    margin-bottom: 20px;
+
+    scrollbar-width: none;
+}
+
+
+.search-filters::-webkit-scrollbar {
+    display: none;
+}
+
+
+.search-filter {
+    flex-shrink: 0;
+
+    padding: 9px 14px;
+
+    border: 1px solid #333;
+    border-radius: 20px;
+
+    background: #181818;
+    color: #ddd;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.search-filter:active {
+    transform: scale(0.96);
+}
+
+
+.search-filter.active {
+    background: #ff2d75;
+    border-color: #ff2d75;
+    color: white;
+}
+
+
+/* ==========================================
+   SEARCH RESULTS
+   ========================================== */
+
+.search-results {
+    width: 100%;
+}
+
+
+.search-results:empty {
+    display: none;
+}
 
 
 /* ==========================================
