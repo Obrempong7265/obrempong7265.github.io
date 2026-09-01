@@ -1,5 +1,5 @@
 // ==========================================
-// VIDEO CITY - SEARCH
+// VIDEO CITY - SEARCH MODULE
 // ==========================================
 
 document.addEventListener(
@@ -13,6 +13,11 @@ document.addEventListener(
         const searchBtn =
             document.getElementById(
                 "searchBtn"
+            );
+
+        const searchPage =
+            document.getElementById(
+                "search"
             );
 
         const searchInput =
@@ -32,15 +37,6 @@ document.addEventListener(
 
 
         // ==========================================
-        // CHECK SEARCH ELEMENTS
-        // ==========================================
-
-        console.log(
-            "Video City: Search module loaded."
-        );
-
-
-        // ==========================================
         // SEARCH BUTTON
         // ==========================================
 
@@ -49,11 +45,6 @@ document.addEventListener(
             searchBtn.addEventListener(
                 "click",
                 function () {
-
-                    const searchPage =
-                        document.getElementById(
-                            "search"
-                        );
 
                     if (searchPage) {
 
@@ -101,6 +92,19 @@ document.addEventListener(
                             "active"
                         );
 
+
+                        // Re-run current search
+                        if (
+                            searchInput &&
+                            searchInput.value.trim()
+                        ) {
+
+                            searchInput.dispatchEvent(
+                                new Event("input")
+                            );
+
+                        }
+
                     }
                 );
 
@@ -109,310 +113,352 @@ document.addEventListener(
 
 
         // ==========================================
-// SEARCH INPUT - REAL VIDEO SEARCH
-// ==========================================
+        // SEARCH INPUT
+        // ==========================================
 
-if (
-    searchInput &&
-    searchResults
-) {
+        if (
+            searchInput &&
+            searchResults
+        ) {
 
-    searchInput.addEventListener(
-        "input",
-        async function () {
+            searchInput.addEventListener(
+                "input",
+                async function () {
 
-            const query =
-                searchInput.value.trim();
-
-
-            // ==========================================
-            // EMPTY SEARCH
-            // ==========================================
-
-            if (!query) {
-
-                searchResults.innerHTML = "";
-
-                return;
-
-            }
+                    const query =
+                        searchInput.value.trim();
 
 
-            // ==========================================
-            // GET SELECTED FILTER
-            // ==========================================
+                    // ==========================================
+                    // EMPTY SEARCH
+                    // ==========================================
 
-            const activeFilter =
-                document.querySelector(
-                    ".search-filter.active"
-                );
+                    if (!query) {
 
+                        searchResults.innerHTML =
+                            "";
 
-            const searchType =
-                activeFilter
-                    ? activeFilter.dataset.searchType
-                    : "all";
+                        return;
+
+                    }
 
 
-            // ==========================================
-            // SEARCHING MESSAGE
-            // ==========================================
+                    // ==========================================
+                    // GET ACTIVE FILTER
+                    // ==========================================
 
-            searchResults.innerHTML = `
-
-                <div class="search-empty">
-
-                    Searching...
-
-                </div>
-
-            `;
-
-
-            // ==========================================
-            // SUPABASE CLIENT
-            // ==========================================
-
-            const supabaseClient =
-                window.supabaseClient;
-
-
-            if (!supabaseClient) {
-
-                searchResults.innerHTML = `
-
-                    <div class="search-empty">
-
-                        Unable to connect to Video City.
-
-                    </div>
-
-                `;
-
-                return;
-
-            }
-
-
-            // ==========================================
-            // VIDEO SEARCH
-            // ==========================================
-
-            try {
-
-                const {
-                    data: videos,
-                    error
-                } =
-                    await supabaseClient
-                        .from("videos")
-                        .select(`
-                            id,
-                            creator_id,
-                            title,
-                            description,
-                            category,
-                            price_pi,
-                            media_url,
-                            cover_url,
-                            media_type,
-                            views,
-                            likes,
-                            created_at,
-                            creators (
-                                username
-                            )
-                        `)
-                        .or(
-                            `title.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`
-                        )
-                        .order(
-                            "created_at",
-                            {
-                                ascending: false
-                            }
+                    const activeFilter =
+                        document.querySelector(
+                            ".search-filter.active"
                         );
 
 
-                // ==========================================
-                // SEARCH ERROR
-                // ==========================================
+                    const searchType =
+                        activeFilter
+                            ? activeFilter.dataset.searchType
+                            : "all";
 
-                if (error) {
 
-                    console.error(
-                        "Video City: Search error:",
-                        error
-                    );
+                    // ==========================================
+                    // CURRENTLY SEARCH VIDEOS
+                    // ==========================================
+
+                    if (
+                        searchType !== "all" &&
+                        searchType !== "videos"
+                    ) {
+
+                        searchResults.innerHTML = `
+
+                            <div class="search-empty">
+
+                                Search for
+                                <strong>
+                                    ${searchType}
+                                </strong>
+                                is coming soon.
+
+                            </div>
+
+                        `;
+
+                        return;
+
+                    }
+
+
+                    // ==========================================
+                    // SEARCHING
+                    // ==========================================
 
                     searchResults.innerHTML = `
 
                         <div class="search-empty">
 
-                            Unable to complete search.
+                            Searching...
 
                         </div>
 
                     `;
 
-                    return;
 
-                }
+                    // ==========================================
+                    // SUPABASE
+                    // ==========================================
 
-
-                // ==========================================
-                // NO RESULTS
-                // ==========================================
-
-                if (
-                    !videos ||
-                    videos.length === 0
-                ) {
-
-                    searchResults.innerHTML = `
-
-                        <div class="search-empty">
-
-                            No results found for
-                            "<strong>
-                                ${query}
-                            </strong>"
-
-                        </div>
-
-                    `;
-
-                    return;
-
-                }
+                    const supabaseClient =
+                        window.supabaseClient;
 
 
-                // ==========================================
-                // DISPLAY RESULTS
-                // ==========================================
+                    if (!supabaseClient) {
 
-                searchResults.innerHTML =
-                    videos
-                        .map(
-                            function (video) {
+                        searchResults.innerHTML = `
 
-                                const creatorUsername =
-                                    video.creators &&
-                                    video.creators.username
-                                        ? video.creators.username
-                                        : "Unknown creator";
+                            <div class="search-empty">
 
+                                Unable to connect to Video City.
 
-                                const cover =
-                                    video.cover_url ||
-                                    video.media_url ||
-                                    "";
+                            </div>
+
+                        `;
+
+                        return;
+
+                    }
 
 
-                                const price =
-                                    Number(
-                                        video.price_pi
-                                    ) || 0;
+                    // ==========================================
+                    // SEARCH DATABASE
+                    // ==========================================
+
+                    try {
+
+                        const {
+                            data: videos,
+                            error
+                        } =
+                            await supabaseClient
+                                .from("videos")
+                                .select(`
+                                    id,
+                                    creator_id,
+                                    title,
+                                    description,
+                                    category,
+                                    price_pi,
+                                    media_url,
+                                    cover_url,
+                                    media_type,
+                                    views,
+                                    likes,
+                                    created_at,
+                                    creators (
+                                        username
+                                    )
+                                `)
+                                .or(
+                                    `title.ilike.%${query}%,description.ilike.%${query}%,category.ilike.%${query}%`
+                                )
+                                .order(
+                                    "created_at",
+                                    {
+                                        ascending: false
+                                    }
+                                );
 
 
-                                return `
+                        // ==========================================
+                        // DATABASE ERROR
+                        // ==========================================
 
-                                    <div
-                                        class="search-result-card"
-                                        data-video-id="${video.id}">
+                        if (error) {
 
-                                        ${
-                                            cover
-                                                ? `
-                                                    <img
-                                                        class="search-result-image"
-                                                        src="${cover}"
-                                                        alt="${video.title || "Video"}"
-                                                    >
-                                                `
-                                                :
-                                                `
-                                                    <div
-                                                        class="search-result-image search-result-placeholder">
-                                                        🎬
-                                                    </div>
-                                                `
-                                        }
+                            console.error(
+                                "Video City: Search error:",
+                                error
+                            );
 
+                            searchResults.innerHTML = `
 
-                                        <div
-                                            class="search-result-info">
+                                <div class="search-empty">
 
-                                            <p
-                                                class="search-result-title">
+                                    Unable to complete search.
 
-                                                ${video.title || "Untitled video"}
+                                </div>
 
-                                            </p>
+                            `;
+
+                            return;
+
+                        }
 
 
-                                            <p
-                                                class="search-result-meta">
+                        // ==========================================
+                        // NO RESULTS
+                        // ==========================================
 
-                                                @${creatorUsername}
+                        if (
+                            !videos ||
+                            videos.length === 0
+                        ) {
 
-                                            </p>
+                            searchResults.innerHTML = `
+
+                                <div class="search-empty">
+
+                                    No videos found for
+                                    "<strong>
+                                        ${query}
+                                    </strong>"
+
+                                </div>
+
+                            `;
+
+                            return;
+
+                        }
 
 
-                                            <span
-                                                class="search-result-type">
+                        // ==========================================
+                        // DISPLAY RESULTS
+                        // ==========================================
 
-                                                🎬 Video
+                        searchResults.innerHTML =
+                            videos
+                                .map(
+                                    function (video) {
 
-                                            </span>
+                                        const creatorUsername =
+                                            video.creators &&
+                                            video.creators.username
+                                                ? video.creators.username
+                                                : "Unknown creator";
 
-                                        </div>
+
+                                        const cover =
+                                            video.cover_url ||
+                                            "";
 
 
-                                        ${
-                                            price > 0
-                                                ? `
+                                        const price =
+                                            Number(
+                                                video.price_pi
+                                            ) || 0;
+
+
+                                        return `
+
+                                            <div
+                                                class="search-result-card"
+                                                data-video-id="${video.id}">
+
+                                                ${
+                                                    cover
+                                                        ? `
+                                                            <img
+                                                                class="search-result-image"
+                                                                src="${cover}"
+                                                                alt="Video cover"
+                                                            >
+                                                        `
+                                                        :
+                                                        `
+                                                            <div
+                                                                class="search-result-image search-result-placeholder">
+
+                                                                🎬
+
+                                                            </div>
+                                                        `
+                                                }
+
+
+                                                <div
+                                                    class="search-result-info">
+
+                                                    <p
+                                                        class="search-result-title">
+
+                                                        ${video.title || "Untitled video"}
+
+                                                    </p>
+
+
+                                                    <p
+                                                        class="search-result-meta">
+
+                                                        @${creatorUsername}
+
+                                                    </p>
+
+
                                                     <span
-                                                        class="search-result-price">
+                                                        class="search-result-type">
 
-                                                        ${price} Pi
+                                                        🎬 Video
 
                                                     </span>
-                                                `
-                                                :
-                                                ""
-                                        }
 
-                                    </div>
-
-                                `;
-
-                            }
-                        )
-                        .join("");
+                                                </div>
 
 
-            } catch (error) {
+                                                ${
+                                                    price > 0
+                                                        ? `
+                                                            <span
+                                                                class="search-result-price">
 
-                console.error(
-                    "Video City: Search exception:",
-                    error
-                );
+                                                                ${price} Pi
+
+                                                            </span>
+                                                        `
+                                                        :
+                                                        ""
+                                                }
+
+                                            </div>
+
+                                        `;
+
+                                    }
+                                )
+                                .join("");
 
 
-                searchResults.innerHTML = `
+                    } catch (error) {
 
-                    <div class="search-empty">
+                        console.error(
+                            "Video City: Search exception:",
+                            error
+                        );
 
-                        Something went wrong while searching.
 
-                    </div>
+                        searchResults.innerHTML = `
 
-                `;
+                            <div class="search-empty">
 
-            }
+                                Something went wrong while searching.
+
+                            </div>
+
+                        `;
+
+                    }
+
+                }
+            );
 
         }
-    );
 
-}
+
+        // ==========================================
+        // SEARCH MODULE READY
+        // ==========================================
+
+        console.log(
+            "Video City: Search module ready."
+        );
+
+    }
+);
