@@ -4340,6 +4340,68 @@ searchFilters.forEach(
     }
 ); 
         // ==========================================
+// SEARCH INPUT
+// ==========================================
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const searchResults =
+    document.getElementById(
+        "searchResults"
+    );
+
+
+if (
+    searchInput &&
+    searchResults
+) {
+
+    searchInput.addEventListener(
+        "input",
+        function () {
+
+            const query =
+                searchInput.value.trim();
+
+
+            // ==================================
+            // EMPTY SEARCH
+            // ==================================
+
+            if (!query) {
+
+                searchResults.innerHTML = "";
+
+                return;
+
+            }
+
+
+            // ==================================
+            // SEARCH PREVIEW
+            // ==================================
+
+            searchResults.innerHTML = `
+
+                <div class="search-empty">
+
+                    <p>
+                        Searching for
+                        "<strong>${query}</strong>"
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+        // ==========================================
 // INITIALIZE NOTIFICATION BADGE
 // ==========================================
 
