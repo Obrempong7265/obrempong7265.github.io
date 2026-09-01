@@ -4379,97 +4379,11 @@ if (
 
             }
 
-
-            // ==================================
-// SEARCH PREVIEW
-// ==================================
-
-searchResults.innerHTML = `
-
-    <div class="search-result-card">
-
-        <div class="search-creator-avatar">
-            🎬
-        </div>
-
-        <div class="search-result-info">
-
-            <p class="search-result-title">
-                Sample Video Result
-            </p>
-
-            <p class="search-result-meta">
-                @OBREMPONG7
-            </p>
-
-            <span class="search-result-type">
-                🎬 Video
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <div class="search-result-card">
-
-        <div class="search-creator-avatar">
-            👤
-        </div>
-
-        <div class="search-result-info">
-
-            <p class="search-result-title">
-                @OBREMPONG7
-            </p>
-
-            <p class="search-result-meta">
-                Video City Creator
-            </p>
-
-            <span class="search-result-type">
-                👤 Creator
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <div class="search-result-card">
-
-        <div class="search-creator-avatar">
-            🛒
-        </div>
-
-        <div class="search-result-info">
-
-            <p class="search-result-title">
-                Sample Product
-            </p>
-
-            <p class="search-result-meta">
-                Available on Video City
-            </p>
-
-            <span class="search-result-type">
-                🛒 Product
-            </span>
-
-        </div>
-
-        <span class="search-result-price">
-            10 Pi
-        </span>
-
-    </div>
-
-`;
         // ==========================================
 // INITIALIZE NOTIFICATION BADGE
 // ==========================================
 
- updateNotificationBadge();
+await updateNotificationBadge();
             }
 );
 
