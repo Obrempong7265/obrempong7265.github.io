@@ -1861,6 +1861,17 @@ function setupViews(card, video) {
                                     )
                                     .select("views")
                                     .single();
+                            alert(
+    "VIDEOS UPDATE RESULT\n" +
+    "Updated Views: " +
+    (updatedVideo
+        ? updatedVideo.views
+        : "NO DATA") +
+    "\nError: " +
+    (updateError
+        ? updateError.message
+        : "NONE")
+);
 
 
                             if (updateError) {
