@@ -4297,6 +4297,48 @@ console.log(
     "MARK ACTIVE FUNCTION TYPE:",
     typeof markActiveSubscriptionCard
 );
+       // ==========================================
+// SEARCH FILTERS
+// ==========================================
+
+const searchFilters =
+    document.querySelectorAll(
+        ".search-filter"
+    );
+
+
+searchFilters.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                // Remove active state
+                // from all filters
+
+                searchFilters.forEach(
+                    function (filter) {
+
+                        filter.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                // Activate selected filter
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+); 
         // ==========================================
 // INITIALIZE NOTIFICATION BADGE
 // ==========================================
