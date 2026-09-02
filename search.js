@@ -208,7 +208,11 @@ document.addEventListener(
 
                     const supabaseClient =
                         window.supabaseClient;
-
+                    
+console.log(
+    "SEARCH SUPABASE CHECK:",
+    supabaseClient
+);
 
                     if (!supabaseClient) {
 
