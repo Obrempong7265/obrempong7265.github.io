@@ -439,38 +439,51 @@ const searchResultCards =
         ".search-result-card"
     );
 
+console.log(
+    "Video City: Search cards found:",
+    searchResultCards.length
+);
+
 
 searchResultCards.forEach(
     function (resultCard) {
 
-        resultCard.onclick =
-            function () {
+        resultCard.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                console.log(
+                    "Video City: SEARCH CARD CLICKED"
+                );
+
+
+                // Visible confirmation on the phone
+                resultCard.style.borderColor =
+                    "#ff2d75";
+
+                resultCard.style.background =
+                    "#252525";
+
 
                 const videoId =
                     resultCard.dataset.videoId;
 
 
                 console.log(
-                    "Video City: Search card tapped:",
+                    "Video City: Selected video:",
                     videoId
                 );
 
 
                 if (!videoId) {
-
-                    console.error(
-                        "Video City: Missing video ID."
-                    );
-
                     return;
-
                 }
 
 
-                // ==========================================
-                // GO TO HOME
-                // ==========================================
-
+                // Return to Home
                 if (
                     typeof showPage ===
                     "function"
@@ -489,99 +502,76 @@ searchResultCards.forEach(
                 }
 
 
-                // ==========================================
-                // FIND VIDEO AFTER HOME LOADS
-                // ==========================================
+                // Wait for Home feed
+                setTimeout(
+                    function () {
 
-                let attempts = 0;
-
-                const findCard =
-                    setInterval(
-                        function () {
-
-                            attempts++;
+                        const feed =
+                            document.getElementById(
+                                "feed"
+                            );
 
 
-                            const feed =
-                                document.getElementById(
-                                    "feed"
+                        if (!feed) {
+
+                            console.error(
+                                "Video City: Feed not found."
+                            );
+
+                            return;
+
+                        }
+
+
+                        const matchingCard =
+                            feed.querySelector(
+                                `[data-video-id="${videoId}"]`
+                            );
+
+
+                        if (!matchingCard) {
+
+                            console.error(
+                                "Video City: Video not found in feed:",
+                                videoId
+                            );
+
+                            return;
+
+                        }
+
+
+                        matchingCard.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+
+                        matchingCard.classList.add(
+                            "search-selected-video"
+                        );
+
+
+                        setTimeout(
+                            function () {
+
+                                matchingCard.classList.remove(
+                                    "search-selected-video"
                                 );
 
+                            },
+                            2000
+                        );
 
-                            if (feed) {
+                    },
+                    500
+                );
 
-                                const videoCard =
-                                    feed.querySelector(
-                                        `[data-video-id="${videoId}"]`
-                                    );
-
-
-                                if (videoCard) {
-
-                                    clearInterval(
-                                        findCard
-                                    );
-
-
-                                    console.log(
-                                        "Video City: Opening video:",
-                                        videoId
-                                    );
-
-
-                                    videoCard.scrollIntoView({
-                                        behavior: "smooth",
-                                        block: "center"
-                                    });
-
-
-                                    videoCard.classList.add(
-                                        "search-selected-video"
-                                    );
-
-
-                                    setTimeout(
-                                        function () {
-
-                                            videoCard.classList.remove(
-                                                "search-selected-video"
-                                            );
-
-                                        },
-                                        2000
-                                    );
-
-                                }
-
-                            }
-
-
-                            if (
-                                attempts >=
-                                30
-                            ) {
-
-                                clearInterval(
-                                    findCard
-                                );
-
-
-                                console.error(
-                                    "Video City: Could not find video card:",
-                                    videoId
-                                );
-
-                            }
-
-                        },
-                        100
-                    );
-
-            };
+            }
+        );
 
     }
 );
-
 
                     } catch (error) {
 
