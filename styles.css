@@ -2006,6 +2006,13 @@ MOBILE
     }
 
 }
+.search-result-card {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
 
 
 
