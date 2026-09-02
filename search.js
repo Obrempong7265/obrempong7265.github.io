@@ -455,46 +455,21 @@ searchResultCards.forEach(
                 event.preventDefault();
                 event.stopPropagation();
 
-                console.log(
-                    "Video City: SEARCH CARD CLICKED"
-                );
-
-
-                // Visible confirmation on the phone
-                resultCard.style.borderColor =
-                    "#ff2d75";
-
-                resultCard.style.background =
-                    "#252525";
-
 
                 const videoId =
                     resultCard.dataset.videoId;
 
 
                 console.log(
-                    "Video City: Selected video:",
+                    "Video City: Search card tapped:",
                     videoId
                 );
 
 
                 if (!videoId) {
-                    return;
-                }
-
-
-                // Return to Home
-                if (
-                    typeof showPage ===
-                    "function"
-                ) {
-
-                    showPage("home");
-
-                } else {
 
                     console.error(
-                        "Video City: showPage() unavailable."
+                        "Video City: Missing video ID."
                     );
 
                     return;
@@ -502,76 +477,139 @@ searchResultCards.forEach(
                 }
 
 
-                // Wait for Home feed
-                setTimeout(
-                    function () {
+                // ==========================================
+                // GO TO HOME USING EXISTING NAVIGATION
+                // ==========================================
 
-                        const feed =
-                            document.getElementById(
-                                "feed"
-                            );
-
-
-                        if (!feed) {
-
-                            console.error(
-                                "Video City: Feed not found."
-                            );
-
-                            return;
-
-                        }
+                const homeButton =
+                    document.querySelector(
+                        '.nav[data-view="home"]'
+                    );
 
 
-                        const matchingCard =
-                            feed.querySelector(
-                                `[data-video-id="${videoId}"]`
-                            );
+                if (!homeButton) {
+
+                    console.error(
+                        "Video City: Home navigation button not found."
+                    );
+
+                    return;
+
+                }
 
 
-                        if (!matchingCard) {
-
-                            console.error(
-                                "Video City: Video not found in feed:",
-                                videoId
-                            );
-
-                            return;
-
-                        }
+                homeButton.click();
 
 
-                        matchingCard.scrollIntoView({
-                            behavior: "smooth",
-                            block: "center"
-                        });
+                // ==========================================
+                // WAIT FOR HOME FEED
+                // ==========================================
+
+                let attempts = 0;
+
+                const maxAttempts = 30;
 
 
-                        matchingCard.classList.add(
-                            "search-selected-video"
-                        );
+                const findVideo =
+                    setInterval(
+                        function () {
+
+                            attempts++;
 
 
-                        setTimeout(
-                            function () {
-
-                                matchingCard.classList.remove(
-                                    "search-selected-video"
+                            const feed =
+                                document.getElementById(
+                                    "feed"
                                 );
 
-                            },
-                            2000
-                        );
 
-                    },
-                    500
-                );
+                            if (feed) {
+
+                                const matchingCard =
+                                    feed.querySelector(
+                                        `[data-video-id="${videoId}"]`
+                                    );
+
+
+                                if (matchingCard) {
+
+                                    clearInterval(
+                                        findVideo
+                                    );
+
+
+                                    console.log(
+                                        "Video City: Exact video found:",
+                                        videoId
+                                    );
+
+
+                                    // ==========================================
+                                    // SCROLL TO EXACT VIDEO
+                                    // ==========================================
+
+                                    matchingCard.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "center"
+                                    });
+
+
+                                    // ==========================================
+                                    // HIGHLIGHT VIDEO
+                                    // ==========================================
+
+                                    matchingCard.classList.add(
+                                        "search-selected-video"
+                                    );
+
+
+                                    setTimeout(
+                                        function () {
+
+                                            matchingCard.classList.remove(
+                                                "search-selected-video"
+                                            );
+
+                                        },
+                                        2000
+                                    );
+
+
+                                    return;
+
+                                }
+
+                            }
+
+
+                            if (
+                                attempts >=
+                                maxAttempts
+                            ) {
+
+                                clearInterval(
+                                    findVideo
+                                );
+
+
+                                console.error(
+                                    "Video City: Could not find selected video in Home feed:",
+                                    videoId
+                                );
+
+                            }
+
+                        },
+                        100
+                    );
 
             }
         );
 
     }
 );
+                        
+                    
 
                     } catch (error) {
 
