@@ -430,35 +430,36 @@ document.addEventListener(
                                     }
                                 )
                                 .join("");
-
-
                         // ==========================================
 // SEARCH RESULT CLICK
 // ==========================================
 
 const searchResultCards =
     searchResults.querySelectorAll(
-        "[data-video-id]"
+        ".search-result-card"
     );
 
 
 searchResultCards.forEach(
     function (resultCard) {
 
-        resultCard.addEventListener(
-            "click",
+        resultCard.onclick =
             function () {
 
                 const videoId =
-                    resultCard.getAttribute(
-                        "data-video-id"
-                    );
+                    resultCard.dataset.videoId;
+
+
+                console.log(
+                    "Video City: Search card tapped:",
+                    videoId
+                );
 
 
                 if (!videoId) {
 
                     console.error(
-                        "Video City: Search result has no video ID."
+                        "Video City: Missing video ID."
                     );
 
                     return;
@@ -466,14 +467,8 @@ searchResultCards.forEach(
                 }
 
 
-                console.log(
-                    "Video City: Search result selected:",
-                    videoId
-                );
-
-
                 // ==========================================
-                // RETURN TO HOME
+                // GO TO HOME
                 // ==========================================
 
                 if (
@@ -486,7 +481,7 @@ searchResultCards.forEach(
                 } else {
 
                     console.error(
-                        "Video City: showPage() is not available."
+                        "Video City: showPage() unavailable."
                     );
 
                     return;
@@ -495,15 +490,12 @@ searchResultCards.forEach(
 
 
                 // ==========================================
-                // FIND EXACT VIDEO
-                // Wait briefly for Home feed to be visible
+                // FIND VIDEO AFTER HOME LOADS
                 // ==========================================
 
                 let attempts = 0;
 
-                const maxAttempts = 20;
-
-                const findVideoCard =
+                const findCard =
                     setInterval(
                         function () {
 
@@ -516,95 +508,66 @@ searchResultCards.forEach(
                                 );
 
 
-                            if (!feed) {
+                            if (feed) {
 
-                                if (
-                                    attempts >=
-                                    maxAttempts
-                                ) {
+                                const videoCard =
+                                    feed.querySelector(
+                                        `[data-video-id="${videoId}"]`
+                                    );
+
+
+                                if (videoCard) {
 
                                     clearInterval(
-                                        findVideoCard
+                                        findCard
+                                    );
+
+
+                                    console.log(
+                                        "Video City: Opening video:",
+                                        videoId
+                                    );
+
+
+                                    videoCard.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "center"
+                                    });
+
+
+                                    videoCard.classList.add(
+                                        "search-selected-video"
+                                    );
+
+
+                                    setTimeout(
+                                        function () {
+
+                                            videoCard.classList.remove(
+                                                "search-selected-video"
+                                            );
+
+                                        },
+                                        2000
                                     );
 
                                 }
 
-                                return;
-
                             }
 
-
-                            const matchingCard =
-                                feed.querySelector(
-                                    `[data-video-id="${videoId}"]`
-                                );
-
-
-                            if (matchingCard) {
-
-                                clearInterval(
-                                    findVideoCard
-                                );
-
-
-                                console.log(
-                                    "Video City: Exact video found:",
-                                    videoId
-                                );
-
-
-                                // ==========================================
-                                // SCROLL TO EXACT VIDEO
-                                // ==========================================
-
-                                matchingCard.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "center"
-                                });
-
-
-                                // ==========================================
-                                // HIGHLIGHT SELECTED VIDEO
-                                // ==========================================
-
-                                matchingCard.classList.add(
-                                    "search-selected-video"
-                                );
-
-
-                                setTimeout(
-                                    function () {
-
-                                        matchingCard.classList.remove(
-                                            "search-selected-video"
-                                        );
-
-                                    },
-                                    2000
-                                );
-
-
-                                return;
-
-                            }
-
-
-                            // ==========================================
-                            // STOP AFTER MAXIMUM ATTEMPTS
-                            // ==========================================
 
                             if (
                                 attempts >=
-                                maxAttempts
+                                30
                             ) {
 
                                 clearInterval(
-                                    findVideoCard
+                                    findCard
                                 );
 
 
                                 console.error(
-                                    "Video City: Exact video card not found:",
+                                    "Video City: Could not find video card:",
                                     videoId
                                 );
 
@@ -614,11 +577,11 @@ searchResultCards.forEach(
                         100
                     );
 
-            }
-        );
+            };
 
     }
 );
+
 
                     } catch (error) {
 
