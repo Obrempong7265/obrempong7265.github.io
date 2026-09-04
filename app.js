@@ -1674,10 +1674,6 @@ function setupViews(card, video) {
     let viewTimer = null;
     let viewCounted = false;
 
-    // ======================================
-    // START VIEW TIMER WHEN VIDEO PLAYS
-    // ======================================
-
     videoElement.addEventListener(
         "play",
         function () {
@@ -1690,16 +1686,10 @@ function setupViews(card, video) {
                 return;
             }
 
-            // ==================================
-            // START 3-SECOND TIMER
-            // ==================================
-
             viewTimer =
                 setTimeout(
                     async function () {
 
-                        // Make sure the viewer
-                        // actually reached 3 seconds
                         if (
                             videoElement.currentTime < 3
                         ) {
@@ -1711,10 +1701,6 @@ function setupViews(card, video) {
                         }
 
                         try {
-
-                            // ==================================
-                            // GET LOGGED-IN CREATOR
-                            // ==================================
 
                             const creator =
                                 await getCurrentCreator();
@@ -1735,10 +1721,8 @@ function setupViews(card, video) {
                                 }
                             );
 
-                            // ==================================
-                            // CHECK EXISTING VIEW
-                            // ==================================
-
+                            // Check whether this creator
+                            // has already viewed this video.
                             if (creatorId) {
 
                                 const {
@@ -1762,35 +1746,30 @@ function setupViews(card, video) {
                                     throw checkError;
                                 }
 
-                                // ==================================
-                                // VIEW ALREADY RECORDED
-                                // ==================================
-
                                 if (existingView) {
 
                                     viewCounted = true;
+
+                                    console.log(
+                                        "Video City: View already recorded for this account."
+                                    );
 
                                     return;
                                 }
                             }
 
-                            // ==================================
-                            // INSERT VIEW
-                            // ==================================
-
+                            // Record the view.
                             const {
                                 error: insertError
                             } =
                                 await supabaseClient
                                     .from("video_views")
                                     .insert({
-
                                         video_id:
                                             video.id,
 
                                         creator_id:
                                             creatorId
-
                                     });
 
                             if (insertError) {
@@ -1801,25 +1780,7 @@ function setupViews(card, video) {
                                 "Video City: View record inserted successfully."
                             );
 
-                            // ==================================
-                            // DATABASE TRIGGER
-                            // ==================================
-                            //
-                            // The INSERT above automatically
-                            // triggers:
-                            //
-                            // handle_video_view_insert()
-                            //
-                            // which increments videos.views.
-                            //
-                            // No direct UPDATE of videos.views
-                            // is performed here.
-                            // ==================================
-
-                            // ==================================
-                            // GET UPDATED VIEW COUNT
-                            // ==================================
-
+                            // Get the updated count.
                             const {
                                 data: updatedVideo,
                                 error: fetchError
@@ -1837,17 +1798,11 @@ function setupViews(card, video) {
                                 throw fetchError;
                             }
 
-                            // ==================================
-                            // UPDATE LOCAL VIDEO DATA
-                            // ==================================
-
                             video.views =
                                 updatedVideo.views;
 
-                            // ==================================
-                            // UPDATE VIEW COUNT ON CARD
-                            // ==================================
-
+                            // Update the count displayed
+                            // on the video card.
                             const viewCount =
                                 card.querySelector(
                                     ".video-view-count span"
@@ -1883,11 +1838,6 @@ function setupViews(card, video) {
         }
     );
 
-    // ======================================
-    // CANCEL TIMER WHEN VIDEO IS PAUSED
-    // BEFORE 3 SECONDS
-    // ======================================
-
     videoElement.addEventListener(
         "pause",
         function () {
@@ -1907,7 +1857,7 @@ function setupViews(card, video) {
         }
     );
 
-                    }
+                                }
         // ==========================================
         // LIKE SYSTEM
         // ==========================================
