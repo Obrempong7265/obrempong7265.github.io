@@ -1651,75 +1651,66 @@ card.innerHTML = `
             return card;
 
         }
+        
+        
 // ==========================================
 // VIEW COUNT SYSTEM
 // ==========================================
 
 function setupViews(card, video) {
-    console.log("Video City: setupViews started:", video.id);
-    
+
+    console.log(
+        "Video City: setupViews started:",
+        video.id
+    );
+
     const videoElement =
         card.querySelector("video");
-    
 
     if (!videoElement) {
         return;
     }
 
-
     let viewTimer = null;
     let viewCounted = false;
 
+    // ======================================
+    // START VIEW TIMER WHEN VIDEO PLAYS
+    // ======================================
 
     videoElement.addEventListener(
         "play",
         function () {
-            
+
             if (viewCounted) {
                 return;
             }
-
 
             if (!video.id) {
                 return;
             }
 
-
-            // ======================================
-            // START 3-SECOND VIEW TIMER
-            // ======================================
+            // ==================================
+            // START 3-SECOND TIMER
+            // ==================================
 
             viewTimer =
                 setTimeout(
                     async function () {
-                        alert(
-    "3-SECOND TIMER FIRED\nVideo ID: " +
-    video.id
-);
-                        alert(
-    "CURRENT TIME: " +
-    videoElement.currentTime
-);
 
                         // Make sure the viewer
-                        // actually watched for 3 seconds
+                        // actually reached 3 seconds
                         if (
                             videoElement.currentTime < 3
                         ) {
                             return;
                         }
 
-
                         if (viewCounted) {
                             return;
                         }
 
-
                         try {
-                            alert(
-    "VIEW DATABASE PROCESS STARTED\nVideo ID: " +
-    video.id
-);
 
                             // ==================================
                             // GET LOGGED-IN CREATOR
@@ -1728,26 +1719,10 @@ function setupViews(card, video) {
                             const creator =
                                 await getCurrentCreator();
 
-
                             const creatorId =
                                 creator
                                     ? creator.id
                                     : null;
-                            alert(
-    "CREATOR CHECK\n" +
-    "Username: " +
-    getUsername() +
-    "\nCreator ID: " +
-    creatorId
-);
-                            alert(
-    "CHECKING VIDEO_VIEWS\n" +
-    "Video ID: " +
-    video.id +
-    "\nCreator ID: " +
-    creatorId
-);
-
 
                             console.log(
                                 "Video City: Recording view",
@@ -1759,7 +1734,6 @@ function setupViews(card, video) {
                                         creatorId
                                 }
                             );
-
 
                             // ==================================
                             // CHECK EXISTING VIEW
@@ -1783,30 +1757,22 @@ function setupViews(card, video) {
                                             creatorId
                                         )
                                         .maybeSingle();
-                                alert(
-    "VIDEO_VIEWS CHECK COMPLETE\n" +
-    "Existing View: " +
-    (existingView ? "YES" : "NO") +
-    "\nError: " +
-    (checkError ? checkError.message : "NONE")
-);
-
 
                                 if (checkError) {
                                     throw checkError;
                                 }
 
+                                // ==================================
+                                // VIEW ALREADY RECORDED
+                                // ==================================
 
                                 if (existingView) {
 
                                     viewCounted = true;
 
                                     return;
-
                                 }
-
                             }
-
 
                             // ==================================
                             // INSERT VIEW
@@ -1826,74 +1792,66 @@ function setupViews(card, video) {
                                             creatorId
 
                                     });
-                            alert(
-    "VIDEO VIEW INSERT RESULT\n" +
-    "Error: " +
-    (insertError
-        ? insertError.message
-        : "NONE")
-);
-                            
-
 
                             if (insertError) {
                                 throw insertError;
                             }
 
+                            console.log(
+                                "Video City: View record inserted successfully."
+                            );
 
                             // ==================================
-                            // INCREASE TOTAL VIEWS
+                            // DATABASE TRIGGER
+                            // ==================================
+                            //
+                            // The INSERT above automatically
+                            // triggers:
+                            //
+                            // handle_video_view_insert()
+                            //
+                            // which increments videos.views.
+                            //
+                            // No direct UPDATE of videos.views
+                            // is performed here.
+                            // ==================================
+
+                            // ==================================
+                            // GET UPDATED VIEW COUNT
                             // ==================================
 
                             const {
                                 data: updatedVideo,
-                                error: updateError
+                                error: fetchError
                             } =
                                 await supabaseClient
                                     .from("videos")
-                                    .update({
-
-                                        views:
-                                            (Number(video.views) || 0) + 1
-
-                                    })
+                                    .select("views")
                                     .eq(
                                         "id",
                                         video.id
                                     )
-                                    .select("views")
                                     .single();
-                            alert(
-    "VIDEOS UPDATE RESULT\n" +
-    "Updated Views: " +
-    (updatedVideo
-        ? updatedVideo.views
-        : "NO DATA") +
-    "\nError: " +
-    (updateError
-        ? updateError.message
-        : "NONE")
-);
 
-
-                            if (updateError) {
-                                throw updateError;
+                            if (fetchError) {
+                                throw fetchError;
                             }
 
-
                             // ==================================
-                            // UPDATE DISPLAY
+                            // UPDATE LOCAL VIDEO DATA
                             // ==================================
 
                             video.views =
                                 updatedVideo.views;
 
+                            // ==================================
+                            // UPDATE VIEW COUNT ON CARD
+                            // ==================================
 
                             const viewCount =
                                 card.querySelector(
                                     ".video-view-count span"
                                 );
-
 
                             if (viewCount) {
 
@@ -1901,17 +1859,14 @@ function setupViews(card, video) {
                                     formatCount(
                                         updatedVideo.views
                                     );
-
                             }
-
 
                             viewCounted = true;
 
-
                             console.log(
-                                "Video City: View recorded successfully."
+                                "Video City: View recorded successfully.",
+                                updatedVideo.views
                             );
-
 
                         } catch (error) {
 
@@ -1925,10 +1880,8 @@ function setupViews(card, video) {
                     },
                     3000
                 );
-
         }
     );
-
 
     // ======================================
     // CANCEL TIMER WHEN VIDEO IS PAUSED
@@ -1949,15 +1902,12 @@ function setupViews(card, video) {
                 );
 
                 viewTimer = null;
-
             }
 
         }
     );
 
-}
-
-                
+                    }
         // ==========================================
         // LIKE SYSTEM
         // ==========================================
