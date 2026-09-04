@@ -1686,6 +1686,7 @@ function setupViews(card, video) {
                 return;
             }
 
+            // Start the 3-second watch timer
             viewTimer =
                 setTimeout(
                     async function () {
@@ -1702,13 +1703,24 @@ function setupViews(card, video) {
 
                         try {
 
+                            // ======================================
+                            // GET LOGGED-IN CREATOR
+                            // ======================================
+
                             const creator =
                                 await getCurrentCreator();
 
+                            if (!creator || !creator.id) {
+
+                                console.log(
+                                    "Video City: View not recorded. User is not authenticated."
+                                );
+
+                                return;
+                            }
+
                             const creatorId =
-                                creator
-                                    ? creator.id
-                                    : null;
+                                creator.id;
 
                             console.log(
                                 "Video City: Recording view",
@@ -1721,44 +1733,50 @@ function setupViews(card, video) {
                                 }
                             );
 
-                            // Check whether this creator
-                            // has already viewed this video.
-                            if (creatorId) {
+                            // ======================================
+                            // CHECK EXISTING VIEW
+                            // ======================================
 
-                                const {
-                                    data: existingView,
-                                    error: checkError
-                                } =
-                                    await supabaseClient
-                                        .from("video_views")
-                                        .select("id")
-                                        .eq(
-                                            "video_id",
-                                            video.id
-                                        )
-                                        .eq(
-                                            "creator_id",
-                                            creatorId
-                                        )
-                                        .maybeSingle();
+                            const {
+                                data: existingView,
+                                error: checkError
+                            } =
+                                await supabaseClient
+                                    .from("video_views")
+                                    .select("id")
+                                    .eq(
+                                        "video_id",
+                                        video.id
+                                    )
+                                    .eq(
+                                        "creator_id",
+                                        creatorId
+                                    )
+                                    .maybeSingle();
 
-                                if (checkError) {
-                                    throw checkError;
-                                }
-
-                                if (existingView) {
-
-                                    viewCounted = true;
-
-                                    console.log(
-                                        "Video City: View already recorded for this account."
-                                    );
-
-                                    return;
-                                }
+                            if (checkError) {
+                                throw checkError;
                             }
 
-                            // Record the view.
+                            // ======================================
+                            // ALREADY VIEWED
+                            // ======================================
+
+                            if (existingView) {
+
+                                viewCounted = true;
+
+                                console.log(
+                                    "Video City: View already recorded for this account."
+                                );
+
+                                return;
+                            }
+
+                            // ======================================
+                            // RECORD NEW VIEW
+                            // ======================================
+
                             const {
                                 error: insertError
                             } =
@@ -1780,7 +1798,11 @@ function setupViews(card, video) {
                                 "Video City: View record inserted successfully."
                             );
 
-                            // Get the updated count.
+                            // ======================================
+                            // GET UPDATED VIEW COUNT
+                            // Database trigger increments videos.views
+                            // ======================================
+
                             const {
                                 data: updatedVideo,
                                 error: fetchError
@@ -1798,11 +1820,17 @@ function setupViews(card, video) {
                                 throw fetchError;
                             }
 
+                            // ======================================
+                            // UPDATE LOCAL VIDEO OBJECT
+                            // ======================================
+
                             video.views =
                                 updatedVideo.views;
 
-                            // Update the count displayed
-                            // on the video card.
+                            // ======================================
+                            // UPDATE DISPLAYED VIEW COUNT
+                            // ======================================
+
                             const viewCount =
                                 card.querySelector(
                                     ".video-view-count span"
@@ -1838,6 +1866,11 @@ function setupViews(card, video) {
         }
     );
 
+    // ==========================================
+    // CANCEL TIMER IF VIDEO IS PAUSED
+    // BEFORE 3 SECONDS
+    // ==========================================
+
     videoElement.addEventListener(
         "pause",
         function () {
@@ -1857,7 +1890,9 @@ function setupViews(card, video) {
         }
     );
 
-                                }
+}
+
+            
         // ==========================================
         // LIKE SYSTEM
         // ==========================================
