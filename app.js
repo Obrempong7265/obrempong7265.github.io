@@ -175,35 +175,35 @@ document.addEventListener(
             // --------------------------------------
 
             const {
-                data,
-                error
-            } =
-                await supabaseClient
-                    .from("creators")
-                    .select("*")
-                    .eq(
-                        "username",
-                        cleanUsername
-                    )
-                    .maybeSingle();
+    data: usernameData,
+    error: usernameError
+} =
+    await supabaseClient
+        .from("creators")
+        .select("*")
+        .eq(
+            "username",
+            cleanUsername
+        )
+        .maybeSingle();
 
 
-            if (error) {
+if (usernameError) {
 
-                console.error(
-                    "Creator username lookup error:",
-                    error
-                );
+    console.error(
+        "Creator username lookup error:",
+        usernameError
+    );
 
                 return null;
 
             }
 
 
-            return data || null;
+            
+                return usernameData || null;
 
-        }
-
+            }
 
         // ==========================================
         // GET OR CREATE CREATOR
