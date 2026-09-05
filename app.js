@@ -1912,202 +1912,336 @@ function setupViews(card, video) {
 
 }
         // ==========================================
-        // LIKE SYSTEM
-        // ==========================================
+// LIKE SYSTEM
+// ==========================================
 
-        function setupLike(card, video) {
+function setupLike(card, video) {
 
-            const likeButton =
-                card.querySelector(".likeBtn");
+    const likeButton =
+        card.querySelector(".likeBtn");
 
-            const span =
-                likeButton.querySelector("span");
+    if (!likeButton) {
+        return;
+    }
 
-            let liked = false;
+    const span =
+        likeButton.querySelector("span");
 
-
-            likeButton.addEventListener(
-                "click",
-                async function () {
-
-                    const username =
-                        getUsername();
-
-                    if (!username) {
-
-                        alert(
-                            "Please login with Pi to like videos."
-                        );
-
-                        return;
-                    }
+    let liked = false;
+    let processingLike = false;
 
 
-                    const creator =
-                        await getCurrentCreator();
+    // ------------------------------------------
+    // LOAD CURRENT LIKE STATE AND COUNT
+    // ------------------------------------------
 
-                    if (!creator) {
+    async function loadLikeState() {
 
-                        alert(
-                            "Your Video City account could not be found."
-                        );
+        if (!video.id) {
+            return;
+        }
 
-                        return;
-                    }
+        try {
 
-
-                    try {
-
-                        if (!video.id) {
-
-                            liked = !liked;
-
-                            let count =
-                                Number(
-                                    span.textContent
-                                ) || 0;
-
-                            count =
-                                liked
-                                    ? count + 1
-                                    : Math.max(
-                                        0,
-                                        count - 1
-                                    );
-
-                            likeButton.innerHTML =
-                                liked
-                                    ? `♥ <span>${count}</span>`
-                                    : `♡ <span>${count}</span>`;
-
-                            return;
+            // Get the authoritative like count
+            // directly from video_likes.
+            const {
+                count,
+                error: countError
+            } =
+                await supabaseClient
+                    .from("video_likes")
+                    .select(
+                        "id",
+                        {
+                            count: "exact",
+                            head: true
                         }
+                    )
+                    .eq(
+                        "video_id",
+                        video.id
+                    );
 
 
-                        if (!liked) {
-
-                            const {
-                                error
-                            } =
-                                await supabaseClient
-                                    .from(
-                                        "video_likes"
-                                    )
-                                    .insert({
-
-                                        video_id:
-                                            video.id,
-
-                                        creator_id:
-                                            creator.id
-
-                                    });
+            if (countError) {
+                throw countError;
+            }
 
 
-                            if (error) {
-                                throw error;
-                            }
+            const totalLikes =
+                count || 0;
 
 
-                            liked = true;
-
-                        } else {
-
-                            const {
-                                error
-                            } =
-                                await supabaseClient
-                                    .from(
-                                        "video_likes"
-                                    )
-                                    .delete()
-                                    .eq(
-                                        "video_id",
-                                        video.id
-                                    )
-                                    .eq(
-                                        "creator_id",
-                                        creator.id
-                                    );
+            // Keep the local video object
+            // synchronized.
+            video.likes =
+                totalLikes;
 
 
-                            if (error) {
-                                throw error;
-                            }
+            // Display the authoritative count.
+            if (span) {
+                span.textContent =
+                    formatCount(totalLikes);
+            }
 
 
-                            liked = false;
+            // ----------------------------------
+            // CHECK WHETHER CURRENT USER LIKED
+            // ----------------------------------
 
-                        }
+            const username =
+                getUsername();
 
-
-                        const {
-                            count,
-                            error: countError
-                        } =
-                            await supabaseClient
-                                .from(
-                                    "video_likes"
-                                )
-                                .select(
-                                    "id",
-                                    {
-                                        count:
-                                            "exact",
-                                        head:
-                                            true
-                                    }
-                                )
-                                .eq(
-                                    "video_id",
-                                    video.id
-                                );
+            if (!username) {
+                liked = false;
+                likeButton.innerHTML =
+                    `♡ <span>${formatCount(totalLikes)}</span>`;
+                return;
+            }
 
 
-                        if (countError) {
-                            throw countError;
-                        }
+            const creator =
+                await getCurrentCreator();
+
+            if (!creator) {
+                liked = false;
+                likeButton.innerHTML =
+                    `♡ <span>${formatCount(totalLikes)}</span>`;
+                return;
+            }
 
 
-                        const totalLikes =
-                            count || 0;
+            const {
+                data: existingLike,
+                error: existingLikeError
+            } =
+                await supabaseClient
+                    .from("video_likes")
+                    .select("id")
+                    .eq(
+                        "video_id",
+                        video.id
+                    )
+                    .eq(
+                        "creator_id",
+                        creator.id
+                    )
+                    .maybeSingle();
 
 
-                        likeButton.innerHTML =
-                            liked
-                                ? `♥ <span>${totalLikes}</span>`
-                                : `♡ <span>${totalLikes}</span>`;
+            if (existingLikeError) {
+                throw existingLikeError;
+            }
 
 
-                        await supabaseClient
-                            .from("videos")
-                            .update({
-
-                                likes:
-                                    totalLikes
-
-                            })
-                            .eq(
-                                "id",
-                                video.id
-                            );
+            liked =
+                !!existingLike;
 
 
-                                        } catch (error) {
+            likeButton.innerHTML =
+                liked
+                    ? `♥ <span>${formatCount(totalLikes)}</span>`
+                    : `♡ <span>${formatCount(totalLikes)}</span>`;
 
-                        console.error(
-                            "Video City: Like error:",
-                            error
+
+        } catch (error) {
+
+            console.error(
+                "Video City: Unable to load like state:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // Load the correct state immediately.
+    loadLikeState();
+
+
+    // ------------------------------------------
+    // LIKE / UNLIKE
+    // ------------------------------------------
+
+    likeButton.addEventListener(
+        "click",
+        async function () {
+
+            if (processingLike) {
+                return;
+            }
+
+
+            const username =
+                getUsername();
+
+
+            if (!username) {
+
+                alert(
+                    "Please login with Pi to like videos."
+                );
+
+                return;
+            }
+
+
+            if (!video.id) {
+
+                liked = !liked;
+
+                const currentCount =
+                    Number(
+                        span?.textContent
+                    ) || 0;
+
+                const newCount =
+                    liked
+                        ? currentCount + 1
+                        : Math.max(
+                            0,
+                            currentCount - 1
                         );
 
-                        alert(
-                            "Unable to update like. Please try again."
-                        );
 
-                    }
+                likeButton.innerHTML =
+                    liked
+                        ? `♥ <span>${newCount}</span>`
+                        : `♡ <span>${newCount}</span>`;
+
+                return;
+            }
+
+
+            processingLike = true;
+
+            likeButton.disabled = true;
+
+
+            try {
+
+                const piAccessToken =
+                    sessionStorage.getItem(
+                        "videoCityPiAccessToken"
+                    );
+
+
+                if (!piAccessToken) {
+
+                    throw new Error(
+                        "Pi access token not found."
+                    );
 
                 }
-            );
+
+
+                const action =
+                    liked
+                        ? "unlike"
+                        : "like";
+
+
+                const response =
+                    await fetch(
+                        `${supabaseClient.supabaseUrl}/functions/v1/like-video`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                videoId:
+                                    video.id,
+
+                                action:
+                                    action,
+
+                                piAccessToken:
+                                    piAccessToken
+                            })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !result.success
+                ) {
+
+                    throw new Error(
+                        result.error ||
+                        "Unable to update like."
+                    );
+
+                }
+
+
+                // Use the authoritative result
+                // returned by the Edge Function.
+                liked =
+                    result.liked;
+
+
+                const totalLikes =
+                    Number(
+                        result.likes
+                    ) || 0;
+
+
+                video.likes =
+                    totalLikes;
+
+
+                likeButton.innerHTML =
+                    liked
+                        ? `♥ <span>${formatCount(totalLikes)}</span>`
+                        : `♡ <span>${formatCount(totalLikes)}</span>`;
+
+
+                console.log(
+                    "Video City: Like updated successfully:",
+                    {
+                        videoId: video.id,
+                        action: action,
+                        liked: liked,
+                        likes: totalLikes
+                    }
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Video City: Like error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Unable to update like. Please try again."
+                );
+
+
+            } finally {
+
+                processingLike = false;
+
+                likeButton.disabled = false;
+
+            }
+
+        }
+    );
 
         }
 
