@@ -843,9 +843,9 @@ const response =
             method: "POST",
 
             headers: {
-                "Content-Type":
-                    "application/json"
-            },
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${piAccessToken}`
+},
 
             body: JSON.stringify({
                 notificationId:
@@ -2150,10 +2150,9 @@ function setupLike(card, video) {
                             method: "POST",
 
                             headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${piAccessToken}`
+},
                             body: JSON.stringify({
                                 videoId:
                                     video.id,
