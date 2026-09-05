@@ -167,11 +167,16 @@ document.addEventListener(
 
 
                 if (data) {
-                    return data;
+
+    alert(
+        "Creator found by Pi UID\n" +
+        "Creator ID: " + data.id +
+        "\nPi UID: " + data.pi_uid +
+        "\nUsername: " + data.username
+    );
+
+    return data;
                 }
-
-            }
-
 
             // --------------------------------------
             // FIND BY USERNAME
