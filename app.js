@@ -129,18 +129,12 @@ document.addEventListener(
                 sessionStorage.getItem(
                     "videoCityPiUID"
                 );
-            console.log(
-    "Video City DEBUG - Login identity:",
-    {
-        username: username,
-        piUID: piUID || "MISSING",
-        hasAccessToken:
-            !!sessionStorage.getItem(
-                "videoCityPiAccessToken"
-            )
-    }
+            alert(
+    "Username: " + username +
+    "\nPi UID: " + (piUID || "MISSING") +
+    "\nAccess Token: " +
+    (sessionStorage.getItem("videoCityPiAccessToken") ? "YES" : "NO")
 );
-
 
             // --------------------------------------
             // FIND BY PI UID
