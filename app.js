@@ -168,14 +168,6 @@ document.addEventListener(
 
                 if (data) {
 
-    alert(
-        "CREATOR FOUND\n\n" +
-        "Creator ID: " + data.id +
-        "\nPi UID: " + data.pi_uid +
-        "\nUsername: " + data.username +
-        "\n\nReturning creator record..."
-    );
-
     return data;
                 }
             // --------------------------------------
