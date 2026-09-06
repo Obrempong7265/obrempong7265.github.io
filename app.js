@@ -111,99 +111,94 @@ document.addEventListener(
 
         async function getCurrentCreator() {
 
-            const username =
-                getUsername();
+    const username =
+        getUsername();
 
-            if (!username) {
-                return null;
-            }
+    if (!username) {
+        return null;
+    }
 
+    const cleanUsername =
+        username.startsWith("@")
+            ? username.substring(1)
+            : username;
 
-            const cleanUsername =
-                username.startsWith("@")
-                    ? username.substring(1)
-                    : username;
-
-
-            const piUID =
-                sessionStorage.getItem(
-                    "videoCityPiUID"
-                );
-            alert(
-    "Username: " + username +
-    "\nPi UID: " + (piUID || "MISSING") +
-    "\nAccess Token: " +
-    (sessionStorage.getItem("videoCityPiAccessToken") ? "YES" : "NO")
-);
-
-            // --------------------------------------
-            // FIND BY PI UID
-            // --------------------------------------
-
-            if (piUID) {
-
-                const {
-                    data,
-                    error
-                } =
-                    await supabaseClient
-                        .from("creators")
-                        .select("*")
-                        .eq(
-                            "pi_uid",
-                            piUID
-                        )
-                        .maybeSingle();
+    const piUID =
+        sessionStorage.getItem(
+            "videoCityPiUID"
+        );
 
 
-                if (error) {
+    // ======================================
+    // FIND BY PI UID
+    // ======================================
 
-                    console.error(
-                        "Creator UID lookup error:",
-                        error
-                    );
+    if (piUID) {
 
-                }
-
-
-                if (data) {
-
-    return data;
-                }
-            // --------------------------------------
-            // FIND BY USERNAME
-            // --------------------------------------
-
-            const {
-    data: usernameData,
-    error: usernameError
-} =
-    await supabaseClient
-        .from("creators")
-        .select("*")
-        .eq(
-            "username",
-            cleanUsername
-        )
-        .maybeSingle();
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("creators")
+                .select("*")
+                .eq(
+                    "pi_uid",
+                    piUID
+                )
+                .maybeSingle();
 
 
-if (usernameError) {
+        if (error) {
 
-    console.error(
-        "Creator username lookup error:",
-        usernameError
-    );
+            console.error(
+                "Creator UID lookup error:",
+                error
+            );
 
-                return null;
-
-            }
+        }
 
 
-            
-                return usernameData || null;
+        if (data) {
+            return data;
+        }
 
-            }
+    }
+
+
+    // ======================================
+    // FIND BY USERNAME
+    // ======================================
+
+    const {
+        data: usernameData,
+        error: usernameError
+    } =
+        await supabaseClient
+            .from("creators")
+            .select("*")
+            .eq(
+                "username",
+                cleanUsername
+            )
+            .maybeSingle();
+
+
+    if (usernameError) {
+
+        console.error(
+            "Creator username lookup error:",
+            usernameError
+        );
+
+        return null;
+
+    }
+
+
+    return usernameData || null;
+
+        }
 
         // ==========================================
         // GET OR CREATE CREATOR
