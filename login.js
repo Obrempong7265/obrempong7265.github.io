@@ -204,6 +204,24 @@ if (
 
             loginBtn.textContent =
                 "Connected ✓";
+            // ==========================================
+// REFRESH LIKE STATES AFTER LOGIN
+// ==========================================
+
+document
+    .querySelectorAll(".video-card")
+    .forEach(function (card) {
+
+        if (
+            typeof card._refreshLikeState ===
+            "function"
+        ) {
+
+            card._refreshLikeState();
+
+        }
+
+    });
 
             loginBtn.disabled =
                 false;
