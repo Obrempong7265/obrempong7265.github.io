@@ -2044,20 +2044,7 @@ function setupLike(card, video) {
                     : `♡ <span>${formatCount(totalLikes)}</span>`;
             const likeObserver = new MutationObserver(function () {
 
-    alert(
-        "LIKE BUTTON CHANGED!\n\n" +
-        "New HTML:\n" +
-        likeButton.innerHTML
-    );
-
-});
-
-likeObserver.observe(likeButton, {
-    childList: true,
-    subtree: true,
-    characterData: true
-});
-            
+    
 
         } catch (error) {
 
@@ -2070,9 +2057,11 @@ likeObserver.observe(likeButton, {
 
     }
 
-
     // Load the correct state immediately.
     loadLikeState();
+
+    // Make the like-state refresh available after login.
+    card._refreshLikeState = loadLikeState;
 
 
     // ------------------------------------------
