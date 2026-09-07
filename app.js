@@ -2036,19 +2036,17 @@ function setupLike(card, video) {
 
             liked =
                 !!existingLike;
-            alert(
-    "LIKED STATE DEBUG\n\n" +
-    "Existing Like Found: " +
-    (!!existingLike) +
-    "\nLiked Variable: " +
-    liked
-);
-
+            
 
             likeButton.innerHTML =
                 liked
                     ? `♥ <span>${formatCount(totalLikes)}</span>`
                     : `♡ <span>${formatCount(totalLikes)}</span>`;
+            alert(
+    "BUTTON RENDER DEBUG\n\n" +
+    "Liked: " + liked +
+    "\nButton HTML: " + likeButton.innerHTML
+);
 
 
         } catch (error) {
