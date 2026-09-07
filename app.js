@@ -2047,7 +2047,13 @@ function setupLike(card, video) {
     "Liked: " + liked +
     "\nButton HTML: " + likeButton.innerHTML
 );
-
+            setTimeout(function () {
+    alert(
+        "FINAL BUTTON DEBUG\n\n" +
+        "Button HTML: " +
+        likeButton.innerHTML
+    );
+}, 1000);
 
         } catch (error) {
 
