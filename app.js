@@ -2048,11 +2048,21 @@ function setupLike(card, video) {
     "\nButton HTML: " + likeButton.innerHTML
 );
             setTimeout(function () {
+
     alert(
         "FINAL BUTTON DEBUG\n\n" +
-        "Button HTML: " +
-        likeButton.innerHTML
+        "innerHTML: " +
+        likeButton.innerHTML +
+        "\n\ntextContent: " +
+        likeButton.textContent +
+        "\n\nclass: " +
+        likeButton.className +
+        "\n\nstyle.display: " +
+        getComputedStyle(likeButton).display +
+        "\n\nstyle.visibility: " +
+        getComputedStyle(likeButton).visibility
     );
+
 }, 1000);
 
         } catch (error) {
