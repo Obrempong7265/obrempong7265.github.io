@@ -2044,6 +2044,21 @@ function setupLike(card, video) {
                         creator.id
                     )
                     .maybeSingle();
+            alert(
+    "LIKE ROW DEBUG\n\n" +
+    "Video ID: " + video.id +
+    "\nCreator ID: " + creator.id +
+    "\nExisting Like ID: " + (
+        existingLike
+            ? existingLike.id
+            : "NO LIKE FOUND"
+    ) +
+    "\nError: " + (
+        existingLikeError
+            ? existingLikeError.message
+            : "NO ERROR"
+    )
+);
 
 
             if (existingLikeError) {
