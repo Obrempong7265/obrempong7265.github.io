@@ -2042,9 +2042,7 @@ function setupLike(card, video) {
                 liked
                     ? `♥ <span>${formatCount(totalLikes)}</span>`
                     : `♡ <span>${formatCount(totalLikes)}</span>`;
-            const likeObserver = new MutationObserver(function () {
-
-    
+            
 
         } catch (error) {
 
