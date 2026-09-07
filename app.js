@@ -2000,25 +2000,7 @@ function setupLike(card, video) {
 
             const creator =
                 await getCurrentCreator();
-            alert(
-    "LIKE DEBUG\n\n" +
-    "Video ID: " + video.id +
-    "\nCreator ID: " + (
-        creator
-            ? creator.id
-            : "NO CREATOR"
-    ) +
-    "\nPi UID: " + (
-        creator
-            ? creator.pi_uid
-            : "NO PI UID"
-    ) +
-    "\nUsername: " + (
-        creator
-            ? creator.username
-            : "NO USERNAME"
-    )
-);
+            
 
             if (!creator) {
                 liked = false;
