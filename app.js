@@ -2042,28 +2042,22 @@ function setupLike(card, video) {
                 liked
                     ? `♥ <span>${formatCount(totalLikes)}</span>`
                     : `♡ <span>${formatCount(totalLikes)}</span>`;
-            alert(
-    "BUTTON RENDER DEBUG\n\n" +
-    "Liked: " + liked +
-    "\nButton HTML: " + likeButton.innerHTML
-);
-            setTimeout(function () {
+            const likeObserver = new MutationObserver(function () {
 
     alert(
-        "FINAL BUTTON DEBUG\n\n" +
-        "innerHTML: " +
-        likeButton.innerHTML +
-        "\n\ntextContent: " +
-        likeButton.textContent +
-        "\n\nclass: " +
-        likeButton.className +
-        "\n\nstyle.display: " +
-        getComputedStyle(likeButton).display +
-        "\n\nstyle.visibility: " +
-        getComputedStyle(likeButton).visibility
+        "LIKE BUTTON CHANGED!\n\n" +
+        "New HTML:\n" +
+        likeButton.innerHTML
     );
 
-}, 1000);
+});
+
+likeObserver.observe(likeButton, {
+    childList: true,
+    subtree: true,
+    characterData: true
+});
+            
 
         } catch (error) {
 
