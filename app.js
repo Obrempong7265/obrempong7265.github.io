@@ -2597,40 +2597,49 @@ if (data && data.length > 0) {
     // ======================================
 
     function addComment(
-        comment,
-        list
-    ) {
+    comment,
+    list
+) {
 
-        const commentElement =
-            document.createElement("div");
+    const commentElement =
+        document.createElement("div");
 
-        commentElement.className =
-            "comment";
+    commentElement.className =
+        "comment";
 
+    // Store the database comment ID
+    // so notifications can locate this exact comment.
+    if (comment.id) {
 
-        const username =
-            comment.creators &&
-            comment.creators.username
-                ? comment.creators.username
-                : "Guest";
+        commentElement.dataset.commentId =
+            comment.id;
 
-
-        commentElement.innerHTML = `
-
-            <strong>
-                @${escapeHTML(username)}
-            </strong>
-
-            <p>
-                ${escapeHTML(comment.text)}
-            </p>
-
-        `;
+    }
 
 
-        list.appendChild(
-            commentElement
-        );
+    const username =
+        comment.creators &&
+        comment.creators.username
+            ? comment.creators.username
+            : "Guest";
+
+
+    commentElement.innerHTML = `
+
+        <strong>
+            @${escapeHTML(username)}
+        </strong>
+
+        <p>
+            ${escapeHTML(comment.text)}
+        </p>
+
+    `;
+
+
+    list.appendChild(
+        commentElement
+    );
 
     }
 
