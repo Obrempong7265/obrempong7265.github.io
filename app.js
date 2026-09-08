@@ -841,9 +841,8 @@ const response =
 
             headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${piAccessToken}`
+    "Authorization": `Bearer ${accessToken}`
 },
-
             body: JSON.stringify({
                 notificationId:
                     notificationId,
