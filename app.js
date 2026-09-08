@@ -474,8 +474,6 @@ notificationList.innerHTML =
             }
         )
         .join("");
-
- 
 // ==========================================
 // NOTIFICATION CLICK HANDLER
 // ==========================================
@@ -484,7 +482,6 @@ const notificationItems =
     notificationList.querySelectorAll(
         "[data-notification-id]"
     );
-
 
 notificationItems.forEach(
     function (item) {
@@ -513,25 +510,17 @@ notificationItems.forEach(
                             ".notification-preview"
                         );
 
-
                     if (details) {
-
                         details.style.display =
                             "none";
-
                     }
-
 
                     if (preview) {
-
                         preview.style.display =
                             "block";
-
                     }
 
-
                     return;
-
                 }
 
 
@@ -544,8 +533,26 @@ notificationItems.forEach(
                         "data-notification-id"
                     );
 
-
                 if (!notificationId) {
+                    return;
+                }
+
+
+                // ==========================================
+                // FIND NOTIFICATION DATA
+                // ==========================================
+
+                const notification =
+                    notifications.find(
+                        function (entry) {
+                            return (
+                                entry.id ===
+                                notificationId
+                            );
+                        }
+                    );
+
+                if (!notification) {
                     return;
                 }
 
@@ -574,18 +581,59 @@ notificationItems.forEach(
                     "unread"
                 );
 
-
                 const unreadDot =
                     item.querySelector(
                         ".notification-unread-dot"
                     );
 
-
                 if (unreadDot) {
-
                     unreadDot.remove();
-
                 }
+
+
+                // ==========================================
+                // LIKE NOTIFICATION
+                // ==========================================
+
+                if (
+                    notification.type ===
+                        "like" &&
+                    notification.video_id
+                ) {
+
+                    navigateToNotificationVideo(
+                        notification.video_id
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // COMMENT NOTIFICATION
+                // ==========================================
+
+                if (
+                    notification.type ===
+                        "comment" &&
+                    notification.video_id
+                ) {
+
+                    navigateToNotificationVideo(
+                        notification.video_id,
+                        notification.comment_id
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // OTHER NOTIFICATIONS
+                // ==========================================
+                // Tips, subscriptions, purchases,
+                // withdrawals and announcements remain
+                // information-only for now.
 
 
                 // ==========================================
@@ -597,33 +645,27 @@ notificationItems.forEach(
                         ".notification-details"
                     );
 
-
                 const preview =
                     item.querySelector(
                         ".notification-preview"
                     );
 
-
                 if (!details) {
                     return;
                 }
 
-
                 const isHidden =
-                    details.style.display === "none";
-
+                    details.style.display ===
+                    "none";
 
                 if (isHidden) {
 
                     details.style.display =
                         "block";
 
-
                     if (preview) {
-
                         preview.style.display =
                             "none";
-
                     }
 
                 } else {
@@ -631,19 +673,14 @@ notificationItems.forEach(
                     details.style.display =
                         "none";
 
-
                     if (preview) {
-
                         preview.style.display =
                             "block";
-
                     }
-
                 }
 
             }
         );
-
     }
 );
 
@@ -672,7 +709,215 @@ notificationItems.forEach(
     }
 
 }
+        
+// ==========================================
+// NAVIGATE TO NOTIFICATION VIDEO
+// ==========================================
 
+async function navigateToNotificationVideo(
+    videoId,
+    commentId = null
+) {
+
+    if (!videoId) {
+        return;
+    }
+
+    console.log(
+        "Video City: Navigating to notification video:",
+        videoId
+    );
+
+
+    // ==========================================
+    // GO TO HOME
+    // ==========================================
+
+    const homeButton =
+        document.querySelector(
+            '.nav[data-view="home"]'
+        );
+
+    if (!homeButton) {
+        console.error(
+            "Video City: Home navigation button not found."
+        );
+        return;
+    }
+
+    homeButton.click();
+
+
+    // ==========================================
+    // WAIT FOR VIDEO CARD
+    // ==========================================
+
+    let attempts = 0;
+
+    const findVideoCard =
+        setInterval(
+            async function () {
+
+                attempts++;
+
+                const videoCard =
+                    document.querySelector(
+                        `[data-video-id="${videoId}"]`
+                    );
+
+                if (!videoCard) {
+
+                    if (attempts >= 30) {
+
+                        clearInterval(
+                            findVideoCard
+                        );
+
+                        console.error(
+                            "Video City: Notification video not found:",
+                            videoId
+                        );
+                    }
+
+                    return;
+                }
+
+
+                clearInterval(
+                    findVideoCard
+                );
+
+
+                // ==========================================
+                // SCROLL TO VIDEO
+                // ==========================================
+
+                videoCard.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+
+                // ==========================================
+                // LIKE NOTIFICATION
+                // ==========================================
+
+                if (!commentId) {
+
+                    videoCard.classList.add(
+                        "search-selected-video"
+                    );
+
+                    setTimeout(
+                        function () {
+                            videoCard.classList.remove(
+                                "search-selected-video"
+                            );
+                        },
+                        2000
+                    );
+
+                    return;
+                }
+
+
+                // ==========================================
+                // COMMENT NOTIFICATION
+                // ==========================================
+
+                const commentButton =
+                    videoCard.querySelector(
+                        ".commentBtn"
+                    );
+
+                if (!commentButton) {
+                    return;
+                }
+
+
+                // Open comments
+                commentButton.click();
+
+
+                // ==========================================
+                // WAIT FOR EXACT COMMENT
+                // ==========================================
+
+                let commentAttempts = 0;
+
+                const findComment =
+                    setInterval(
+                        function () {
+
+                            commentAttempts++;
+
+                            const comment =
+                                videoCard.querySelector(
+                                    `[data-comment-id="${commentId}"]`
+                                );
+
+                            if (!comment) {
+
+                                if (
+                                    commentAttempts >= 30
+                                ) {
+
+                                    clearInterval(
+                                        findComment
+                                    );
+
+                                    console.error(
+                                        "Video City: Exact comment not found:",
+                                        commentId
+                                    );
+                                }
+
+                                return;
+                            }
+
+
+                            clearInterval(
+                                findComment
+                            );
+
+
+                            // ==========================================
+                            // SCROLL TO EXACT COMMENT
+                            // ==========================================
+
+                            comment.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+
+
+                            // ==========================================
+                            // TEMPORARY HIGHLIGHT
+                            // ==========================================
+
+                            comment.classList.add(
+                                "search-selected-video"
+                            );
+
+                            setTimeout(
+                                function () {
+
+                                    comment.classList.remove(
+                                        "search-selected-video"
+                                    );
+
+                                },
+                                3000
+                            );
+
+                        },
+                        100
+                    );
+
+            },
+            100
+        );
+}
 
         // ==========================================
         // UPDATE NOTIFICATION BADGE
