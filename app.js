@@ -4648,6 +4648,53 @@ console.log(
 await updateNotificationBadge();
             }
 );
+// ==========================================
+// VIDEO CITY OPENING EXPERIENCE
+// ==========================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const intro = document.getElementById("videoCityIntro");
+    const splash = document.getElementById("videoCitySplash");
+    const explore = document.getElementById("videoCityExplore");
+    const exploreButton = document.getElementById("exploreVideosBtn");
+
+    if (!intro || !splash || !explore || !exploreButton) {
+        console.warn("Video City intro elements were not found.");
+        return;
+    }
+
+    // Show the splash logo first.
+    setTimeout(function () {
+
+        splash.classList.add("splash-fade-out");
+
+        setTimeout(function () {
+
+            splash.classList.add("hidden");
+            explore.classList.remove("hidden");
+            explore.classList.add("explore-visible");
+
+        }, 600);
+
+    }, 2200);
+
+
+    // ==========================================
+    // EXPLORE VIDEOS BUTTON
+    // ==========================================
+
+    exploreButton.addEventListener("click", function () {
+
+        intro.classList.add("intro-hidden");
+
+        setTimeout(function () {
+            intro.remove();
+        }, 650);
+
+    });
+
+});
 
 
 
