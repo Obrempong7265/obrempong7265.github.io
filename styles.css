@@ -550,6 +550,10 @@ padding-bottom: 75px;
 
         flex-shrink: 1;
     }
+  .header-logo {
+    width: 120px;
+  }
+  
 
 
     .logo {
