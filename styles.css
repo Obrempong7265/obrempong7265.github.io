@@ -1864,14 +1864,16 @@ MOBILE
 
 .notification-unread-dot {
     display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: #ffffff;
+    width: 8px;
+    height: 8px;
+    background: #39FF14;
     border-radius: 50%;
     margin-right: 7px;
     vertical-align: middle;
+    box-shadow:
+        0 0 5px #39FF14,
+        0 0 10px rgba(57, 255, 20, 0.8);
 }
-
 
 /* ==========================================
    NOTIFICATION HEADING
