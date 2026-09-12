@@ -304,6 +304,24 @@ document.addEventListener(
         // ==========================================
 // LOAD NOTIFICATIONS
 // ==========================================
+        function getNotificationTitle(type) {
+    const notificationTitles = {
+        like: "❤️ New Like",
+        comment: "💬 New Comment",
+        follow: "👤 New Follower",
+        follower: "👤 New Follower",
+        tip: "💰 Pi Tip Received",
+        purchase: "🔓 Video Unlocked",
+        video_unlocked: "🔓 Video Unlocked",
+        subscription: "💎 Subscription",
+        subscription_expired: "💎 Subscription",
+        withdrawal: "💸 Withdrawal",
+        announcement: "⚠️ Announcement",
+        system: "⚠️ System Notification"
+    };
+
+    return notificationTitles[type] || "🔔 Video City Notification";
+}
 
 window.loadNotifications = async function () {
     const notificationList =
@@ -437,11 +455,8 @@ notificationList.innerHTML =
                                 ? ""
                                 : '<span class="notification-unread-dot"></span>'
                         }
-
-                        <strong>
-                            ${notification.type}
-                        </strong>
-
+<strong>${getNotificationTitle(notification.type)}</strong>
+                        
                         <p class="muted notification-preview">
                             ${notification.message}
                         </p>
