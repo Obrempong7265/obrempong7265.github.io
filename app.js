@@ -1902,11 +1902,43 @@ card.innerHTML = `
                 card,
                 video
             );
+            setupSingleVideoAudio(card);
 
 
             return card;
 
         }
+        // ==========================================
+// SINGLE VIDEO AUDIO SYSTEM
+// ==========================================
+
+function setupSingleVideoAudio(card) {
+
+    const currentVideo =
+        card.querySelector("video.video");
+
+    if (!currentVideo) {
+        return;
+    }
+
+    currentVideo.addEventListener("play", function () {
+
+        document
+            .querySelectorAll("video.video")
+            .forEach(function(otherVideo) {
+
+                if (
+                    otherVideo !== currentVideo &&
+                    !otherVideo.paused
+                ) {
+                    otherVideo.pause();
+                }
+
+            });
+
+    });
+
+}
         
         
 // ==========================================
