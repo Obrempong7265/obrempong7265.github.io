@@ -48,6 +48,12 @@ padding-bottom: 75px;
 
     white-space: nowrap;
 }
+.header-logo {
+    display: block;
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+}
 
 
 .logo {
