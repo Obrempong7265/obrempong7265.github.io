@@ -1731,9 +1731,12 @@ if (video.media_type === "image") {
 card.innerHTML = `
 
     <div class="video-wrap">
-        ${mediaHTML}
-    </div>
+    ${mediaHTML}
 
+    <div class="video-watermark">
+        Video City
+    </div>
+</div>
 
     <div class="video-view-count">
 
