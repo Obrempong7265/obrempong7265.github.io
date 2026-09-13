@@ -1320,7 +1320,30 @@ resize: vertical;
     background: #292929;
     color: white;
 }
+.download-option {
+    margin-top: 14px;
+}
 
+.download-option label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.download-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.download-option .muted {
+    margin: 6px 0 0 27px;
+    font-size: 12px;
+    line-height: 1.4;
+}
 /* ==========================================
 PROFILE
 ========================================== */
