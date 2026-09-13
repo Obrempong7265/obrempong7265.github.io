@@ -1996,27 +1996,7 @@ function setupVideoCityFullscreen(card) {
 
                     }
 
-                    if (
-                        screen.orientation &&
-                        screen.orientation.lock
-                    ) {
-
-                        try {
-
-                            await screen.orientation.lock(
-                                "landscape"
-                            );
-
-                        } catch (orientationError) {
-
-                            console.log(
-                                "Landscape orientation not available:",
-                                orientationError
-                            );
-
-                        }
-
-                    }
+                    
 
                 } else {
 
