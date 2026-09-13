@@ -3405,6 +3405,56 @@ if (uploadForm) {
                     uploadForm.elements["price"]
                         .value || 0
                 );
+            // ==========================================
+// SUBSCRIBER-ONLY PAID CONTENT
+// ==========================================
+
+if (price > 0) {
+
+    const creator = await getOrCreateCreator();
+
+    if (!creator) {
+
+        status.textContent =
+            "❌ Please login with Pi first.";
+
+        return;
+
+    }
+
+    const { data: subscription, error: subscriptionError } =
+        await supabaseClient
+            .from("creator_subscriptions")
+            .select("id, expires_at")
+            .eq("creator_id", creator.id)
+            .eq("status", "active")
+            .gt("expires_at", new Date().toISOString())
+            .order("expires_at", { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+    if (subscriptionError) {
+        console.error(
+            "Subscription check error:",
+            subscriptionError
+        );
+
+        status.textContent =
+            "❌ Unable to verify your subscription. Please try again.";
+
+        return;
+    }
+
+    if (!subscription) {
+
+        status.textContent =
+            "❌ An active Video City subscription is required to upload paid content.";
+
+        return;
+
+    }
+
+}
 
 
             const file =
