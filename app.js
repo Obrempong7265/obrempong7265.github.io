@@ -1736,6 +1736,15 @@ card.innerHTML = `
     <div class="video-watermark">
         Video City
     </div>
+    <button
+    class="video-city-fullscreen"
+    type="button"
+    aria-label="Enter fullscreen"
+    title="Fullscreen">
+
+    ⛶
+
+</button>
 </div>
 
     <div class="video-view-count">
@@ -1906,6 +1915,7 @@ card.innerHTML = `
                 video
             );
             setupSingleVideoAudio(card);
+            setupVideoCityFullscreen(card);
 
 
             return card;
@@ -1942,7 +1952,144 @@ function setupSingleVideoAudio(card) {
     });
 
 }
-        
+    // ==========================================
+// VIDEO CITY FULLSCREEN
+// ==========================================
+
+function setupVideoCityFullscreen(card) {
+
+    const videoWrap =
+        card.querySelector(".video-wrap");
+
+    const fullscreenButton =
+        card.querySelector(".video-city-fullscreen");
+
+    if (!videoWrap || !fullscreenButton) {
+        return;
+    }
+
+    fullscreenButton.addEventListener(
+        "click",
+        async function () {
+
+            try {
+
+                if (!document.fullscreenElement) {
+
+                    if (videoWrap.requestFullscreen) {
+
+                        await videoWrap.requestFullscreen();
+
+                    } else if (
+                        videoWrap.webkitRequestFullscreen
+                    ) {
+
+                        videoWrap.webkitRequestFullscreen();
+
+                    } else {
+
+                        return;
+
+                    }
+
+                    if (
+                        screen.orientation &&
+                        screen.orientation.lock
+                    ) {
+
+                        try {
+
+                            await screen.orientation.lock(
+                                "landscape"
+                            );
+
+                        } catch (orientationError) {
+
+                            console.log(
+                                "Landscape orientation not available:",
+                                orientationError
+                            );
+
+                        }
+
+                    }
+
+                    fullscreenButton.textContent = "✕";
+                    fullscreenButton.setAttribute(
+                        "aria-label",
+                        "Exit fullscreen"
+                    );
+
+                } else {
+
+                    if (document.exitFullscreen) {
+
+                        await document.exitFullscreen();
+
+                    } else if (
+                        document.webkitExitFullscreen
+                    ) {
+
+                        document.webkitExitFullscreen();
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Video City fullscreen error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "fullscreenchange",
+        function () {
+
+            const isFullscreen =
+                document.fullscreenElement === videoWrap;
+
+            fullscreenButton.textContent =
+                isFullscreen ? "✕" : "⛶";
+
+            fullscreenButton.setAttribute(
+                "aria-label",
+                isFullscreen
+                    ? "Exit fullscreen"
+                    : "Enter fullscreen"
+            );
+
+            if (!isFullscreen) {
+
+                if (
+                    screen.orientation &&
+                    screen.orientation.unlock
+                ) {
+
+                    try {
+                        screen.orientation.unlock();
+                    } catch (error) {
+                        console.log(
+                            "Orientation unlock unavailable:",
+                            error
+                        );
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+                        }    
         
 // ==========================================
 // VIEW COUNT SYSTEM
