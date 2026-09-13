@@ -1952,7 +1952,7 @@ function setupSingleVideoAudio(card) {
     });
 
 }
-    // ==========================================
+// ==========================================
 // VIDEO CITY FULLSCREEN
 // ==========================================
 
@@ -1988,6 +1988,10 @@ function setupVideoCityFullscreen(card) {
 
                     } else {
 
+                        console.log(
+                            "Fullscreen API is not available."
+                        );
+
                         return;
 
                     }
@@ -2013,12 +2017,6 @@ function setupVideoCityFullscreen(card) {
                         }
 
                     }
-
-                    fullscreenButton.textContent = "✕";
-                    fullscreenButton.setAttribute(
-                        "aria-label",
-                        "Exit fullscreen"
-                    );
 
                 } else {
 
@@ -2048,7 +2046,6 @@ function setupVideoCityFullscreen(card) {
         }
     );
 
-
     document.addEventListener(
         "fullscreenchange",
         function () {
@@ -2074,12 +2071,16 @@ function setupVideoCityFullscreen(card) {
                 ) {
 
                     try {
+
                         screen.orientation.unlock();
+
                     } catch (error) {
+
                         console.log(
                             "Orientation unlock unavailable:",
                             error
                         );
+
                     }
 
                 }
@@ -2089,7 +2090,7 @@ function setupVideoCityFullscreen(card) {
         }
     );
 
-                        }    
+                }
         
 // ==========================================
 // VIEW COUNT SYSTEM
