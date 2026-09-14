@@ -50,7 +50,46 @@ document.addEventListener(
 
             return;
         }
+        
+// ==========================================
+// PI BROWSER FULLSCREEN CHECK
+// ==========================================
 
+function checkPiBrowserFullscreen() {
+
+    const result = document.createElement("div");
+
+    result.style.position = "fixed";
+    result.style.left = "10px";
+    result.style.right = "10px";
+    result.style.bottom = "80px";
+    result.style.zIndex = "99999";
+    result.style.background = "#111";
+    result.style.color = "#fff";
+    result.style.padding = "12px";
+    result.style.border = "1px solid #39FF14";
+    result.style.borderRadius = "10px";
+    result.style.fontSize = "13px";
+
+    result.innerHTML = `
+        <strong>Video City Fullscreen Test</strong><br><br>
+        Fullscreen API:
+        ${typeof document.documentElement.requestFullscreen}<br>
+        Fullscreen enabled:
+        ${document.fullscreenEnabled}<br>
+        WebKit Fullscreen:
+        ${typeof document.documentElement.webkitRequestFullscreen}<br>
+        Orientation lock:
+        ${
+            screen.orientation &&
+            typeof screen.orientation.lock
+        }
+    `;
+
+    document.body.appendChild(result);
+
+}
+        checkPiBrowserFullscreen();
 
         // ==========================================
         // USERNAME
