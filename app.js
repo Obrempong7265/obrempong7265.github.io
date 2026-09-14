@@ -2073,28 +2073,32 @@ function setupVideoCityFullscreen(card) {
                             "Exit cinema mode"
                         );
 
-                        if (
-                            screen.orientation &&
-                            screen.orientation.lock
-                        ) {
+                        
+                                if (
+    screen.orientation &&
+    screen.orientation.lock
+) {
 
-                            try {
+    setTimeout(async function () {
 
-                                await screen.orientation.lock(
-                                    "landscape"
-                                );
+        try {
 
-                            } catch (orientationError) {
+            await screen.orientation.lock(
+                "landscape"
+            );
 
-                                console.log(
-                                    "Pi Browser landscape lock unavailable:",
-                                    orientationError
-                                );
+        } catch (orientationError) {
 
-                            }
+            console.log(
+                "Pi Browser landscape lock unavailable:",
+                orientationError
+            );
 
-                        }
+        }
 
+    }, 500);
+
+        }
                     }
 
                 } else {
