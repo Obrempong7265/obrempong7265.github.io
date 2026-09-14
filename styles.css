@@ -661,6 +661,33 @@ object-fit: cover;
 }
 
 /* ==========================================
+   VIDEO CITY PI BROWSER CINEMA MODE
+========================================== */
+
+.video-wrap.pi-cinema-mode {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: #000;
+}
+
+.video-wrap.pi-cinema-mode .video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-wrap.pi-cinema-mode .video-city-fullscreen {
+    display: flex;
+}
+
+.video-wrap.pi-cinema-mode .video-watermark {
+    right: 18px;
+    bottom: 18px;
+}
+/* ==========================================
 VIDEO CITY FULLSCREEN LAYOUT
 ========================================== */
 
