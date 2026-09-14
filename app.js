@@ -2013,7 +2013,10 @@ function setupVideoCityFullscreen(card) {
 
             try {
 
-                if (!document.fullscreenElement) {
+                if (
+    !document.fullscreenElement &&
+    !videoWrap.classList.contains("pi-cinema-mode")
+) {
 
                     // ==========================================
                     // STANDARD FULLSCREEN
