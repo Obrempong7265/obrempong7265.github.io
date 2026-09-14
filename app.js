@@ -2015,56 +2015,130 @@ function setupVideoCityFullscreen(card) {
 
                 if (!document.fullscreenElement) {
 
-                    if (videoWrap.requestFullscreen) {
+                    // ==========================================
+                    // STANDARD FULLSCREEN
+                    // ==========================================
 
-                        await videoWrap.requestFullscreen();
-                        setTimeout(async function () {
-
-    if (
-        screen.orientation &&
-        screen.orientation.lock
-    ) {
-
-        try {
-
-            await screen.orientation.lock(
-                "landscape"
-            );
-
-        } catch (orientationError) {
-
-            console.log(
-                "Landscape orientation not available:",
-                orientationError
-            );
-
-        }
-
-    }
-
-}, 300);
-
-                    } else if (
-                        videoWrap.webkitRequestFullscreen
+                    if (
+                        document.fullscreenEnabled &&
+                        videoWrap.requestFullscreen
                     ) {
 
-                        videoWrap.webkitRequestFullscreen();
+                        await videoWrap.requestFullscreen();
+
+                        setTimeout(async function () {
+
+                            if (
+                                screen.orientation &&
+                                screen.orientation.lock
+                            ) {
+
+                                try {
+
+                                    await screen.orientation.lock(
+                                        "landscape"
+                                    );
+
+                                } catch (orientationError) {
+
+                                    console.log(
+                                        "Landscape orientation not available:",
+                                        orientationError
+                                    );
+
+                                }
+
+                            }
+
+                        }, 300);
 
                     } else {
 
-                        console.log(
-                            "Fullscreen API is not available."
+                        // ==========================================
+                        // PI BROWSER CINEMA MODE
+                        // ==========================================
+
+                        videoWrap.classList.add(
+                            "pi-cinema-mode"
                         );
 
-                        return;
+                        fullscreenButton.textContent =
+                            "✕";
+
+                        fullscreenButton.setAttribute(
+                            "aria-label",
+                            "Exit cinema mode"
+                        );
+
+                        if (
+                            screen.orientation &&
+                            screen.orientation.lock
+                        ) {
+
+                            try {
+
+                                await screen.orientation.lock(
+                                    "landscape"
+                                );
+
+                            } catch (orientationError) {
+
+                                console.log(
+                                    "Pi Browser landscape lock unavailable:",
+                                    orientationError
+                                );
+
+                            }
+
+                        }
 
                     }
 
-                    
-
                 } else {
 
-                    if (document.exitFullscreen) {
+                    // ==========================================
+                    // EXIT FULLSCREEN / CINEMA MODE
+                    // ==========================================
+
+                    if (
+                        videoWrap.classList.contains(
+                            "pi-cinema-mode"
+                        )
+                    ) {
+
+                        videoWrap.classList.remove(
+                            "pi-cinema-mode"
+                        );
+
+                        fullscreenButton.textContent =
+                            "⛶";
+
+                        fullscreenButton.setAttribute(
+                            "aria-label",
+                            "Enter fullscreen"
+                        );
+
+                        if (
+                            screen.orientation &&
+                            screen.orientation.unlock
+                        ) {
+
+                            try {
+
+                                screen.orientation.unlock();
+
+                            } catch (error) {
+
+                                console.log(
+                                    "Orientation unlock unavailable:",
+                                    error
+                                );
+
+                            }
+
+                        }
+
+                    } else if (document.exitFullscreen) {
 
                         await document.exitFullscreen();
 
@@ -2134,8 +2208,9 @@ function setupVideoCityFullscreen(card) {
         }
     );
 
-                }
-        
+}
+
+
 // ==========================================
 // VIEW COUNT SYSTEM
 // ==========================================
