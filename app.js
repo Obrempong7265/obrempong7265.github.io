@@ -1979,6 +1979,31 @@ function setupVideoCityFullscreen(card) {
                     if (videoWrap.requestFullscreen) {
 
                         await videoWrap.requestFullscreen();
+                        setTimeout(async function () {
+
+    if (
+        screen.orientation &&
+        screen.orientation.lock
+    ) {
+
+        try {
+
+            await screen.orientation.lock(
+                "landscape"
+            );
+
+        } catch (orientationError) {
+
+            console.log(
+                "Landscape orientation not available:",
+                orientationError
+            );
+
+        }
+
+    }
+
+}, 300);
 
                     } else if (
                         videoWrap.webkitRequestFullscreen
