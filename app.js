@@ -314,9 +314,13 @@ function loadUnlockedVideos() {
         );
 
     if (!unlockedList) {
-        return;
-    }
 
+    alert(
+        "Video City: Unlocked Videos area was not found."
+    );
+
+    return;
+    }
     // TEMPORARY FRONTEND TEST DATA
     // This will be replaced with real
     // Supabase data after the payment
