@@ -614,6 +614,43 @@ width: 100%;
 height: 72vh;
 background: #111;
 }
+/* ==========================================
+   PAID VIDEO LOCK
+========================================== */
+
+.paid-video-lock {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.72);
+
+    color: #fff;
+    text-align: center;
+
+    pointer-events: none;
+}
+
+.paid-video-lock-icon {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.paid-video-lock strong {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.paid-video-lock span {
+    font-size: 15px;
+    color: #39FF14;
+    font-weight: 700;
+  }
 .video-watermark {
     position: absolute;
     right: 14px;
