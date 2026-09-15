@@ -1736,6 +1736,73 @@ resize: vertical;
     }
 
       }
+/* ==========================================
+   PROFILE STATS
+========================================== */
+
+.profile-stats {
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+.profile-stat {
+    padding: 14px 8px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 12px;
+}
+
+.profile-stat strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    margin-bottom: 4px;
+}
+
+.profile-stat span {
+    display: block;
+
+    color: #999;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+
+    .profile-stats {
+        gap: 7px;
+    }
+
+    .profile-stat {
+        padding: 12px 5px;
+    }
+
+    .profile-stat strong {
+        font-size: 18px;
+    }
+
+    .profile-stat span {
+        font-size: 11px;
+    }
+
+      }
 
 /* ==========================================
    BOTTOM NAVIGATION
