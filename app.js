@@ -2009,8 +2009,14 @@ if (unlockButton) {
         }
     );
 
-        }
+}
+            
+setupSingleVideoAudio(card);
+setupVideoCityFullscreen(card);
 
+return card;
+
+}
         // ==========================================
 // SINGLE VIDEO AUDIO SYSTEM
 // ==========================================
