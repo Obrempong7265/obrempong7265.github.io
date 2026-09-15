@@ -303,6 +303,154 @@ document.addEventListener(
 
                 }
         // ==========================================
+// MY UNLOCKED VIDEOS
+// ==========================================
+
+function loadUnlockedVideos() {
+
+    const unlockedList =
+        document.getElementById(
+            "unlockedVideosList"
+        );
+
+    if (!unlockedList) {
+        return;
+    }
+
+    // TEMPORARY FRONTEND TEST DATA
+    // This will be replaced with real
+    // Supabase data after the payment
+    // backend is connected.
+
+    const unlockedVideos = [
+        {
+            id: "demo-video-1",
+            title: "Sample Premium Video",
+            expiresAt:
+                Date.now() +
+                (
+                    6 * 24 * 60 * 60 * 1000
+                ) +
+                (
+                    12 * 60 * 60 * 1000
+                )
+        }
+    ];
+
+    if (
+        unlockedVideos.length === 0
+    ) {
+
+        unlockedList.innerHTML = `
+            <p class="muted">
+                No unlocked videos yet.
+            </p>
+        `;
+
+        return;
+    }
+
+    unlockedList.innerHTML =
+        unlockedVideos
+            .map(function(video) {
+
+                return `
+                    <div
+                        class="unlocked-video-item"
+                        data-video-id="${video.id}">
+
+                        <div
+                            class="unlocked-video-info">
+
+                            <strong>
+                                ${video.title}
+                            </strong>
+
+                            <span
+                                class="unlock-countdown"
+                                data-expires-at="${video.expiresAt}">
+
+                                Calculating...
+
+                            </span>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="unlocked-video-button">
+
+                            ▶ Watch
+
+                        </button>
+
+                    </div>
+                `;
+
+            })
+            .join("");
+
+    updateUnlockedVideoCountdowns();
+}
+
+
+// ==========================================
+// UNLOCKED VIDEO COUNTDOWN
+// ==========================================
+
+function updateUnlockedVideoCountdowns() {
+
+    const countdowns =
+        document.querySelectorAll(
+            ".unlock-countdown"
+        );
+
+    countdowns.forEach(
+        function(countdown) {
+
+            const expiresAt =
+                Number(
+                    countdown.dataset.expiresAt
+                );
+
+            const remaining =
+                expiresAt - Date.now();
+
+            if (remaining <= 0) {
+
+                countdown.textContent =
+                    "Expired";
+
+                return;
+
+            }
+
+            const totalHours =
+                Math.floor(
+                    remaining /
+                    (
+                        60 * 60 * 1000
+                    )
+                );
+
+            const days =
+                Math.floor(
+                    totalHours / 24
+                );
+
+            const hours =
+                totalHours % 24;
+
+            countdown.textContent =
+                days +
+                " days " +
+                hours +
+                " hours remaining";
+
+        }
+    );
+}
+        // ==========================================
 // LOAD NOTIFICATIONS
 // ==========================================
         function getNotificationTitle(type) {
@@ -5078,6 +5226,23 @@ console.log(
 
 await updateNotificationBadge();
             }
+);
+// ==========================================
+// INITIALIZE MY UNLOCKED VIDEOS
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadUnlockedVideos();
+
+        setInterval(
+            updateUnlockedVideoCountdowns,
+            60 * 1000
+        );
+
+    }
 );
 // ==========================================
 // VIDEO CITY OPENING EXPERIENCE
