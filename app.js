@@ -1674,7 +1674,9 @@ function formatCount(number) {
                 document.createElement("article");
 
             card.className =
-                "video-card";
+    Number(video.price_pi) > 0
+        ? "video-card paid-video"
+        : "video-card";
             card.dataset.videoId =
     video.id;
 
