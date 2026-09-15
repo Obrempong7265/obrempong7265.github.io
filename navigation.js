@@ -165,20 +165,29 @@ if (page === "search") {
     // ======================================
     // PROFILE
     // ======================================
+if (page === "profile") {
 
-    if (page === "profile") {
+    if (profile) {
 
-        if (profile) {
-
-            profile.classList.remove(
-                "hidden"
-            );
-
-        }
-
-        updateProfile();
+        profile.classList.remove(
+            "hidden"
+        );
 
     }
+
+    updateProfile();
+
+    if (
+        typeof loadUnlockedVideos ===
+        "function"
+    ) {
+
+        loadUnlockedVideos();
+
+    }
+
+        }
+    
     // ======================================
 // SETTINGS
 // ======================================
