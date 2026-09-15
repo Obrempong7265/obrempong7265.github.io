@@ -1663,6 +1663,23 @@ function formatCount(number) {
     return String(value);
 
             }
+        // ==========================================
+// PAID VIDEO ACCESS CHECK
+// ==========================================
+
+async function hasVideoAccess(video) {
+
+    // Free videos are always accessible
+    if (Number(video.price_pi) <= 0) {
+        return true;
+    }
+
+    // Paid-video entitlement check will be connected
+    // to the transactions table after the database
+    // expiry field is available.
+
+    return false;
+}
 
                 // ==========================================
         // CREATE VIDEO CARD
