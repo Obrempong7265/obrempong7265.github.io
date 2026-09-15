@@ -651,6 +651,92 @@ background: #111;
     color: #39FF14;
     font-weight: 700;
   }
+/* ==========================================
+   MY UNLOCKED VIDEOS
+========================================== */
+
+.unlocked-videos-section {
+    margin-top: 24px;
+    padding: 20px;
+    background: #111;
+    border: 1px solid rgba(255, 20, 147, 0.35);
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(255, 20, 147, 0.08);
+}
+
+.unlocked-videos-section h3 {
+    margin: 0 0 6px;
+    color: #fff;
+    font-size: 19px;
+}
+
+.unlocked-videos-section > .muted {
+    margin-bottom: 16px;
+}
+
+.unlocked-videos-list {
+    display: grid;
+    gap: 12px;
+}
+
+.unlocked-video-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px;
+    background: #181818;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+}
+
+.unlocked-video-info {
+    min-width: 0;
+}
+
+.unlocked-video-info strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.unlocked-video-info span {
+    color: #39FF14;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.unlocked-video-button {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #ff1493;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.unlocked-video-button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+
+    .unlocked-videos-section {
+        padding: 16px;
+    }
+
+    .unlocked-video-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .unlocked-video-button {
+        width: 100%;
+    }
+
+  }
 .video-watermark {
     position: absolute;
     right: 14px;
