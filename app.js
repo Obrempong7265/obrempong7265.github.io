@@ -1971,23 +1971,46 @@ if (unlockButton) {
         "click",
         function () {
 
+            const price =
+                Number(video.price_pi || 0);
+
+            if (price <= 0) {
+                return;
+            }
+
             console.log(
-                "Video City: Unlock requested for video:",
-                video.id
+                "Video City: Unlock requested",
+                {
+                    videoId: video.id,
+                    pricePi: price
+                }
             );
+
+            unlockButton.disabled = true;
+
+            unlockButton.textContent =
+                "🔄 Preparing unlock...";
+
+            setTimeout(function () {
+
+                unlockButton.disabled = false;
+
+                unlockButton.textContent =
+                    "🔓 Unlock for " +
+                    price +
+                    " Pi";
+
+                console.log(
+                    "Video City: Unlock payment flow is not connected yet."
+                );
+
+            }, 800);
 
         }
     );
 
-}
-
-setupSingleVideoAudio(card);
-            setupVideoCityFullscreen(card);
-
-
-            return card;
-
         }
+
         // ==========================================
 // SINGLE VIDEO AUDIO SYSTEM
 // ==========================================
