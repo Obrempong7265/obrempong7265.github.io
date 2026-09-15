@@ -1734,6 +1734,29 @@ if (video.media_type === "image") {
 card.innerHTML = `
 
     <div class="video-wrap">
+
+    ${Number(video.price_pi) > 0 ? `
+        <div class="paid-video-lock">
+
+            <div class="paid-video-lock-icon">
+                🔒
+            </div>
+
+            <strong>
+                Paid Content
+            </strong>
+
+            <span>
+                Unlock for
+                ${escapeHTML(
+                    String(video.price_pi)
+                )}
+                Pi
+            </span>
+
+        </div>
+    ` : ""}
+
     ${mediaHTML}
 
     <div class="video-watermark">
