@@ -1563,20 +1563,179 @@ resize: vertical;
     font-size: 12px;
     line-height: 1.4;
 }
+
 /* ==========================================
-PROFILE
+   PROFILE
 ========================================== */
 
 .profile-card {
-background: #171717;
-padding: 20px;
-border-radius: 10px;
-margin-top: 20px;
+    position: relative;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1b1b1b 0%,
+            #111 55%,
+            #181018 100%
+        );
+
+    padding: 28px 24px;
+    border-radius: 18px;
+    margin-top: 20px;
+
+    border: 1px solid rgba(255, 20, 147, 0.28);
+
+    box-shadow:
+        0 0 25px rgba(255, 20, 147, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-.profile-status {
-margin-top: 15px;
+/* Subtle pink glow inside the card */
+
+.profile-card::before {
+    content: "";
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    top: -100px;
+    right: -70px;
+
+    background: rgba(255, 20, 147, 0.16);
+
+    border-radius: 50%;
+
+    filter: blur(35px);
+
+    pointer-events: none;
 }
+
+/* Profile logo */
+
+.profile-card .logo {
+    position: relative;
+    z-index: 1;
+
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 16px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ff1493,
+            #b00068
+        );
+
+    border: 2px solid rgba(255, 255, 255, 0.12);
+
+    color: #fff;
+
+    font-size: 30px;
+    font-weight: 900;
+
+    box-shadow:
+        0 0 18px rgba(255, 20, 147, 0.35);
+}
+
+/* Username */
+
+.profile-card h3 {
+    position: relative;
+    z-index: 1;
+
+    margin: 0 0 5px;
+
+    color: #fff;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    letter-spacing: 0.3px;
+}
+
+/* Profile description */
+
+.profile-card .muted {
+    position: relative;
+    z-index: 1;
+
+    margin: 0;
+
+    color: #aaa;
+
+    font-size: 15px;
+}
+
+/* Account status */
+
+.profile-status {
+    position: relative;
+    z-index: 1;
+
+    margin-top: 20px;
+    padding-top: 16px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-status p {
+    margin: 0;
+
+    color: #aaa;
+
+    font-size: 14px;
+}
+
+.profile-status strong {
+    display: inline-block;
+
+    margin-left: 5px;
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: rgba(57, 255, 20, 0.10);
+
+    border: 1px solid rgba(57, 255, 20, 0.35);
+
+    color: #39FF14;
+
+    font-size: 13px;
+
+    box-shadow:
+        0 0 10px rgba(57, 255, 20, 0.12);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .profile-card {
+        padding: 24px 20px;
+        border-radius: 16px;
+    }
+
+    .profile-card .logo {
+        width: 64px;
+        height: 64px;
+        font-size: 27px;
+    }
+
+    .profile-card h3 {
+        font-size: 22px;
+    }
+
+      }
 
 /* ==========================================
    BOTTOM NAVIGATION
