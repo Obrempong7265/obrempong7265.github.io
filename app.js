@@ -1954,10 +1954,34 @@ card.innerHTML = `
 
 
             setupSupport(
-                card,
-                video
+    card,
+    video
+);
+
+// ==========================================
+// PAID VIDEO UNLOCK
+// ==========================================
+
+const unlockButton =
+    card.querySelector(".unlockBtn");
+
+if (unlockButton) {
+
+    unlockButton.addEventListener(
+        "click",
+        function () {
+
+            console.log(
+                "Video City: Unlock requested for video:",
+                video.id
             );
-            setupSingleVideoAudio(card);
+
+        }
+    );
+
+}
+
+setupSingleVideoAudio(card);
             setupVideoCityFullscreen(card);
 
 
