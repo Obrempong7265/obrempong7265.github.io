@@ -305,8 +305,8 @@ document.addEventListener(
         // ==========================================
 // MY UNLOCKED VIDEOS
 // ==========================================
+window.loadUnlockedVideos = function () {
 
-function loadUnlockedVideos() {
     alert("Unlocked Videos function loaded");
 
     const unlockedList =
