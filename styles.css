@@ -651,77 +651,27 @@ background: #111;
     color: #39FF14;
     font-weight: 700;
   }
-
 /* ==========================================
    MY UNLOCKED VIDEOS
 ========================================== */
 
 .unlocked-videos-section {
     margin-top: 24px;
+    padding: 20px;
     background: #111;
     border: 1px solid rgba(255, 20, 147, 0.35);
     border-radius: 14px;
-    overflow: hidden;
     box-shadow: 0 0 18px rgba(255, 20, 147, 0.08);
 }
 
-.unlocked-videos-toggle {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-
-    padding: 18px 20px;
-
-    background: transparent;
-    border: 0;
-
+.unlocked-videos-section h3 {
+    margin: 0 0 6px;
     color: #fff;
-    text-align: left;
-
-    cursor: pointer;
+    font-size: 19px;
 }
 
-.unlocked-videos-toggle-info {
-    min-width: 0;
-}
-
-.unlocked-videos-toggle-info strong {
-    display: block;
-    color: #fff;
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-
-.unlocked-videos-toggle-info span {
-    display: block;
-    color: #999;
-    font-size: 13px;
-}
-
-.unlocked-videos-arrow {
-    flex-shrink: 0;
-
-    font-size: 28px;
-    line-height: 1;
-
-    color: #ff1493;
-
-    transition: transform 0.25s ease;
-}
-
-.unlocked-videos-toggle[aria-expanded="true"]
-.unlocked-videos-arrow {
-    transform: rotate(90deg);
-}
-
-.unlocked-videos-content {
-    padding: 0 20px 20px;
-}
-
-.unlocked-videos-content.hidden {
-    display: none;
+.unlocked-videos-section > .muted {
+    margin-bottom: 16px;
 }
 
 .unlocked-videos-list {
@@ -734,11 +684,8 @@ background: #111;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-
     padding: 14px;
-
     background: #181818;
-
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
 }
@@ -761,15 +708,11 @@ background: #111;
 
 .unlocked-video-button {
     flex-shrink: 0;
-
     padding: 8px 12px;
-
     border: 0;
     border-radius: 8px;
-
     background: #ff1493;
     color: #fff;
-
     font-weight: 700;
     cursor: pointer;
   }
