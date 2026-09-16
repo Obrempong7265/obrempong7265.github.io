@@ -651,27 +651,77 @@ background: #111;
     color: #39FF14;
     font-weight: 700;
   }
+
 /* ==========================================
    MY UNLOCKED VIDEOS
 ========================================== */
 
 .unlocked-videos-section {
     margin-top: 24px;
-    padding: 20px;
     background: #111;
     border: 1px solid rgba(255, 20, 147, 0.35);
     border-radius: 14px;
+    overflow: hidden;
     box-shadow: 0 0 18px rgba(255, 20, 147, 0.08);
 }
 
-.unlocked-videos-section h3 {
-    margin: 0 0 6px;
+.unlocked-videos-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+
+    padding: 18px 20px;
+
+    background: transparent;
+    border: 0;
+
     color: #fff;
-    font-size: 19px;
+    text-align: left;
+
+    cursor: pointer;
 }
 
-.unlocked-videos-section > .muted {
-    margin-bottom: 16px;
+.unlocked-videos-toggle-info {
+    min-width: 0;
+}
+
+.unlocked-videos-toggle-info strong {
+    display: block;
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.unlocked-videos-toggle-info span {
+    display: block;
+    color: #999;
+    font-size: 13px;
+}
+
+.unlocked-videos-arrow {
+    flex-shrink: 0;
+
+    font-size: 28px;
+    line-height: 1;
+
+    color: #ff1493;
+
+    transition: transform 0.25s ease;
+}
+
+.unlocked-videos-toggle[aria-expanded="true"]
+.unlocked-videos-arrow {
+    transform: rotate(90deg);
+}
+
+.unlocked-videos-content {
+    padding: 0 20px 20px;
+}
+
+.unlocked-videos-content.hidden {
+    display: none;
 }
 
 .unlocked-videos-list {
@@ -684,8 +734,11 @@ background: #111;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
+
     padding: 14px;
+
     background: #181818;
+
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
 }
@@ -708,81 +761,18 @@ background: #111;
 
 .unlocked-video-button {
     flex-shrink: 0;
+
     padding: 8px 12px;
+
     border: 0;
     border-radius: 8px;
+
     background: #ff1493;
     color: #fff;
+
     font-weight: 700;
     cursor: pointer;
-}
-
-.unlocked-video-button:hover {
-    opacity: 0.9;
-}
-
-@media (max-width: 600px) {
-
-    .unlocked-videos-section {
-        padding: 16px;
-    }
-
-    .unlocked-video-item {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .unlocked-video-button {
-        width: 100%;
-    }
-
   }
-.video-watermark {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    z-index: 10;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.9),
-        0 0 6px rgba(0, 0, 0, 0.7);
-    pointer-events: none;
-    user-select: none;
-}
-.video-city-fullscreen {
-    position: absolute;
-    right: 14px;
-    top: 14px;
-    z-index: 20;
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.65);
-    color: #fff;
-    font-size: 24px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
-
-.video-city-fullscreen:active {
-    transform: scale(0.94);
-}
-
-.video {
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
-
 /* ==========================================
    VIDEO CITY PI BROWSER CINEMA MODE
 ========================================== */
