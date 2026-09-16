@@ -307,6 +307,7 @@ document.addEventListener(
 // ==========================================
 
 function loadUnlockedVideos() {
+    alert("Unlocked Videos function loaded");
 
     const unlockedList =
         document.getElementById(
