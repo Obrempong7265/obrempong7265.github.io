@@ -307,19 +307,13 @@ document.addEventListener(
 // ==========================================
 window.loadUnlockedVideos = function () {
 
-    alert("Unlocked Videos function loaded");
-
     const unlockedList =
         document.getElementById(
             "unlockedVideosList"
         );
 
     if (!unlockedList) {
-
-    alert(
-        "Video City: Unlocked Videos area was not found."
-    );
-
+    
     return;
     }
     // TEMPORARY FRONTEND TEST DATA
