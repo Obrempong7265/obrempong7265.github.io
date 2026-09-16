@@ -5232,23 +5232,7 @@ console.log(
 await updateNotificationBadge();
             }
 );
-// ==========================================
-// INITIALIZE MY UNLOCKED VIDEOS
-// ==========================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        loadUnlockedVideos();
-
-        setInterval(
-            updateUnlockedVideoCountdowns,
-            60 * 1000
-        );
-
-    }
-);
 // ==========================================
 // VIDEO CITY OPENING EXPERIENCE
 // ==========================================
