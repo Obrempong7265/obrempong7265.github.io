@@ -178,16 +178,14 @@ if (page === "profile") {
     updateProfile();
 
     if (
-        typeof loadUnlockedVideos ===
-        "function"
-    ) {
+    typeof window.loadUnlockedVideos ===
+    "function"
+) {
 
-        loadUnlockedVideos();
+    window.loadUnlockedVideos();
 
-    }
-
-        }
-    
+}
+} 
     // ======================================
 // SETTINGS
 // ======================================
