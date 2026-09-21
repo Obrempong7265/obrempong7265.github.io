@@ -305,7 +305,8 @@ document.addEventListener(
         // ==========================================
 // MY UNLOCKED VIDEOS
 // ==========================================
-window.loadUnlockedVideos = function () {
+
+                window.loadUnlockedVideos = function () {
 
     const unlockedList =
         document.getElementById(
@@ -313,9 +314,9 @@ window.loadUnlockedVideos = function () {
         );
 
     if (!unlockedList) {
-    
-    return;
+        return;
     }
+
     // TEMPORARY FRONTEND TEST DATA
     // This will be replaced with real
     // Supabase data after the payment
@@ -325,6 +326,7 @@ window.loadUnlockedVideos = function () {
         {
             id: "demo-video-1",
             title: "Sample Premium Video",
+            creator: "@VideoCityCreator",
             expiresAt:
                 Date.now() +
                 (
@@ -359,11 +361,27 @@ window.loadUnlockedVideos = function () {
                         data-video-id="${video.id}">
 
                         <div
+                            class="unlocked-video-thumbnail">
+
+                            <div
+                                class="unlocked-video-play-icon">
+
+                                ▶
+
+                            </div>
+
+                        </div>
+
+                        <div
                             class="unlocked-video-info">
 
                             <strong>
                                 ${video.title}
                             </strong>
+
+                            <small>
+                                ${video.creator}
+                            </small>
 
                             <span
                                 class="unlock-countdown"
@@ -390,7 +408,7 @@ window.loadUnlockedVideos = function () {
             .join("");
 
     updateUnlockedVideoCountdowns();
-}
+};
         const unlockedVideosToggle =
     document.getElementById("unlockedVideosToggle");
 
