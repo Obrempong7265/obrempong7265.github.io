@@ -966,27 +966,50 @@ data-plan="yearly">
 
 <div class="unlocked-videos-section">
 
-    <h3>
-        🔓 My Unlocked Videos
-    </h3>
+    <button
+        type="button"
+        id="unlockedVideosToggle"
+        class="unlocked-videos-toggle"
+        aria-expanded="false">
 
-    <p class="muted">
-        Videos you've unlocked with Pi.
-    </p>
+        <div class="unlocked-videos-toggle-info">
+
+            <strong>
+                🔓 My Unlocked Videos
+            </strong>
+
+            <span>
+                Videos you've unlocked with Pi
+            </span>
+
+        </div>
+
+        <span
+            class="unlocked-videos-arrow"
+            aria-hidden="true">
+            ›
+        </span>
+
+    </button>
+
 
     <div
-        id="unlockedVideosList"
-        class="unlocked-videos-list">
+        id="unlockedVideosContent"
+        class="unlocked-videos-content hidden">
 
-        <p class="muted">
-            No unlocked videos yet.
-        </p>
+        <div
+            id="unlockedVideosList"
+            class="unlocked-videos-list">
+
+            <p class="muted">
+                No unlocked videos yet.
+            </p>
+
+        </div>
 
     </div>
 
-                    </div>
-
-        </section>
+                </div>
 
         <!-- ======================================
              NOTIFICATIONS
