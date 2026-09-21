@@ -718,14 +718,46 @@ background: #111;
 }
 
 .unlocked-video-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 14px;
+    gap: 12px;
+    padding: 10px;
     background: #181818;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
+}
+
+.unlocked-video-thumbnail {
+    width: 110px;
+    height: 68px;
+    border-radius: 9px;
+    background:
+        linear-gradient(
+            135deg,
+            #35102b,
+            #171717 55%,
+            #24101f
+        );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 20, 147, 0.25);
+    overflow: hidden;
+}
+
+.unlocked-video-play-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ff1493;
+    color: #fff;
+    font-size: 15px;
+    padding-left: 2px;
+    box-shadow: 0 0 12px rgba(255, 20, 147, 0.35);
 }
 
 .unlocked-video-info {
@@ -735,24 +767,73 @@ background: #111;
 .unlocked-video-info strong {
     display: block;
     color: #fff;
+    font-size: 15px;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.unlocked-video-info small {
+    display: block;
+    color: #aaa;
+    font-size: 12px;
     margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .unlocked-video-info span {
+    display: block;
     color: #39FF14;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
+    line-height: 1.3;
 }
 
 .unlocked-video-button {
     flex-shrink: 0;
-    padding: 8px 12px;
+    padding: 9px 13px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 9px;
     background: #ff1493;
     color: #fff;
     font-weight: 700;
+    font-size: 13px;
     cursor: pointer;
+    white-space: nowrap;
+  }
+@media (max-width: 600px) {
+
+    .unlocked-video-item {
+        grid-template-columns: 82px minmax(0, 1fr) auto;
+        gap: 9px;
+        padding: 8px;
+    }
+
+    .unlocked-video-thumbnail {
+        width: 82px;
+        height: 58px;
+    }
+
+    .unlocked-video-info strong {
+        font-size: 14px;
+    }
+
+    .unlocked-video-info small {
+        font-size: 11px;
+    }
+
+    .unlocked-video-info span {
+        font-size: 11px;
+    }
+
+    .unlocked-video-button {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
       }
 /* ==========================================
    VIDEO CITY PI BROWSER CINEMA MODE
