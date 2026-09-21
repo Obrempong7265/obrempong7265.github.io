@@ -391,6 +391,50 @@ window.loadUnlockedVideos = function () {
 
     updateUnlockedVideoCountdowns();
 }
+        const unlockedVideosToggle =
+    document.getElementById("unlockedVideosToggle");
+
+const unlockedVideosContent =
+    document.getElementById("unlockedVideosContent");
+
+if (
+    unlockedVideosToggle &&
+    unlockedVideosContent
+) {
+
+    unlockedVideosToggle.addEventListener(
+        "click",
+        function () {
+
+            const isOpen =
+                unlockedVideosToggle.getAttribute(
+                    "aria-expanded"
+                ) === "true";
+
+            unlockedVideosToggle.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
+
+            unlockedVideosContent.classList.toggle(
+                "hidden",
+                isOpen
+            );
+
+            const arrow =
+                unlockedVideosToggle.querySelector(
+                    ".unlocked-videos-arrow"
+                );
+
+            if (arrow) {
+                arrow.textContent =
+                    isOpen ? "›" : "⌄";
+            }
+
+        }
+    );
+
+}
 
 
 // ==========================================
