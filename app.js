@@ -645,6 +645,59 @@ if (creatorContentFilter) {
 
             }
         // ==========================================
+// CREATOR MY CONTENT DELETE — FRONTEND
+// ==========================================
+
+const creatorDeleteButtons =
+    document.querySelectorAll(
+        ".creator-content-delete"
+    );
+
+creatorDeleteButtons.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                const contentItem =
+                    button.closest(
+                        ".creator-content-item"
+                    );
+
+                if (!contentItem) {
+                    return;
+                }
+
+                const titleElement =
+                    contentItem.querySelector(
+                        ".creator-content-info h4"
+                    );
+
+                const title =
+                    titleElement
+                        ? titleElement.textContent.trim()
+                        : "this video";
+
+                const confirmed =
+                    window.confirm(
+                        "Delete \"" +
+                        title +
+                        "\" from My Content?"
+                    );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                contentItem.remove();
+
+            }
+        );
+
+    }
+);
+        // ==========================================
 // LOAD NOTIFICATIONS
 // ==========================================
         function getNotificationTitle(type) {
