@@ -937,13 +937,40 @@
      TRANSACTIONS
 ======================================= -->
 
-<div class="transactions-box">
+<div
+    class="transactions-box"
+    id="recentTransactionsCard">
 
-    <h3>
-        📋 Recent Transactions
-    </h3>
+    <button
+        type="button"
+        id="recentTransactionsToggle"
+        class="transactions-toggle">
 
-    <div id="transactionsList">
+        <div class="transactions-toggle-info">
+
+            <strong>
+                📋 Recent Transactions
+            </strong>
+
+            <span>
+                View your creator transaction history
+            </span>
+
+        </div>
+
+        <span
+            class="transactions-toggle-arrow"
+            aria-hidden="true">
+
+            ›
+
+        </span>
+
+    </button>
+
+    <div
+        id="transactionsList"
+        class="transactions-preview">
 
         <p class="muted">
             No transactions yet.
