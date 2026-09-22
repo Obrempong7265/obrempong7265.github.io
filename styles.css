@@ -2335,19 +2335,44 @@ MOBILE
 ========================================== */
 
 .transactions-box {
-    background: #1a1a1a;
-    border: 1px solid #333;
+    position: relative;
+    background:
+        linear-gradient(
+            145deg,
+            #1d1d1d,
+            #141414
+        );
+    border: 1px solid rgba(255, 20, 147, 0.20);
     border-radius: 18px;
-    padding: 20px;
+    padding: 22px;
     margin-top: 18px;
     margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow:
+        0 10px 28px rgba(0, 0, 0, 0.24);
 }
+
+.transactions-box::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    right: -55px;
+    top: -60px;
+    background: rgba(255, 20, 147, 0.06);
+    border-radius: 50%;
+    pointer-events: none;
+      }
 
 .transactions-box h3 {
+    position: relative;
+    z-index: 1;
     margin-top: 0;
-    margin-bottom: 12px;
-}
-
+    margin-bottom: 16px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 800;
+  }
 .transactions-box #transactionsList {
     margin: 0;
     padding: 0;
