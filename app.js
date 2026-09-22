@@ -622,10 +622,14 @@ function filterCreatorContent() {
                 matchesSearch && matchesFilter
                     ? ""
                     : "none";
+            
 
         }
     );
+    
+        updateCreatorContentEmptyState();
 }
+        
 
 if (creatorContentSearch) {
 
@@ -798,15 +802,17 @@ function showCreatorDeleteModal(
 
 
     confirmButton.addEventListener(
-        "click",
-        function() {
+    "click",
+    function() {
 
-            contentItem.remove();
+        contentItem.remove();
 
-            modal.remove();
+        modal.remove();
 
-        }
-    );
+        updateCreatorContentEmptyState();
+
+    }
+);
 
 
     modal
