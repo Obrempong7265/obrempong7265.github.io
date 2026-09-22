@@ -3611,3 +3611,93 @@ MOBILE
     }
 
   }
+
+/* ==========================================
+   CREATOR EARNINGS DASHBOARD
+========================================== */
+
+.creator-earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.creator-earning-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-height: 92px;
+    padding: 16px;
+    background:
+        linear-gradient(
+            145deg,
+            #1d1d1d,
+            #141414
+        );
+    border: 1px solid rgba(255, 20, 147, 0.18);
+    border-radius: 13px;
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, 0.18);
+}
+
+.creator-earning-card:hover {
+    border-color: rgba(255, 20, 147, 0.38);
+}
+
+.creator-earning-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 20, 147, 0.10);
+    border: 1px solid rgba(255, 20, 147, 0.22);
+    border-radius: 11px;
+    font-size: 21px;
+}
+
+.creator-earning-content {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.creator-earning-label {
+    color: #999;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.creator-earning-content strong {
+    color: #fff;
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+@media (max-width: 600px) {
+
+    .creator-earnings-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .creator-earning-card {
+        min-height: 82px;
+        padding: 14px;
+    }
+
+    .creator-earning-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 19px;
+    }
+
+    .creator-earning-content strong {
+        font-size: 19px;
+    }
+
+}
