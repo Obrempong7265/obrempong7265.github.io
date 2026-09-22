@@ -559,6 +559,61 @@ if (
     );
 
 }
+        // ======================================
+// FULL MY CONTENT VIEWER
+// ======================================
+
+const myContentModal =
+    document.getElementById("myContentModal");
+
+const closeMyContentModal =
+    document.getElementById("closeMyContentModal");
+
+const myContentModalList =
+    document.getElementById("myContentModalList");
+
+if (
+    creatorContentToggle &&
+    myContentModal &&
+    closeMyContentModal &&
+    myContentModalList
+) {
+
+    creatorContentToggle.addEventListener("click", function () {
+
+        const creatorContentList =
+            document.getElementById("creatorContent");
+
+        if (creatorContentList) {
+            myContentModalList.innerHTML =
+                creatorContentList.innerHTML;
+        }
+
+        myContentModal.classList.remove("hidden");
+
+        document.body.style.overflow = "hidden";
+    });
+
+
+    closeMyContentModal.addEventListener("click", function () {
+
+        myContentModal.classList.add("hidden");
+
+        document.body.style.overflow = "";
+    });
+
+
+    myContentModal.addEventListener("click", function (event) {
+
+        if (event.target === myContentModal) {
+
+            myContentModal.classList.add("hidden");
+
+            document.body.style.overflow = "";
+        }
+    });
+
+}
         // ==========================================
 // CREATOR MY CONTENT SEARCH + FILTER
 // ==========================================
