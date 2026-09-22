@@ -644,7 +644,8 @@ if (creatorContentFilter) {
     );
 
             }
-        // ==========================================
+        
+// ==========================================
 // CREATOR MY CONTENT DELETE — FRONTEND
 // ==========================================
 
@@ -679,24 +680,157 @@ creatorDeleteButtons.forEach(
                         ? titleElement.textContent.trim()
                         : "this video";
 
-                const confirmed =
-                    window.confirm(
-                        "Delete \"" +
-                        title +
-                        "\" from My Content?"
-                    );
-
-                if (!confirmed) {
-                    return;
-                }
-
-                contentItem.remove();
+                showCreatorDeleteModal(
+                    contentItem,
+                    title
+                );
 
             }
         );
 
     }
 );
+
+
+// ==========================================
+// CREATOR DELETE CONFIRMATION MODAL
+// ==========================================
+
+function showCreatorDeleteModal(
+    contentItem,
+    title
+) {
+
+    const existingModal =
+        document.getElementById(
+            "creatorDeleteModal"
+        );
+
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const modal =
+        document.createElement("div");
+
+    modal.id =
+        "creatorDeleteModal";
+
+    modal.className =
+        "creator-delete-modal";
+
+    modal.innerHTML = `
+
+        <div class="creator-delete-overlay">
+
+            <div
+                class="creator-delete-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="creatorDeleteTitle">
+
+                <div class="creator-delete-icon">
+                    🗑️
+                </div>
+
+                <h3 id="creatorDeleteTitle">
+                    Delete Video?
+                </h3>
+
+                <p>
+                    Are you sure you want to delete
+                    <strong>${title}</strong>?
+                </p>
+
+                <span class="creator-delete-warning">
+                    This action will remove the video
+                    from your My Content list.
+                </span>
+
+                <div class="creator-delete-actions">
+
+                    <button
+                        type="button"
+                        class="creator-delete-cancel">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="creator-delete-confirm">
+
+                        Delete Video
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(modal);
+
+
+    const cancelButton =
+        modal.querySelector(
+            ".creator-delete-cancel"
+        );
+
+    const confirmButton =
+        modal.querySelector(
+            ".creator-delete-confirm"
+        );
+
+
+    cancelButton.addEventListener(
+        "click",
+        function() {
+
+            modal.remove();
+
+        }
+    );
+
+
+    confirmButton.addEventListener(
+        "click",
+        function() {
+
+            contentItem.remove();
+
+            modal.remove();
+
+        }
+    );
+
+
+    modal
+        .querySelector(
+            ".creator-delete-overlay"
+        )
+        .addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    event.currentTarget
+                ) {
+
+                    modal.remove();
+
+                }
+
+            }
+        );
+
+                    }
+
         // ==========================================
 // LOAD NOTIFICATIONS
 // ==========================================
