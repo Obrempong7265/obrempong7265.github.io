@@ -494,185 +494,210 @@
             </div>
 
 
-            <div class="upload-box">
+            
 
-                <h3>
-                    My Content
-                </h3>
+                <div class="upload-box creator-content-card">
 
+    <button
+        type="button"
+        id="creatorContentToggle"
+        class="creator-content-toggle"
+        aria-expanded="false">
 
-                <div id="creatorContent">
+        <div class="creator-content-toggle-info">
 
-    <!-- CONTENT SEARCH -->
+            <strong>
+                🎬 My Content
+            </strong>
 
-    <div class="creator-content-toolbar">
+            <span>
+                Manage your uploaded videos
+            </span>
 
-        <input
-            id="creatorContentSearch"
-            type="search"
-            placeholder="Search your content..."
-            autocomplete="off">
+        </div>
 
-        <select
-            id="creatorContentFilter">
+        <span
+            class="creator-content-arrow"
+            aria-hidden="true">
+            ›
+        </span>
 
-            <option value="all">
-                All Content
-            </option>
+    </button>
 
-            <option value="free">
-                Free
-            </option>
-
-            <option value="paid">
-                Paid
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <!-- CONTENT LIST -->
 
     <div
-        id="creatorContentList"
-        class="creator-content-list">
+        id="creatorContentPanel"
+        class="creator-content-panel hidden">
 
-        <!-- TEMPORARY FRONTEND SAMPLE -->
+        <div class="creator-content-toolbar">
 
-        <article
-            class="creator-content-item"
-            data-content-type="paid">
+            <input
+                id="creatorContentSearch"
+                type="search"
+                placeholder="Search your content..."
+                autocomplete="off">
 
-            <div class="creator-content-thumbnail">
+            <select
+                id="creatorContentFilter">
 
-                <span>
-                    ▶
-                </span>
+                <option value="all">
+                    All Content
+                </option>
 
-            </div>
+                <option value="free">
+                    Free
+                </option>
 
+                <option value="paid">
+                    Paid
+                </option>
 
-            <div class="creator-content-info">
+            </select>
 
-                <h4>
-                    Sample Premium Video
-                </h4>
-
-                <p>
-                    🔒 Paid Content
-                </p>
-
-                <div class="creator-content-stats">
-
-                    <span>
-                        👁 1.2K
-                    </span>
-
-                    <span>
-                        ❤️ 86
-                    </span>
-
-                    <span>
-                        💰 5 Pi
-                    </span>
-
-                </div>
-
-            </div>
+        </div>
 
 
-            <div class="creator-content-actions">
+        <div
+            id="creatorContent"
+            class="creator-content-list">
 
-                <button
-                    type="button"
-                    class="creator-content-edit">
+            <!-- TEMPORARY FRONTEND SAMPLE -->
 
-                    ✏️ Edit
+            <article
+                class="creator-content-item"
+                data-content-type="paid">
 
-                </button>
-
-                <button
-                    type="button"
-                    class="creator-content-delete">
-
-                    🗑️ Delete
-
-                </button>
-
-            </div>
-
-        </article>
-
-
-        <article
-            class="creator-content-item"
-            data-content-type="free">
-
-            <div class="creator-content-thumbnail">
-
-                <span>
-                    ▶
-                </span>
-
-            </div>
-
-
-            <div class="creator-content-info">
-
-                <h4>
-                    Sample Free Video
-                </h4>
-
-                <p>
-                    🟢 Free Content
-                </p>
-
-                <div class="creator-content-stats">
+                <div class="creator-content-thumbnail">
 
                     <span>
-                        👁 845
-                    </span>
-
-                    <span>
-                        ❤️ 42
-                    </span>
-
-                    <span>
-                        💰 0 Pi
+                        ▶
                     </span>
 
                 </div>
 
-            </div>
+
+                <div class="creator-content-info">
+
+                    <h4>
+                        Sample Premium Video
+                    </h4>
+
+                    <p>
+                        🔒 Paid Content
+                    </p>
+
+                    <div class="creator-content-stats">
+
+                        <span>
+                            👁 1.2K
+                        </span>
+
+                        <span>
+                            ❤️ 86
+                        </span>
+
+                        <span>
+                            💰 5 Pi
+                        </span>
+
+                    </div>
+
+                </div>
 
 
-            <div class="creator-content-actions">
+                <div class="creator-content-actions">
 
-                <button
-                    type="button"
-                    class="creator-content-edit">
+                    <button
+                        type="button"
+                        class="creator-content-edit">
 
-                    ✏️ Edit
+                        ✏️ Edit
 
-                </button>
+                    </button>
 
-                <button
-                    type="button"
-                    class="creator-content-delete">
+                    <button
+                        type="button"
+                        class="creator-content-delete">
 
-                    🗑️ Delete
+                        🗑️ Delete
 
-                </button>
+                    </button>
 
-            </div>
+                </div>
 
-        </article>
+            </article>
+
+
+            <article
+                class="creator-content-item"
+                data-content-type="free">
+
+                <div class="creator-content-thumbnail">
+
+                    <span>
+                        ▶
+                    </span>
+
+                </div>
+
+
+                <div class="creator-content-info">
+
+                    <h4>
+                        Sample Free Video
+                    </h4>
+
+                    <p>
+                        🟢 Free Content
+                    </p>
+
+                    <div class="creator-content-stats">
+
+                        <span>
+                            👁 845
+                        </span>
+
+                        <span>
+                            ❤️ 42
+                        </span>
+
+                        <span>
+                            💰 0 Pi
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="creator-content-actions">
+
+                    <button
+                        type="button"
+                        class="creator-content-edit">
+
+                        ✏️ Edit
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="creator-content-delete">
+
+                        🗑️ Delete
+
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
 
     </div>
 
-                </div>
+                    </div>
+
             <!-- ======================================
      EARNINGS & TRANSACTIONS
 ======================================= -->
