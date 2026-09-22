@@ -4220,6 +4220,64 @@ async function loadCreatorStudio() {
     );
 
 }
+        // ======================================
+// FULL TRANSACTION VIEWER
+// ======================================
+
+const recentTransactionsToggle =
+    document.getElementById("recentTransactionsToggle");
+
+const transactionsModal =
+    document.getElementById("transactionsModal");
+
+const closeTransactionsModal =
+    document.getElementById("closeTransactionsModal");
+
+const transactionsModalList =
+    document.getElementById("transactionsModalList");
+
+if (
+    recentTransactionsToggle &&
+    transactionsModal &&
+    closeTransactionsModal &&
+    transactionsModalList
+) {
+
+    recentTransactionsToggle.addEventListener("click", function () {
+
+        const transactionList =
+            document.getElementById("transactionsList");
+
+        if (transactionList) {
+            transactionsModalList.innerHTML =
+                transactionList.innerHTML;
+        }
+
+        transactionsModal.classList.remove("hidden");
+
+        document.body.style.overflow = "hidden";
+    });
+
+
+    closeTransactionsModal.addEventListener("click", function () {
+
+        transactionsModal.classList.add("hidden");
+
+        document.body.style.overflow = "";
+    });
+
+
+    transactionsModal.addEventListener("click", function (event) {
+
+        if (event.target === transactionsModal) {
+
+            transactionsModal.classList.add("hidden");
+
+            document.body.style.overflow = "";
+        }
+    });
+
+}
         
         // ==========================================
 // UPLOAD SYSTEM
