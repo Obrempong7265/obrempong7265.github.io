@@ -6173,6 +6173,50 @@ function openCreatorEditModal(
     );
 
         }
+// ==========================================
+// CREATOR MY CONTENT EMPTY STATE
+// ==========================================
 
+function updateCreatorContentEmptyState() {
+
+    const creatorContentList =
+        document.getElementById(
+            "creatorContent"
+        );
+
+    const creatorContentEmpty =
+        document.getElementById(
+            "creatorContentEmpty"
+        );
+
+    if (
+        !creatorContentList ||
+        !creatorContentEmpty
+    ) {
+        return;
+    }
+
+    const contentItems =
+        creatorContentList.querySelectorAll(
+            ".creator-content-item"
+        );
+
+    const visibleItems =
+        Array.from(contentItems).filter(
+            function(item) {
+
+                return (
+                    item.style.display !== "none"
+                );
+
+            }
+        );
+
+    creatorContentEmpty.classList.toggle(
+        "hidden",
+        visibleItems.length > 0
+    );
+
+            }
 
 
