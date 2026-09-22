@@ -2207,8 +2207,20 @@ MOBILE
   }
 
 .withdraw-box h3 {
+    position: relative;
+    z-index: 1;
     margin-top: 0;
     margin-bottom: 8px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 800;
+}
+.withdraw-box > .muted {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0;
+    color: #999;
+    font-size: 13px;
 }
 
 .withdraw-balance {
