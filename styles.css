@@ -3861,7 +3861,7 @@ MOBILE
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(0, 0, 0, 0.94);
 }
 
 .transactions-modal.hidden {
@@ -3878,33 +3878,73 @@ MOBILE
     overflow: hidden;
 }
 
+
+/* ==========================================
+   TRANSACTION HEADER
+========================================== */
+
 .transactions-modal-header {
+    position: relative;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 15px;
-    padding: 18px;
-    background: #181818;
+    padding: 20px;
+    background:
+        linear-gradient(
+            135deg,
+            #1d1d1d,
+            #151515
+        );
     border-bottom: 1px solid rgba(255, 20, 147, 0.25);
 }
 
+.transactions-modal-header::after {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    right: 45px;
+    top: -70px;
+    background: rgba(255, 20, 147, 0.07);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
 .transactions-modal-header h3 {
-    margin: 0 0 5px;
+    position: relative;
+    z-index: 1;
+    margin: 0 0 6px;
     color: #fff;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.1px;
 }
 
 .transactions-modal-header p {
+    position: relative;
+    z-index: 1;
     margin: 0;
     color: #888;
     font-size: 12px;
+    line-height: 1.5;
 }
 
+
+/* ==========================================
+   CLOSE BUTTON
+========================================== */
+
 .transactions-modal-close {
+    position: relative;
+    z-index: 2;
     flex-shrink: 0;
     width: 42px;
     height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid rgba(255, 20, 147, 0.35);
     border-radius: 50%;
     background: #242424;
@@ -3912,58 +3952,133 @@ MOBILE
     font-size: 28px;
     line-height: 1;
     cursor: pointer;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 }
 
 .transactions-modal-close:hover {
     background: #ff1493;
+    transform: rotate(90deg);
 }
+
+
+/* ==========================================
+   TRANSACTION LIST AREA
+========================================== */
 
 .transactions-modal-list {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 18px;
+    background: #111;
 }
+
+
+/* ==========================================
+   TRANSACTION CARD
+========================================== */
 
 .transactions-modal-list .comment {
     position: relative;
-    margin: 0 0 10px;
-    padding: 14px 15px;
-    background: #181818;
+    margin: 0 0 12px;
+    padding: 16px;
+    background:
+        linear-gradient(
+            145deg,
+            #1d1d1d,
+            #171717
+        );
     border: 1px solid rgba(255, 20, 147, 0.14);
-    border-radius: 12px;
+    border-radius: 14px;
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.20);
+    overflow: hidden;
 }
+
+.transactions-modal-list .comment::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #ff1493;
+}
+
+.transactions-modal-list .comment:last-child {
+    margin-bottom: 0;
+}
+
+
+/* TRANSACTION TYPE */
 
 .transactions-modal-list .comment strong {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 7px;
     color: #fff;
     font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }
+
+
+/* AMOUNT */
 
 .transactions-modal-list .comment p {
-    margin: 0 0 6px;
+    margin: 0 0 7px;
     color: #ff1493;
-    font-size: 16px;
+    font-size: 19px;
     font-weight: 800;
+    line-height: 1.2;
 }
 
+
+/* STATUS */
+
 .transactions-modal-list .comment small {
+    display: block;
     color: #888;
     font-size: 11px;
 }
 
+
+/* ==========================================
+   MOBILE
+========================================== */
+
 @media (max-width: 600px) {
 
     .transactions-modal-header {
-        padding: 15px;
+        padding: 16px;
     }
 
     .transactions-modal-header h3 {
-        font-size: 16px;
+        font-size: 18px;
+    }
+
+    .transactions-modal-header p {
+        font-size: 11px;
+    }
+
+    .transactions-modal-close {
+        width: 40px;
+        height: 40px;
+        font-size: 26px;
     }
 
     .transactions-modal-list {
         padding: 12px;
+    }
+
+    .transactions-modal-list .comment {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
+    .transactions-modal-list .comment p {
+        font-size: 17px;
     }
 
   }
