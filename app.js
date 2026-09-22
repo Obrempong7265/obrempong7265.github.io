@@ -515,50 +515,10 @@ function updateUnlockedVideoCountdowns() {
 // CREATOR MY CONTENT TOGGLE
 // ==========================================
 
-const creatorContentToggle =
-    document.getElementById("creatorContentToggle");
+// The My Content button now opens the
+// full-screen My Content viewer below.
 
-const creatorContentPanel =
-    document.getElementById("creatorContentPanel");
 
-if (
-    creatorContentToggle &&
-    creatorContentPanel
-) {
-
-    creatorContentToggle.addEventListener(
-        "click",
-        function () {
-
-            const isOpen =
-                creatorContentToggle.getAttribute(
-                    "aria-expanded"
-                ) === "true";
-
-            creatorContentToggle.setAttribute(
-                "aria-expanded",
-                String(!isOpen)
-            );
-
-            creatorContentPanel.classList.toggle(
-                "hidden",
-                isOpen
-            );
-
-            const arrow =
-                creatorContentToggle.querySelector(
-                    ".creator-content-arrow"
-                );
-
-            if (arrow) {
-                arrow.textContent =
-                    isOpen ? "›" : "⌄";
-            }
-
-        }
-    );
-
-}
         // ======================================
 // FULL MY CONTENT VIEWER
 // ======================================
