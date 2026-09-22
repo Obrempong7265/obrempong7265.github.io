@@ -560,6 +560,91 @@ if (
 
 }
         // ==========================================
+// CREATOR MY CONTENT SEARCH + FILTER
+// ==========================================
+
+const creatorContentSearch =
+    document.getElementById("creatorContentSearch");
+
+const creatorContentFilter =
+    document.getElementById("creatorContentFilter");
+
+const creatorContentList =
+    document.getElementById("creatorContent");
+
+function filterCreatorContent() {
+
+    if (
+        !creatorContentSearch ||
+        !creatorContentFilter ||
+        !creatorContentList
+    ) {
+        return;
+    }
+
+    const searchTerm =
+        creatorContentSearch.value
+            .trim()
+            .toLowerCase();
+
+    const selectedFilter =
+        creatorContentFilter.value;
+
+    const contentItems =
+        creatorContentList.querySelectorAll(
+            ".creator-content-item"
+        );
+
+    contentItems.forEach(
+        function(item) {
+
+            const title =
+                item.querySelector(
+                    ".creator-content-info h4"
+                );
+
+            const contentTitle =
+                title
+                    ? title.textContent.toLowerCase()
+                    : "";
+
+            const contentType =
+                item.dataset.contentType || "all";
+
+            const matchesSearch =
+                contentTitle.includes(searchTerm);
+
+            const matchesFilter =
+                selectedFilter === "all" ||
+                contentType === selectedFilter;
+
+            item.style.display =
+                matchesSearch && matchesFilter
+                    ? ""
+                    : "none";
+
+        }
+    );
+}
+
+if (creatorContentSearch) {
+
+    creatorContentSearch.addEventListener(
+        "input",
+        filterCreatorContent
+    );
+
+}
+
+if (creatorContentFilter) {
+
+    creatorContentFilter.addEventListener(
+        "change",
+        filterCreatorContent
+    );
+
+            }
+        // ==========================================
 // LOAD NOTIFICATIONS
 // ==========================================
         function getNotificationTitle(type) {
