@@ -2997,6 +2997,81 @@ MOBILE
 
 }
 /* ==========================================
+   CREATOR MY CONTENT EMPTY STATE
+========================================== */
+
+.creator-content-empty {
+    padding: 36px 20px;
+    text-align: center;
+    background: #181818;
+    border: 1px solid rgba(255, 20, 147, 0.18);
+    border-radius: 12px;
+}
+
+.creator-content-empty.hidden {
+    display: none;
+}
+
+.creator-content-empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 20, 147, 0.10);
+    border: 1px solid rgba(255, 20, 147, 0.25);
+    border-radius: 50%;
+    font-size: 28px;
+}
+
+.creator-content-empty h3 {
+    margin: 0 0 8px;
+    color: #fff;
+    font-size: 18px;
+}
+
+.creator-content-empty p {
+    margin: 0 auto 20px;
+    color: #999;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.creator-content-empty button {
+    min-height: 42px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 9px;
+    background: #ff1493;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.creator-content-empty button:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+
+    .creator-content-empty {
+        padding: 30px 16px;
+    }
+
+    .creator-content-empty-icon {
+        width: 58px;
+        height: 58px;
+        font-size: 25px;
+    }
+
+    .creator-content-empty h3 {
+        font-size: 17px;
+    }
+
+  }
+/* ==========================================
    CREATOR MY CONTENT
 ========================================== */
 
