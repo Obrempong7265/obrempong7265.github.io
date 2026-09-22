@@ -5656,6 +5656,523 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+// ==========================================
+// CREATOR MY CONTENT EDIT — FRONTEND
+// ==========================================
+
+const creatorEditButtons =
+    document.querySelectorAll(
+        ".creator-content-edit"
+    );
+
+creatorEditButtons.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                const contentItem =
+                    button.closest(
+                        ".creator-content-item"
+                    );
+
+                if (!contentItem) {
+                    return;
+                }
+
+                openCreatorEditModal(
+                    contentItem
+                );
+
+            }
+        );
+
+    }
+);
+
+
+// ==========================================
+// CREATOR EDIT VIDEO MODAL
+// ==========================================
+
+function openCreatorEditModal(
+    contentItem
+) {
+
+    const existingModal =
+        document.getElementById(
+            "creatorEditModal"
+        );
+
+    if (existingModal) {
+        existingModal.remove();
+    }
+
+    const titleElement =
+        contentItem.querySelector(
+            ".creator-content-info h4"
+        );
+
+    const statusElement =
+        contentItem.querySelector(
+            ".creator-content-info p"
+        );
+
+    const stats =
+        contentItem.querySelectorAll(
+            ".creator-content-stats span"
+        );
+
+    const currentTitle =
+        titleElement
+            ? titleElement.textContent.trim()
+            : "";
+
+    const currentDescription =
+        contentItem.dataset.description || "";
+
+    const currentCategory =
+        contentItem.dataset.category || "";
+
+    const currentType =
+        contentItem.dataset.contentType || "free";
+
+    const currentPrice =
+        contentItem.dataset.price || "0";
+
+    const modal =
+        document.createElement("div");
+
+    modal.id =
+        "creatorEditModal";
+
+    modal.className =
+        "creator-edit-modal";
+
+    modal.innerHTML = `
+
+        <div class="creator-edit-overlay">
+
+            <div
+                class="creator-edit-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="creatorEditTitle">
+
+                <div class="creator-edit-header">
+
+                    <h3 id="creatorEditTitle">
+                        Edit Video
+                    </h3>
+
+                    <button
+                        type="button"
+                        class="creator-edit-close"
+                        aria-label="Close">
+
+                        ×
+
+                    </button>
+
+                </div>
+
+
+                <div class="creator-edit-field">
+
+                    <label for="creatorEditTitleInput">
+                        Video Title
+                    </label>
+
+                    <input
+                        id="creatorEditTitleInput"
+                        type="text"
+                        value=""
+                        autocomplete="off">
+
+                </div>
+
+
+                <div class="creator-edit-field">
+
+                    <label for="creatorEditDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="creatorEditDescription"></textarea>
+
+                </div>
+
+
+                <div class="creator-edit-field">
+
+                    <label for="creatorEditCategory">
+                        Category
+                    </label>
+
+                    <input
+                        id="creatorEditCategory"
+                        type="text"
+                        value=""
+                        autocomplete="off">
+
+                </div>
+
+
+                <div class="creator-edit-field">
+
+                    <label for="creatorEditType">
+                        Content Type
+                    </label>
+
+                    <select id="creatorEditType">
+
+                        <option value="free">
+                            Free
+                        </option>
+
+                        <option value="paid">
+                            Paid
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="creatorEditPriceField"
+                    class="creator-edit-field creator-edit-price">
+
+                    <label for="creatorEditPrice">
+                        Price (Pi)
+                    </label>
+
+                    <input
+                        id="creatorEditPrice"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="0">
+
+                </div>
+
+
+                <div class="creator-edit-actions">
+
+                    <button
+                        type="button"
+                        class="creator-edit-cancel">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="creator-edit-save">
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(modal);
+
+
+    // ==========================================
+    // GET FORM ELEMENTS
+    // ==========================================
+
+    const titleInput =
+        modal.querySelector(
+            "#creatorEditTitleInput"
+        );
+
+    const descriptionInput =
+        modal.querySelector(
+            "#creatorEditDescription"
+        );
+
+    const categoryInput =
+        modal.querySelector(
+            "#creatorEditCategory"
+        );
+
+    const typeInput =
+        modal.querySelector(
+            "#creatorEditType"
+        );
+
+    const priceField =
+        modal.querySelector(
+            "#creatorEditPriceField"
+        );
+
+    const priceInput =
+        modal.querySelector(
+            "#creatorEditPrice"
+        );
+
+    const closeButton =
+        modal.querySelector(
+            ".creator-edit-close"
+        );
+
+    const cancelButton =
+        modal.querySelector(
+            ".creator-edit-cancel"
+        );
+
+    const saveButton =
+        modal.querySelector(
+            ".creator-edit-save"
+        );
+
+
+    // ==========================================
+    // LOAD CURRENT VALUES
+    // ==========================================
+
+    titleInput.value =
+        currentTitle;
+
+    descriptionInput.value =
+        currentDescription;
+
+    categoryInput.value =
+        currentCategory;
+
+    typeInput.value =
+        currentType;
+
+    priceInput.value =
+        currentPrice;
+
+
+    // ==========================================
+    // SHOW / HIDE PRICE
+    // ==========================================
+
+    function updatePriceVisibility() {
+
+        if (
+            typeInput.value === "paid"
+        ) {
+
+            priceField.classList.add(
+                "visible"
+            );
+
+        } else {
+
+            priceField.classList.remove(
+                "visible"
+            );
+
+        }
+
+    }
+
+    typeInput.addEventListener(
+        "change",
+        updatePriceVisibility
+    );
+
+    updatePriceVisibility();
+
+
+    // ==========================================
+    // CLOSE MODAL
+    // ==========================================
+
+    function closeModal() {
+
+        modal.remove();
+
+    }
+
+    closeButton.addEventListener(
+        "click",
+        closeModal
+    );
+
+    cancelButton.addEventListener(
+        "click",
+        closeModal
+    );
+
+
+    modal
+        .querySelector(
+            ".creator-edit-overlay"
+        )
+        .addEventListener(
+            "click",
+            function(event) {
+
+                if (
+                    event.target ===
+                    event.currentTarget
+                ) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+    // ==========================================
+    // SAVE CHANGES
+    // ==========================================
+
+    saveButton.addEventListener(
+        "click",
+        function() {
+
+            const newTitle =
+                titleInput.value.trim();
+
+            const newDescription =
+                descriptionInput.value.trim();
+
+            const newCategory =
+                categoryInput.value.trim();
+
+            const newType =
+                typeInput.value;
+
+            let newPrice =
+                Number(
+                    priceInput.value
+                );
+
+            if (!newTitle) {
+
+                titleInput.focus();
+
+                return;
+
+            }
+
+            if (!newCategory) {
+
+                categoryInput.focus();
+
+                return;
+
+            }
+
+            if (
+                newType === "paid" &&
+                (
+                    !Number.isFinite(newPrice) ||
+                    newPrice <= 0
+                )
+            ) {
+
+                priceInput.focus();
+
+                return;
+
+            }
+
+            if (newType === "free") {
+                newPrice = 0;
+            }
+
+
+            // ==================================
+            // UPDATE CARD DATA
+            // ==================================
+
+            contentItem.dataset.contentType =
+                newType;
+
+            contentItem.dataset.category =
+                newCategory;
+
+            contentItem.dataset.description =
+                newDescription;
+
+            contentItem.dataset.price =
+                String(newPrice);
+
+
+            // ==================================
+            // UPDATE TITLE
+            // ==================================
+
+            if (titleElement) {
+
+                titleElement.textContent =
+                    newTitle;
+
+            }
+
+
+            // ==================================
+            // UPDATE STATUS
+            // ==================================
+
+            if (statusElement) {
+
+                statusElement.textContent =
+                    newType === "paid"
+                        ? "🔒 Paid Content"
+                        : "🟢 Free Content";
+
+            }
+
+
+            // ==================================
+            // UPDATE PRICE
+            // ==================================
+
+            if (stats.length >= 3) {
+
+                stats[2].textContent =
+                    "💰 " +
+                    newPrice +
+                    " Pi";
+
+            }
+
+
+            // ==================================
+            // CLOSE MODAL
+            // ==================================
+
+            closeModal();
+
+
+            // ==================================
+            // RE-APPLY SEARCH / FILTER
+            // ==================================
+
+            if (
+                typeof filterCreatorContent ===
+                "function"
+            ) {
+
+                filterCreatorContent();
+
+            }
+
+        }
+    );
+
+        }
 
 
 
