@@ -2917,6 +2917,86 @@ MOBILE
     margin-bottom: 24px;
 }
 /* ==========================================
+   CREATOR MY CONTENT CARD
+========================================== */
+
+.creator-content-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.creator-content-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px;
+    background: #181818;
+    border: 1px solid rgba(255, 20, 147, 0.25);
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    text-align: left;
+}
+
+.creator-content-toggle:hover {
+    border-color: rgba(255, 20, 147, 0.55);
+}
+
+.creator-content-toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.creator-content-toggle-info strong {
+    color: #fff;
+    font-size: 16px;
+}
+
+.creator-content-toggle-info span {
+    color: #999;
+    font-size: 12px;
+}
+
+.creator-content-arrow {
+    flex-shrink: 0;
+    color: #ff1493;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.creator-content-panel {
+    padding: 16px;
+    background: #111;
+    border-left: 1px solid rgba(255, 20, 147, 0.18);
+    border-right: 1px solid rgba(255, 20, 147, 0.18);
+    border-bottom: 1px solid rgba(255, 20, 147, 0.18);
+    border-radius: 0 0 12px 12px;
+}
+
+.creator-content-panel.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+
+    .creator-content-toggle {
+        padding: 15px;
+    }
+
+    .creator-content-toggle-info strong {
+        font-size: 15px;
+    }
+
+    .creator-content-panel {
+        padding: 12px;
+    }
+
+}
+/* ==========================================
    CREATOR MY CONTENT
 ========================================== */
 
