@@ -545,10 +545,43 @@ if (
             document.getElementById("creatorContent");
 
         if (creatorContentList) {
-            myContentModalList.innerHTML =
-                creatorContentList.innerHTML;
-        }
+    myContentModalList.innerHTML =
+        creatorContentList.innerHTML;
 
+    const modalEditButtons =
+        myContentModalList.querySelectorAll(
+            ".creator-content-edit"
+        );
+
+    modalEditButtons.forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    const contentItem =
+                        button.closest(
+                            ".creator-content-item"
+                        );
+
+                    if (!contentItem) {
+                        return;
+                    }
+
+                    openCreatorEditModal(
+                        contentItem
+                    );
+
+                }
+            );
+
+        }
+    );
+                }
         myContentModal.classList.remove("hidden");
 
         document.body.style.overflow = "hidden";
