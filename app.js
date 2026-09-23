@@ -574,6 +574,14 @@ if (
 }
 
 alert("CONTENT ITEM FOUND");
+                    event.preventDefault();
+event.stopPropagation();
+
+alert("CALLING EDIT FUNCTION");
+
+openCreatorEditModal(
+    contentItem
+);
 
                     openCreatorEditModal(
                         contentItem
