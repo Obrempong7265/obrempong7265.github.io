@@ -5903,6 +5903,7 @@ document.addEventListener(
 function openCreatorEditModal(
     contentItem
 ) {
+    alert("EDIT FUNCTION STARTED");
 
     const existingModal =
         document.getElementById(
