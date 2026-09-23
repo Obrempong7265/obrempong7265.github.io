@@ -569,8 +569,11 @@ if (
                         );
 
                     if (!contentItem) {
-                        return;
-                    }
+    alert("CONTENT ITEM NOT FOUND");
+    return;
+}
+
+alert("CONTENT ITEM FOUND");
 
                     openCreatorEditModal(
                         contentItem
