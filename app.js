@@ -5822,7 +5822,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // ==========================================
 // CREATOR MY CONTENT EDIT — FRONTEND
 // ==========================================
-
 document.addEventListener(
     "click",
     function(event) {
@@ -5844,6 +5843,9 @@ document.addEventListener(
         if (!contentItem) {
             return;
         }
+
+        event.preventDefault();
+        event.stopPropagation();
 
         openCreatorEditModal(
             contentItem
