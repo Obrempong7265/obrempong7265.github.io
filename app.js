@@ -5909,6 +5909,7 @@ function openCreatorEditModal(
         document.getElementById(
             "creatorEditModal"
         );
+    alert("STEP 1 PASSED");
 
     if (existingModal) {
         existingModal.remove();
