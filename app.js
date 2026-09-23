@@ -5903,14 +5903,13 @@ document.addEventListener(
 function openCreatorEditModal(
     contentItem
 ) {
-    alert("EDIT FUNCTION STARTED");
+    
 
     const existingModal =
         document.getElementById(
             "creatorEditModal"
         );
-    alert("STEP 1 PASSED");
-
+    
     if (existingModal) {
         existingModal.remove();
     }
@@ -5919,18 +5918,17 @@ function openCreatorEditModal(
         contentItem.querySelector(
             ".creator-content-info h4"
         );
-    alert("STEP 2 PASSED");
-
+    
     const statusElement =
         contentItem.querySelector(
             ".creator-content-info p"
         );
-    alert("STEP 3 PASSED");
-
+    
     const stats =
         contentItem.querySelectorAll(
             ".creator-content-stats span"
         );
+    alert("STEP 4 PASSED");
 
     const currentTitle =
         titleElement
