@@ -5925,6 +5925,7 @@ function openCreatorEditModal(
         contentItem.querySelector(
             ".creator-content-info p"
         );
+    alert("STEP 3 PASSED");
 
     const stats =
         contentItem.querySelectorAll(
