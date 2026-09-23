@@ -5928,12 +5928,13 @@ function openCreatorEditModal(
         contentItem.querySelectorAll(
             ".creator-content-stats span"
         );
-    alert("STEP 4 PASSED");
+    
 
     const currentTitle =
         titleElement
             ? titleElement.textContent.trim()
             : "";
+    alert("STEP 5 PASSED");
 
     const currentDescription =
         contentItem.dataset.description || "";
