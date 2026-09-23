@@ -5919,6 +5919,7 @@ function openCreatorEditModal(
         contentItem.querySelector(
             ".creator-content-info h4"
         );
+    alert("STEP 2 PASSED");
 
     const statusElement =
         contentItem.querySelector(
