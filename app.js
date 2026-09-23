@@ -5941,14 +5941,15 @@ function openCreatorEditModal(
 
     const currentCategory =
         contentItem.dataset.category || "";
-    alert("STEP 7 PASSED");
-
+    
     const currentType =
         contentItem.dataset.contentType || "free";
+    alert("STEP 8 PASSED");
 
     const currentPrice =
         contentItem.dataset.price || "0";
-
+    
+alert("STEP 9 PASSED");
     const modal =
         document.createElement("div");
 
