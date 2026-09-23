@@ -560,7 +560,6 @@ if (
                 "click",
                 function(event) {
                     
-alert("EDIT BUTTON CLICKED");
                     event.preventDefault();
                     event.stopPropagation();
 
@@ -5881,9 +5880,7 @@ document.addEventListener(
         event.preventDefault();
         event.stopPropagation();
 
-        openCreatorEditModal(
-            contentItem
-        );
+        alert("OPENING EDIT MODAL");
 
     }
 );
