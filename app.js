@@ -5934,10 +5934,11 @@ function openCreatorEditModal(
         titleElement
             ? titleElement.textContent.trim()
             : "";
-    alert("STEP 5 PASSED");
-
+    
     const currentDescription =
         contentItem.dataset.description || "";
+    alert("STEP 6 PASSED");
+
 
     const currentCategory =
         contentItem.dataset.category || "";
