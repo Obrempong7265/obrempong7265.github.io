@@ -663,6 +663,90 @@ if (creatorContentFilter) {
     );
 
             }
+        // ==========================================
+// FULL MY CONTENT SEARCH + FILTER
+// ==========================================
+
+const myContentModalSearch =
+    document.getElementById("myContentModalSearch");
+
+const myContentModalFilter =
+    document.getElementById("myContentModalFilter");
+
+function filterMyContentModal() {
+
+    if (
+        !myContentModalSearch ||
+        !myContentModalFilter ||
+        !myContentModalList
+    ) {
+        return;
+    }
+
+    const searchTerm =
+        myContentModalSearch.value
+            .trim()
+            .toLowerCase();
+
+    const selectedFilter =
+        myContentModalFilter.value;
+
+    const contentItems =
+        myContentModalList.querySelectorAll(
+            ".creator-content-item"
+        );
+
+    contentItems.forEach(
+        function(item) {
+
+            const title =
+                item.querySelector(
+                    ".creator-content-info h4"
+                );
+
+            const contentTitle =
+                title
+                    ? title.textContent.toLowerCase()
+                    : "";
+
+            const contentType =
+                item.dataset.contentType || "all";
+
+            const matchesSearch =
+                contentTitle.includes(
+                    searchTerm
+                );
+
+            const matchesFilter =
+                selectedFilter === "all" ||
+                contentType === selectedFilter;
+
+            item.style.display =
+                matchesSearch &&
+                matchesFilter
+                    ? ""
+                    : "none";
+        }
+    );
+}
+
+if (myContentModalSearch) {
+
+    myContentModalSearch.addEventListener(
+        "input",
+        filterMyContentModal
+    );
+
+}
+
+if (myContentModalFilter) {
+
+    myContentModalFilter.addEventListener(
+        "change",
+        filterMyContentModal
+    );
+
+}
         
 // ==========================================
 // CREATOR MY CONTENT DELETE — FRONTEND
