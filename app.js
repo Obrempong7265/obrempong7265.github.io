@@ -559,7 +559,8 @@ if (
             button.addEventListener(
                 "click",
                 function(event) {
-
+                    
+alert("EDIT BUTTON CLICKED");
                     event.preventDefault();
                     event.stopPropagation();
 
