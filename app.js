@@ -5944,20 +5944,23 @@ function openCreatorEditModal(
     
     const currentType =
         contentItem.dataset.contentType || "free";
-    alert("STEP 8 PASSED");
+    
 
     const currentPrice =
         contentItem.dataset.price || "0";
     
-alert("STEP 9 PASSED");
+
     const modal =
         document.createElement("div");
+    alert("STEP 10 PASSED");
 
     modal.id =
         "creatorEditModal";
+    alert("STEP 11 PASSED");
 
     modal.className =
         "creator-edit-modal";
+    alert("STEP 12 PASSED");
 
     modal.innerHTML = `
 
