@@ -5937,11 +5937,11 @@ function openCreatorEditModal(
     
     const currentDescription =
         contentItem.dataset.description || "";
-    alert("STEP 6 PASSED");
-
+    
 
     const currentCategory =
         contentItem.dataset.category || "";
+    alert("STEP 7 PASSED");
 
     const currentType =
         contentItem.dataset.contentType || "free";
