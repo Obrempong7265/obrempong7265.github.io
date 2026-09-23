@@ -5823,37 +5823,34 @@ document.addEventListener("DOMContentLoaded", function () {
 // CREATOR MY CONTENT EDIT — FRONTEND
 // ==========================================
 
-const creatorEditButtons =
-    document.querySelectorAll(
-        ".creator-content-edit"
-    );
+document.addEventListener(
+    "click",
+    function(event) {
 
-creatorEditButtons.forEach(
-    function(button) {
+        const editButton =
+            event.target.closest(
+                ".creator-content-edit"
+            );
 
-        button.addEventListener(
-            "click",
-            function() {
+        if (!editButton) {
+            return;
+        }
 
-                const contentItem =
-                    button.closest(
-                        ".creator-content-item"
-                    );
+        const contentItem =
+            editButton.closest(
+                ".creator-content-item"
+            );
 
-                if (!contentItem) {
-                    return;
-                }
+        if (!contentItem) {
+            return;
+        }
 
-                openCreatorEditModal(
-                    contentItem
-                );
-
-            }
+        openCreatorEditModal(
+            contentItem
         );
 
     }
 );
-
 
 // ==========================================
 // CREATOR EDIT VIDEO MODAL
