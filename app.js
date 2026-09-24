@@ -796,43 +796,44 @@ if (myContentModalFilter) {
 // CREATOR MY CONTENT DELETE — FRONTEND
 // ==========================================
 
-const creatorDeleteButtons =
-    document.querySelectorAll(
-        ".creator-content-delete"
-    );
+document.addEventListener(
+    "click",
+    function(event) {
 
-creatorDeleteButtons.forEach(
-    function(button) {
+        const deleteButton =
+            event.target.closest(
+                ".creator-content-delete"
+            );
 
-        button.addEventListener(
-            "click",
-            function() {
+        if (!deleteButton) {
+            return;
+        }
 
-                const contentItem =
-                    button.closest(
-                        ".creator-content-item"
-                    );
+        const contentItem =
+            deleteButton.closest(
+                ".creator-content-item"
+            );
 
-                if (!contentItem) {
-                    return;
-                }
+        if (!contentItem) {
+            return;
+        }
 
-                const titleElement =
-                    contentItem.querySelector(
-                        ".creator-content-info h4"
-                    );
+        const titleElement =
+            contentItem.querySelector(
+                ".creator-content-info h4"
+            );
 
-                const title =
-                    titleElement
-                        ? titleElement.textContent.trim()
-                        : "this video";
+        const title =
+            titleElement
+                ? titleElement.textContent.trim()
+                : "this video";
 
-                showCreatorDeleteModal(
-                    contentItem,
-                    title
-                );
+        event.preventDefault();
+        event.stopPropagation();
 
-            }
+        showCreatorDeleteModal(
+            contentItem,
+            title
         );
 
     }
