@@ -6285,232 +6285,232 @@ function openCreatorEditModal(
         );
 
 
-    // ==========================================
-    // SAVE CHANGES
-    // ==========================================
+    
+// ==========================================
+// SAVE CHANGES
+// ==========================================
 
-    saveButton.addEventListener(
-        "click",
-        function() {
+saveButton.addEventListener(
+    "click",
+    function() {
 
-            const newTitle =
-                titleInput.value.trim();
+        const newTitle =
+            titleInput.value.trim();
 
-            const newDescription =
-                descriptionInput.value.trim();
+        const newDescription =
+            descriptionInput.value.trim();
 
-            const newCategory =
-                categoryInput.value.trim();
+        const newCategory =
+            categoryInput.value.trim();
 
-            const newType =
-                typeInput.value;
+        const newType =
+            typeInput.value;
 
-            let newPrice =
-                Number(
-                    priceInput.value
-                );
+        let newPrice =
+            Number(
+                priceInput.value
+            );
 
-            if (!newTitle) {
+        // ==================================
+        // VALIDATION
+        // ==================================
 
-                titleInput.focus();
+        if (!newTitle) {
+            titleInput.focus();
+            return;
+        }
 
-                return;
+        if (!newCategory) {
+            categoryInput.focus();
+            return;
+        }
 
-            }
+        if (
+            newType === "paid" &&
+            (
+                !Number.isFinite(newPrice) ||
+                newPrice <= 0
+            )
+        ) {
+            priceInput.focus();
+            return;
+        }
 
-            if (!newCategory) {
+        if (newType === "free") {
+            newPrice = 0;
+        }
 
-                categoryInput.focus();
+        // ==================================
+        // UPDATE CURRENT CARD
+        // ==================================
 
-                return;
-
-            }
-
-            if (
-                newType === "paid" &&
-                (
-                    !Number.isFinite(newPrice) ||
-                    newPrice <= 0
-                )
-            ) {
-
-                priceInput.focus();
-
-                return;
-
-            }
-
-            if (newType === "free") {
-                newPrice = 0;
-            }
-
-
-            // ==================================
-            // UPDATE CARD DATA
-            // ==================================
-
-            contentItem.dataset.contentType =
-                newType;
-
-            contentItem.dataset.category =
-                newCategory;
-
-            contentItem.dataset.description =
-                newDescription;
-
-            contentItem.dataset.price =
-                String(newPrice);
-    // ==================================
-// UPDATE ORIGINAL CARD IF EDITING
-// FULL MY CONTENT COPY
-// ==================================
-
-const originalContentList =
-    document.getElementById(
-        "creatorContent"
-    );
-
-if (
-    originalContentList &&
-    contentItem.parentElement ===
-        myContentModalList
-) {
-
-    const originalItems =
-        originalContentList.querySelectorAll(
-            ".creator-content-item"
-        );
-
-    const modalItems =
-        myContentModalList.querySelectorAll(
-            ".creator-content-item"
-        );
-
-    const modalIndex =
-        Array.from(modalItems).indexOf(
-            contentItem
-        );
-
-    const originalItem =
-        originalItems[modalIndex];
-
-    if (originalItem) {
-
-        originalItem.dataset.contentType =
+        contentItem.dataset.contentType =
             newType;
 
-        originalItem.dataset.category =
+        contentItem.dataset.category =
             newCategory;
 
-        originalItem.dataset.description =
+        contentItem.dataset.description =
             newDescription;
 
-        originalItem.dataset.price =
+        contentItem.dataset.price =
             String(newPrice);
 
-        const originalTitle =
-            originalItem.querySelector(
+        const currentTitle =
+            contentItem.querySelector(
                 ".creator-content-info h4"
             );
 
-        const originalStatus =
-            originalItem.querySelector(
+        const currentStatus =
+            contentItem.querySelector(
                 ".creator-content-info p"
             );
 
-        const originalStats =
-            originalItem.querySelectorAll(
+        const currentStats =
+            contentItem.querySelectorAll(
                 ".creator-content-stats span"
             );
 
-        if (originalTitle) {
-            originalTitle.textContent =
+        if (currentTitle) {
+            currentTitle.textContent =
                 newTitle;
         }
 
-        if (originalStatus) {
-            originalStatus.textContent =
+        if (currentStatus) {
+            currentStatus.textContent =
                 newType === "paid"
                     ? "🔒 Paid Content"
                     : "🟢 Free Content";
         }
 
-        if (originalStats.length >= 3) {
-            originalStats[2].textContent =
+        if (currentStats.length >= 3) {
+            currentStats[2].textContent =
                 "💰 " +
                 newPrice +
                 " Pi";
         }
 
-    }
+        // ==================================
+        // UPDATE ORIGINAL MY CONTENT CARD
+        // ==================================
+
+        const originalContentList =
+            document.getElementById(
+                "creatorContent"
+            );
+
+        if (
+            originalContentList &&
+            contentItem.parentElement ===
+                myContentModalList
+        ) {
+
+            const originalItems =
+                Array.from(
+                    originalContentList.querySelectorAll(
+                        ".creator-content-item"
+                    )
+                );
+
+            const modalItems =
+                Array.from(
+                    myContentModalList.querySelectorAll(
+                        ".creator-content-item"
+                    )
+                );
+
+            const modalIndex =
+                modalItems.indexOf(
+                    contentItem
+                );
+
+            if (modalIndex >= 0) {
+
+                const originalItem =
+                    originalItems[modalIndex];
+
+                if (originalItem) {
+
+                    originalItem.dataset.contentType =
+                        newType;
+
+                    originalItem.dataset.category =
+                        newCategory;
+
+                    originalItem.dataset.description =
+                        newDescription;
+
+                    originalItem.dataset.price =
+                        String(newPrice);
+
+                    const originalTitle =
+                        originalItem.querySelector(
+                            ".creator-content-info h4"
+                        );
+
+                    const originalStatus =
+                        originalItem.querySelector(
+                            ".creator-content-info p"
+                        );
+
+                    const originalStats =
+                        originalItem.querySelectorAll(
+                            ".creator-content-stats span"
+                        );
+
+                    if (originalTitle) {
+                        originalTitle.textContent =
+                            newTitle;
+                    }
+
+                    if (originalStatus) {
+                        originalStatus.textContent =
+                            newType === "paid"
+                                ? "🔒 Paid Content"
+                                : "🟢 Free Content";
+                    }
+
+                    if (originalStats.length >= 3) {
+                        originalStats[2].textContent =
+                            "💰 " +
+                            newPrice +
+                            " Pi";
+                    }
 
                 }
 
-
-            // ==================================
-            // UPDATE TITLE
-            // ==================================
-
-            if (titleElement) {
-
-                titleElement.textContent =
-                    newTitle;
-
-            }
-
-
-            // ==================================
-            // UPDATE STATUS
-            // ==================================
-
-            if (statusElement) {
-
-                statusElement.textContent =
-                    newType === "paid"
-                        ? "🔒 Paid Content"
-                        : "🟢 Free Content";
-
-            }
-
-
-            // ==================================
-            // UPDATE PRICE
-            // ==================================
-
-            if (stats.length >= 3) {
-
-                stats[2].textContent =
-                    "💰 " +
-                    newPrice +
-                    " Pi";
-
-            }
-
-
-            // ==================================
-            // CLOSE MODAL
-            // ==================================
-
-            closeModal();
-
-
-            // ==================================
-            // RE-APPLY SEARCH / FILTER
-            // ==================================
-
-            if (
-                typeof filterCreatorContent ===
-                "function"
-            ) {
-
-                filterCreatorContent();
-
             }
 
         }
-    );
 
+        // ==================================
+        // CLOSE MODAL
+        // ==================================
+
+        closeModal();
+
+        // ==================================
+        // RE-APPLY SEARCH / FILTER
+        // ==================================
+
+        if (
+            typeof filterCreatorContent ===
+            "function"
+        ) {
+            filterCreatorContent();
         }
+
+        // ==================================
+        // SUCCESS MESSAGE
+        // ==================================
+
+        showVideoCityNotification(
+            "Changes saved successfully."
+        );
+
+    }
+);
+    
 // ==========================================
 // CREATOR MY CONTENT EMPTY STATE
 // ==========================================
@@ -6630,6 +6630,3 @@ function showVideoCityNotification(
             4000
         );
 }
-showVideoCityNotification(
-    "Notification system is working correctly."
-);
