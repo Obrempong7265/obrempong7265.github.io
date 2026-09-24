@@ -984,8 +984,7 @@ function showCreatorDeleteModal(
         }
     );
 
-
-    confirmButton.addEventListener(
+confirmButton.addEventListener(
     "click",
     function() {
 
@@ -995,8 +994,13 @@ function showCreatorDeleteModal(
 
         updateCreatorContentEmptyState();
 
+        showVideoCityNotification(
+            "Video deleted successfully."
+        );
+
     }
 );
+    
 
 
     modal
