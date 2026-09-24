@@ -6510,7 +6510,7 @@ saveButton.addEventListener(
 
     }
 );
-    
+    } 
 // ==========================================
 // CREATOR MY CONTENT EMPTY STATE
 // ==========================================
