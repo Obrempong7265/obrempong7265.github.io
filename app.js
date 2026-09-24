@@ -6095,9 +6095,9 @@ function openCreatorEditModal(
         </div>
 
     `;
-    alert("STEP 13 PASSED");
 
     document.body.appendChild(modal);
+    alert("STEP 14 PASSED");
 
 
     // ==========================================
