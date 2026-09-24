@@ -6593,6 +6593,7 @@ function showVideoCityNotification(
     ) {
         return;
     }
+    
 
     titleElement.textContent =
         title;
@@ -6629,3 +6630,6 @@ function showVideoCityNotification(
             4000
         );
 }
+showVideoCityNotification(
+    "Notification system is working correctly."
+);
