@@ -626,11 +626,7 @@ event.stopPropagation();
 openCreatorEditModal(
     contentItem
 );
-
-                    openCreatorEditModal(
-                        contentItem
-                    );
-
+                    
                 }
             );
 
