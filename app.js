@@ -6557,4 +6557,75 @@ function updateCreatorContentEmptyState() {
 
             }
 
+// ==========================================
+// VIDEO CITY NOTIFICATION SYSTEM
+// ==========================================
 
+function showVideoCityNotification(
+    message,
+    title = "Success"
+) {
+
+    const notification =
+        document.getElementById(
+            "videoCityNotification"
+        );
+
+    const titleElement =
+        document.getElementById(
+            "videoCityNotificationTitle"
+        );
+
+    const messageElement =
+        document.getElementById(
+            "videoCityNotificationMessage"
+        );
+
+    const closeButton =
+        document.getElementById(
+            "videoCityNotificationClose"
+        );
+
+    if (
+        !notification ||
+        !titleElement ||
+        !messageElement
+    ) {
+        return;
+    }
+
+    titleElement.textContent =
+        title;
+
+    messageElement.textContent =
+        message;
+
+    notification.classList.remove(
+        "hidden"
+    );
+
+    if (closeButton) {
+        closeButton.onclick =
+            function() {
+                notification.classList.add(
+                    "hidden"
+                );
+            };
+    }
+
+    clearTimeout(
+        window.videoCityNotificationTimer
+    );
+
+    window.videoCityNotificationTimer =
+        setTimeout(
+            function() {
+
+                notification.classList.add(
+                    "hidden"
+                );
+
+            },
+            4000
+        );
+}
