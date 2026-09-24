@@ -6360,6 +6360,91 @@ function openCreatorEditModal(
 
             contentItem.dataset.price =
                 String(newPrice);
+    // ==================================
+// UPDATE ORIGINAL CARD IF EDITING
+// FULL MY CONTENT COPY
+// ==================================
+
+const originalContentList =
+    document.getElementById(
+        "creatorContent"
+    );
+
+if (
+    originalContentList &&
+    contentItem.parentElement ===
+        myContentModalList
+) {
+
+    const originalItems =
+        originalContentList.querySelectorAll(
+            ".creator-content-item"
+        );
+
+    const modalItems =
+        myContentModalList.querySelectorAll(
+            ".creator-content-item"
+        );
+
+    const modalIndex =
+        Array.from(modalItems).indexOf(
+            contentItem
+        );
+
+    const originalItem =
+        originalItems[modalIndex];
+
+    if (originalItem) {
+
+        originalItem.dataset.contentType =
+            newType;
+
+        originalItem.dataset.category =
+            newCategory;
+
+        originalItem.dataset.description =
+            newDescription;
+
+        originalItem.dataset.price =
+            String(newPrice);
+
+        const originalTitle =
+            originalItem.querySelector(
+                ".creator-content-info h4"
+            );
+
+        const originalStatus =
+            originalItem.querySelector(
+                ".creator-content-info p"
+            );
+
+        const originalStats =
+            originalItem.querySelectorAll(
+                ".creator-content-stats span"
+            );
+
+        if (originalTitle) {
+            originalTitle.textContent =
+                newTitle;
+        }
+
+        if (originalStatus) {
+            originalStatus.textContent =
+                newType === "paid"
+                    ? "🔒 Paid Content"
+                    : "🟢 Free Content";
+        }
+
+        if (originalStats.length >= 3) {
+            originalStats[2].textContent =
+                "💰 " +
+                newPrice +
+                " Pi";
+        }
+
+    }
+
+                }
 
 
             // ==================================
