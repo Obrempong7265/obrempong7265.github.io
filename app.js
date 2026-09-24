@@ -547,6 +547,50 @@ if (
         if (creatorContentList) {
     myContentModalList.innerHTML =
         creatorContentList.innerHTML;
+            const modalDeleteButtons =
+    myContentModalList.querySelectorAll(
+        ".creator-content-delete"
+    );
+
+modalDeleteButtons.forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function(event) {
+
+                const contentItem =
+                    button.closest(
+                        ".creator-content-item"
+                    );
+
+                if (!contentItem) {
+                    return;
+                }
+
+                const titleElement =
+                    contentItem.querySelector(
+                        ".creator-content-info h4"
+                    );
+
+                const title =
+                    titleElement
+                        ? titleElement.textContent.trim()
+                        : "this video";
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                showCreatorDeleteModal(
+                    contentItem,
+                    title
+                );
+
+            }
+        );
+
+    }
+);
 
     const modalEditButtons =
         myContentModalList.querySelectorAll(
