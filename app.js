@@ -569,15 +569,15 @@ if (
                         );
 
                     if (!contentItem) {
-    alert("CONTENT ITEM NOT FOUND");
+    
     return;
 }
 
-alert("CONTENT ITEM FOUND");
+
                     event.preventDefault();
 event.stopPropagation();
 
-alert("CALLING EDIT FUNCTION");
+
 
 openCreatorEditModal(
     contentItem
@@ -5891,7 +5891,7 @@ document.addEventListener(
         event.preventDefault();
         event.stopPropagation();
 
-        alert("OPENING EDIT MODAL");
+        
 
     }
 );
@@ -6097,7 +6097,7 @@ function openCreatorEditModal(
     `;
 
     document.body.appendChild(modal);
-    alert("STEP 14 PASSED");
+    
 
 
     // ==========================================
