@@ -3510,7 +3510,8 @@ MOBILE
 .creator-edit-modal {
     position: fixed;
     inset: 0;
-    z-index: 9998;
+  z-index: 2147483647;
+    
 }
 
 .creator-edit-overlay {
