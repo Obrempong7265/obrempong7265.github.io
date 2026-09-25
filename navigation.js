@@ -20,6 +20,8 @@ const upload =
 
 const studio =
     document.getElementById("studio");
+    const messages =
+    document.getElementById("messages");
 
 
 const profile =
