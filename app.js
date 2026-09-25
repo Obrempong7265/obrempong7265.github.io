@@ -7327,3 +7327,30 @@ function getVideoCityAvatarHTML(
 // ==========================================
 
 window.videoCityProfileAvatarUrl = null;
+// ==========================================
+// VIDEO CITY - UPDATE MESSAGE AVATARS
+// ==========================================
+
+function updateVideoCityMessageAvatars() {
+
+    const imageUrl =
+        window.videoCityProfileAvatarUrl;
+
+    const avatarElements =
+        document.querySelectorAll(
+            ".message-avatar, .conversation-avatar"
+        );
+
+    avatarElements.forEach(
+        function (avatarElement) {
+
+            avatarElement.innerHTML =
+                getVideoCityAvatarHTML(
+                    imageUrl,
+                    "Profile picture"
+                );
+
+        }
+    );
+
+}
