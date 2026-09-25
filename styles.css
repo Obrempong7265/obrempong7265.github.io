@@ -5223,3 +5223,263 @@ MOBILE
 .profile-card .muted {
     text-align: center;
 }
+/* ==========================================
+   VIDEO CITY - PUBLIC USER PROFILE
+========================================== */
+
+.public-profile-header {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 20px 10px 24px;
+
+    text-align: center;
+}
+
+.public-profile-back-button {
+    position: absolute;
+
+    top: 10px;
+    left: 0;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 20, 147, 0.35);
+    border-radius: 50%;
+
+    background: #181818;
+
+    color: #ffffff;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+.public-profile-back-button:hover {
+    border-color: #ff1493;
+}
+
+.public-profile-avatar {
+    width: 100px;
+    height: 100px;
+
+    margin-bottom: 14px;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ff1493;
+
+    border: 3px solid rgba(255, 20, 147, 0.45);
+
+    color: #ffffff;
+
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.public-profile-header h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 21px;
+}
+
+.public-profile-header > p {
+    margin: 6px 0 18px;
+
+    color: #999999;
+
+    font-size: 14px;
+}
+
+.public-profile-stats {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+
+    max-width: 420px;
+
+    margin-bottom: 20px;
+}
+
+.public-profile-stat {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 0 12px;
+
+    border-right: 1px solid #303030;
+}
+
+.public-profile-stat:last-child {
+    border-right: none;
+}
+
+.public-profile-stat strong {
+    color: #ffffff;
+
+    font-size: 17px;
+}
+
+.public-profile-stat span {
+    color: #999999;
+
+    font-size: 12px;
+}
+
+.public-profile-actions {
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+
+    width: 100%;
+    max-width: 420px;
+}
+
+.public-profile-follow-button,
+.public-profile-message-button {
+    flex: 1;
+
+    min-height: 42px;
+
+    padding: 10px 16px;
+
+    border-radius: 22px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.public-profile-follow-button {
+    border: none;
+
+    background: #ff1493;
+
+    color: #ffffff;
+}
+
+.public-profile-follow-button:hover {
+    opacity: 0.9;
+}
+
+.public-profile-message-button {
+    border: 1px solid #3a3a3a;
+
+    background: #181818;
+
+    color: #ffffff;
+}
+
+.public-profile-message-button:hover {
+    border-color: #ff1493;
+}
+
+
+/* ==========================================
+   PUBLIC PROFILE CONTENT
+========================================== */
+
+.public-profile-content {
+    margin-top: 10px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #292929;
+}
+
+.public-profile-content h3 {
+    margin: 0 0 16px;
+
+    color: #ffffff;
+
+    font-size: 17px;
+}
+
+.public-profile-content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.public-profile-empty {
+    padding: 35px 20px;
+
+    text-align: center;
+
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    border-radius: 14px;
+}
+
+.public-profile-empty > div {
+    margin-bottom: 10px;
+
+    font-size: 32px;
+}
+
+.public-profile-empty h4 {
+    margin: 0 0 6px;
+
+    color: #ffffff;
+
+    font-size: 15px;
+}
+
+.public-profile-empty p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 13px;
+}
+
+
+@media (max-width: 600px) {
+
+    .public-profile-avatar {
+        width: 88px;
+        height: 88px;
+
+        font-size: 32px;
+    }
+
+    .public-profile-header h2 {
+        font-size: 19px;
+    }
+
+    .public-profile-stat strong {
+        font-size: 15px;
+    }
+
+    .public-profile-actions {
+        max-width: 100%;
+    }
+
+}
