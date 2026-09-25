@@ -5483,3 +5483,65 @@ MOBILE
     }
 
 }
+.profile-follow-stats {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+
+    margin: 18px 0;
+
+    padding: 14px 0;
+
+    background: #181818;
+
+    border: 1px solid #292929;
+    border-radius: 14px;
+}
+
+.profile-follow-stat {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 4px 12px;
+
+    border-right: 1px solid #303030;
+}
+
+.profile-follow-stat:last-child {
+    border-right: none;
+}
+
+.profile-follow-stat strong {
+    color: #ffffff;
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.profile-follow-stat span {
+    color: #999999;
+
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+
+    .profile-follow-stats {
+        margin: 16px 0;
+    }
+
+    .profile-follow-stat strong {
+        font-size: 16px;
+    }
+
+    .profile-follow-stat span {
+        font-size: 12px;
+    }
+
+}
