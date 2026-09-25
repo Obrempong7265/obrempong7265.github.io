@@ -70,7 +70,10 @@ function showPage(page) {
     if (studio) {
         studio.classList.add("hidden");
     }
-
+    
+if (messages) {
+    messages.classList.add("hidden");
+    }
 
     if (profile) {
         profile.classList.add("hidden");
