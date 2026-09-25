@@ -4455,3 +4455,92 @@ MOBILE
     }
 
 }
+/* ==========================================
+   VIDEO CITY - MESSAGES
+========================================== */
+
+.messages-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+.messages-header h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 24px;
+}
+
+.messages-header p {
+    margin: 5px 0 0;
+
+    color: #aaaaaa;
+
+    font-size: 14px;
+}
+
+.messages-search-button {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 20, 147, 0.35);
+    border-radius: 50%;
+
+    background: #181818;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+.messages-search-button:hover {
+    border-color: #ff1493;
+}
+
+.messages-search-box {
+    margin-bottom: 18px;
+}
+
+.messages-search-box input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 13px 16px;
+
+    border: 1px solid #333333;
+    border-radius: 12px;
+
+    background: #181818;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+.messages-search-box input:focus {
+    border-color: #ff1493;
+}
+
+.messages-search-box input::placeholder {
+    color: #777777;
+}
+
+.messages-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
