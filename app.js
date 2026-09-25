@@ -7359,3 +7359,85 @@ function updateVideoCityMessageAvatars() {
     );
 
 }
+// ==========================================
+// VIDEO CITY - PUBLIC PROFILE
+// ==========================================
+
+function openVideoCityPublicProfile(
+    username = "Video City User"
+) {
+
+    const publicProfile =
+        document.getElementById(
+            "publicProfile"
+        );
+
+    const profileUsername =
+        document.getElementById(
+            "publicProfileUsername"
+        );
+
+    const profileBio =
+        document.getElementById(
+            "publicProfileBio"
+        );
+
+    if (!publicProfile) {
+        return;
+    }
+
+
+    if (profileUsername) {
+
+        profileUsername.textContent =
+            username;
+
+    }
+
+
+    if (profileBio) {
+
+        profileBio.textContent =
+            "Video City creator";
+
+    }
+
+
+    publicProfile.classList.remove(
+        "hidden"
+    );
+
+}
+// ==========================================
+// PUBLIC PROFILE - TEMPORARY TEST
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const messagesList =
+            document.getElementById(
+                "messagesList"
+            );
+
+        if (!messagesList) {
+            return;
+        }
+
+
+        messagesList.addEventListener(
+            "contextmenu",
+            function (event) {
+
+                event.preventDefault();
+
+                openVideoCityPublicProfile(
+                    "Video City User"
+                );
+
+            }
+        );
+
+    }
+);
