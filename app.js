@@ -7452,3 +7452,54 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// VIDEO CITY - PUBLIC PROFILE FOLLOW BUTTON
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const followButton =
+            document.getElementById(
+                "publicProfileFollowButton"
+            );
+
+        if (!followButton) {
+            return;
+        }
+
+        let isFollowing = false;
+
+        followButton.addEventListener(
+            "click",
+            function () {
+
+                isFollowing =
+                    !isFollowing;
+
+                if (isFollowing) {
+
+                    followButton.textContent =
+                        "Following";
+
+                    showVideoCityNotification(
+                        "You are now following this user."
+                    );
+
+                } else {
+
+                    followButton.textContent =
+                        "Follow";
+
+                    showVideoCityNotification(
+                        "You unfollowed this user."
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
