@@ -6634,3 +6634,346 @@ function showVideoCityNotification(
             4000
         );
 }
+// ==========================================
+// VIDEO CITY - MESSAGE CONVERSATION
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const messagesList =
+            document.getElementById(
+                "messagesList"
+            );
+
+        const messagesScreen =
+            document.getElementById(
+                "messages"
+            );
+
+        const conversationScreen =
+            document.getElementById(
+                "messageConversation"
+            );
+
+        const conversationBackButton =
+            document.getElementById(
+                "conversationBackButton"
+            );
+
+
+        // ======================================
+        // OPEN CONVERSATION
+        // ======================================
+
+        if (messagesList) {
+
+            messagesList.addEventListener(
+                "click",
+                function (event) {
+
+                    const conversation =
+                        event.target.closest(
+                            ".message-preview"
+                        );
+
+                    if (!conversation) {
+                        return;
+                    }
+
+
+                    if (messagesScreen) {
+
+                        messagesScreen.classList.add(
+                            "hidden"
+                        );
+
+                    }
+
+
+                    if (conversationScreen) {
+
+                        conversationScreen.classList.remove(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        // ======================================
+        // BACK TO MESSAGES
+        // ======================================
+
+        if (conversationBackButton) {
+
+            conversationBackButton.addEventListener(
+                "click",
+                function () {
+
+                    if (conversationScreen) {
+
+                        conversationScreen.classList.add(
+                            "hidden"
+                        );
+
+                    }
+
+
+                    if (messagesScreen) {
+
+                        messagesScreen.classList.remove(
+                            "hidden"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+// ==========================================
+// VIDEO CITY - SEND MESSAGE
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const messageInput =
+            document.getElementById(
+                "messageInput"
+            );
+
+        const messageSendButton =
+            document.getElementById(
+                "messageSendButton"
+            );
+
+        const conversationMessages =
+            document.getElementById(
+                "conversationMessages"
+            );
+
+
+        if (
+            !messageInput ||
+            !messageSendButton ||
+            !conversationMessages
+        ) {
+            return;
+        }
+
+
+        function sendMessage() {
+
+            const message =
+                messageInput.value.trim();
+
+            if (!message) {
+                return;
+            }
+
+
+            const bubble =
+                document.createElement("div");
+
+            bubble.className =
+                "message-bubble sent";
+
+            bubble.textContent =
+                message;
+
+
+            conversationMessages.appendChild(
+                bubble
+            );
+
+
+            messageInput.value = "";
+
+            messageInput.style.height =
+                "44px";
+
+
+            conversationMessages.scrollTop =
+                conversationMessages.scrollHeight;
+
+        }
+
+
+        // ======================================
+        // SEND BUTTON
+        // ======================================
+
+        messageSendButton.addEventListener(
+            "click",
+            function () {
+
+                sendMessage();
+
+            }
+        );
+
+
+        // ======================================
+        // ENTER = NEW LINE
+        // ======================================
+
+        messageInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    // Enter creates a new line.
+                    // It does NOT send the message.
+
+                    return;
+
+                }
+
+            }
+        );
+
+
+        // ======================================
+        // AUTO-GROW TEXT BOX
+        // ======================================
+
+        messageInput.addEventListener(
+            "input",
+            function () {
+
+                this.style.height =
+                    "auto";
+
+                this.style.height =
+                    Math.min(
+                        this.scrollHeight,
+                        120
+                    ) + "px";
+
+            }
+        );
+
+    }
+);
+// ==========================================
+// VIDEO CITY - MESSAGE ATTACHMENTS
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const attachmentButton =
+            document.getElementById(
+                "messageAttachmentButton"
+            );
+
+        if (!attachmentButton) {
+            return;
+        }
+
+
+        attachmentButton.addEventListener(
+            "click",
+            function () {
+
+                const existingMenu =
+                    document.getElementById(
+                        "messageAttachmentMenu"
+                    );
+
+                if (existingMenu) {
+
+                    existingMenu.remove();
+
+                    return;
+
+                }
+
+
+                const menu =
+                    document.createElement("div");
+
+                menu.id =
+                    "messageAttachmentMenu";
+
+                menu.className =
+                    "message-attachment-menu";
+
+                menu.innerHTML = `
+                    <button
+                        type="button"
+                        class="message-attachment-option"
+                        data-attachment="photo">
+
+                        📷
+                        <span>Photo</span>
+
+                    </button>
+
+                    <button
+                        type="button"
+                        class="message-attachment-option"
+                        data-attachment="video">
+
+                        🎥
+                        <span>Video</span>
+
+                    </button>
+                `;
+
+
+                attachmentButton
+                    .parentElement
+                    .appendChild(menu);
+
+
+                const options =
+                    menu.querySelectorAll(
+                        ".message-attachment-option"
+                    );
+
+
+                options.forEach(
+                    function (option) {
+
+                        option.addEventListener(
+                            "click",
+                            function () {
+
+                                const type =
+                                    option.dataset.attachment;
+
+                                showVideoCityNotification(
+                                    type === "photo"
+                                        ? "Photo attachment selected."
+                                        : "Video attachment selected."
+                                );
+
+                                menu.remove();
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
