@@ -7021,6 +7021,8 @@ document.addEventListener(
                     document.createElement(
                         "input"
                     );
+                fileInput.dataset.messageMedia =
+    "true";
 
                 fileInput.type =
                     "file";
@@ -7083,14 +7085,15 @@ document.addEventListener(
 
                 const input =
                     event.target;
-
-                if (
-                    input.type !== "file" ||
-                    !input.files ||
-                    !input.files[0]
-                ) {
-                    return;
-                }
+if (
+    input.type !== "file" ||
+    input.dataset.messageMedia !== "true" ||
+    !input.files ||
+    !input.files[0]
+) {
+    return;
+}
+                
 
                 const file =
                     input.files[0];
