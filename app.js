@@ -7194,3 +7194,99 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// VIDEO CITY - PROFILE AVATAR
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const uploadButton =
+            document.getElementById(
+                "profileAvatarUploadButton"
+            );
+
+        const avatarInput =
+            document.getElementById(
+                "profileAvatarInput"
+            );
+
+        const avatar =
+            document.getElementById(
+                "profileAvatar"
+            );
+
+
+        if (
+            !uploadButton ||
+            !avatarInput ||
+            !avatar
+        ) {
+            return;
+        }
+
+
+        uploadButton.addEventListener(
+            "click",
+            function () {
+
+                avatarInput.click();
+
+            }
+        );
+
+
+        avatarInput.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    avatarInput.files &&
+                    avatarInput.files[0];
+
+                if (!file) {
+                    return;
+                }
+
+
+                if (
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    showVideoCityNotification(
+                        "Please select an image file.",
+                        "Invalid File"
+                    );
+
+                    avatarInput.value = "";
+
+                    return;
+
+                }
+
+
+                const imageUrl =
+                    URL.createObjectURL(
+                        file
+                    );
+
+
+                avatar.innerHTML = `
+                    <img
+                        src="${imageUrl}"
+                        alt="Profile picture">
+                `;
+
+
+                showVideoCityNotification(
+                    "Your profile picture has been updated."
+                );
+
+            }
+        );
+
+    }
+);
