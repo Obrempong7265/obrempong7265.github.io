@@ -7269,16 +7269,20 @@ document.addEventListener(
 
 
                 const imageUrl =
-                    URL.createObjectURL(
-                        file
-                    );
+    URL.createObjectURL(
+        file
+    );
 
 
-                avatar.innerHTML = `
-                    <img
-                        src="${imageUrl}"
-                        alt="Profile picture">
-                `;
+window.videoCityProfileAvatarUrl =
+    imageUrl;
+
+
+avatar.innerHTML =
+    getVideoCityAvatarHTML(
+        imageUrl,
+        "Profile picture"
+    );
 
 
                 showVideoCityNotification(
@@ -7290,3 +7294,36 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// VIDEO CITY - REUSABLE AVATAR SYSTEM
+// ==========================================
+
+function getVideoCityAvatarHTML(
+    imageUrl = null,
+    altText = "Video City user"
+) {
+
+    if (imageUrl) {
+
+        return `
+            <img
+                src="${imageUrl}"
+                alt="${altText}"
+                class="video-city-avatar-image">
+        `;
+
+    }
+
+
+    return `
+        <span class="video-city-default-avatar">
+            ▶
+        </span>
+    `;
+
+}
+// ==========================================
+// VIDEO CITY - CURRENT PROFILE AVATAR
+// ==========================================
+
+window.videoCityProfileAvatarUrl = null;
