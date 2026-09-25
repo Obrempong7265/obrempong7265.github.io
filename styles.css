@@ -4859,3 +4859,81 @@ MOBILE
 .message-attachment-option span {
     font-size: 14px;
 }
+/* ==========================================
+   MESSAGE MEDIA PREVIEW
+========================================== */
+
+.message-media-preview {
+    position: relative;
+
+    align-self: flex-end;
+
+    width: min(280px, 75%);
+
+    margin-top: 8px;
+
+    padding: 6px;
+
+    background: #181818;
+
+    border: 1px solid rgba(255, 20, 147, 0.35);
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+.message-media-preview img,
+.message-media-preview video {
+    display: block;
+
+    width: 100%;
+    max-height: 320px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+}
+
+.message-media-remove {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    color: #ffffff;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.message-media-remove:hover {
+    background: #ff1493;
+}
+
+@media (max-width: 600px) {
+
+    .message-media-preview {
+        width: 82%;
+    }
+
+    .message-media-preview img,
+    .message-media-preview video {
+        max-height: 260px;
+    }
+
+      }
