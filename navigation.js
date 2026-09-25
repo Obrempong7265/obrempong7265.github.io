@@ -22,6 +22,10 @@ const studio =
     document.getElementById("studio");
     const messages =
     document.getElementById("messages");
+    const messageConversation =
+    document.getElementById(
+        "messageConversation"
+    );
 
 
 const profile =
@@ -73,6 +77,11 @@ function showPage(page) {
     
 if (messages) {
     messages.classList.add("hidden");
+    }
+    if (messageConversation) {
+    messageConversation.classList.add(
+        "hidden"
+    );
     }
 
     if (profile) {
