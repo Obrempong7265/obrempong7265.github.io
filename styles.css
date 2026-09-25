@@ -5066,3 +5066,146 @@ MOBILE
 .conversation-avatar {
     background: #ff1493;
   }
+/* ==========================================
+   VIDEO CITY - MESSAGE PREVIEW
+========================================== */
+
+.message-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 12px 10px;
+
+    border: 1px solid transparent;
+    border-radius: 14px;
+
+    background: #181818;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.message-preview:hover {
+    background: #202020;
+
+    border-color:
+        rgba(255, 20, 147, 0.25);
+}
+
+
+/* ==========================================
+   MESSAGE AVATAR
+========================================== */
+
+.message-avatar {
+    width: 52px;
+    height: 52px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background: #ff1493;
+}
+
+
+/* ==========================================
+   MESSAGE PREVIEW CONTENT
+========================================== */
+
+.message-preview-content {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+/* ==========================================
+   NAME + TIME
+========================================== */
+
+.message-preview-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 5px;
+}
+
+.message-preview-top strong {
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.message-preview-top span {
+    flex-shrink: 0;
+
+    color: #888888;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================
+   LAST MESSAGE
+========================================== */
+
+.message-preview-content p {
+    margin: 0;
+
+    overflow: hidden;
+
+    color: #999999;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .message-preview {
+        padding: 11px 8px;
+    }
+
+    .message-avatar {
+        width: 48px;
+        height: 48px;
+    }
+
+    .message-preview-top strong {
+        font-size: 14px;
+    }
+
+    .message-preview-content p {
+        font-size: 12px;
+    }
+
+}
