@@ -6977,3 +6977,220 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// VIDEO CITY - MESSAGE MEDIA PICKER
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const attachmentMenu =
+            document.getElementById(
+                "messageAttachmentMenu"
+            );
+
+        // The menu is created dynamically,
+        // so use document-level click handling.
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const option =
+                    event.target.closest(
+                        ".message-attachment-option"
+                    );
+
+                if (!option) {
+                    return;
+                }
+
+                const type =
+                    option.dataset.attachment;
+
+                if (
+                    type !== "photo" &&
+                    type !== "video"
+                ) {
+                    return;
+                }
+
+
+                const fileInput =
+                    document.createElement(
+                        "input"
+                    );
+
+                fileInput.type =
+                    "file";
+
+
+                if (type === "photo") {
+
+                    fileInput.accept =
+                        "image/*";
+
+                } else {
+
+                    fileInput.accept =
+                        "video/*";
+
+                }
+
+
+                fileInput.addEventListener(
+                    "change",
+                    function () {
+
+                        const file =
+                            fileInput.files &&
+                            fileInput.files[0];
+
+                        if (!file) {
+                            return;
+                        }
+
+
+                        showVideoCityNotification(
+                            type === "photo"
+                                ? "Photo selected."
+                                : "Video selected."
+                        );
+
+                    }
+                );
+
+
+                fileInput.click();
+
+            }
+        );
+
+    }
+);
+// ==========================================
+// VIDEO CITY - MEDIA PREVIEW
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        document.addEventListener(
+            "change",
+            function (event) {
+
+                const input =
+                    event.target;
+
+                if (
+                    input.type !== "file" ||
+                    !input.files ||
+                    !input.files[0]
+                ) {
+                    return;
+                }
+
+                const file =
+                    input.files[0];
+
+                const conversationMessages =
+                    document.getElementById(
+                        "conversationMessages"
+                    );
+
+                if (!conversationMessages) {
+                    return;
+                }
+
+
+                const preview =
+                    document.createElement("div");
+
+                preview.className =
+                    "message-media-preview";
+
+
+                const fileUrl =
+                    URL.createObjectURL(file);
+
+
+                if (
+                    file.type.startsWith("image/")
+                ) {
+
+                    preview.innerHTML = `
+                        <img
+                            src="${fileUrl}"
+                            alt="Selected photo">
+
+                        <button
+                            type="button"
+                            class="message-media-remove">
+                            ×
+                        </button>
+                    `;
+
+                } else if (
+                    file.type.startsWith("video/")
+                ) {
+
+                    preview.innerHTML = `
+                        <video
+                            src="${fileUrl}"
+                            controls>
+                        </video>
+
+                        <button
+                            type="button"
+                            class="message-media-remove">
+                            ×
+                        </button>
+                    `;
+
+                } else {
+
+                    URL.revokeObjectURL(
+                        fileUrl
+                    );
+
+                    return;
+                }
+
+
+                conversationMessages.appendChild(
+                    preview
+                );
+
+
+                const removeButton =
+                    preview.querySelector(
+                        ".message-media-remove"
+                    );
+
+                if (removeButton) {
+
+                    removeButton.addEventListener(
+                        "click",
+                        function () {
+
+                            URL.revokeObjectURL(
+                                fileUrl
+                            );
+
+                            preview.remove();
+
+                        }
+                    );
+
+                }
+
+
+                conversationMessages.scrollTop =
+                    conversationMessages.scrollHeight;
+
+            }
+        );
+
+    }
+);
