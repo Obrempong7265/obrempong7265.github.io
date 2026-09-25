@@ -4791,3 +4791,71 @@ MOBILE
     }
 
   }
+/* ==========================================
+   MESSAGE ATTACHMENT MENU
+========================================== */
+
+.message-attachment-menu {
+    position: absolute;
+
+    bottom: 58px;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    min-width: 150px;
+
+    padding: 8px;
+
+    background: #181818;
+
+    border: 1px solid rgba(255, 20, 147, 0.35);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.55);
+
+    z-index: 1000;
+}
+
+.conversation-composer {
+    position: relative;
+}
+
+.message-attachment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.message-attachment-option:hover {
+    background: rgba(255, 20, 147, 0.15);
+}
+
+.message-attachment-option:first-child {
+    font-size: 18px;
+}
+
+.message-attachment-option span {
+    font-size: 14px;
+}
