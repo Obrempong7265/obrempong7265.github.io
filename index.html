@@ -379,7 +379,89 @@
             </div>
 
     </section>
+    
+<!-- ======================================
+     MESSAGE CONVERSATION
+======================================= -->
 
+<section
+    id="messageConversation"
+    class="panel hidden">
+
+    <div class="conversation-header">
+
+        <button
+            type="button"
+            id="conversationBackButton"
+            class="conversation-back-button"
+            aria-label="Back to Messages">
+            ←
+        </button>
+
+        <div class="conversation-user">
+
+            <div class="conversation-avatar">
+                ▶
+            </div>
+
+            <div>
+                <h2 id="conversationUserName">
+                    Video City User
+                </h2>
+
+                <span id="conversationUserStatus">
+                    Online
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="conversationMessages"
+        class="conversation-messages">
+
+        <div class="message-bubble received">
+            Hello! Welcome to Video City.
+        </div>
+
+        <div class="message-bubble sent">
+            Thank you! 👋
+        </div>
+
+    </div>
+
+
+    <div class="conversation-composer">
+
+        <button
+            type="button"
+            id="messageAttachmentButton"
+            class="message-attachment-button"
+            aria-label="Attach photo or video">
+            +
+        </button>
+
+        <textarea
+            id="messageInput"
+            class="message-input"
+            rows="1"
+            placeholder="Write a message..."
+            autocomplete="off"></textarea>
+
+        <button
+            type="button"
+            id="messageSendButton"
+            class="message-send-button"
+            aria-label="Send message">
+            ➤
+        </button>
+
+    </div>
+
+</section>
         <!-- ======================================
              UPLOAD
         ======================================= -->
