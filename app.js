@@ -7401,6 +7401,17 @@ function openVideoCityPublicProfile(
             "Video City creator";
 
     }
+    document
+    .querySelectorAll(".panel")
+    .forEach(
+        function (panel) {
+
+            panel.classList.add(
+                "hidden"
+            );
+
+        }
+    );
 
 
     publicProfile.classList.remove(
