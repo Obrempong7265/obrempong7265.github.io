@@ -26,6 +26,10 @@ const studio =
     document.getElementById(
         "messageConversation"
     );
+    const publicProfile =
+    document.getElementById(
+        "publicProfile"
+    );
 
 
 const profile =
@@ -83,6 +87,11 @@ if (messages) {
         "hidden"
     );
     }
+    if (publicProfile) {
+    publicProfile.classList.add(
+        "hidden"
+    );
+}
 
     if (profile) {
         profile.classList.add("hidden");
