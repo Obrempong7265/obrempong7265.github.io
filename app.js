@@ -6641,6 +6641,7 @@ function showVideoCityNotification(
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+        updateVideoCityMessageAvatars();
 
         const messagesList =
             document.getElementById(
@@ -7276,6 +7277,7 @@ document.addEventListener(
 
 window.videoCityProfileAvatarUrl =
     imageUrl;
+            updateVideoCityMessageAvatars();    
 
 
 avatar.innerHTML =
