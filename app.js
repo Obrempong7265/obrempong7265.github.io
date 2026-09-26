@@ -6662,7 +6662,56 @@ document.addEventListener(
             document.getElementById(
                 "conversationBackButton"
             );
+        
+// ======================================
+// CONVERSATION USER → PUBLIC PROFILE
+// ======================================
 
+const conversationAvatar =
+    document.querySelector(
+        ".conversation-avatar"
+    );
+
+const conversationUserName =
+    document.getElementById(
+        "conversationUserName"
+    );
+
+
+if (conversationAvatar) {
+
+    conversationAvatar.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            openVideoCityPublicProfile(
+                "Video City User"
+            );
+
+        }
+    );
+
+}
+
+
+if (conversationUserName) {
+
+    conversationUserName.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            openVideoCityPublicProfile(
+                conversationUserName.textContent.trim()
+            );
+
+        }
+    );
+
+}
 
         // ======================================
 // OPEN CONVERSATION / PUBLIC PROFILE
