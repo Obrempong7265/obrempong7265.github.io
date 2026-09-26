@@ -7880,3 +7880,30 @@ followListButtons.forEach(
 
     }
 );
+// ======================================
+// FOLLOW LIST AVATAR → PUBLIC PROFILE
+// ======================================
+
+const followListAvatars =
+    document.querySelectorAll(
+        ".follow-list-user-avatar"
+    );
+
+followListAvatars.forEach(
+    function (avatar) {
+
+        avatar.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                openVideoCityPublicProfile(
+                    "Video City User"
+                );
+
+            }
+        );
+
+    }
+);
