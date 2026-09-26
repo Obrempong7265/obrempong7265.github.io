@@ -7494,6 +7494,17 @@ document.addEventListener(
                             "1";
 
                     }
+                    const followingCount =
+    document.getElementById(
+        "profileFollowingCount"
+    );
+
+if (followingCount) {
+
+    followingCount.textContent =
+        "1";
+
+}
 
                     showVideoCityNotification(
                         "You are now following this user."
@@ -7515,6 +7526,17 @@ document.addEventListener(
                             "0";
 
                     }
+                    const followingCount =
+    document.getElementById(
+        "profileFollowingCount"
+    );
+
+if (followingCount) {
+
+    followingCount.textContent =
+        "0";
+
+            }
 
                     showVideoCityNotification(
                         "You unfollowed this user."
