@@ -5656,3 +5656,120 @@ MOBILE
     }
 
 }
+/* ==========================================
+   FOLLOWERS / FOLLOWING USER ROW
+========================================== */
+
+.follow-list-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 12px;
+
+    background: #181818;
+
+    border: 1px solid #292929;
+    border-radius: 14px;
+}
+
+.follow-list-user-avatar {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ff1493;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+.follow-list-user-info {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.follow-list-user-info strong {
+    overflow: hidden;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.follow-list-user-info span {
+    overflow: hidden;
+
+    color: #888888;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.follow-list-user-button {
+    flex-shrink: 0;
+
+    min-width: 82px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #ff1493;
+    border-radius: 18px;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.follow-list-user-button:hover {
+    background: #ff1493;
+}
+
+@media (max-width: 600px) {
+
+    .follow-list-user {
+        gap: 10px;
+
+        padding: 10px;
+    }
+
+    .follow-list-user-avatar {
+        width: 44px;
+        height: 44px;
+    }
+
+    .follow-list-user-button {
+        min-width: 76px;
+
+        padding: 7px 10px;
+    }
+
+  }
