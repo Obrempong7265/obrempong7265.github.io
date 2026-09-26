@@ -7549,3 +7549,111 @@ if (followingCount) {
 
     }
 );
+// ==========================================
+// VIDEO CITY - FOLLOWERS / FOLLOWING LIST
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const followersStat =
+            document.getElementById(
+                "profileFollowersStat"
+            );
+
+        const followingStat =
+            document.getElementById(
+                "profileFollowingStat"
+            );
+
+        const followList =
+            document.getElementById(
+                "followList"
+            );
+
+        const followListTitle =
+            document.getElementById(
+                "followListTitle"
+            );
+
+        const followListSubtitle =
+            document.getElementById(
+                "followListSubtitle"
+            );
+
+        const profile =
+            document.getElementById(
+                "profile"
+            );
+
+        if (
+            !followersStat ||
+            !followingStat ||
+            !followList
+        ) {
+            return;
+        }
+
+        function openFollowList(
+            type
+        ) {
+
+            if (profile) {
+                profile.classList.add(
+                    "hidden"
+                );
+            }
+
+            followList.classList.remove(
+                "hidden"
+            );
+
+            if (type === "followers") {
+
+                if (followListTitle) {
+                    followListTitle.textContent =
+                        "Followers";
+                }
+
+                if (followListSubtitle) {
+                    followListSubtitle.textContent =
+                        "People following you";
+                }
+
+            } else {
+
+                if (followListTitle) {
+                    followListTitle.textContent =
+                        "Following";
+                }
+
+                if (followListSubtitle) {
+                    followListSubtitle.textContent =
+                        "People you follow";
+                }
+
+            }
+
+        }
+
+        followersStat.addEventListener(
+            "click",
+            function () {
+                openFollowList(
+                    "followers"
+                );
+            }
+        );
+
+        followingStat.addEventListener(
+            "click",
+            function () {
+                openFollowList(
+                    "following"
+                );
+            }
+        );
+
+    }
+);
