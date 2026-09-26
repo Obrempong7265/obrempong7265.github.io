@@ -7420,6 +7420,57 @@ function openVideoCityPublicProfile(
 
 }
 // ==========================================
+// PUBLIC PROFILE - BACK BUTTON
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const backButton =
+            document.getElementById(
+                "publicProfileBackButton"
+            );
+
+        const publicProfile =
+            document.getElementById(
+                "publicProfile"
+            );
+
+        if (
+            !backButton ||
+            !publicProfile
+        ) {
+            return;
+        }
+
+        backButton.addEventListener(
+            "click",
+            function () {
+
+                publicProfile.classList.add(
+                    "hidden"
+                );
+
+                const profile =
+                    document.getElementById(
+                        "profile"
+                    );
+
+                if (profile) {
+
+                    profile.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+// ==========================================
 // PUBLIC PROFILE - TEMPORARY TEST
 // ==========================================
 
