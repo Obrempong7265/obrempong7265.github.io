@@ -7796,3 +7796,87 @@ document.addEventListener(
 
     }
 );
+// ======================================
+// BACK TO PROFILE
+// ======================================
+
+const followListBackButton =
+    document.getElementById(
+        "followListBackButton"
+    );
+
+if (followListBackButton) {
+
+    followListBackButton.addEventListener(
+        "click",
+        function () {
+
+            followList.classList.add(
+                "hidden"
+            );
+
+            if (profile) {
+
+                profile.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+        }
+    );
+
+}
+// ======================================
+// FOLLOW LIST - FOLLOW BUTTON
+// ======================================
+
+const followListButtons =
+    document.querySelectorAll(
+        ".follow-list-user-button"
+    );
+
+followListButtons.forEach(
+    function (button) {
+
+        button.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+                const isFollowing =
+                    button.textContent.trim() ===
+                    "Following";
+
+                if (isFollowing) {
+
+                    button.textContent =
+                        "Follow";
+
+                    button.style.background =
+                        "transparent";
+
+                    showVideoCityNotification(
+                        "You unfollowed this user."
+                    );
+
+                } else {
+
+                    button.textContent =
+                        "Following";
+
+                    button.style.background =
+                        "#ff1493";
+
+                    showVideoCityNotification(
+                        "You are now following this user."
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
