@@ -30,7 +30,10 @@ const studio =
     document.getElementById(
         "publicProfile"
     );
-
+const followList =
+    document.getElementById(
+        "followList"
+    );
 
 const profile =
     document.getElementById("profile");
@@ -92,7 +95,11 @@ if (messages) {
         "hidden"
     );
 }
-
+if (followList) {
+    followList.classList.add(
+        "hidden"
+    );
+                          }
     if (profile) {
         profile.classList.add("hidden");
     }
