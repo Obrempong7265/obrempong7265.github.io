@@ -6665,46 +6665,85 @@ document.addEventListener(
 
 
         // ======================================
-        // OPEN CONVERSATION
-        // ======================================
+// OPEN CONVERSATION / PUBLIC PROFILE
+// ======================================
 
-        if (messagesList) {
+if (messagesList) {
 
-            messagesList.addEventListener(
-                "click",
-                function (event) {
+    messagesList.addEventListener(
+        "click",
+        function (event) {
 
-                    const conversation =
-                        event.target.closest(
-                            ".message-preview"
-                        );
+            // AVATAR → PUBLIC PROFILE
+            const avatar =
+                event.target.closest(
+                    ".message-avatar"
+                );
 
-                    if (!conversation) {
-                        return;
-                    }
+            if (avatar) {
+
+                event.stopPropagation();
+
+                openVideoCityPublicProfile(
+                    "Video City User"
+                );
+
+                return;
+
+            }
 
 
-                    if (messagesScreen) {
+            // USERNAME → PUBLIC PROFILE
+            const username =
+                event.target.closest(
+                    ".message-preview-top strong"
+                );
 
-                        messagesScreen.classList.add(
-                            "hidden"
-                        );
+            if (username) {
 
-                    }
+                event.stopPropagation();
+
+                openVideoCityPublicProfile(
+                    "Video City User"
+                );
+
+                return;
+
+            }
 
 
-                    if (conversationScreen) {
+            // OTHER PARTS OF ROW → CONVERSATION
+            const conversation =
+                event.target.closest(
+                    ".message-preview"
+                );
 
-                        conversationScreen.classList.remove(
-                            "hidden"
-                        );
+            if (!conversation) {
+                return;
+            }
 
-                    }
 
-                }
-            );
+            if (messagesScreen) {
+
+                messagesScreen.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            if (conversationScreen) {
+
+                conversationScreen.classList.remove(
+                    "hidden"
+                );
+
+            }
 
         }
+    );
+
+                    }
 
 
         // ======================================
