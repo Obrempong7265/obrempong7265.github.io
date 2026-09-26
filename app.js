@@ -7558,6 +7558,68 @@ document.addEventListener(
 
     }
 );
+// ======================================
+// PUBLIC PROFILE - MESSAGE BUTTON
+// ======================================
+
+const publicProfileMessageButton =
+    document.getElementById(
+        "publicProfileMessageButton"
+    );
+
+const publicProfile =
+    document.getElementById(
+        "publicProfile"
+    );
+
+const messageConversation =
+    document.getElementById(
+        "messageConversation"
+    );
+
+const conversationUserName =
+    document.getElementById(
+        "conversationUserName"
+    );
+
+const publicProfileUsername =
+    document.getElementById(
+        "publicProfileUsername"
+    );
+
+
+if (
+    publicProfileMessageButton &&
+    publicProfile &&
+    messageConversation
+) {
+
+    publicProfileMessageButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                conversationUserName &&
+                publicProfileUsername
+            ) {
+
+                conversationUserName.textContent =
+                    publicProfileUsername.textContent.trim();
+
+            }
+
+            publicProfile.classList.add(
+                "hidden"
+            );
+
+            messageConversation.classList.remove(
+                "hidden"
+            );
+
+        }
+    );
+
+}
 // ==========================================
 // PUBLIC PROFILE - TEMPORARY TEST
 // ==========================================
