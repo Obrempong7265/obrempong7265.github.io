@@ -5545,3 +5545,114 @@ MOBILE
     }
 
 }
+/* ==========================================
+   VIDEO CITY - FOLLOWERS / FOLLOWING LIST
+========================================== */
+
+.follow-list-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 12px 0 18px;
+
+    border-bottom: 1px solid #292929;
+}
+
+.follow-list-back-button {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 20, 147, 0.35);
+    border-radius: 50%;
+
+    background: #181818;
+
+    color: #ffffff;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+.follow-list-back-button:hover {
+    border-color: #ff1493;
+}
+
+.follow-list-header h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+.follow-list-header p {
+    margin: 4px 0 0;
+
+    color: #999999;
+
+    font-size: 13px;
+}
+
+.follow-list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding-top: 16px;
+}
+
+.follow-list-empty {
+    padding: 40px 20px;
+
+    text-align: center;
+
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    border-radius: 14px;
+}
+
+.follow-list-empty > div {
+    margin-bottom: 10px;
+
+    font-size: 32px;
+}
+
+.follow-list-empty h3 {
+    margin: 0 0 6px;
+
+    color: #ffffff;
+
+    font-size: 16px;
+}
+
+.follow-list-empty p {
+    margin: 0;
+
+    color: #888888;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+
+    .follow-list-header h2 {
+        font-size: 18px;
+    }
+
+    .follow-list-empty {
+        padding: 35px 16px;
+    }
+
+}
