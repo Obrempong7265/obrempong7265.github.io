@@ -5201,6 +5201,21 @@ async function loadTemporaryFeed() {
         `;
 
         feed.appendChild(card);
+        const commentButton =
+    card.querySelector(".commentBtn");
+
+if (commentButton) {
+
+    commentButton.addEventListener(
+        "click",
+        function () {
+
+            openTemporaryComments();
+
+        }
+    );
+
+}
 
     });
 
@@ -5208,6 +5223,196 @@ async function loadTemporaryFeed() {
         "Video City: Temporary Feed preview loaded."
     );
                         }
+        // ==========================================
+// TEMPORARY COMMENTS PANEL
+// VISUAL TEST ONLY
+// ==========================================
+
+function openTemporaryComments() {
+
+    let panel =
+        document.querySelector(
+            ".video-comments-panel"
+        );
+
+    if (panel) {
+        panel.classList.add("active");
+        return;
+    }
+
+    panel =
+        document.createElement("div");
+
+    panel.className =
+        "video-comments-panel";
+
+    panel.innerHTML = `
+
+        <div class="video-comments-header">
+
+            <h2>
+                Comments
+            </h2>
+
+            <button
+                class="video-comments-close"
+                type="button"
+                aria-label="Close comments"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <div class="video-comments-list">
+
+            <div class="video-comment-item">
+
+                <div class="video-comment-user">
+                    @Kwame
+                </div>
+
+                <p class="video-comment-text">
+                    Great video! I really enjoyed this one.
+                </p>
+
+                <div class="video-comment-actions">
+
+                    <button type="button">
+                        ♡ 4
+                    </button>
+
+                    <button
+                        type="button"
+                        class="video-reply-button"
+                    >
+                        Reply
+                    </button>
+
+                </div>
+
+                <div class="video-comment-replies">
+
+                    <div class="video-comment-reply">
+
+                        <div class="video-comment-user">
+                            @Ama
+                        </div>
+
+                        <p class="video-comment-text">
+                            Same here! 🔥
+                        </p>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="video-view-replies"
+                    >
+                        View 2 more replies
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-comment-item">
+
+                <div class="video-comment-user">
+                    @Kofi
+                </div>
+
+                <p class="video-comment-text">
+                    The quality looks really good.
+                </p>
+
+                <div class="video-comment-actions">
+
+                    <button type="button">
+                        ♡ 8
+                    </button>
+
+                    <button
+                        type="button"
+                        class="video-reply-button"
+                    >
+                        Reply
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="video-comment-item">
+
+                <div class="video-comment-user">
+                    @Adwoa
+                </div>
+
+                <p class="video-comment-text">
+                    Looking forward to more videos.
+                </p>
+
+                <div class="video-comment-actions">
+
+                    <button type="button">
+                        ♡ 2
+                    </button>
+
+                    <button
+                        type="button"
+                        class="video-reply-button"
+                    >
+                        Reply
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="video-comments-input-area">
+
+            <input
+                class="video-comments-input"
+                type="text"
+                placeholder="Write a comment..."
+                maxlength="500"
+            >
+
+            <button
+                class="video-comments-send"
+                type="button"
+                aria-label="Post comment"
+            >
+                ➤
+            </button>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(panel);
+
+    panel.classList.add("active");
+
+    panel
+        .querySelector(".video-comments-close")
+        .addEventListener(
+            "click",
+            function () {
+
+                panel.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+}
                 // ==========================================
 // START VIDEO CITY
 // ==========================================
