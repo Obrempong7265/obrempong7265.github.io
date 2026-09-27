@@ -5236,8 +5236,11 @@ function openTemporaryComments() {
         );
 
     if (panel) {
+
         panel.classList.add("active");
+
         return;
+
     }
 
     panel =
@@ -5264,7 +5267,10 @@ function openTemporaryComments() {
 
         </div>
 
+
         <div class="video-comments-list">
+
+            <!-- COMMENT 1 -->
 
             <div class="video-comment-item">
 
@@ -5278,7 +5284,10 @@ function openTemporaryComments() {
 
                 <div class="video-comment-actions">
 
-                    <button type="button">
+                    <button
+                        type="button"
+                        class="comment-like"
+                    >
                         ♡ 4
                     </button>
 
@@ -5291,7 +5300,11 @@ function openTemporaryComments() {
 
                 </div>
 
-                <div class="video-comment-replies">
+
+                <div
+                    class="video-comment-replies"
+                    style="display:none;"
+                >
 
                     <div class="video-comment-reply">
 
@@ -5305,17 +5318,32 @@ function openTemporaryComments() {
 
                     </div>
 
-                    <button
-                        type="button"
-                        class="video-view-replies"
-                    >
-                        View 2 more replies
-                    </button>
+                    <div class="video-comment-reply">
+
+                        <div class="video-comment-user">
+                            @Kofi
+                        </div>
+
+                        <p class="video-comment-text">
+                            Definitely worth watching.
+                        </p>
+
+                    </div>
 
                 </div>
 
+
+                <button
+                    type="button"
+                    class="video-view-replies"
+                >
+                    View 2 replies
+                </button>
+
             </div>
 
+
+            <!-- COMMENT 2 -->
 
             <div class="video-comment-item">
 
@@ -5329,7 +5357,10 @@ function openTemporaryComments() {
 
                 <div class="video-comment-actions">
 
-                    <button type="button">
+                    <button
+                        type="button"
+                        class="comment-like"
+                    >
                         ♡ 8
                     </button>
 
@@ -5345,6 +5376,8 @@ function openTemporaryComments() {
             </div>
 
 
+            <!-- COMMENT 3 -->
+
             <div class="video-comment-item">
 
                 <div class="video-comment-user">
@@ -5357,7 +5390,10 @@ function openTemporaryComments() {
 
                 <div class="video-comment-actions">
 
-                    <button type="button">
+                    <button
+                        type="button"
+                        class="comment-like"
+                    >
                         ♡ 2
                     </button>
 
@@ -5373,6 +5409,7 @@ function openTemporaryComments() {
             </div>
 
         </div>
+
 
         <div class="video-comments-input-area">
 
@@ -5399,8 +5436,15 @@ function openTemporaryComments() {
 
     panel.classList.add("active");
 
+
+    // ======================================
+    // CLOSE COMMENTS
+    // ======================================
+
     panel
-        .querySelector(".video-comments-close")
+        .querySelector(
+            ".video-comments-close"
+        )
         .addEventListener(
             "click",
             function () {
@@ -5412,8 +5456,388 @@ function openTemporaryComments() {
             }
         );
 
-}
-                // ==========================================
+
+    // ======================================
+    // LIKE COMMENTS
+    // ======================================
+
+    panel
+        .querySelectorAll(
+            ".comment-like"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const text =
+                            button.textContent;
+
+                        const match =
+                            text.match(/\d+/);
+
+                        let count =
+                            match
+                                ? Number(match[0])
+                                : 0;
+
+                        if (
+                            button.dataset.liked ===
+                            "true"
+                        ) {
+
+                            count =
+                                Math.max(
+                                    0,
+                                    count - 1
+                                );
+
+                            button.dataset.liked =
+                                "false";
+
+                            button.textContent =
+                                "♡ " + count;
+
+                        } else {
+
+                            count += 1;
+
+                            button.dataset.liked =
+                                "true";
+
+                            button.textContent =
+                                "♥ " + count;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ======================================
+    // VIEW REPLIES
+    // ======================================
+
+    panel
+        .querySelectorAll(
+            ".video-view-replies"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const comment =
+                            button.closest(
+                                ".video-comment-item"
+                            );
+
+                        const replies =
+                            comment.querySelector(
+                                ".video-comment-replies"
+                            );
+
+                        if (!replies) {
+                            return;
+                        }
+
+                        const hidden =
+                            replies.style.display ===
+                            "none";
+
+                        replies.style.display =
+                            hidden
+                                ? "block"
+                                : "none";
+
+                        button.textContent =
+                            hidden
+                                ? "Hide replies"
+                                : "View 2 replies";
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ======================================
+    // REPLY BUTTON
+    // ======================================
+
+    panel
+        .querySelectorAll(
+            ".video-reply-button"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const comment =
+                            button.closest(
+                                ".video-comment-item"
+                            );
+
+                        const existingInput =
+                            comment.querySelector(
+                                ".temporary-reply-input"
+                            );
+
+                        if (existingInput) {
+
+                            existingInput.focus();
+
+                            return;
+
+                        }
+
+                        const replyBox =
+                            document.createElement(
+                                "div"
+                            );
+
+                        replyBox.style.display =
+                            "flex";
+
+                        replyBox.style.gap =
+                            "8px";
+
+                        replyBox.style.marginTop =
+                            "12px";
+
+                        replyBox.innerHTML = `
+
+                            <input
+                                class="temporary-reply-input"
+                                type="text"
+                                maxlength="500"
+                                placeholder="Write a reply..."
+                                style="
+                                    flex:1;
+                                    min-width:0;
+                                    padding:9px 12px;
+                                    border:1px solid #333;
+                                    border-radius:18px;
+                                    background:#171717;
+                                    color:#fff;
+                                    outline:none;
+                                "
+                            >
+
+                            <button
+                                type="button"
+                                class="temporary-reply-send"
+                                style="
+                                    width:38px;
+                                    height:38px;
+                                    border:none;
+                                    border-radius:50%;
+                                    background:#ff4fa3;
+                                    color:#fff;
+                                    cursor:pointer;
+                                "
+                            >
+                                ➤
+                            </button>
+
+                        `;
+
+                        comment.appendChild(
+                            replyBox
+                        );
+
+                        const input =
+                            replyBox.querySelector(
+                                ".temporary-reply-input"
+                            );
+
+                        const send =
+                            replyBox.querySelector(
+                                ".temporary-reply-send"
+                            );
+
+                        input.focus();
+
+
+                        send.addEventListener(
+                            "click",
+                            function () {
+
+                                const text =
+                                    input.value.trim();
+
+                                if (!text) {
+                                    return;
+                                }
+
+                                const replies =
+                                    comment.querySelector(
+                                        ".video-comment-replies"
+                                    );
+
+                                if (replies) {
+
+                                    replies.style.display =
+                                        "block";
+
+                                    const reply =
+                                        document.createElement(
+                                            "div"
+                                        );
+
+                                    reply.className =
+                                        "video-comment-reply";
+
+                                    reply.innerHTML = `
+
+                                        <div
+                                            class="video-comment-user"
+                                        >
+                                            @You
+                                        </div>
+
+                                        <p
+                                            class="video-comment-text"
+                                        >
+                                            ${escapeHTML(text)}
+                                        </p>
+
+                                    `;
+
+                                    replies.appendChild(
+                                        reply
+                                    );
+
+                                }
+
+                                replyBox.remove();
+
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ======================================
+    // NEW COMMENT
+    // ======================================
+
+    const input =
+        panel.querySelector(
+            ".video-comments-input"
+        );
+
+    const send =
+        panel.querySelector(
+            ".video-comments-send"
+        );
+
+    const list =
+        panel.querySelector(
+            ".video-comments-list"
+        );
+
+
+    function postTemporaryComment() {
+
+        const text =
+            input.value.trim();
+
+        if (!text) {
+            return;
+        }
+
+        const comment =
+            document.createElement(
+                "div"
+            );
+
+        comment.className =
+            "video-comment-item";
+
+        comment.innerHTML = `
+
+            <div class="video-comment-user">
+                @You
+            </div>
+
+            <p class="video-comment-text">
+                ${escapeHTML(text)}
+            </p>
+
+            <div class="video-comment-actions">
+
+                <button
+                    type="button"
+                    class="comment-like"
+                >
+                    ♡ 0
+                </button>
+
+                <button
+                    type="button"
+                    class="video-reply-button"
+                >
+                    Reply
+                </button>
+
+            </div>
+
+        `;
+
+        list.appendChild(
+            comment
+        );
+
+        input.value = "";
+
+        list.scrollTop =
+            list.scrollHeight;
+
+    }
+
+
+    send.addEventListener(
+        "click",
+        postTemporaryComment
+    );
+
+
+    input.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                event.preventDefault();
+
+                postTemporaryComment();
+
+            }
+
+        }
+    );
+
+                            }
+     // ==========================================
 // START VIDEO CITY
 // ==========================================
 await loadTemporaryFeed();
