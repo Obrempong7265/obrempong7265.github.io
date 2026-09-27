@@ -5136,6 +5136,30 @@ async function loadTemporaryFeed() {
                 <p class="description">
                     ${video.description}
                 </p>
+                ${
+    video.paid
+    ? `
+        <button
+            class="unlockBtn btn pink"
+            type="button"
+            style="
+                width:100%;
+                margin:0 0 14px;
+                padding:12px 18px;
+                border:none;
+                border-radius:10px;
+                background:#ff4fa3;
+                color:#fff;
+                font-size:15px;
+                font-weight:700;
+                cursor:pointer;
+            "
+        >
+            🔓 Unlock for ${video.price} Pi
+        </button>
+    `
+    : ""
+}
 
                 <div class="actions">
 
