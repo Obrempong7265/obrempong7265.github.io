@@ -5243,11 +5243,13 @@ function openTemporaryComments() {
 
     }
 
+
     panel =
         document.createElement("div");
 
     panel.className =
         "video-comments-panel";
+
 
     panel.innerHTML = `
 
@@ -5411,6 +5413,29 @@ function openTemporaryComments() {
         </div>
 
 
+        <!-- ======================================
+             REPLY INDICATOR
+        ======================================= -->
+
+        <div
+            class="video-reply-indicator"
+            style="
+                display:none;
+                padding:6px 14px;
+                color:#ff4fa3;
+                font-size:12px;
+                font-weight:600;
+                background:#0d0d0d;
+                border-top:1px solid #222;
+            "
+        >
+        </div>
+
+
+        <!-- ======================================
+             ONE SINGLE COMMENT / REPLY INPUT
+        ======================================= -->
+
         <div class="video-comments-input-area">
 
             <input
@@ -5432,9 +5457,39 @@ function openTemporaryComments() {
 
     `;
 
+
     document.body.appendChild(panel);
 
     panel.classList.add("active");
+
+
+    // ======================================
+    // ELEMENTS
+    // ======================================
+
+    const input =
+        panel.querySelector(
+            ".video-comments-input"
+        );
+
+    const send =
+        panel.querySelector(
+            ".video-comments-send"
+        );
+
+    const list =
+        panel.querySelector(
+            ".video-comments-list"
+        );
+
+    const replyIndicator =
+        panel.querySelector(
+            ".video-reply-indicator"
+        );
+
+
+    // The comment currently being replied to
+    let replyingToComment = null;
 
 
     // ======================================
@@ -5570,7 +5625,7 @@ function openTemporaryComments() {
 
 
     // ======================================
-    // REPLY BUTTON
+    // REPLY BUTTONS
     // ======================================
 
     panel
@@ -5589,142 +5644,40 @@ function openTemporaryComments() {
                                 ".video-comment-item"
                             );
 
-                        const existingInput =
-                            comment.querySelector(
-                                ".temporary-reply-input"
-                            );
-
-                        if (existingInput) {
-
-                            existingInput.focus();
-
+                        if (!comment) {
                             return;
-
                         }
 
-                        const replyBox =
-                            document.createElement(
-                                "div"
+                        const username =
+                            comment.querySelector(
+                                ".video-comment-user"
                             );
 
-                        replyBox.style.display =
-                            "flex";
+                        const usernameText =
+                            username
+                                ? username.textContent.trim()
+                                : "@Creator";
 
-                        replyBox.style.gap =
-                            "8px";
 
-                        replyBox.style.marginTop =
-                            "12px";
+                        // Enter reply mode
 
-                        replyBox.innerHTML = `
+                        replyingToComment =
+                            comment;
 
-                            <input
-                                class="temporary-reply-input"
-                                type="text"
-                                maxlength="500"
-                                placeholder="Write a reply..."
-                                style="
-                                    flex:1;
-                                    min-width:0;
-                                    padding:9px 12px;
-                                    border:1px solid #333;
-                                    border-radius:18px;
-                                    background:#171717;
-                                    color:#fff;
-                                    outline:none;
-                                "
-                            >
 
-                            <button
-                                type="button"
-                                class="temporary-reply-send"
-                                style="
-                                    width:38px;
-                                    height:38px;
-                                    border:none;
-                                    border-radius:50%;
-                                    background:#ff4fa3;
-                                    color:#fff;
-                                    cursor:pointer;
-                                "
-                            >
-                                ➤
-                            </button>
+                        replyIndicator.style.display =
+                            "block";
 
-                        `;
+                        replyIndicator.textContent =
+                            "↳ Replying to " +
+                            usernameText;
 
-                        comment.appendChild(
-                            replyBox
-                        );
 
-                        const input =
-                            replyBox.querySelector(
-                                ".temporary-reply-input"
-                            );
+                        input.placeholder =
+                            "Write a reply...";
 
-                        const send =
-                            replyBox.querySelector(
-                                ".temporary-reply-send"
-                            );
 
                         input.focus();
-
-
-                        send.addEventListener(
-                            "click",
-                            function () {
-
-                                const text =
-                                    input.value.trim();
-
-                                if (!text) {
-                                    return;
-                                }
-
-                                const replies =
-                                    comment.querySelector(
-                                        ".video-comment-replies"
-                                    );
-
-                                if (replies) {
-
-                                    replies.style.display =
-                                        "block";
-
-                                    const reply =
-                                        document.createElement(
-                                            "div"
-                                        );
-
-                                    reply.className =
-                                        "video-comment-reply";
-
-                                    reply.innerHTML = `
-
-                                        <div
-                                            class="video-comment-user"
-                                        >
-                                            @You
-                                        </div>
-
-                                        <p
-                                            class="video-comment-text"
-                                        >
-                                            ${escapeHTML(text)}
-                                        </p>
-
-                                    `;
-
-                                    replies.appendChild(
-                                        reply
-                                    );
-
-                                }
-
-                                replyBox.remove();
-
-                            }
-                        );
 
                     }
                 );
@@ -5734,24 +5687,38 @@ function openTemporaryComments() {
 
 
     // ======================================
-    // NEW COMMENT
+    // ESCAPE REPLY MODE
     // ======================================
 
-    const input =
-        panel.querySelector(
-            ".video-comments-input"
-        );
+    input.addEventListener(
+        "keydown",
+        function (event) {
 
-    const send =
-        panel.querySelector(
-            ".video-comments-send"
-        );
+            if (
+                event.key === "Escape" &&
+                replyingToComment
+            ) {
 
-    const list =
-        panel.querySelector(
-            ".video-comments-list"
-        );
+                replyingToComment =
+                    null;
 
+                replyIndicator.style.display =
+                    "none";
+
+                input.placeholder =
+                    "Write a comment...";
+
+                input.value = "";
+
+            }
+
+        }
+    );
+
+
+    // ======================================
+    // POST COMMENT OR REPLY
+    // ======================================
 
     function postTemporaryComment() {
 
@@ -5762,13 +5729,105 @@ function openTemporaryComments() {
             return;
         }
 
+
+        // ==================================
+        // POST REPLY
+        // ==================================
+
+        if (replyingToComment) {
+
+            let replies =
+                replyingToComment.querySelector(
+                    ".video-comment-replies"
+                );
+
+
+            // Create replies container if needed
+
+            if (!replies) {
+
+                replies =
+                    document.createElement(
+                        "div"
+                    );
+
+                replies.className =
+                    "video-comment-replies";
+
+                replyingToComment
+                    .appendChild(
+                        replies
+                    );
+
+            }
+
+
+            replies.style.display =
+                "block";
+
+
+            const reply =
+                document.createElement(
+                    "div"
+                );
+
+            reply.className =
+                "video-comment-reply";
+
+
+            reply.innerHTML = `
+
+                <div class="video-comment-user">
+                    @You
+                </div>
+
+                <p class="video-comment-text">
+                    ${escapeHTML(text)}
+                </p>
+
+            `;
+
+
+            replies.appendChild(
+                reply
+            );
+
+
+            // Leave reply mode
+
+            replyingToComment =
+                null;
+
+            replyIndicator.style.display =
+                "none";
+
+            input.placeholder =
+                "Write a comment...";
+
+            input.value = "";
+
+
+            list.scrollTop =
+                list.scrollHeight;
+
+            return;
+
+        }
+
+
+        // ==================================
+        // POST NEW COMMENT
+        // ==================================
+
         const comment =
             document.createElement(
                 "div"
             );
 
+
         comment.className =
             "video-comment-item";
+
 
         comment.innerHTML = `
 
@@ -5800,9 +5859,81 @@ function openTemporaryComments() {
 
         `;
 
+
         list.appendChild(
             comment
         );
+
+
+        // Make the new Reply button work
+
+        const newReplyButton =
+            comment.querySelector(
+                ".video-reply-button"
+            );
+
+
+        newReplyButton.addEventListener(
+            "click",
+            function () {
+
+                replyingToComment =
+                    comment;
+
+
+                replyIndicator.style.display =
+                    "block";
+
+                replyIndicator.textContent =
+                    "↳ Replying to @You";
+
+
+                input.placeholder =
+                    "Write a reply...";
+
+
+                input.focus();
+
+            }
+        );
+
+
+        // Make the new Like button work
+
+        const newLikeButton =
+            comment.querySelector(
+                ".comment-like"
+            );
+
+
+        newLikeButton.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    newLikeButton.dataset.liked ===
+                    "true"
+                ) {
+
+                    newLikeButton.dataset.liked =
+                        "false";
+
+                    newLikeButton.textContent =
+                        "♡ 0";
+
+                } else {
+
+                    newLikeButton.dataset.liked =
+                        "true";
+
+                    newLikeButton.textContent =
+                        "♥ 1";
+
+                }
+
+            }
+        );
+
 
         input.value = "";
 
@@ -5812,19 +5943,26 @@ function openTemporaryComments() {
     }
 
 
+    // ======================================
+    // SEND BUTTON
+    // ======================================
+
     send.addEventListener(
         "click",
         postTemporaryComment
     );
 
 
+    // ======================================
+    // ENTER KEY
+    // ======================================
+
     input.addEventListener(
         "keydown",
         function (event) {
 
             if (
-                event.key ===
-                "Enter"
+                event.key === "Enter"
             ) {
 
                 event.preventDefault();
@@ -5836,7 +5974,8 @@ function openTemporaryComments() {
         }
     );
 
-                            }
+}
+                            
      // ==========================================
 // START VIDEO CITY
 // ==========================================
