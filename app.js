@@ -5013,11 +5013,181 @@ if (coverFile) {
     );
 
                             }
+        // ==========================================
+// TEMPORARY VIDEO CITY FEED PREVIEW
+// VISUAL TEST ONLY
+// ==========================================
+
+async function loadTemporaryFeed() {
+
+    feed.innerHTML = "";
+
+    const temporaryVideos = [
+        {
+            creator: "@VideoCity",
+            title: "Welcome to Video City",
+            description: "A temporary preview of the new Video City feed design.",
+            views: 1240,
+            likes: 86,
+            paid: false
+        },
+        {
+            creator: "@CreatorDemo",
+            title: "Premium Video Preview",
+            description: "This is how paid content will appear in the new Feed.",
+            views: 5830,
+            likes: 421,
+            paid: true,
+            price: 5
+        }
+    ];
+
+    temporaryVideos.forEach(function (video) {
+
+        const card =
+            document.createElement("article");
+
+        card.className =
+            video.paid
+                ? "video-card paid-video"
+                : "video-card";
+
+        card.innerHTML = `
+
+            <div class="video-wrap">
+
+                <div
+                    style="
+                        width:100%;
+                        height:100%;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        background:
+                            linear-gradient(
+                                135deg,
+                                #090909,
+                                #1a0612,
+                                #050505
+                            );
+                        color:#fff;
+                        font-size:22px;
+                        font-weight:700;
+                        text-align:center;
+                        padding:20px;
+                    "
+                >
+                    ${video.title}
+                </div>
+
+                <div class="video-watermark">
+                    Video City
+                </div>
+
+                <button
+                    class="video-city-fullscreen"
+                    type="button"
+                    aria-label="Fullscreen"
+                >
+                    ⛶
+                </button>
+
+                ${
+                    video.paid
+                    ? `
+                        <div class="paid-video-lock">
+
+                            <div class="paid-video-lock-icon">
+                                🔒
+                            </div>
+
+                            <strong>
+                                Premium Content
+                            </strong>
+
+                            <span>
+                                Unlock for ${video.price} Pi
+                            </span>
+
+                        </div>
+                    `
+                    : ""
+                }
+
+            </div>
+
+            <div class="video-view-count">
+                👁
+                <span>
+                    ${video.views}
+                </span>
+            </div>
+
+            <div class="video-info">
+
+                <p class="creator">
+                    ${video.creator}
+                </p>
+
+                <h3 class="title">
+                    ${video.title}
+                </h3>
+
+                <p class="description">
+                    ${video.description}
+                </p>
+
+                <div class="actions">
+
+                    <button
+                        class="likeBtn"
+                        type="button"
+                    >
+                        ♡
+                        <span>
+                            ${video.likes}
+                        </span>
+                    </button>
+
+                    <button
+                        class="commentBtn"
+                        type="button"
+                    >
+                        💬 Comments 12
+                    </button>
+
+                    <button
+                        class="supportBtn"
+                        type="button"
+                    >
+                        💜 Tip
+                    </button>
+
+                    <button
+                        class="reportBtn"
+                        type="button"
+                    >
+                        🚩 Report
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        feed.appendChild(card);
+
+    });
+
+    console.log(
+        "Video City: Temporary Feed preview loaded."
+    );
+                        }
                 // ==========================================
 // START VIDEO CITY
 // ==========================================
-
-await loadVideos();
+await loadTemporaryFeed();
 
 
 console.log(
