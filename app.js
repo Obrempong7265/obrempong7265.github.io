@@ -5975,8 +5975,9 @@ function openTemporaryComments() {
     );
 
 }
-        // ==========================================
-// TEMPORARY PUBLIC PROFILE CONTENT CARDS
+        
+// ==========================================
+// TEMPORARY PUBLIC PROFILE CONTENT VIEWER
 // VISUAL TEST ONLY
 // ==========================================
 
@@ -5997,45 +5998,246 @@ document
                     const price =
                         card.dataset.price;
 
+                    const titleElement =
+                        card.querySelector(
+                            ".public-profile-video-info h4"
+                        );
+
+                    const title =
+                        titleElement
+                            ? titleElement.textContent.trim()
+                            : "Video City Content";
+
+
+                    // ==================================
+                    // CREATE VIEWER
+                    // ==================================
+
+                    let viewer =
+                        document.querySelector(
+                            ".temporary-content-viewer"
+                        );
+
+                    if (viewer) {
+
+                        viewer.remove();
+
+                    }
+
+
+                    viewer =
+                        document.createElement(
+                            "div"
+                        );
+
+                    viewer.className =
+                        "temporary-content-viewer";
+
+
+                    // ==================================
+                    // FREE VIDEO
+                    // ==================================
 
                     if (
+                        contentType === "free"
+                    ) {
+
+                        viewer.innerHTML = `
+
+                            <div class="temporary-content-viewer-header">
+
+                                <button
+                                    type="button"
+                                    class="temporary-content-viewer-close"
+                                >
+                                    ✕
+                                </button>
+
+                                <strong>
+                                    ${escapeHTML(title)}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="temporary-content-viewer-body">
+
+                                <div class="temporary-viewer-video-placeholder">
+                                    ▶
+                                </div>
+
+                                <h2>
+                                    ${escapeHTML(title)}
+                                </h2>
+
+                                <p>
+                                    Free video preview
+                                </p>
+
+                            </div>
+
+                        `;
+
+                    }
+
+
+                    // ==================================
+                    // PAID VIDEO
+                    // ==================================
+
+                    else if (
                         contentType === "paid"
                     ) {
 
-                        alert(
-                            "Premium content — " +
-                            price +
-                            " Pi"
-                        );
+                        viewer.innerHTML = `
 
-                        return;
+                            <div class="temporary-content-viewer-header">
+
+                                <button
+                                    type="button"
+                                    class="temporary-content-viewer-close"
+                                >
+                                    ✕
+                                </button>
+
+                                <strong>
+                                    ${escapeHTML(title)}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="temporary-content-viewer-body">
+
+                                <div class="temporary-viewer-video-placeholder locked">
+                                    🔒
+                                </div>
+
+                                <h2>
+                                    ${escapeHTML(title)}
+                                </h2>
+
+                                <p>
+                                    Premium content
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="temporary-viewer-unlock"
+                                >
+                                    🔓 Unlock for ${escapeHTML(price)} Pi
+                                </button>
+
+                            </div>
+
+                        `;
 
                     }
 
 
-                    if (
+                    // ==================================
+                    // IMAGE
+                    // ==================================
+
+                    else if (
                         contentType === "image"
                     ) {
 
-                        alert(
-                            "Image content preview"
-                        );
+                        viewer.innerHTML = `
 
-                        return;
+                            <div class="temporary-content-viewer-header">
+
+                                <button
+                                    type="button"
+                                    class="temporary-content-viewer-close"
+                                >
+                                    ✕
+                                </button>
+
+                                <strong>
+                                    ${escapeHTML(title)}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="temporary-content-viewer-body">
+
+                                <div class="temporary-viewer-image-placeholder">
+                                    🖼️
+                                </div>
+
+                                <h2>
+                                    ${escapeHTML(title)}
+                                </h2>
+
+                                <p>
+                                    Image content preview
+                                </p>
+
+                            </div>
+
+                        `;
 
                     }
 
 
-                    alert(
-                        "Free video content preview"
+                    document.body.appendChild(
+                        viewer
                     );
+
+
+                    // ==================================
+                    // CLOSE VIEWER
+                    // ==================================
+
+                    const closeButton =
+                        viewer.querySelector(
+                            ".temporary-content-viewer-close"
+                        );
+
+
+                    closeButton.addEventListener(
+                        "click",
+                        function () {
+
+                            viewer.remove();
+
+                        }
+                    );
+
+
+                    // ==================================
+                    // TEMPORARY UNLOCK BUTTON
+                    // ==================================
+
+                    const unlockButton =
+                        viewer.querySelector(
+                            ".temporary-viewer-unlock"
+                        );
+
+
+                    if (unlockButton) {
+
+                        unlockButton.addEventListener(
+                            "click",
+                            function () {
+
+                                alert(
+                                    "Pi payment will be connected later."
+                                );
+
+                            }
+                        );
+
+                    }
 
                 }
             );
 
         }
     );
-                            
+
      // ==========================================
 // START VIDEO CITY
 // ==========================================
