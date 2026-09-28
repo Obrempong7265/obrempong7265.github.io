@@ -6743,3 +6743,9 @@ MOBILE
     }
 
   }
+.temporary-viewer-play-icon {
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+    user-select: none;
+}
