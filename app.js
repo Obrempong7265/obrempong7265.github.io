@@ -6185,7 +6185,36 @@ document
                     document.body.appendChild(
                         viewer
                     );
+                    
+const playIcon =
+    viewer.querySelector(
+        ".temporary-viewer-play-icon"
+    );
 
+if (playIcon) {
+
+    playIcon.addEventListener(
+        "click",
+        function () {
+
+            if (playIcon.textContent === "▶") {
+
+                playIcon.textContent = "Ⅱ";
+                playIcon.style.background =
+                    "#ff1493";
+
+            } else {
+
+                playIcon.textContent = "▶";
+                playIcon.style.background =
+                    "#ff4fa3";
+
+            }
+
+        }
+    );
+
+}
 
                     // ==================================
                     // CLOSE VIEWER
