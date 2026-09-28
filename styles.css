@@ -6749,3 +6749,13 @@ MOBILE
     cursor: pointer;
     user-select: none;
 }
+.temporary-viewer-video-player.temporary-mobile-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    aspect-ratio: auto;
+    border-radius: 0;
+}
