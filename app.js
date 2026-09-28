@@ -6257,18 +6257,26 @@ if (
         function () {
 
             if (
-                document.fullscreenElement
-            ) {
+    videoPlayer.classList.contains(
+        "temporary-mobile-fullscreen"
+    )
+) {
 
-                document.exitFullscreen();
+    videoPlayer.classList.remove(
+        "temporary-mobile-fullscreen"
+    );
 
-            } else if (
-                videoPlayer.requestFullscreen
-            ) {
+    fullscreenButton.textContent = "⛶";
 
-                videoPlayer.requestFullscreen();
+} else {
 
-            }
+    videoPlayer.classList.add(
+        "temporary-mobile-fullscreen"
+    );
+
+    fullscreenButton.textContent = "✕";
+
+    }
 
         }
     );
