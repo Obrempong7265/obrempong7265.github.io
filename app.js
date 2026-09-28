@@ -6237,6 +6237,43 @@ if (playIcon) {
     );
 
 }
+                    const fullscreenButton =
+    viewer.querySelector(
+        ".temporary-viewer-fullscreen"
+    );
+
+const videoPlayer =
+    viewer.querySelector(
+        ".temporary-viewer-video-player"
+    );
+
+if (
+    fullscreenButton &&
+    videoPlayer
+) {
+
+    fullscreenButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                document.fullscreenElement
+            ) {
+
+                document.exitFullscreen();
+
+            } else if (
+                videoPlayer.requestFullscreen
+            ) {
+
+                videoPlayer.requestFullscreen();
+
+            }
+
+        }
+    );
+
+}
 
                     // ==================================
                     // CLOSE VIEWER
