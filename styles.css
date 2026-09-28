@@ -6436,3 +6436,223 @@ MOBILE
     }
 
 }
+/* ==========================================
+   TEMPORARY PUBLIC PROFILE CONTENT VIEWER
+========================================== */
+
+.temporary-content-viewer {
+    position: fixed;
+    inset: 0;
+
+    z-index: 10000;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #050505;
+
+    color: #ffffff;
+}
+
+
+/* ==========================================
+   VIEWER HEADER
+========================================== */
+
+.temporary-content-viewer-header {
+    height: 62px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 0 16px;
+
+    background: #0d0d0d;
+
+    border-bottom: 1px solid #292929;
+}
+
+.temporary-content-viewer-header strong {
+    overflow: hidden;
+
+    font-size: 16px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.temporary-content-viewer-close {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #333;
+    border-radius: 50%;
+
+    background: #171717;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   VIEWER BODY
+========================================== */
+
+.temporary-content-viewer-body {
+    flex: 1;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    text-align: center;
+}
+
+.temporary-content-viewer-body h2 {
+    margin: 20px 0 8px;
+
+    font-size: 21px;
+}
+
+.temporary-content-viewer-body p {
+    margin: 0;
+
+    color: #999;
+
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   VIDEO PLACEHOLDER
+========================================== */
+
+.temporary-viewer-video-placeholder {
+    width: min(900px, 100%);
+
+    aspect-ratio: 16 / 9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #242424,
+            #090909
+        );
+
+    color: #ff1493;
+
+    font-size: 64px;
+}
+
+.temporary-viewer-video-placeholder.locked {
+    color: #ff4fa3;
+}
+
+
+/* ==========================================
+   IMAGE PLACEHOLDER
+========================================== */
+
+.temporary-viewer-image-placeholder {
+    width: min(700px, 100%);
+
+    aspect-ratio: 4 / 3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #242424,
+            #111111
+        );
+
+    font-size: 64px;
+}
+
+
+/* ==========================================
+   UNLOCK BUTTON
+========================================== */
+
+.temporary-viewer-unlock {
+    margin-top: 20px;
+
+    padding: 12px 22px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #ff4fa3;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .temporary-content-viewer-header {
+        height: 58px;
+
+        padding: 0 12px;
+    }
+
+    .temporary-content-viewer-body {
+        padding: 16px;
+    }
+
+    .temporary-viewer-video-placeholder {
+        border-radius: 10px;
+
+        font-size: 48px;
+    }
+
+    .temporary-viewer-image-placeholder {
+        border-radius: 10px;
+
+        font-size: 48px;
+    }
+
+    .temporary-content-viewer-body h2 {
+        font-size: 18px;
+    }
+
+  }
