@@ -6062,10 +6062,31 @@ document
 
                             <div class="temporary-content-viewer-body">
 
-                                <div class="temporary-viewer-video-placeholder">
-                                    ▶
-                                </div>
+                                <div class="temporary-viewer-video-player">
 
+    <div class="temporary-viewer-play-icon">
+        ▶
+    </div>
+
+    <div class="temporary-viewer-video-controls">
+
+        <span>0:00</span>
+
+        <div class="temporary-viewer-progress">
+            <div class="temporary-viewer-progress-bar"></div>
+        </div>
+
+        <span>2:45</span>
+
+        <button
+            type="button"
+            class="temporary-viewer-fullscreen">
+            ⛶
+        </button>
+
+    </div>
+
+</div>
                                 <h2>
                                     ${escapeHTML(title)}
                                 </h2>
@@ -6190,11 +6211,7 @@ const playIcon =
     viewer.querySelector(
         ".temporary-viewer-play-icon"
     );
-                    alert(
-    playIcon
-        ? "Play button found"
-        : "Play button NOT found"
-);
+                    
 
 if (playIcon) {
 
