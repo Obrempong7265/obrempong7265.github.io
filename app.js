@@ -5975,6 +5975,66 @@ function openTemporaryComments() {
     );
 
 }
+        // ==========================================
+// TEMPORARY PUBLIC PROFILE CONTENT CARDS
+// VISUAL TEST ONLY
+// ==========================================
+
+document
+    .querySelectorAll(
+        ".public-profile-video-card"
+    )
+    .forEach(
+        function (card) {
+
+            card.addEventListener(
+                "click",
+                function () {
+
+                    const contentType =
+                        card.dataset.contentType;
+
+                    const price =
+                        card.dataset.price;
+
+
+                    if (
+                        contentType === "paid"
+                    ) {
+
+                        alert(
+                            "Premium content — " +
+                            price +
+                            " Pi"
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        contentType === "image"
+                    ) {
+
+                        alert(
+                            "Image content preview"
+                        );
+
+                        return;
+
+                    }
+
+
+                    alert(
+                        "Free video content preview"
+                    );
+
+                }
+            );
+
+        }
+    );
                             
      // ==========================================
 // START VIDEO CITY
