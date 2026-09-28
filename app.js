@@ -6190,6 +6190,11 @@ const playIcon =
     viewer.querySelector(
         ".temporary-viewer-play-icon"
     );
+                    alert(
+    playIcon
+        ? "Play button found"
+        : "Play button NOT found"
+);
 
 if (playIcon) {
 
