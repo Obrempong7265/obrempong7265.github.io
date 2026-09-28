@@ -6267,6 +6267,12 @@ if (
     );
 
     fullscreenButton.textContent = "⛶";
+                if (
+    screen.orientation &&
+    screen.orientation.unlock
+) {
+    screen.orientation.unlock();
+                }
 
 } else {
 
@@ -6275,6 +6281,14 @@ if (
     );
 
     fullscreenButton.textContent = "✕";
+                if (
+    screen.orientation &&
+    screen.orientation.lock
+) {
+    screen.orientation.lock("landscape").catch(
+        function () {}
+    );
+                }
 
     }
 
