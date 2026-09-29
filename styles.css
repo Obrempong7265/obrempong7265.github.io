@@ -7002,3 +7002,29 @@ MOBILE
         width: 175px;
     }
   }
+.video-progress-preview {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 12px;
+    z-index: 9;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: rgba(255,255,255,.25);
+}
+
+.video-progress-preview-bar {
+    width: 32%;
+    height: 100%;
+    border-radius: 4px;
+    background: #ff4fa3;
+}
+
+@media (max-width:600px) {
+    .video-progress-preview {
+        left: 10px;
+        right: 10px;
+        bottom: 9px;
+    }
+      }
