@@ -878,10 +878,11 @@ padding-bottom: 75px;
         top: 12px;
         left: 12px;
     }
+.video-view-count {
+    top: calc(62vh - 50px);
+    right: 12px;
 
-    .video-view-count {
-        bottom: 12px;
-        right: 12px;
+    
     }
 
     .video-info {
