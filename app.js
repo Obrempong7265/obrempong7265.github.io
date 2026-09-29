@@ -8863,6 +8863,32 @@ function openVideoCityPublicProfile(
         "Creator on Video City";
 
 }
+    const profileVideos =
+    document.getElementById(
+        "publicProfileVideos"
+    );
+
+const profileFollowers =
+    document.getElementById(
+        "publicProfileFollowers"
+    );
+
+const profileFollowing =
+    document.getElementById(
+        "publicProfileFollowing"
+    );
+
+if (profileVideos) {
+    profileVideos.textContent = "12";
+}
+
+if (profileFollowers) {
+    profileFollowers.textContent = "1.8K";
+}
+
+if (profileFollowing) {
+    profileFollowing.textContent = "246";
+}
     
     document
     .querySelectorAll(".panel")
