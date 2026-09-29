@@ -6200,10 +6200,17 @@ document
 
                             <div class="temporary-content-viewer-body">
 
-                                <div class="temporary-viewer-image-placeholder">
-                                    🖼️
-                                </div>
+                                <div class="temporary-profile-image-viewer">
 
+    <div class="temporary-viewer-watermark">
+        Video City
+    </div>
+
+    <div class="temporary-profile-image-icon">
+        🖼️
+    </div>
+
+</div>
                                 <h2>
                                     ${escapeHTML(title)}
                                 </h2>
