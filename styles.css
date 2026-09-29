@@ -6710,6 +6710,7 @@ MOBILE
     background: #444;
 }
 
+
 .temporary-viewer-progress-bar {
     width: 18%;
     height: 100%;
@@ -6760,3 +6761,26 @@ MOBILE
     border-radius: 0;
     background: #000;
 }
+.temporary-viewer-watermark {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 6;
+    padding: 6px 10px;
+    border-radius: 7px;
+    background: rgba(0, 0, 0, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    pointer-events: none;
+}
+
+@media (max-width:600px) {
+    .temporary-viewer-watermark {
+        top: 10px;
+        left: 10px;
+        font-size: 11px;
+    }
+  }
