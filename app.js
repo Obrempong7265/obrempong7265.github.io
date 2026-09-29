@@ -5145,8 +5145,13 @@ async function loadTemporaryFeed() {
                 </h3>
 
                 <p class="description">
-                    ${video.description}
-                </p>
+    ${video.description}
+    <button
+        type="button"
+        class="video-description-more">
+        more
+    </button>
+</p>
                 ${
     video.paid
     ? `
