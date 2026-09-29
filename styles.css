@@ -7028,3 +7028,13 @@ MOBILE
         bottom: 9px;
     }
       }
+.video-description-more {
+    margin-left: 5px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #ff4fa3;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
