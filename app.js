@@ -5218,6 +5218,55 @@ async function loadTemporaryFeed() {
         feed.appendChild(card);
         const commentButton =
     card.querySelector(".commentBtn");
+        const menuButton =
+    card.querySelector(".video-card-menu");
+
+if (menuButton) {
+
+    menuButton.addEventListener(
+        "click",
+        function (event) {
+
+            event.stopPropagation();
+
+            const existingMenu =
+                card.querySelector(
+                    ".video-card-menu-panel"
+                );
+
+            if (existingMenu) {
+                existingMenu.remove();
+                return;
+            }
+
+            const menu =
+                document.createElement("div");
+
+            menu.className =
+                "video-card-menu-panel";
+
+            menu.innerHTML = `
+                <button type="button">
+                    ▶ Playback speed
+                </button>
+
+                <button type="button">
+                    ⬇ Download
+                </button>
+
+                <button type="button">
+                    🚩 Report
+                </button>
+            `;
+
+            card.querySelector(
+                ".video-wrap"
+            ).appendChild(menu);
+
+        }
+    );
+
+}
 
 if (commentButton) {
 
