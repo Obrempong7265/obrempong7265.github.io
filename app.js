@@ -6257,47 +6257,63 @@ if (
         function () {
 
             if (
-    videoPlayer.classList.contains(
-        "temporary-mobile-fullscreen"
-    )
-) {
+                videoPlayer.classList.contains(
+                    "temporary-mobile-fullscreen"
+                )
+            ) {
 
-    videoPlayer.classList.remove(
-        "temporary-mobile-fullscreen"
-    );
+                videoPlayer.classList.remove(
+                    "temporary-mobile-fullscreen"
+                );
 
-    fullscreenButton.textContent = "⛶";
-
-} else {
-
-    videoPlayer.classList.add(
-        "temporary-mobile-fullscreen"
-    );
-
-    fullscreenButton.textContent = "✕";
-
-    if (
-        videoPlayer.requestFullscreen
-    ) {
-
-        videoPlayer.requestFullscreen()
-            .then(function () {
+                fullscreenButton.textContent = "⛶";
 
                 if (
-                    screen.orientation &&
-                    screen.orientation.lock
+                    document.fullscreenElement
                 ) {
-                    return screen.orientation.lock(
-                        "landscape"
-                    );
+
+                    document.exitFullscreen()
+                        .catch(function () {});
+
                 }
 
-            })
-            .catch(function () {});
+            } else {
 
-    }
+                videoPlayer.classList.add(
+                    "temporary-mobile-fullscreen"
+                );
 
-                    }
+                fullscreenButton.textContent = "✕";
+
+                if (
+                    videoPlayer.requestFullscreen
+                ) {
+
+                    videoPlayer.requestFullscreen()
+                        .then(function () {
+
+                            if (
+                                screen.orientation &&
+                                screen.orientation.lock
+                            ) {
+
+                                return screen.orientation.lock(
+                                    "landscape"
+                                );
+
+                            }
+
+                        })
+                        .catch(function () {});
+
+                }
+
+            }
+
+        }
+    );
+
+                }
                     // ==================================
                     // CLOSE VIEWER
                     // ==================================
