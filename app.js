@@ -5090,6 +5090,11 @@ async function loadTemporaryFeed() {
     ⋮
 </button>
 
+<div class="video-progress-preview">
+
+    <div class="video-progress-preview-bar"></div>
+
+</div>
                 ${
                     video.paid
                     ? `
