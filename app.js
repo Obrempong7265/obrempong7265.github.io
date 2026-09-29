@@ -2586,15 +2586,6 @@ card.innerHTML = `
             </button>
 
 
-            <button
-                class="reportBtn"
-                type="button">
-
-                🚩 Report
-
-            </button>
-
-
         </div>
 
 
