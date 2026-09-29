@@ -697,12 +697,11 @@ padding-bottom: 75px;
 /* ==========================================
    VIEW COUNT
 ========================================== */
-
 .video-view-count {
     position: absolute;
     right: 16px;
     bottom: 16px;
-    z-index: 5;
+    z-index: 9;
     padding: 7px 11px;
     border-radius: 20px;
     background: rgba(0,0,0,.65);
@@ -710,7 +709,8 @@ padding-bottom: 75px;
     font-size: 13px;
     font-weight: 600;
     backdrop-filter: blur(6px);
-                     }
+}
+
 
 /* ==========================================
    VIDEO INFO
@@ -879,11 +879,9 @@ padding-bottom: 75px;
         left: 12px;
     }
 .video-view-count {
-    top: calc(62vh - 50px);
     right: 12px;
-
-    
-    }
+    bottom: 12px;
+}
 
     .video-info {
         padding: 16px 13px 22px;
