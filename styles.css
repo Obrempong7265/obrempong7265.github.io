@@ -607,7 +607,7 @@ padding-bottom: 75px;
     position: relative;
     min-height: calc(100vh - 145px);
     background: #050505;
-    border-bottom: 1px solid #222;
+    border-bottom:none;
     overflow: hidden;
 }
 
