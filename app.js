@@ -8859,10 +8859,11 @@ function openVideoCityPublicProfile(
 
     if (profileBio) {
 
-        profileBio.textContent =
-            "Video City creator";
+    profileBio.textContent =
+        "Creator on Video City";
 
-    }
+}
+    
     document
     .querySelectorAll(".panel")
     .forEach(
