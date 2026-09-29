@@ -6133,10 +6133,21 @@ document
 
                             <div class="temporary-content-viewer-body">
 
-                                <div class="temporary-viewer-video-placeholder locked">
-                                    🔒
-                                </div>
+                                <div class="temporary-paid-video-player">
 
+    <div class="temporary-viewer-watermark">
+        Video City
+    </div>
+
+    <div class="temporary-paid-lock-icon">
+        🔒
+    </div>
+
+    <div class="temporary-paid-label">
+        PREMIUM CONTENT
+    </div>
+
+</div>
                                 <h2>
                                     ${escapeHTML(title)}
                                 </h2>
