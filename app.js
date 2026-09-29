@@ -6157,12 +6157,14 @@ document
                                 </p>
 
                                 <button
-                                    type="button"
-                                    class="temporary-viewer-unlock"
-                                >
-                                    🔓 Unlock for ${escapeHTML(price)} Pi
-                                </button>
-
+    type="button"
+    class="temporary-viewer-unlock"
+>
+    <span class="temporary-unlock-icon">🔓</span>
+    <span>
+        Unlock for ${escapeHTML(price)} Pi
+    </span>
+</button>
                             </div>
 
                         `;
