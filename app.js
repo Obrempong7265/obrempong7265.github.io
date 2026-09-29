@@ -5091,6 +5091,13 @@ async function loadTemporaryFeed() {
                 >
                     ⛶
                 </button>
+                <button
+    class="video-card-menu"
+    type="button"
+    aria-label="Video menu"
+>
+    ⋮
+</button>
 
                 ${
                     video.paid
