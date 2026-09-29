@@ -700,22 +700,17 @@ padding-bottom: 75px;
 
 .video-view-count {
     position: absolute;
-    top: calc(72vh - 52px);
     right: 16px;
+    bottom: 16px;
     z-index: 5;
-
     padding: 7px 11px;
-
     border-radius: 20px;
-
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0,0,0,.65);
     color: #fff;
-
     font-size: 13px;
     font-weight: 600;
-
     backdrop-filter: blur(6px);
-}
+                     }
 
 /* ==========================================
    VIDEO INFO
@@ -885,7 +880,7 @@ padding-bottom: 75px;
     }
 
     .video-view-count {
-        top: calc(62vh - 50px);
+        bottom: 12px;
         right: 12px;
     }
 
@@ -7006,7 +7001,7 @@ MOBILE
     position: absolute;
     left: 14px;
     right: 14px;
-    bottom: 12px;
+    bottom: 20px;
     z-index: 9;
     height: 4px;
     overflow: hidden;
@@ -7025,7 +7020,7 @@ MOBILE
     .video-progress-preview {
         left: 10px;
         right: 10px;
-        bottom: 9px;
+        bottom: 16px;
     }
       }
 .video-description-more {
