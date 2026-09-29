@@ -6063,6 +6063,9 @@ document
                             <div class="temporary-content-viewer-body">
 
                                 <div class="temporary-viewer-video-player">
+                                <div class="temporary-viewer-watermark">
+    Video City
+</div>
 
     <div class="temporary-viewer-play-icon">
         ▶
