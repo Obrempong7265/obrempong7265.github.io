@@ -6865,3 +6865,42 @@ MOBILE
 .temporary-unlock-icon {
     font-size: 17px;
 }
+/* ==========================================
+   TEMPORARY PROFILE IMAGE VIEWER
+========================================== */
+
+.temporary-profile-image-viewer {
+    position: relative;
+    width: min(900px, 100%);
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #292929;
+    border-radius: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            #242424,
+            #111111,
+            #090909
+        );
+}
+
+.temporary-profile-image-icon {
+    font-size: 72px;
+}
+
+@media (max-width:600px) {
+
+    .temporary-profile-image-viewer {
+        border-radius: 10px;
+        aspect-ratio: 4 / 3;
+    }
+
+    .temporary-profile-image-icon {
+        font-size: 55px;
+    }
+
+}
