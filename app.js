@@ -5117,16 +5117,16 @@ async function loadTemporaryFeed() {
                     : ""
                 }
 
-            </div>
-
             <div class="video-view-count">
-                👁
-                <span>
-                    ${video.views}
-                </span>
-            </div>
+    👁
+    <span>
+        ${video.views}
+    </span>
+</div>
 
-            <div class="video-info">
+</div>
+
+<div class="video-info">
 <div class="video-creator-row">
 
     <div class="video-creator-avatar">
