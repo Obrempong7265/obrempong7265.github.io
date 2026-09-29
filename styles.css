@@ -6928,3 +6928,35 @@ MOBILE
 .video-creator-row .creator {
     margin: 0;
   }
+.video-card-menu {
+    position: absolute;
+    top: 16px;
+    right: 68px;
+    z-index: 10;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50%;
+    background: rgba(0,0,0,.65);
+    color: #fff;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+}
+
+.video-card-menu:hover {
+    background: rgba(255,20,147,.85);
+}
+
+@media (max-width:600px) {
+    .video-card-menu {
+        top: 12px;
+        right: 60px;
+        width: 40px;
+        height: 40px;
+    }
+          }
