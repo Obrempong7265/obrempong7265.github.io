@@ -6267,12 +6267,6 @@ if (
     );
 
     fullscreenButton.textContent = "⛶";
-                if (
-    screen.orientation &&
-    screen.orientation.unlock
-) {
-    screen.orientation.unlock();
-                }
 
 } else {
 
@@ -6281,22 +6275,29 @@ if (
     );
 
     fullscreenButton.textContent = "✕";
+
+    if (
+        videoPlayer.requestFullscreen
+    ) {
+
+        videoPlayer.requestFullscreen()
+            .then(function () {
+
                 if (
-    screen.orientation &&
-    screen.orientation.lock
-) {
-    screen.orientation.lock("landscape").catch(
-        function () {}
-    );
+                    screen.orientation &&
+                    screen.orientation.lock
+                ) {
+                    return screen.orientation.lock(
+                        "landscape"
+                    );
                 }
+
+            })
+            .catch(function () {});
 
     }
 
-        }
-    );
-
-}
-
+                    }
                     // ==================================
                     // CLOSE VIEWER
                     // ==================================
