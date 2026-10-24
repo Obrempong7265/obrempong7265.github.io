@@ -148,18 +148,21 @@ if (auth.accessToken) {
 const walletAddress =
     auth.user.wallet_address;
 
+
+const walletDebugMessage = walletAddress
+    ? "Wallet address received successfully."
+    : "Pi login succeeded, but no wallet address was returned.";
+
+alert(walletDebugMessage);
+
 if (walletAddress) {
     sessionStorage.setItem(
         "videoCityWalletAddress",
         walletAddress
     );
-
-    console.log(
-        "Video City wallet address received."
-    );
 } else {
-    console.log(
-        "Pi did not return a wallet address."
+    sessionStorage.removeItem(
+        "videoCityWalletAddress"
     );
 }
 
