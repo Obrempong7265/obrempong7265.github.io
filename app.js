@@ -3681,29 +3681,204 @@ function setupLike(card, video) {
 // SUPPORT SYSTEM
 // ==========================================
 
+
 function setupSupport(card, video) {
 
     const supportButton =
         card.querySelector(".supportBtn");
 
-
     if (!supportButton) {
         return;
     }
 
+    supportButton.addEventListener("click", function () {
 
-    supportButton.addEventListener(
-        "click",
-        function () {
+        const existingDialog =
+            document.querySelector(".video-tip-dialog");
 
-            alert(
-                "Pi Support payments will be added soon."
-            );
-
+        if (existingDialog) {
+            existingDialog.remove();
         }
-    );
 
+        const dialog = document.createElement("div");
+        dialog.className = "video-tip-dialog";
+
+        dialog.innerHTML = `
+            <div class="video-unlock-box"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="video-tip-title">
+
+                <div class="video-unlock-icon">💜</div>
+
+                <h3 id="video-tip-title">Support this Creator</h3>
+
+                <p>
+                    Send a tip to appreciate this creator's content.
+                </p>
+
+                <div class="video-tip-amounts">
+                    <button type="button" data-tip="1">1 Pi</button>
+                    <button type="button" data-tip="2">2 Pi</button>
+                    <button type="button" data-tip="5">5 Pi</button>
+                </div>
+
+                <label for="video-tip-custom">Custom amount (Pi)</label>
+
+                <input
+                    id="video-tip-custom"
+                    type="number"
+                    min="0.1"
+                    step="0.1"
+                    placeholder="Enter Pi amount"
+                    style="width:100%;box-sizing:border-box;padding:12px;margin-top:8px;border-radius:10px;border:1px solid #444;background:#1b1b1b;color:#fff;"
+                >
+
+                <p class="video-tip-status" aria-live="polite">
+                    Select an amount to continue.
+                </p>
+
+                <button type="button" class="video-tip-confirm video-unlock-confirm">
+                    Continue with Pi
+                </button>
+
+                <button type="button" class="video-tip-cancel video-unlock-cancel">
+                    Cancel
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(dialog);
+
+        let selectedAmount = 1;
+
+        const amountInput =
+            dialog.querySelector("#video-tip-custom");
+
+        const status =
+            dialog.querySelector(".video-tip-status");
+
+        dialog.querySelectorAll("[data-tip]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                selectedAmount = Number(this.dataset.tip);
+                amountInput.value = "";
+                status.textContent =
+                    "Selected tip: " + selectedAmount + " Pi";
+            });
+        });
+
+        amountInput.addEventListener("input", function () {
+            selectedAmount = Number(this.value);
+            status.textContent = selectedAmount > 0
+                ? "Selected tip: " + selectedAmount + " Pi"
+                : "Enter a valid tip amount.";
+        });
+
+        dialog.querySelector(".video-tip-cancel")
+            .addEventListener("click", function () {
+                dialog.remove();
+            });
+
+        dialog.addEventListener("click", function (event) {
+            if (event.target === dialog) {
+                dialog.remove();
+            }
+        });
+
+        dialog.querySelector(".video-tip-confirm")
+            .addEventListener("click", async function () {
+
+                if (!Number.isFinite(selectedAmount) ||
+                    selectedAmount <= 0) {
+                    status.textContent =
+                        "Please select a valid Pi amount.";
+                    return;
+                }
+
+                if (!window.Pi ||
+                    typeof Pi.createPayment !== "function") {
+                    status.textContent =
+                        "Pi payment is unavailable. Open Video City in Pi Browser.";
+                    return;
+                }
+
+                if (!sessionStorage.getItem("videoCityPiAccessToken")) {
+                    status.textContent =
+                        "Please sign in with Pi before requesting payment.";
+                    return;
+                }
+
+                this.disabled = true;
+                this.textContent = "Opening Pi payment...";
+
+                try {
+                    const paymentData = {
+                        amount: selectedAmount,
+                        memo: "Video City creator tip",
+                        metadata: {
+                            type: "creator_tip_preview",
+                            videoId: String(video.id || video.title),
+                            creator: String(video.creator || "@Creator")
+                        }
+                    };
+
+                    const paymentCallbacks = {
+                        onReadyForServerApproval: function (paymentId) {
+                            status.textContent =
+                                "Payment requested. Tip verification is not connected, so no tip is confirmed.";
+                            console.log(
+                                "Video City tip awaiting server approval:",
+                                paymentId
+                            );
+                        },
+
+                        onReadyForServerCompletion: function (paymentId, txid) {
+                            status.textContent =
+                                "Payment reached completion stage, but server verification is unavailable. No tip is confirmed.";
+                            console.log(
+                                "Video City tip awaiting server completion:",
+                                paymentId,
+                                txid
+                            );
+                        },
+
+                        onCancel: function () {
+                            status.textContent =
+                                "Payment cancelled. No tip was confirmed.";
+                            dialog.querySelector(".video-tip-confirm").disabled = false;
+                            dialog.querySelector(".video-tip-confirm").textContent =
+                                "Continue with Pi";
+                        },
+
+                        onError: function (error) {
+                            console.error("Video City tip payment error:", error);
+                            status.textContent =
+                                "Pi payment could not be completed. No tip was confirmed.";
+                            dialog.querySelector(".video-tip-confirm").disabled = false;
+                            dialog.querySelector(".video-tip-confirm").textContent =
+                                "Continue with Pi";
+                        }
+                    };
+
+                    await Pi.createPayment(
+                        paymentData,
+                        paymentCallbacks
+                    );
+
+                    status.textContent =
+                        "Pi payment window requested. Tip verification is not connected yet.";
+
+                } catch (error) {
+                    console.error("Video City tip payment error:", error);
+                    status.textContent =
+                        "Unable to open Pi payment. Please try again.";
+                    this.disabled = false;
+                    this.textContent = "Continue with Pi";
+                }
+            });
+    });
 }
+
         // ==========================================
 // COMMENT SYSTEM
 // ==========================================
