@@ -7022,6 +7022,19 @@ MOBILE
         bottom: 16px;
     }
       }
+
+.video-description-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-description-text.expanded {
+    display: block;
+    overflow: visible;
+}
+
 .video-description-more {
     margin-left: 5px;
     padding: 0;
