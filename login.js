@@ -107,6 +107,14 @@ loginBtn.addEventListener(
                     scopes,
                     onIncompletePaymentFound
                 );
+            alert(
+    "Wallet address returned: " +
+    Boolean(
+        auth &&
+        auth.user &&
+        auth.user.wallet_address
+    )
+);
             // ==========================================
 // SAVE PI ACCESS TOKEN
 // ==========================================
