@@ -5212,6 +5212,23 @@ async function loadTemporaryFeed() {
         `;
 
         feed.appendChild(card);
+        
+        const moreButton =
+            card.querySelector(".video-description-more");
+
+        const descriptionText =
+            card.querySelector(".video-description-text");
+
+        if (moreButton && descriptionText) {
+            moreButton.addEventListener("click", function () {
+                const expanded =
+                    descriptionText.classList.toggle("expanded");
+
+                moreButton.textContent =
+                    expanded ? "less" : "more";
+            });
+        }
+
         const commentButton =
     card.querySelector(".commentBtn");
         const menuButton =
