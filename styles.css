@@ -7131,3 +7131,34 @@ MOBILE
 .video-unlock-status {
     overflow-wrap: anywhere;
 }
+/* VIDEO CITY — TIP AMOUNT BUTTONS */
+
+.video-tip-amounts {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0;
+}
+
+.video-tip-amounts button {
+    flex: 1;
+    padding: 12px 6px;
+    border: 1px solid #ff4fa3;
+    border-radius: 10px;
+    background: #21121c;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.video-tip-amounts button:active {
+    background: #ff4fa3;
+}
+
+.video-tip-dialog label {
+    display: block;
+    margin-top: 12px;
+    color: #ddd;
+    text-align: left;
+    font-size: 13px;
+}
