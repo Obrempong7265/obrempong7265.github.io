@@ -143,6 +143,25 @@ if (auth.accessToken) {
 
             const username =
                 auth.user.username;
+            // SAVE PI WALLET ADDRESS
+
+const walletAddress =
+    auth.user.wallet_address;
+
+if (walletAddress) {
+    sessionStorage.setItem(
+        "videoCityWalletAddress",
+        walletAddress
+    );
+
+    console.log(
+        "Video City wallet address received."
+    );
+} else {
+    console.log(
+        "Pi did not return a wallet address."
+    );
+}
 
 
             // ==================================
