@@ -359,9 +359,8 @@ console.log(
 );
 
 });
-/* ==========================================
-   VIDEO CITY — CONNECT PI WALLET
-========================================== */
+
+/* VIDEO CITY — CONNECT PI WALLET */
 
 const connectWalletBtn =
     document.getElementById("connectWalletBtn");
@@ -370,34 +369,62 @@ const walletStatus =
     document.getElementById("walletStatus");
 
 if (connectWalletBtn && walletStatus) {
+    connectWalletBtn.addEventListener("click", async function () {
 
-    connectWalletBtn.addEventListener("click", function () {
+        if (!window.Pi ||
+            !Pi.Wallet ||
+            typeof Pi.Wallet.getUserMigratedWalletAddresses !== "function") {
 
-        const walletAddress =
-            sessionStorage.getItem("videoCityWalletAddress");
-
-        if (!walletAddress) {
-            walletStatus.textContent = "🟠 Wallet Address Unavailable";
-            alert(
-                "Wallet address not found. Please sign in again through Pi Browser and grant wallet-address permission."
-            );
+            walletStatus.textContent =
+                "Wallet connection is unavailable in this Pi SDK.";
             return;
         }
 
-        const shortAddress =
-            walletAddress.length > 12
-                ? walletAddress.slice(0, 6) +
-                  "…" +
-                  walletAddress.slice(-4)
-                : walletAddress;
-
-        walletStatus.textContent =
-            "🟢 Connected: " + shortAddress;
-
-        connectWalletBtn.textContent = "✓ Wallet Connected";
-
         connectWalletBtn.disabled = true;
+        connectWalletBtn.textContent = "Checking wallet...";
 
+        try {
+            const result =
+                await Pi.Wallet.getUserMigratedWalletAddresses();
+
+            const wallets =
+                result && Array.isArray(result.wallets)
+                    ? result.wallets
+                    : [];
+
+            if (wallets.length === 0 || !wallets[0].publicKey) {
+                walletStatus.textContent =
+                    "No migrated wallet address was returned.";
+                return;
+            }
+
+            const address = wallets[0].publicKey;
+
+            sessionStorage.setItem(
+                "videoCityWalletAddress",
+                address
+            );
+
+            const shortAddress =
+                address.slice(0, 6) + "…" + address.slice(-4);
+
+            walletStatus.textContent =
+                "🟢 Connected: " + shortAddress;
+
+            connectWalletBtn.textContent =
+                "✓ Wallet Connected";
+
+        } catch (error) {
+            console.error("Wallet lookup failed:", error);
+
+            walletStatus.textContent =
+                "Could not retrieve wallet. Please try again.";
+
+            connectWalletBtn.textContent =
+                "🔗 Connect Wallet";
+        } finally {
+            connectWalletBtn.disabled = false;
+        }
     });
-
 }
+
