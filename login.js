@@ -356,3 +356,45 @@ console.log(
 );
 
 });
+/* ==========================================
+   VIDEO CITY — CONNECT PI WALLET
+========================================== */
+
+const connectWalletBtn =
+    document.getElementById("connectWalletBtn");
+
+const walletStatus =
+    document.getElementById("walletStatus");
+
+if (connectWalletBtn && walletStatus) {
+
+    connectWalletBtn.addEventListener("click", function () {
+
+        const walletAddress =
+            sessionStorage.getItem("videoCityWalletAddress");
+
+        if (!walletAddress) {
+            walletStatus.textContent = "🟠 Wallet Address Unavailable";
+            alert(
+                "Wallet address not found. Please sign in again through Pi Browser and grant wallet-address permission."
+            );
+            return;
+        }
+
+        const shortAddress =
+            walletAddress.length > 12
+                ? walletAddress.slice(0, 6) +
+                  "…" +
+                  walletAddress.slice(-4)
+                : walletAddress;
+
+        walletStatus.textContent =
+            "🟢 Connected: " + shortAddress;
+
+        connectWalletBtn.textContent = "✓ Wallet Connected";
+
+        connectWalletBtn.disabled = true;
+
+    });
+
+}
