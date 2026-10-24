@@ -2679,6 +2679,100 @@ const unlockButton =
 
 if (unlockButton) {
 
+    unlockButton.addEventListener("click", function () {
+
+        const price = Number(video.price_pi || 0);
+
+        if (price <= 0) {
+            return;
+        }
+
+        const existingDialog =
+            document.querySelector(".video-unlock-dialog");
+
+        if (existingDialog) {
+            existingDialog.remove();
+        }
+
+        const dialog = document.createElement("div");
+        dialog.className = "video-unlock-dialog";
+
+        dialog.innerHTML = `
+            <div class="video-unlock-box" role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="video-unlock-title">
+
+                <div class="video-unlock-icon">🔒</div>
+
+                <h3 id="video-unlock-title">
+                    Unlock Premium Video
+                </h3>
+
+                <p>
+                    Unlock this video to access its premium content.
+                </p>
+
+                <div class="video-unlock-price">
+                    ${price} Pi
+                </div>
+
+                <p class="video-unlock-note">
+                    No payment has been made yet.
+                </p>
+
+                <button type="button"
+                        class="video-unlock-confirm">
+                    Continue with Pi
+                </button>
+
+                <button type="button"
+                        class="video-unlock-cancel">
+                    Cancel
+                </button>
+
+                <p class="video-unlock-status"
+                   aria-live="polite"></p>
+            </div>
+        `;
+
+        document.body.appendChild(dialog);
+
+        dialog.querySelector(".video-unlock-cancel")
+            .addEventListener("click", function () {
+                dialog.remove();
+            });
+
+        dialog.addEventListener("click", function (event) {
+            if (event.target === dialog) {
+                dialog.remove();
+            }
+        });
+
+        dialog.querySelector(".video-unlock-confirm")
+            .addEventListener("click", function () {
+                const status =
+                    dialog.querySelector(".video-unlock-status");
+
+                status.textContent =
+                    "Pi payment integration is not connected yet. No Pi has been charged.";
+
+                this.disabled = true;
+                this.textContent = "Payment unavailable";
+
+                console.log(
+                    "Video City: Unlock requested",
+                    {
+                        videoId: video.id,
+                        pricePi: price
+                    }
+                );
+            });
+    });
+}
+
+
+if (unlockButton) {
+
     unlockButton.addEventListener(
         "click",
         function () {
