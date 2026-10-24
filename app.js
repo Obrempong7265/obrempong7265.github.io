@@ -5726,16 +5726,79 @@ if (tipButton) {
             if (event.target === dialog) dialog.remove();
         });
 
-        confirmButton.addEventListener("click", function () {
-            if (!Number.isFinite(amount) || amount <= 0) {
-                status.textContent = "Please enter a valid Pi amount.";
-                return;
-            }
+        
+confirmButton.addEventListener("click", async function () {
+    if (!Number.isFinite(amount) || amount <= 0) {
+        status.textContent = "Please enter a valid Pi amount.";
+        return;
+    }
 
-            status.textContent =
-                "Tip amount selected: " + amount +
-                " Pi. Payment is not connected to server verification yet.";
-        });
+    if (!window.Pi || typeof Pi.createPayment !== "function") {
+        status.textContent =
+            "Pi payment is unavailable. Open Video City in Pi Browser.";
+        return;
+    }
+
+    if (!sessionStorage.getItem("videoCityPiAccessToken")) {
+        status.textContent =
+            "Please sign in with Pi before requesting payment.";
+        return;
+    }
+
+    confirmButton.disabled = true;
+    confirmButton.textContent = "Opening Pi payment...";
+
+    try {
+        const paymentData = {
+            amount: amount,
+            memo: "Video City creator tip",
+            metadata: {
+                type: "creator_tip_preview",
+                videoId: String(video.id || video.title || "unknown")
+            }
+        };
+
+        const paymentCallbacks = {
+            onReadyForServerApproval: function (paymentId) {
+                status.textContent =
+                    "Payment requested. Server approval is not connected yet.";
+                console.log("Tip awaiting server approval:", paymentId);
+            },
+
+            onReadyForServerCompletion: function (paymentId, txid) {
+                status.textContent =
+                    "Payment reached the completion stage, but server verification is not connected. No tip is confirmed.";
+                console.log("Tip awaiting server completion:", paymentId, txid);
+            },
+
+            onCancel: function () {
+                status.textContent = "Payment cancelled.";
+                confirmButton.disabled = false;
+                confirmButton.textContent = "Continue with Pi";
+            },
+
+            onError: function (error) {
+                console.error("Tip payment error:", error);
+                status.textContent = "Payment could not be completed.";
+                confirmButton.disabled = false;
+                confirmButton.textContent = "Continue with Pi";
+            }
+        };
+
+        await Pi.createPayment(paymentData, paymentCallbacks);
+
+        status.textContent =
+            "Pi payment was requested. Server verification is still required.";
+
+    } catch (error) {
+        console.error("Unable to open tip payment:", error);
+        status.textContent =
+            "Unable to open Pi payment. Please try again.";
+        confirmButton.disabled = false;
+        confirmButton.textContent = "Continue with Pi";
+    }
+});
+
     });
 }
 
