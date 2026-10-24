@@ -3692,7 +3692,8 @@ function setupSupport(card, video) {
     }
 
     supportButton.addEventListener("click", function () {
-
+        
+alert("Tip button clicked");
         const existingDialog =
             document.querySelector(".video-tip-dialog");
 
