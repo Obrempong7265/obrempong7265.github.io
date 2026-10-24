@@ -7045,3 +7045,89 @@ MOBILE
     font-weight: 700;
     cursor: pointer;
 }
+
+/* VIDEO CITY — PREMIUM UNLOCK DIALOG */
+
+.video-unlock-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(6px);
+}
+
+.video-unlock-box {
+    width: 100%;
+    max-width: 380px;
+    padding: 28px 22px;
+    border: 1px solid #382033;
+    border-radius: 20px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+}
+
+.video-unlock-icon {
+    margin-bottom: 12px;
+    font-size: 42px;
+}
+
+.video-unlock-box h3 {
+    margin: 0 0 12px;
+    font-size: 21px;
+}
+
+.video-unlock-box p {
+    color: #bbb;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.video-unlock-price {
+    margin: 20px 0;
+    color: #ff4fa3;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.video-unlock-note {
+    font-size: 12px !important;
+}
+
+.video-unlock-confirm,
+.video-unlock-cancel {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.video-unlock-confirm {
+    border: none;
+    background: #ff4fa3;
+    color: #fff;
+}
+
+.video-unlock-confirm:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.video-unlock-cancel {
+    border: 1px solid #444;
+    background: #1b1b1b;
+    color: #fff;
+}
+
+.video-unlock-status {
+    overflow-wrap: anywhere;
+}
