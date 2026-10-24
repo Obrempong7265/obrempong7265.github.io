@@ -7162,3 +7162,31 @@ MOBILE
     text-align: left;
     font-size: 13px;
 }
+
+/* VIDEO CITY — TIP DIALOG OVERLAY FIX */
+
+.video-tip-dialog {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 999999 !important;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+}
+
+.video-tip-dialog .video-unlock-box {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    max-height: 85vh;
+    overflow-y: auto;
+    margin: auto;
+    box-sizing: border-box;
+}
