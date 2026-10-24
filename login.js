@@ -86,9 +86,9 @@ loginBtn.addEventListener(
 
             const scopes = [
     "username",
-    "payments"
+    "payments",
+    "wallet_address"
 ];
-
 
             function onIncompletePaymentFound(
                 payment
