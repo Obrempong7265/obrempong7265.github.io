@@ -5307,6 +5307,74 @@ async function loadTemporaryFeed() {
 
         feed.appendChild(card);
         
+        const unlockButton =
+            card.querySelector(".unlockBtn");
+
+        if (unlockButton) {
+            unlockButton.addEventListener("click", function () {
+
+                const price = Number(video.price || 0);
+
+                const dialog = document.createElement("div");
+                dialog.className = "video-unlock-dialog";
+
+                dialog.innerHTML = `
+                    <div class="video-unlock-box"
+                         role="dialog"
+                         aria-modal="true">
+
+                        <div class="video-unlock-icon">🔒</div>
+
+                        <h3>Unlock Premium Video</h3>
+
+                        <p>Unlock this video to access its premium content.</p>
+
+                        <div class="video-unlock-price">
+                            ${price} Pi
+                        </div>
+
+                        <p class="video-unlock-note">
+                            No payment has been made.
+                        </p>
+
+                        <button type="button"
+                                class="video-unlock-confirm">
+                            Continue with Pi
+                        </button>
+
+                        <button type="button"
+                                class="video-unlock-cancel">
+                            Cancel
+                        </button>
+
+                        <p class="video-unlock-status"
+                           aria-live="polite"></p>
+                    </div>
+                `;
+
+                document.body.appendChild(dialog);
+
+                dialog.querySelector(".video-unlock-cancel")
+                    .addEventListener("click", function () {
+                        dialog.remove();
+                    });
+
+                dialog.addEventListener("click", function (event) {
+                    if (event.target === dialog) {
+                        dialog.remove();
+                    }
+                });
+
+                dialog.querySelector(".video-unlock-confirm")
+                    .addEventListener("click", function () {
+                        dialog.querySelector(".video-unlock-status")
+                            .textContent =
+                            "Real Pi payment is not connected yet. No Pi has been charged.";
+                    });
+            });
+        }
+
+        
         const moreButton =
             card.querySelector(".video-description-more");
 
