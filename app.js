@@ -3693,7 +3693,7 @@ function setupSupport(card, video) {
 
     supportButton.addEventListener("click", function () {
         
-alert("Tip button clicked");
+
         const existingDialog =
             document.querySelector(".video-tip-dialog");
 
@@ -5638,6 +5638,107 @@ dialog.querySelector(".video-unlock-confirm")
                     expanded ? "less" : "more";
             });
         }
+        
+const tipButton = card.querySelector(".supportBtn");
+
+if (tipButton) {
+    tipButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        const existingDialog =
+            document.querySelector(".video-tip-dialog");
+
+        if (existingDialog) {
+            existingDialog.remove();
+            return;
+        }
+
+        const dialog = document.createElement("div");
+        dialog.className = "video-tip-dialog";
+
+        dialog.innerHTML = `
+            <div class="video-unlock-box"
+                 role="dialog"
+                 aria-modal="true">
+
+                <div class="video-unlock-icon">💜</div>
+
+                <h3>Support this Creator</h3>
+
+                <p>Choose an amount to appreciate this creator.</p>
+
+                <div class="video-tip-amounts">
+                    <button type="button" data-tip="1">1 Pi</button>
+                    <button type="button" data-tip="2">2 Pi</button>
+                    <button type="button" data-tip="5">5 Pi</button>
+                </div>
+
+                <label for="video-tip-custom">Custom amount (Pi)</label>
+                <input id="video-tip-custom"
+                       type="number"
+                       min="0.1"
+                       step="0.1"
+                       placeholder="Enter amount"
+                       style="width:100%;box-sizing:border-box;padding:12px;margin-top:8px;border-radius:10px;background:#1b1b1b;color:white;border:1px solid #444;">
+
+                <p class="video-tip-status">Select a tip amount.</p>
+
+                <button type="button"
+                        class="video-unlock-confirm">
+                    Continue with Pi
+                </button>
+
+                <button type="button"
+                        class="video-unlock-cancel">
+                    Cancel
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(dialog);
+
+        let amount = 1;
+
+        const status = dialog.querySelector(".video-tip-status");
+        const input = dialog.querySelector("#video-tip-custom");
+        const confirmButton =
+            dialog.querySelector(".video-unlock-confirm");
+
+        dialog.querySelectorAll("[data-tip]").forEach(button => {
+            button.addEventListener("click", function () {
+                amount = Number(this.dataset.tip);
+                input.value = "";
+                status.textContent = "Selected: " + amount + " Pi";
+            });
+        });
+
+        input.addEventListener("input", function () {
+            amount = Number(this.value);
+            status.textContent = amount > 0
+                ? "Selected: " + amount + " Pi"
+                : "Enter a valid amount.";
+        });
+
+        dialog.querySelector(".video-unlock-cancel")
+            .addEventListener("click", () => dialog.remove());
+
+        dialog.addEventListener("click", function (event) {
+            if (event.target === dialog) dialog.remove();
+        });
+
+        confirmButton.addEventListener("click", function () {
+            if (!Number.isFinite(amount) || amount <= 0) {
+                status.textContent = "Please enter a valid Pi amount.";
+                return;
+            }
+
+            status.textContent =
+                "Tip amount selected: " + amount +
+                " Pi. Payment is not connected to server verification yet.";
+        });
+    });
+}
+
 
         const commentButton =
     card.querySelector(".commentBtn");
