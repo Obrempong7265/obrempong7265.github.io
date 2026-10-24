@@ -2511,19 +2511,17 @@ card.innerHTML = `
     ⛶
 
 </button>
+
+<div class="video-view-count">
+    👁
+    <span>
+        ${formatCount(video.views)}
+    </span>
 </div>
 
-    <div class="video-view-count">
+</div>
 
-        👁
-        <span>
-            ${formatCount(video.views)}
-        </span>
-
-    </div>
-
-
-    <div class="video-info">
+<div class="video-info">
 
 
         <p class="creator">
