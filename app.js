@@ -5365,12 +5365,84 @@ async function loadTemporaryFeed() {
                     }
                 });
 
-                dialog.querySelector(".video-unlock-confirm")
-                    .addEventListener("click", function () {
-                        dialog.querySelector(".video-unlock-status")
-                            .textContent =
-                            "Real Pi payment is not connected yet. No Pi has been charged.";
-                    });
+                
+dialog.querySelector(".video-unlock-confirm")
+    .addEventListener("click", async function () {
+
+        const status =
+            dialog.querySelector(".video-unlock-status");
+
+        if (!window.Pi || typeof Pi.createPayment !== "function") {
+            status.textContent =
+                "Pi payment is unavailable. Open Video City in the Pi Browser and try again.";
+            return;
+        }
+
+        if (!sessionStorage.getItem("videoCityPiAccessToken")) {
+            status.textContent =
+                "Please sign in with Pi before requesting payment.";
+            return;
+        }
+
+        this.disabled = true;
+        this.textContent = "Opening Pi payment...";
+
+        try {
+            const paymentData = {
+                amount: price,
+                memo: "Unlock Video City premium preview",
+                metadata: {
+                    type: "video_unlock_preview",
+                    videoId: String(video.title)
+                }
+            };
+
+            const paymentCallbacks = {
+                onReadyForServerApproval: function (paymentId) {
+                    status.textContent =
+                        "Pi payment requested. Server approval is not connected for this preview, so the video will not be unlocked.";
+                    console.log(
+                        "Video City preview unlock awaiting server approval:",
+                        paymentId
+                    );
+                },
+
+                onReadyForServerCompletion: function (paymentId, txid) {
+                    status.textContent =
+                        "Payment reached the completion stage, but server verification is unavailable. The video remains locked.";
+                    console.log(
+                        "Video City preview unlock awaiting server completion:",
+                        paymentId,
+                        txid
+                    );
+                },
+
+                onCancel: function () {
+                    status.textContent = "Payment cancelled. No unlock was granted.";
+                    this.disabled = false;
+                },
+
+                onError: function (error) {
+                    console.error("Video City preview unlock error:", error);
+                    status.textContent =
+                        "Pi payment could not be completed. The video remains locked.";
+                }
+            };
+
+            await Pi.createPayment(paymentData, paymentCallbacks);
+
+            status.textContent =
+                "Pi payment window requested. This preview has no connected server verification.";
+
+        } catch (error) {
+            console.error("Video City preview Pi payment error:", error);
+            status.textContent =
+                "Unable to open Pi payment. Please try again.";
+            this.disabled = false;
+            this.textContent = "Continue with Pi";
+        }
+    });
+
             });
         }
 
