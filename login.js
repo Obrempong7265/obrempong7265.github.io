@@ -107,22 +107,7 @@ loginBtn.addEventListener(
                     scopes,
                     onIncompletePaymentFound
                 );
-            alert("Authentication fields: " + Object.keys(auth || {}).join(", "));
-alert("User fields: " + Object.keys((auth && auth.user) || {}).join(", "));
             
-alert(
-    "Wallet address available: " +
-    Boolean(auth && auth.user && auth.user.wallet_address)
-);
-
-            alert(
-    "Wallet address returned: " +
-    Boolean(
-        auth &&
-        auth.user &&
-        auth.user.wallet_address
-    )
-);
             // ==========================================
 // SAVE PI ACCESS TOKEN
 // ==========================================
@@ -157,42 +142,25 @@ if (auth.accessToken) {
             }
 
 
+            
             const username =
                 auth.user.username;
-            
-alert(
-    "Credentials fields: " +
-    Object.keys(auth.user.credentials || {}).join(", ")
-);
-            
-alert(
-    "Granted scopes: " +
-    JSON.stringify(auth.user.credentials.scopes)
-);
-
 
             // SAVE PI WALLET ADDRESS
+            const walletAddress =
+                auth.user.wallet_address;
 
-const walletAddress =
-    auth.user.wallet_address;
+            if (walletAddress) {
+                sessionStorage.setItem(
+                    "videoCityWalletAddress",
+                    walletAddress
+                );
+            } else {
+                sessionStorage.removeItem(
+                    "videoCityWalletAddress"
+                );
+            }
 
-
-const walletDebugMessage = walletAddress
-    ? "Wallet address received successfully."
-    : "Pi login succeeded, but no wallet address was returned.";
-
-alert(walletDebugMessage);
-
-if (walletAddress) {
-    sessionStorage.setItem(
-        "videoCityWalletAddress",
-        walletAddress
-    );
-} else {
-    sessionStorage.removeItem(
-        "videoCityWalletAddress"
-    );
-}
 
 
             // ==================================
