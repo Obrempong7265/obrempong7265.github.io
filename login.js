@@ -107,6 +107,12 @@ loginBtn.addEventListener(
                     scopes,
                     onIncompletePaymentFound
                 );
+            
+alert(
+    "Wallet address available: " +
+    Boolean(auth && auth.user && auth.user.wallet_address)
+);
+
             alert(
     "Wallet address returned: " +
     Boolean(
