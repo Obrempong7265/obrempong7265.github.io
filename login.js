@@ -107,6 +107,8 @@ loginBtn.addEventListener(
                     scopes,
                     onIncompletePaymentFound
                 );
+            alert("Authentication fields: " + Object.keys(auth || {}).join(", "));
+alert("User fields: " + Object.keys((auth && auth.user) || {}).join(", "));
             
 alert(
     "Wallet address available: " +
