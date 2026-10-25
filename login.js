@@ -423,13 +423,20 @@ if (connectWalletBtn && walletStatus) {
                 "✓ Wallet Connected";
 
         } catch (error) {
-            console.error("Wallet lookup failed:", error);
+            const errorMessage =
+                error && error.message
+                    ? error.message
+                    : String(error);
 
             walletStatus.textContent =
-                "Could not retrieve wallet. Please try again.";
+                "Wallet lookup failed: " + errorMessage;
 
             connectWalletBtn.textContent =
                 "🔗 Connect Wallet";
+
+            alert(
+                "Wallet lookup failed:\n" + errorMessage
+            );
         } finally {
             connectWalletBtn.disabled = false;
         }
