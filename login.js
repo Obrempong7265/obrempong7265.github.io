@@ -159,6 +159,12 @@ if (auth.accessToken) {
 
             const username =
                 auth.user.username;
+            
+alert(
+    "Credentials fields: " +
+    Object.keys(auth.user.credentials || {}).join(", ")
+);
+
             // SAVE PI WALLET ADDRESS
 
 const walletAddress =
