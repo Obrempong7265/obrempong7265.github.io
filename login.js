@@ -380,10 +380,7 @@ if (connectWalletBtn && walletStatus) {
         connectWalletBtn.textContent = "Checking wallet...";
 
         try {
-            alert(
-    "Wallet API available: " +
-    typeof Pi.Wallet.getUserMigratedWalletAddresses
-);
+            
             const result =
                 
                 await Pi.Wallet.getUserMigratedWalletAddresses();
