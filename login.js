@@ -164,6 +164,12 @@ alert(
     "Credentials fields: " +
     Object.keys(auth.user.credentials || {}).join(", ")
 );
+            
+alert(
+    "Granted scopes: " +
+    JSON.stringify(auth.user.credentials.scopes)
+);
+
 
             // SAVE PI WALLET ADDRESS
 
