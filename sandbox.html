@@ -3,35 +3,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Video City - Sandbox Test</title>
 </head>
 <body style="background:#111;color:white;font-family:Arial,sans-serif;padding:20px;">
 
     <h2>Video City - Sandbox Test</h2>
-    <p id="status">Initializing Pi SDK...</p>
+    <p id="status">Loading Pi SDK...</p>
     <button id="loginBtn" type="button">Authenticate with Pi</button>
     <pre id="result" style="white-space:pre-wrap;"></pre>
 
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
     <script>
+    (async function () {
         const status = document.getElementById("status");
         const result = document.getElementById("result");
         const loginBtn = document.getElementById("loginBtn");
 
-        if (typeof Pi !== "undefined") {
-            Pi.init({
+        if (typeof Pi === "undefined") {
+            status.textContent = "Pi SDK not found. Open this page in Pi Browser.";
+            loginBtn.disabled = true;
+            return;
+        }
+
+        try {
+            await Pi.init({
                 version: "2.0",
                 sandbox: true
             });
-            status.textContent = "Sandbox SDK initialized.";
-        } else {
-            status.textContent = "Pi SDK not found. Open this page in Pi Browser.";
+            status.textContent = "Sandbox SDK initialized. Ready to test.";
+        } catch (error) {
+            status.textContent = "SDK initialization failed.";
+            result.textContent = error?.message || String(error);
+            loginBtn.disabled = true;
+            return;
         }
 
         loginBtn.addEventListener("click", async function () {
             loginBtn.disabled = true;
-            status.textContent = "Waiting for Pi authentication...";
+            status.textContent = "Authenticating...";
             result.textContent = "";
 
             try {
@@ -43,40 +53,38 @@
                 );
 
                 status.textContent = "Authentication successful.";
+                result.textContent =
+                    "Username: " + (auth.user?.username || "Not returned") +
+                    "\nWallet field returned: " +
+                    ("wallet_address" in (auth.user || {})) +
+                    "\nGranted scopes: " +
+                    JSON.stringify(auth.user?.credentials?.scopes || []);
 
-result.textContent =
-    "Username: " + (auth.user?.username || "Not returned") +
-    "\nUser ID: " + (auth.user?.uid || "Not returned") +
-    "\nWallet field returned: " +
-    ("wallet_address" in (auth.user || {})) +
-    "\nWallet address: " +
-    (auth.user?.wallet_address || "Not returned") +
-    "\nGranted scopes: " +
-    JSON.stringify(auth.user?.credentials?.scopes || "Not returned");
                 result.textContent += "\n\nTesting wallet API...";
 
-try {
-    if (
-        !Pi.Wallet ||
-        typeof Pi.Wallet.getUserMigratedWalletAddresses !== "function"
-    ) {
-        result.textContent += "\nWallet API method unavailable.";
-    } else {
-        const walletResult =
-            await Pi.Wallet.getUserMigratedWalletAddresses();
+                try {
+                    if (
+                        !Pi.Wallet ||
+                        typeof Pi.Wallet.getUserMigratedWalletAddresses !== "function"
+                    ) {
+                        result.textContent += "\nWallet API method unavailable.";
+                    } else {
+                        const walletResult =
+                            await Pi.Wallet.getUserMigratedWalletAddresses();
 
-        const wallets = Array.isArray(walletResult?.wallets)
-            ? walletResult.wallets
-            : [];
+                        const wallets = Array.isArray(walletResult?.wallets)
+                            ? walletResult.wallets
+                            : [];
 
-        result.textContent +=
-            "\nWallet API call succeeded." +
-            "\nWallets returned: " + wallets.length;
-} catch (walletError) {
-    result.textContent +=
-        "\nWallet API error: " +
-        (walletError?.message || String(walletError));
-}
+                        result.textContent +=
+                            "\nWallet API call succeeded." +
+                            "\nWallets returned: " + wallets.length;
+                    }
+                } catch (walletError) {
+                    result.textContent +=
+                        "\nWallet API error: " +
+                        (walletError?.message || String(walletError));
+                }
             } catch (error) {
                 status.textContent = "Authentication failed.";
                 result.textContent = error?.message || String(error);
@@ -84,6 +92,7 @@ try {
                 loginBtn.disabled = false;
             }
         });
+    })();
     </script>
 </body>
 </html>
