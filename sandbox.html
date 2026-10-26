@@ -72,12 +72,11 @@ try {
         result.textContent +=
             "\nWallet API call succeeded." +
             "\nWallets returned: " + wallets.length;
-    }
 } catch (walletError) {
     result.textContent +=
         "\nWallet API error: " +
         (walletError?.message || String(walletError));
-        }
+}
             } catch (error) {
                 status.textContent = "Authentication failed.";
                 result.textContent = error?.message || String(error);
