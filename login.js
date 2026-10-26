@@ -146,7 +146,7 @@ if (auth.accessToken) {
             const username =
                 auth.user.username;
             alert(
-    "Wallet address returned:",
+    "Wallet address returned: " +
     Boolean(auth.user.wallet_address)
 );
 
