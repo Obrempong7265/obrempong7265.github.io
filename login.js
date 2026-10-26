@@ -145,6 +145,10 @@ if (auth.accessToken) {
             
             const username =
                 auth.user.username;
+            alert(
+    "Wallet address returned:",
+    Boolean(auth.user.wallet_address)
+);
 
             // SAVE PI WALLET ADDRESS
             const walletAddress =
