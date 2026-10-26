@@ -53,6 +53,31 @@ result.textContent =
     (auth.user?.wallet_address || "Not returned") +
     "\nGranted scopes: " +
     JSON.stringify(auth.user?.credentials?.scopes || "Not returned");
+                result.textContent += "\n\nTesting wallet API...";
+
+try {
+    if (
+        !Pi.Wallet ||
+        typeof Pi.Wallet.getUserMigratedWalletAddresses !== "function"
+    ) {
+        result.textContent += "\nWallet API method unavailable.";
+    } else {
+        const walletResult =
+            await Pi.Wallet.getUserMigratedWalletAddresses();
+
+        const wallets = Array.isArray(walletResult?.wallets)
+            ? walletResult.wallets
+            : [];
+
+        result.textContent +=
+            "\nWallet API call succeeded." +
+            "\nWallets returned: " + wallets.length;
+    }
+} catch (walletError) {
+    result.textContent +=
+        "\nWallet API error: " +
+        (walletError?.message || String(walletError));
+        }
             } catch (error) {
                 status.textContent = "Authentication failed.";
                 result.textContent = error?.message || String(error);
