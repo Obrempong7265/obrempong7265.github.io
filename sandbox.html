@@ -1,1 +1,60 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video City - Sandbox Test</title>
+</head>
+<body style="background:#111;color:white;font-family:Arial,sans-serif;padding:20px;">
+
+    <h2>Video City - Sandbox Test</h2>
+    <p id="status">Initializing Pi SDK...</p>
+    <button id="loginBtn" type="button">Authenticate with Pi</button>
+    <pre id="result" style="white-space:pre-wrap;"></pre>
+
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script>
+        const status = document.getElementById("status");
+        const result = document.getElementById("result");
+        const loginBtn = document.getElementById("loginBtn");
+
+        if (typeof Pi !== "undefined") {
+            Pi.init({
+                version: "2.0",
+                sandbox: true
+            });
+            status.textContent = "Sandbox SDK initialized.";
+        } else {
+            status.textContent = "Pi SDK not found. Open this page in Pi Browser.";
+        }
+
+        loginBtn.addEventListener("click", async function () {
+            loginBtn.disabled = true;
+            status.textContent = "Waiting for Pi authentication...";
+            result.textContent = "";
+
+            try {
+                const auth = await Pi.authenticate(
+                    ["username", "payments", "wallet_address"],
+                    function (payment) {
+                        console.log("Incomplete payment:", payment);
+                    }
+                );
+
+                status.textContent = "Authentication successful.";
+                result.textContent =
+                    "Username: " + (auth.user?.username || "Not returned") +
+                    "\nUser ID: " + (auth.user?.uid || "Not returned") +
+                    "\nWallet field returned: " +
+                    ("wallet_address" in (auth.user || {}));
+            } catch (error) {
+                status.textContent = "Authentication failed.";
+                result.textContent = error?.message || String(error);
+            } finally {
+                loginBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
