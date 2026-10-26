@@ -43,11 +43,16 @@
                 );
 
                 status.textContent = "Authentication successful.";
-                result.textContent =
-                    "Username: " + (auth.user?.username || "Not returned") +
-                    "\nUser ID: " + (auth.user?.uid || "Not returned") +
-                    "\nWallet field returned: " +
-                    ("wallet_address" in (auth.user || {}));
+
+result.textContent =
+    "Username: " + (auth.user?.username || "Not returned") +
+    "\nUser ID: " + (auth.user?.uid || "Not returned") +
+    "\nWallet field returned: " +
+    ("wallet_address" in (auth.user || {})) +
+    "\nWallet address: " +
+    (auth.user?.wallet_address || "Not returned") +
+    "\nGranted scopes: " +
+    JSON.stringify(auth.user?.credentials?.scopes || "Not returned");
             } catch (error) {
                 status.textContent = "Authentication failed.";
                 result.textContent = error?.message || String(error);
