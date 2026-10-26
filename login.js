@@ -145,11 +145,8 @@ if (auth.accessToken) {
             
             const username =
                 auth.user.username;
-            alert(
-    "Wallet address returned: " +
-    Boolean(auth.user.wallet_address)
-);
-
+            alert("Wallet field exists: " +
+    ("wallet_address" in auth.user));
             // SAVE PI WALLET ADDRESS
             const walletAddress =
                 auth.user.wallet_address;
