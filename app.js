@@ -7008,8 +7008,9 @@ if (
                     );
 
 
+                    
                     // ==================================
-                    // TEMPORARY UNLOCK BUTTON
+                    // VIDEO CITY - UNLOCK CONFIRMATION
                     // ==================================
 
                     const unlockButton =
@@ -7017,15 +7018,37 @@ if (
                             ".temporary-viewer-unlock"
                         );
 
-
                     if (unlockButton) {
 
                         unlockButton.addEventListener(
                             "click",
-                            function () {
+                            function (event) {
+
+                                event.stopPropagation();
+
+                                const videoTitle =
+                                    viewer.querySelector("h3")?.textContent.trim() ||
+                                    viewer.querySelector("h4")?.textContent.trim() ||
+                                    "This video";
+
+                                const price =
+                                    Number(unlockButton.dataset.price) ||
+                                    Number(viewer.dataset.price) ||
+                                    5;
+
+                                const confirmed = confirm(
+                                    "VIDEO CITY — UNLOCK VIDEO\n\n" +
+                                    "Video: " + videoTitle + "\n" +
+                                    "Price: " + price + " Pi\n\n" +
+                                    "Continue to payment?"
+                                );
+
+                                if (!confirmed) return;
 
                                 alert(
-                                    "Pi payment will be connected later."
+                                    "Payment is not connected yet.\n\n" +
+                                    "No Pi has been charged. " +
+                                    "Please try again when Pi payment is available."
                                 );
 
                             }
@@ -7033,11 +7056,6 @@ if (
 
                     }
 
-                }
-            );
-
-        }
-    );
 
      // ==========================================
 // START VIDEO CITY
