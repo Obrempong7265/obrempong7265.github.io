@@ -10021,3 +10021,46 @@ followListAvatars.forEach(
 
     }
 );
+
+/* VIDEO CITY - PUBLIC PROFILE UNLOCK CONFIRMATION */
+
+document.addEventListener("click", function (event) {
+    const unlockBtn = event.target.closest(".profile-unlock-btn");
+
+    if (!unlockBtn) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const card = unlockBtn.closest(".public-profile-video-card");
+    if (!card) return;
+
+    const title =
+        card.querySelector("h4")?.textContent.trim() ||
+        "Paid video";
+
+    const price = Number(unlockBtn.dataset.price);
+
+    if (!Number.isFinite(price) || price <= 0) {
+        alert("This video's price is invalid.");
+        return;
+    }
+
+    const confirmed = confirm(
+        "VIDEO CITY — UNLOCK VIDEO\n\n" +
+        "Video: " + title + "\n" +
+        "Price: " + price + " Pi\n\n" +
+        "Continue to payment?"
+    );
+
+    if (!confirmed) return;
+
+    alert(
+        "Payment frontend test\n\n" +
+        "Video: " + title + "\n" +
+        "Price: " + price + " Pi\n\n" +
+        "The payment connection is not active yet. " +
+        "No Pi has been charged."
+    );
+});
+
