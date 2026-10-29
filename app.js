@@ -7060,8 +7060,10 @@ if (
      // ==========================================
 // START VIDEO CITY
 // ==========================================
-await loadTemporaryFeed();
 
+loadTemporaryFeed().catch(function (error) {
+    console.error("Video City feed preview failed:", error);
+});
 
 console.log(
     "Video City: Application ready."
