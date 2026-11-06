@@ -7901,8 +7901,13 @@ console.log(
         // ==========================================
 // INITIALIZE NOTIFICATION BADGE
 // ==========================================
+updateNotificationBadge().catch(function (error) {
+    console.error(
+        "Video City: Notification badge initialization failed:",
+        error
+    );
+});
 
-await updateNotificationBadge();
             }
 );
 
