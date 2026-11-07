@@ -7036,67 +7036,20 @@ if (
                                     Number(viewer.dataset.price) ||
                                     5;
 
-                                
-const oldDialog = document.querySelector(
-    ".video-city-unlock-confirm"
-);
+                                const confirmed = confirm(
+                                    "VIDEO CITY — UNLOCK VIDEO\n\n" +
+                                    "Video: " + videoTitle + "\n" +
+                                    "Price: " + price + " Pi\n\n" +
+                                    "Continue to payment?"
+                                );
 
-if (oldDialog) oldDialog.remove();
+                                if (!confirmed) return;
 
-const dialog = document.createElement("div");
-dialog.className = "video-city-unlock-confirm";
-
-dialog.innerHTML = `
-    <div class="vc-unlock-card">
-        <div class="vc-unlock-icon">🔒</div>
-        <h3>Unlock Video</h3>
-        <p class="vc-unlock-title"></p>
-
-        <div class="vc-unlock-price">
-            <span>Price</span>
-            <strong class="vc-price-value"></strong>
-        </div>
-
-        <p class="vc-unlock-note">
-            Continue to proceed with unlocking this video.
-        </p>
-
-        <div class="vc-unlock-actions">
-            <button type="button" class="vc-unlock-cancel">
-                Cancel
-            </button>
-            <button type="button" class="vc-unlock-continue">
-                Continue
-            </button>
-        </div>
-    </div>
-`;
-
-dialog.querySelector(".vc-unlock-title").textContent =
-    videoTitle;
-
-dialog.querySelector(".vc-price-value").textContent =
-    price + " Pi";
-
-document.body.appendChild(dialog);
-
-dialog.querySelector(".vc-unlock-cancel").onclick = () => {
-    dialog.remove();
-};
-
-dialog.querySelector(".vc-unlock-continue").onclick = () => {
-    dialog.remove();
-
-    alert(
-        "Payment is not connected yet.\n\n" +
-        "No Pi has been charged. " +
-        "Please try again when Pi payment is available."
-    );
-};
-
-dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) dialog.remove();
-});
+                                alert(
+                                    "Payment is not connected yet.\n\n" +
+                                    "No Pi has been charged. " +
+                                    "Please try again when Pi payment is available."
+                                );
 
                             }
                         );
@@ -7109,13 +7062,12 @@ dialog.addEventListener("click", (e) => {
         }
     );
 
-
      // ==========================================
 // START VIDEO CITY
 // ==========================================
 
-loadTemporaryFeed().catch(function (error) {
-    console.error("Video City feed preview failed:", error);
+loadVideos().catch(function (error) {
+    console.error("Video City feed loading failed:", error);
 });
 
 console.log(
