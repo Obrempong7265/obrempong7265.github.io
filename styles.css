@@ -7425,3 +7425,161 @@ MOBILE
         min-height: 175px;
     }
 }
+/* ==========================================
+   VIDEO CITY — CUSTOM UNLOCK CONFIRMATION
+========================================== */
+
+.video-city-unlock-confirm {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+    font-family: inherit;
+}
+
+.video-city-unlock-confirm *,
+.video-city-unlock-confirm *::before,
+.video-city-unlock-confirm *::after {
+    box-sizing: border-box;
+}
+
+.vc-unlock-card {
+    width: 100%;
+    max-width: 380px;
+    padding: 26px 22px 22px;
+    border: 1px solid #493044;
+    border-radius: 22px;
+    background: linear-gradient(155deg, #241b27, #131116 75%);
+    color: #ffffff;
+    text-align: center;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.65),
+                0 0 25px rgba(255, 20, 147, 0.12);
+    animation: vcUnlockAppear 0.22s ease-out;
+}
+
+.vc-unlock-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 15px;
+    border: 1px solid rgba(255, 20, 147, 0.4);
+    border-radius: 50%;
+    background: rgba(255, 20, 147, 0.12);
+    font-size: 29px;
+}
+
+.vc-unlock-card h3 {
+    margin: 0 0 12px;
+    color: #ffffff;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.vc-unlock-title {
+    margin: 0 0 20px;
+    color: #cfc4d1;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.vc-unlock-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 15px;
+    border: 1px solid #493044;
+    border-radius: 12px;
+    background: #19141d;
+    text-align: left;
+}
+
+.vc-unlock-price span {
+    color: #cfc4d1;
+    font-size: 14px;
+}
+
+.vc-unlock-price strong {
+    color: #ff69b4;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.vc-unlock-note {
+    margin: 0 0 22px;
+    color: #a99eae;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.vc-unlock-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.vc-unlock-actions button {
+    flex: 1;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 10px;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease,
+                background 0.15s ease;
+}
+
+.vc-unlock-cancel {
+    border: 1px solid #514553;
+    background: #2a232e;
+    color: #ffffff;
+}
+
+.vc-unlock-continue {
+    border: 0;
+    background: linear-gradient(100deg, #ff1493, #d90075);
+    color: #ffffff;
+    box-shadow: 0 5px 18px rgba(255, 20, 147, 0.2);
+}
+
+.vc-unlock-actions button:active {
+    transform: scale(0.97);
+}
+
+@keyframes vcUnlockAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (max-width: 380px) {
+    .vc-unlock-card {
+        padding: 22px 16px 18px;
+        border-radius: 18px;
+    }
+
+    .vc-unlock-card h3 {
+        font-size: 21px;
+    }
+
+    .vc-unlock-actions {
+        gap: 9px;
+    }
+          }
