@@ -747,6 +747,141 @@ if (creatorContentFilter) {
     );
 
             }
+        
+ // ==========================================
+ // LOAD REAL CREATOR VIDEOS — MY CONTENT
+ // ==========================================
+
+async function loadCreatorContent() {
+
+    const creatorContentList =
+        document.getElementById("creatorContent");
+
+    if (!creatorContentList) {
+        return;
+    }
+
+    try {
+
+        const creator = await getCurrentCreator();
+
+        if (!creator) {
+            console.warn(
+                "My Content: Creator account not found."
+            );
+            return;
+        }
+
+        const {
+            data: videos,
+            error
+        } = await supabaseClient
+            .from("videos")
+            .select(
+                "id, creator_id, title, description, category, price_pi, media_url, cover_url, media_type, views, likes, created_at"
+            )
+            .eq("creator_id", creator.id)
+            .order("created_at", {
+                ascending: false
+            });
+
+        if (error) {
+            console.error(
+                "My Content loading error:",
+                error
+            );
+            return;
+        }
+
+        creatorContentList
+            .querySelectorAll(".creator-content-item")
+            .forEach(function(item) {
+                item.remove();
+            });
+
+        (videos || []).forEach(function(video) {
+
+            const item =
+                document.createElement("article");
+
+            item.className = "creator-content-item";
+
+            item.dataset.videoId = video.id;
+            item.dataset.contentType =
+                Number(video.price_pi) > 0
+                    ? "paid"
+                    : "free";
+
+            item.dataset.category =
+                video.category || "";
+
+            item.dataset.description =
+                video.description || "";
+
+            item.dataset.price =
+                video.price_pi || 0;
+
+            const title =
+                escapeHTML(video.title || "Untitled video");
+
+            const thumbnail = video.cover_url
+                ? `<img src="${escapeHTML(video.cover_url)}" alt="">`
+                : `<span class="creator-content-play">▶</span>`;
+
+            const priceLabel =
+                Number(video.price_pi) > 0
+                    ? `${escapeHTML(video.price_pi)} Pi`
+                    : "FREE";
+
+            item.innerHTML = `
+                <div class="creator-content-thumbnail">
+                    ${thumbnail}
+                </div>
+
+                <div class="creator-content-info">
+                    <h4>${title}</h4>
+                    <p>${priceLabel}</p>
+                    <div class="creator-content-stats">
+                        <span>${Number(video.views) || 0} views</span>
+                        <span>${Number(video.likes) || 0} likes</span>
+                    </div>
+                </div>
+
+                <div class="creator-content-actions">
+                    <button
+                        type="button"
+                        class="creator-content-edit">
+                        Edit
+                    </button>
+
+                    <button
+                        type="button"
+                        class="creator-content-delete">
+                        Delete
+                    </button>
+                </div>
+            `;
+
+            creatorContentList.insertBefore(
+                item,
+                document.getElementById("creatorContentEmpty")
+            );
+
+        });
+
+        filterCreatorContent();
+        updateCreatorContentEmptyState();
+
+    } catch (error) {
+
+        console.error(
+            "Unexpected My Content loading error:",
+            error
+        );
+
+    }
+}
+
         // ==========================================
 // FULL MY CONTENT SEARCH + FILTER
 // ==========================================
