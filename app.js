@@ -7036,7 +7036,8 @@ if (
                                     Number(viewer.dataset.price) ||
                                     5;
 
-                                const oldDialog = document.querySelector(
+                                
+const oldDialog = document.querySelector(
     ".video-city-unlock-confirm"
 );
 
@@ -7048,9 +7049,7 @@ dialog.className = "video-city-unlock-confirm";
 dialog.innerHTML = `
     <div class="vc-unlock-card">
         <div class="vc-unlock-icon">🔒</div>
-
         <h3>Unlock Video</h3>
-
         <p class="vc-unlock-title"></p>
 
         <div class="vc-unlock-price">
@@ -7066,7 +7065,6 @@ dialog.innerHTML = `
             <button type="button" class="vc-unlock-cancel">
                 Cancel
             </button>
-
             <button type="button" class="vc-unlock-continue">
                 Continue
             </button>
@@ -7099,7 +7097,6 @@ dialog.querySelector(".vc-unlock-continue").onclick = () => {
 dialog.addEventListener("click", (e) => {
     if (e.target === dialog) dialog.remove();
 });
-                                );
 
                             }
                         );
@@ -7111,6 +7108,7 @@ dialog.addEventListener("click", (e) => {
 
         }
     );
+
 
      // ==========================================
 // START VIDEO CITY
