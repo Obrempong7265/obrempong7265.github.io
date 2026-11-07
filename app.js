@@ -539,7 +539,8 @@ if (
     myContentModalList
 ) {
 
-    creatorContentToggle.addEventListener("click", function () {
+    creatorContentToggle.addEventListener("click", async function () {
+    await loadCreatorContent();
 
         const creatorContentList =
             document.getElementById("creatorContent");
