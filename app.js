@@ -903,6 +903,13 @@ const thumbnail = video.cover_url
  // ==========================================
 
 document.addEventListener("click", function(event) {
+        if (
+        event.target.closest(
+            ".creator-content-actions"
+        )
+    ) {
+        return;
+        }
 
     const thumbnail = event.target.closest(
         "#creatorContent .creator-content-thumbnail, " +
