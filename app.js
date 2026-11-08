@@ -1019,7 +1019,10 @@ document.addEventListener("click", function(event) {
             background: black;
         `;
     }
-
+// Pause any video already playing in the Home feed
+document.querySelectorAll("video.video").forEach(function(video) {
+    video.pause();
+});
     mediaElement.src = mediaUrl;
 
     stage.appendChild(mediaElement);
