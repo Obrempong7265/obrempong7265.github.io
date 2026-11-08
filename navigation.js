@@ -64,6 +64,14 @@ function showPage(page) {
 
 
     // Hide all pages
+    // Pause Home feed videos when navigating away
+if (page !== "home" && feed) {
+    feed.querySelectorAll("video.video").forEach(
+        function(video) {
+            video.pause();
+        }
+    );
+}
 
     if (feed) {
         feed.classList.add("hidden");
