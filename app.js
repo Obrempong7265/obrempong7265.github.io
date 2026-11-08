@@ -8318,6 +8318,7 @@ document.addEventListener(
 
         event.preventDefault();
         event.stopPropagation();
+        openCreatorEditModal(contentItem);
 
         
 
