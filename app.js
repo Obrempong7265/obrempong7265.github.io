@@ -830,9 +830,18 @@ item.dataset.mediaType =
             const title =
                 escapeHTML(video.title || "Untitled video");
 
-            const thumbnail = video.cover_url
-                ? `<img src="${escapeHTML(video.cover_url)}" alt="">`
-                : `<span class="creator-content-play">▶</span>`;
+            
+const thumbnail = video.cover_url
+    ? `<img src="${escapeHTML(video.cover_url)}" alt="">`
+    : video.media_type === "image"
+        ? `<img src="${escapeHTML(video.media_url)}" alt="">`
+        : `<video
+                class="creator-content-preview"
+                muted
+                playsinline
+                preload="metadata"
+                src="${escapeHTML(video.media_url)}">
+           </video>`;
 
             const priceLabel =
                 Number(video.price_pi) > 0
