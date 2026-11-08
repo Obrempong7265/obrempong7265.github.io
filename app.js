@@ -888,6 +888,181 @@ item.dataset.mediaType =
     }
 }
 
+        
+ // ==========================================
+ // MY CONTENT — REAL MEDIA POPUP PLAYER
+ // ==========================================
+
+document.addEventListener("click", function(event) {
+
+    const thumbnail = event.target.closest(
+        "#creatorContent .creator-content-thumbnail, " +
+        "#myContentModalList .creator-content-thumbnail"
+    );
+
+    if (!thumbnail) {
+        return;
+    }
+
+    const item = thumbnail.closest(
+        ".creator-content-item"
+    );
+
+    if (!item) {
+        return;
+    }
+
+    const mediaUrl = item.dataset.mediaUrl;
+
+    if (!mediaUrl) {
+        console.warn("My Content: Media URL is missing.");
+        return;
+    }
+
+    event.preventDefault();
+
+    const oldViewer = document.getElementById(
+        "creatorMediaViewer"
+    );
+
+    if (oldViewer) {
+        oldViewer.remove();
+    }
+
+    const titleElement = item.querySelector(
+        ".creator-content-info h4"
+    );
+
+    const title = titleElement
+        ? titleElement.textContent.trim()
+        : "Video City";
+
+    const mediaType = item.dataset.mediaType || "video";
+
+    const viewer = document.createElement("div");
+    viewer.id = "creatorMediaViewer";
+
+    viewer.style.cssText = `
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: rgba(0,0,0,0.96);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        box-sizing: border-box;
+    `;
+
+    const header = document.createElement("div");
+    header.style.cssText = `
+        width: 100%;
+        max-width: 1000px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        color: white;
+        margin-bottom: 12px;
+    `;
+
+    const heading = document.createElement("strong");
+    heading.textContent = title;
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.textContent = "✕";
+    closeButton.setAttribute("aria-label", "Close player");
+    closeButton.style.cssText = `
+        background: #e6007e;
+        color: white;
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 18px;
+        cursor: pointer;
+    `;
+
+    header.append(heading, closeButton);
+
+    const stage = document.createElement("div");
+    stage.style.cssText = `
+        width: 100%;
+        max-width: 1000px;
+        height: calc(100% - 60px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    `;
+
+    let mediaElement;
+
+    if (mediaType === "image") {
+        mediaElement = document.createElement("img");
+        mediaElement.alt = title;
+        mediaElement.style.cssText = `
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        `;
+    } else {
+        mediaElement = document.createElement("video");
+        mediaElement.controls = true;
+        mediaElement.playsInline = true;
+        mediaElement.preload = "metadata";
+        mediaElement.style.cssText = `
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: black;
+        `;
+    }
+
+    mediaElement.src = mediaUrl;
+
+    stage.appendChild(mediaElement);
+    viewer.append(header, stage);
+    document.body.appendChild(viewer);
+
+    function closeViewer() {
+        if (mediaElement.tagName === "VIDEO") {
+            mediaElement.pause();
+            mediaElement.removeAttribute("src");
+            mediaElement.load();
+        }
+
+        viewer.remove();
+    }
+
+    closeButton.addEventListener("click", closeViewer);
+
+    viewer.addEventListener("click", function(e) {
+        if (e.target === viewer) {
+            closeViewer();
+        }
+    });
+
+    function handleEscape(e) {
+        if (
+            e.key === "Escape" &&
+            document.getElementById("creatorMediaViewer")
+        ) {
+            closeViewer();
+        }
+    }
+
+    document.addEventListener("keydown", handleEscape);
+
+    const originalClose = closeViewer;
+
+    closeButton.addEventListener("click", function() {
+        document.removeEventListener("keydown", handleEscape);
+    });
+
+});
+
         // ==========================================
 // FULL MY CONTENT SEARCH + FILTER
 // ==========================================
