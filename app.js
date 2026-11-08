@@ -821,6 +821,11 @@ async function loadCreatorContent() {
 
             item.dataset.price =
                 video.price_pi || 0;
+            item.dataset.mediaUrl =
+    video.media_url || "";
+
+item.dataset.mediaType =
+    video.media_type || "video";
 
             const title =
                 escapeHTML(video.title || "Untitled video");
