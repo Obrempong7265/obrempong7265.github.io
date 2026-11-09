@@ -547,7 +547,34 @@ if (
 
         if (creatorContentList) {
     myContentModalList.innerHTML =
-        creatorContentList.innerHTML;
+    creatorContentList.innerHTML;
+
+const originalItems =
+    creatorContentList.querySelectorAll(
+        ".creator-content-item"
+    );
+
+const popupItems =
+    myContentModalList.querySelectorAll(
+        ".creator-content-item"
+    );
+
+originalItems.forEach(function(originalItem, index) {
+    const popupItem = popupItems[index];
+
+    if (!popupItem) {
+        return;
+    }
+
+    popupItem.dataset.mediaUrl =
+        originalItem.dataset.mediaUrl || "";
+
+    popupItem.dataset.mediaType =
+        originalItem.dataset.mediaType || "video";
+
+    popupItem.dataset.videoId =
+        originalItem.dataset.videoId || "";
+});
             const modalDeleteButtons =
     myContentModalList.querySelectorAll(
         ".creator-content-delete"
