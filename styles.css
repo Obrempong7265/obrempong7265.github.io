@@ -7594,3 +7594,11 @@ MOBILE
         gap: 9px;
     }
           }
+
+/* Keep the My Content list in place on mobile */
+#creatorContent {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    touch-action: pan-y;
+}
