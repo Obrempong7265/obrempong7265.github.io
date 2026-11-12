@@ -955,10 +955,24 @@ document.addEventListener("click", function(event) {
         return;
     }
 
-    const mediaUrl = item.dataset.mediaUrl;
+    // Resolve the selected card against the original list by unique video ID.
+    // This avoids relying on popup card order or copied DOM data.
+    const selectedVideoId = item.dataset.videoId || "";
+    const originalItem = selectedVideoId
+        ? Array.from(
+            document.querySelectorAll(
+                "#creatorContent .creator-content-item"
+            )
+          ).find(function (candidate) {
+              return candidate.dataset.videoId === selectedVideoId;
+          })
+        : null;
+
+    const mediaSourceItem = originalItem || item;
+    const mediaUrl = mediaSourceItem.dataset.mediaUrl || "";
 
     if (!mediaUrl) {
-        console.warn("My Content: Media URL is missing.");
+        console.warn("My Content: Media URL is missing for video ID:", selectedVideoId);
         return;
     }
 
@@ -972,7 +986,7 @@ document.addEventListener("click", function(event) {
         oldViewer.remove();
     }
 
-    const titleElement = item.querySelector(
+    const titleElement = mediaSourceItem.querySelector(
         ".creator-content-info h4"
     );
 
@@ -980,7 +994,7 @@ document.addEventListener("click", function(event) {
         ? titleElement.textContent.trim()
         : "Video City";
 
-    const mediaType = item.dataset.mediaType || "video";
+    const mediaType = mediaSourceItem.dataset.mediaType || "video";
 
     const viewer = document.createElement("div");
     viewer.id = "creatorMediaViewer";
