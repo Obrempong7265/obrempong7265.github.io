@@ -7602,3 +7602,17 @@ MOBILE
     overflow-x: hidden;
     touch-action: pan-y;
 }
+/* Fix My Content thumbnail overflow on mobile */
+.creator-content-thumbnail {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.creator-content-thumbnail video,
+.creator-content-thumbnail .creator-content-preview {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+  }
