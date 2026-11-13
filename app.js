@@ -4341,21 +4341,17 @@ async function loadCommentCount() {
 
     commentButton.addEventListener(
         "click",
-        async function () {
+        async function (event) {
 
-            comments.style.display =
-                comments.style.display === "none"
-                    ? "block"
-                    : "none";
+            event.preventDefault();
+            event.stopPropagation();
 
-
-            if (
-                comments.style.display === "block" &&
-                video.id
-            ) {
-
-                await loadComments();
-
+            if (typeof openLiveCommentsPanel === "function") {
+                await openLiveCommentsPanel(
+                    comments,
+                    loadComments,
+                    card
+                );
             }
 
         }
@@ -4580,7 +4576,90 @@ if (data && data.length > 0) {
     // DISPLAY COMMENT
     // ======================================
 
-    function addComment(
+    
+
+// ==========================================
+// LIVE COMMENTS PANEL
+// Uses the existing comment form and Supabase loader.
+// ==========================================
+
+async function openLiveCommentsPanel(commentsElement, reloadComments, originalCard) {
+
+    if (!commentsElement) {
+        return;
+    }
+
+    let panel = document.querySelector(".video-comments-live-panel");
+
+    if (!panel) {
+        panel = document.createElement("div");
+        panel.className = "video-comments-panel video-comments-live-panel";
+        panel.innerHTML = `
+            <div class="video-comments-header">
+                <h2>Comments</h2>
+                <button class="video-comments-close" type="button" aria-label="Close comments">✕</button>
+            </div>
+            <div class="video-comments-live-content"></div>
+        `;
+        document.body.appendChild(panel);
+
+        panel.querySelector(".video-comments-close").addEventListener("click", function () {
+            const currentComments = panel._commentsElement;
+            const parent = panel._originalParent;
+            const nextSibling = panel._originalNextSibling;
+
+            if (currentComments && parent) {
+                if (nextSibling && nextSibling.parentNode === parent) {
+                    parent.insertBefore(currentComments, nextSibling);
+                } else {
+                    parent.appendChild(currentComments);
+                }
+                currentComments.style.display = "none";
+            }
+
+            panel._commentsElement = null;
+            panel._originalParent = null;
+            panel._originalNextSibling = null;
+            panel.classList.remove("active");
+        });
+    }
+
+    const content = panel.querySelector(".video-comments-live-content");
+
+    if (panel._commentsElement && panel._commentsElement !== commentsElement) {
+        const previous = panel._commentsElement;
+        const previousParent = panel._originalParent;
+        const previousNext = panel._originalNextSibling;
+        if (previousParent) {
+            if (previousNext && previousNext.parentNode === previousParent) {
+                previousParent.insertBefore(previous, previousNext);
+            } else {
+                previousParent.appendChild(previous);
+            }
+            previous.style.display = "none";
+        }
+    }
+
+    panel._commentsElement = commentsElement;
+    panel._originalParent = commentsElement.parentElement;
+    panel._originalNextSibling = commentsElement.nextSibling;
+
+    content.innerHTML = "";
+    content.appendChild(commentsElement);
+
+    commentsElement.style.display = "block";
+    content.style.flex = "1";
+    content.style.minHeight = "0";
+    content.style.overflowY = "auto";
+    content.style.padding = "12px 14px 24px";
+    panel.classList.add("active");
+
+    if (typeof reloadComments === "function") {
+        await reloadComments();
+    }
+}
+
+function addComment(
     comment,
     list
 ) {
