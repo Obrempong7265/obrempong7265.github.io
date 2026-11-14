@@ -7616,3 +7616,34 @@ MOBILE
     max-width: 100%;
     object-fit: cover;
   }
+
+/* Video City: fullscreen fallback layout fix
+   Add this block at the VERY END of the existing styles.css.
+   It removes the manual 90-degree rotation that can misalign the feed
+   when the browser cannot lock the phone into landscape orientation.
+*/
+.video-wrap.pi-cinema-mode {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    transform-origin: center center !important;
+    z-index: 99999 !important;
+    overflow: hidden !important;
+    background: #000 !important;
+}
+
+.video-wrap.pi-cinema-mode .video {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    filter: none !important;
+    opacity: 1 !important;
+}
+
