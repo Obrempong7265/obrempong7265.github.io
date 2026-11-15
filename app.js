@@ -3255,15 +3255,39 @@ function setupVideoCityFullscreen(card) {
         );
     }
 
+    async function tryLandscapeOrientation() {
+        // Orientation locking is supported only by some browsers and usually
+        // requires a real fullscreen context. Failure must not break playback.
+        try {
+            if (screen.orientation && typeof screen.orientation.lock === "function") {
+                await screen.orientation.lock("landscape");
+                return true;
+            }
+        } catch (orientationError) {
+            console.info(
+                "Video City: landscape orientation lock is unavailable in this fullscreen mode.",
+                orientationError
+            );
+        }
+        return false;
+    }
+
     async function exitFullscreen() {
         if (videoWrap.classList.contains("pi-cinema-mode")) {
             videoWrap.classList.remove("pi-cinema-mode");
             setButton(false);
+            try {
+                if (screen.orientation && typeof screen.orientation.unlock === "function") {
+                    screen.orientation.unlock();
+                }
+            } catch (orientationError) {
+                console.info("Video City: orientation unlock unavailable.", orientationError);
+            }
             return;
         }
 
         try {
-            if (document.fullscreenElement && document.exitFullscreen) {
+            if ((document.fullscreenElement || document.webkitFullscreenElement) && document.exitFullscreen) {
                 await document.exitFullscreen();
             } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
@@ -3288,34 +3312,38 @@ function setupVideoCityFullscreen(card) {
             return;
         }
 
-        // Keep the browser's native fullscreen path for Chrome and other browsers
-        // that support it. Do not force orientation; Pi Browser may reject it.
         try {
-            if (document.fullscreenEnabled && videoWrap.requestFullscreen) {
+            // Prefer native fullscreen. Ask for landscape only after fullscreen
+            // has successfully opened, as required by many mobile browsers.
+            if (document.fullscreenEnabled && typeof videoWrap.requestFullscreen === "function") {
                 await videoWrap.requestFullscreen();
+                await tryLandscapeOrientation();
                 return;
             }
 
-            // Some mobile browsers support fullscreen on the video element
-            // even when fullscreen on a containing element is unavailable.
-            if (media && media.requestFullscreen) {
+            if (media && typeof media.requestFullscreen === "function") {
                 await media.requestFullscreen();
+                await tryLandscapeOrientation();
                 return;
             }
 
             if (media && typeof media.webkitEnterFullscreen === "function") {
                 media.webkitEnterFullscreen();
+                // iOS/WebKit manages its native video fullscreen orientation.
                 return;
             }
         } catch (error) {
             console.warn("Video City: native fullscreen unavailable; using clean fallback.", error);
         }
 
-        // Pi Browser fallback: fullscreen the media element itself using CSS.
-        // Avoid making the whole video wrapper a transformed/fixed video layer,
-        // which can cause blurry or dark hardware-video rendering in some WebViews.
+        // Keep the proven clean fallback: do not rotate or transform the video
+        // wrapper, because that previously caused a dark/blurred video layer.
         videoWrap.classList.add("pi-cinema-mode");
         setButton(true);
+
+        // Try in case this browser allows orientation locking in its fallback.
+        // If it rejects the request, the clean portrait fallback remains usable.
+        await tryLandscapeOrientation();
     });
 
     document.addEventListener("fullscreenchange", function () {
@@ -3324,6 +3352,15 @@ function setupVideoCityFullscreen(card) {
             document.fullscreenElement === media ||
             videoWrap.classList.contains("pi-cinema-mode");
         setButton(isActive);
+        if (!isActive) {
+            try {
+                if (screen.orientation && typeof screen.orientation.unlock === "function") {
+                    screen.orientation.unlock();
+                }
+            } catch (orientationError) {
+                console.info("Video City: orientation unlock unavailable.", orientationError);
+            }
+        }
     });
 
     document.addEventListener("webkitfullscreenchange", function () {
