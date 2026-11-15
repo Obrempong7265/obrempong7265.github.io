@@ -3236,226 +3236,104 @@ function setupSingleVideoAudio(card) {
 
 function setupVideoCityFullscreen(card) {
 
-    const videoWrap =
-        card.querySelector(".video-wrap");
+    const videoWrap = card.querySelector(".video-wrap");
+    const fullscreenButton = card.querySelector(".video-city-fullscreen");
 
-    const fullscreenButton =
-        card.querySelector(".video-city-fullscreen");
+    if (!videoWrap || !fullscreenButton) return;
 
-    if (!videoWrap || !fullscreenButton) {
-        return;
+    const media = videoWrap.querySelector(".video");
+
+    function setButton(isActive) {
+        fullscreenButton.textContent = isActive ? "✕" : "⛶";
+        fullscreenButton.setAttribute(
+            "aria-label",
+            isActive ? "Exit fullscreen" : "Enter fullscreen"
+        );
+        fullscreenButton.setAttribute(
+            "title",
+            isActive ? "Exit fullscreen" : "Fullscreen"
+        );
     }
 
-    fullscreenButton.addEventListener(
-        "click",
-        async function () {
-
-            try {
-
-                if (
-    !document.fullscreenElement &&
-    !videoWrap.classList.contains("pi-cinema-mode")
-) {
-
-                    // ==========================================
-                    // STANDARD FULLSCREEN
-                    // ==========================================
-
-                    if (
-                        document.fullscreenEnabled &&
-                        videoWrap.requestFullscreen
-                    ) {
-
-                        await videoWrap.requestFullscreen();
-
-                        setTimeout(async function () {
-
-                            if (
-                                screen.orientation &&
-                                screen.orientation.lock
-                            ) {
-
-                                try {
-
-                                    await screen.orientation.lock(
-                                        "landscape"
-                                    );
-
-                                } catch (orientationError) {
-
-                                    console.log(
-                                        "Landscape orientation not available:",
-                                        orientationError
-                                    );
-
-                                }
-
-                            }
-
-                        }, 300);
-
-                    } else {
-
-                        // ==========================================
-                        // PI BROWSER CINEMA MODE
-                        // ==========================================
-
-                        videoWrap.classList.add(
-                            "pi-cinema-mode"
-                        );
-
-                        fullscreenButton.textContent =
-                            "✕";
-
-                        fullscreenButton.setAttribute(
-                            "aria-label",
-                            "Exit cinema mode"
-                        );
-
-                        
-                                if (
-    screen.orientation &&
-    screen.orientation.lock
-) {
-
-    setTimeout(async function () {
+    async function exitFullscreen() {
+        if (videoWrap.classList.contains("pi-cinema-mode")) {
+            videoWrap.classList.remove("pi-cinema-mode");
+            setButton(false);
+            return;
+        }
 
         try {
+            if (document.fullscreenElement && document.exitFullscreen) {
+                await document.exitFullscreen();
+            } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (media && typeof media.webkitExitFullscreen === "function") {
+                media.webkitExitFullscreen();
+            }
+        } catch (error) {
+            console.warn("Video City: could not exit native fullscreen.", error);
+        }
+    }
 
-            await screen.orientation.lock(
-                "landscape"
-            );
+    fullscreenButton.addEventListener("click", async function () {
+        const inCinemaMode = videoWrap.classList.contains("pi-cinema-mode");
+        const inNativeFullscreen =
+            document.fullscreenElement === videoWrap ||
+            document.fullscreenElement === media ||
+            document.webkitFullscreenElement === videoWrap ||
+            document.webkitFullscreenElement === media;
 
-        } catch (orientationError) {
-
-            console.log(
-                "Pi Browser landscape lock unavailable:",
-                orientationError
-            );
-
+        if (inCinemaMode || inNativeFullscreen) {
+            await exitFullscreen();
+            return;
         }
 
-    }, 500);
-
-        }
-                    }
-
-                } else {
-
-                    // ==========================================
-                    // EXIT FULLSCREEN / CINEMA MODE
-                    // ==========================================
-
-                    if (
-                        videoWrap.classList.contains(
-                            "pi-cinema-mode"
-                        )
-                    ) {
-
-                        videoWrap.classList.remove(
-                            "pi-cinema-mode"
-                        );
-
-                        fullscreenButton.textContent =
-                            "⛶";
-
-                        fullscreenButton.setAttribute(
-                            "aria-label",
-                            "Enter fullscreen"
-                        );
-
-                        if (
-                            screen.orientation &&
-                            screen.orientation.unlock
-                        ) {
-
-                            try {
-
-                                screen.orientation.unlock();
-
-                            } catch (error) {
-
-                                console.log(
-                                    "Orientation unlock unavailable:",
-                                    error
-                                );
-
-                            }
-
-                        }
-
-                    } else if (document.exitFullscreen) {
-
-                        await document.exitFullscreen();
-
-                    } else if (
-                        document.webkitExitFullscreen
-                    ) {
-
-                        document.webkitExitFullscreen();
-
-                    }
-
-                }
-
-            } catch (error) {
-
-                console.error(
-                    "Video City fullscreen error:",
-                    error
-                );
-
+        // Keep the browser's native fullscreen path for Chrome and other browsers
+        // that support it. Do not force orientation; Pi Browser may reject it.
+        try {
+            if (document.fullscreenEnabled && videoWrap.requestFullscreen) {
+                await videoWrap.requestFullscreen();
+                return;
             }
 
-        }
-    );
-
-    document.addEventListener(
-        "fullscreenchange",
-        function () {
-
-            const isFullscreen =
-                document.fullscreenElement === videoWrap;
-
-            fullscreenButton.textContent =
-                isFullscreen ? "✕" : "⛶";
-
-            fullscreenButton.setAttribute(
-                "aria-label",
-                isFullscreen
-                    ? "Exit fullscreen"
-                    : "Enter fullscreen"
-            );
-
-            if (!isFullscreen) {
-
-                if (
-                    screen.orientation &&
-                    screen.orientation.unlock
-                ) {
-
-                    try {
-
-                        screen.orientation.unlock();
-
-                    } catch (error) {
-
-                        console.log(
-                            "Orientation unlock unavailable:",
-                            error
-                        );
-
-                    }
-
-                }
-
+            // Some mobile browsers support fullscreen on the video element
+            // even when fullscreen on a containing element is unavailable.
+            if (media && media.requestFullscreen) {
+                await media.requestFullscreen();
+                return;
             }
 
+            if (media && typeof media.webkitEnterFullscreen === "function") {
+                media.webkitEnterFullscreen();
+                return;
+            }
+        } catch (error) {
+            console.warn("Video City: native fullscreen unavailable; using clean fallback.", error);
         }
-    );
 
+        // Pi Browser fallback: fullscreen the media element itself using CSS.
+        // Avoid making the whole video wrapper a transformed/fixed video layer,
+        // which can cause blurry or dark hardware-video rendering in some WebViews.
+        videoWrap.classList.add("pi-cinema-mode");
+        setButton(true);
+    });
+
+    document.addEventListener("fullscreenchange", function () {
+        const isActive =
+            document.fullscreenElement === videoWrap ||
+            document.fullscreenElement === media ||
+            videoWrap.classList.contains("pi-cinema-mode");
+        setButton(isActive);
+    });
+
+    document.addEventListener("webkitfullscreenchange", function () {
+        const isActive =
+            document.webkitFullscreenElement === videoWrap ||
+            document.webkitFullscreenElement === media ||
+            videoWrap.classList.contains("pi-cinema-mode");
+        setButton(isActive);
+    });
 }
-
 
 // ==========================================
 // VIEW COUNT SYSTEM
