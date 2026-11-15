@@ -7646,4 +7646,68 @@ MOBILE
     filter: none !important;
     opacity: 1 !important;
 }
+/* Video City Pi Browser fullscreen fallback — media element is the fullscreen layer */
+.video-wrap.pi-cinema-mode {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 72vh !important;
+    min-height: 320px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    z-index: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+}
+
+.video-wrap.pi-cinema-mode .video {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    object-fit: contain !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    z-index: 99998 !important;
+    background: #000 !important;
+}
+
+.video-wrap.pi-cinema-mode .video-city-fullscreen {
+    position: fixed !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 100001 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.video-wrap.pi-cinema-mode .video-watermark {
+    position: fixed !important;
+    top: 16px !important;
+    left: 16px !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 100000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.video-wrap.pi-cinema-mode .video-view-count {
+    position: fixed !important;
+    right: 16px !important;
+    bottom: 16px !important;
+    z-index: 100000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
 
