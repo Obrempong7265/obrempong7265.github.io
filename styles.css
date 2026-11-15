@@ -7710,4 +7710,80 @@ MOBILE
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
 }
+/* Video City — main-feed video card and view-count alignment
+   Append this block to the VERY END of the existing styles.css.
+   This intentionally overrides older duplicate .video-view-count rules.
+*/
+
+.video-card .video-wrap {
+    position: relative;
+    isolation: isolate;
+}
+
+.video-card .video-view-count {
+    position: absolute !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    left: auto !important;
+    top: auto !important;
+    z-index: 9 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+
+    width: auto !important;
+    max-width: calc(100% - 24px) !important;
+    min-height: 30px;
+    margin: 0 !important;
+    padding: 6px 10px !important;
+    box-sizing: border-box;
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px !important;
+    background: rgba(0, 0, 0, 0.76) !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    white-space: nowrap;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    pointer-events: none;
+}
+
+.video-card .video-view-count span {
+    display: inline-block;
+    color: inherit;
+    font: inherit;
+    line-height: 1;
+}
+
+/* Keep the paid-video lock centered, while allowing the view badge to remain visible. */
+.video-card .paid-video-lock {
+    z-index: 8;
+}
+
+.video-card .video-info {
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.video-card .video-info .title,
+.video-card .video-info .description,
+.video-card .video-info .creator {
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .video-card .video-view-count {
+        right: 10px !important;
+        bottom: 10px !important;
+        min-height: 28px;
+        padding: 5px 9px !important;
+        font-size: 11px !important;
+    }
+}
 
