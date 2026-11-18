@@ -10423,3 +10423,34 @@ followListAvatars.forEach(
     }
 );
 
+/* Video City: append to the VERY END of app.js. Does not replace existing handlers. */
+(function videoCityCinemaScrollLockPatch() {
+ if (window.__videoCityCinemaScrollLockPatchLoaded) return;
+ window.__videoCityCinemaScrollLockPatchLoaded = true;
+ let savedY = 0, savedStyles = null, locked = false;
+ function active() { return !!document.querySelector(".video-wrap.pi-cinema-mode"); }
+ function lock() {
+  if (locked) return;
+  locked = true; savedY = window.scrollY || window.pageYOffset || 0;
+  const b = document.body;
+  savedStyles = {position:b.style.position,top:b.style.top,left:b.style.left,right:b.style.right,width:b.style.width,overflow:b.style.overflow,touchAction:b.style.touchAction};
+  b.style.position="fixed"; b.style.top=`-${savedY}px`; b.style.left="0"; b.style.right="0";
+  b.style.width="100%"; b.style.overflow="hidden"; b.style.touchAction="none";
+ }
+ function unlock() {
+  if (!locked) return;
+  const b=document.body, s=savedStyles||{};
+  b.style.position=s.position||""; b.style.top=s.top||""; b.style.left=s.left||"";
+  b.style.right=s.right||""; b.style.width=s.width||""; b.style.overflow=s.overflow||"";
+  b.style.touchAction=s.touchAction||"";
+  locked=false; savedStyles=null; window.scrollTo(0,savedY);
+ }
+ function sync() { if(active()) lock(); else unlock(); }
+ function start() {
+  sync();
+  new MutationObserver(sync).observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:["class"],childList:true});
+  window.addEventListener("pagehide",unlock);
+  window.addEventListener("pageshow",sync);
+ }
+ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",start,{once:true}); else start();
+})();
