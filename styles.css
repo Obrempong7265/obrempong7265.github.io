@@ -7808,4 +7808,24 @@ MOBILE
  }
 }
 
-
+/* Video City: keep the fullscreen exit button visible */
+.video-wrap.pi-cinema-mode .video-city-fullscreen,
+.video-wrap:fullscreen .video-city-fullscreen,
+.video-wrap:-webkit-full-screen .video-city-fullscreen {
+    display: flex !important;
+    position: absolute !important;
+    top: 14px !important;
+    right: 14px !important;
+    z-index: 10010 !important;
+    width: 44px !important;
+    height: 44px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(0, 0, 0, 0.85) !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 50% !important;
+    font-size: 26px !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
